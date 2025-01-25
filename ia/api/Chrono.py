@@ -47,8 +47,8 @@ class Chrono:
             str: A string in the format "remaining_time / match_duration".
         """
 
-        current_time = datetime.now().timestamp()
-        chrono = self.match_duration - int((current_time - self.timestamp_start) / 1000)
+        current_time = int(datetime.now().timestamp())
+        chrono = self.match_duration - (current_time - self.timestamp_start)
         return f"{chrono} / {self.match_duration}"
 
     def start_match(self, master_loop):
@@ -62,7 +62,7 @@ class Chrono:
                                   to be called when the match duration ends.
         """
 
-        self.timestamp_start = datetime.now().timestamp()
+        self.timestamp_start = int(datetime.now().timestamp())
         self.timer = threading.Timer(self.match_duration, master_loop.match_end)
         self.timer.start()
 
@@ -72,7 +72,7 @@ class Chrono:
         This method records the current timestamp as the start time of the match.
         """
 
-        self.timestamp_start = datetime.now().timestamp()
+        self.timestamp_start = int(datetime.now().timestamp())
 
     def get_time_since_beginning(self):
         """
@@ -81,8 +81,8 @@ class Chrono:
             int: The time elapsed since the start timestamp in seconds.
         """
 
-        current_time = datetime.now().timestamp()
-        return int((current_time - self.timestamp_start) * 1000)
+        current_time = int(datetime.now().timestamp())
+        return current_time - self.timestamp_start
     
 # Example usage:
 # chrono = Chrono(match_duration=60)
