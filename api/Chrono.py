@@ -75,3 +75,10 @@ class Chrono:
 
         current_time = datetime.now().timestamp()
         return int((current_time - self.timestamp_start) * 1000)
+    
+# Example usage:
+# chrono = Chrono(match_duration=60)
+# chrono.start_match(master_loop)   # Start the match timer
+# print(chrono)                     # Print the remaining time
+# time.sleep(30)                    # Simulate 30 seconds of match time
+# print(chrono)                     # Print the remaining time again
