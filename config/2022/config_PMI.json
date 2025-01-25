@@ -1,0 +1,144 @@
+{
+    "desc": "Configuration du robot PMI 2022 - Pass-Pass Princess",
+    "gpioColorSelector": 5,
+    "gpioTirette": 4,
+    "matchDuration": 100,
+    "table0Path": "table0.tbl",
+    "table3000Path": "table3000.tbl",
+    "tableJsonPath": "table.json",
+    "commandFile": "configCollectionPmi.json",
+    "lcd": {
+        "type": "full",
+        "i2cAddress": 81,
+        "lineCount": 2,
+        "lineLength": 16
+    },
+    "loggerSocket": {
+        "active": false,
+        "host": "192.168.0.106",
+        "port": 4269,
+        "logPort": 1664,
+        "who": "picratepi"
+    },
+    "asserv": {
+        "baud": 115200,
+        "combineRxTx": false,
+        "serie": "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066AFF575755846687215414-if02",
+        "calage0": {
+            "x": 850,
+            "y": 115,
+            "theta": 1.5707963267948966192313216916398
+        },
+        "calage3000": {
+            "x": 850,
+            "y": 2885,
+            "theta": -1.5707963267948966192313216916398
+        },
+        "start0": [
+            {
+                "type": "go",
+                "dist": 100
+            },
+            {
+                "type": "goto",
+                "x": 1150,
+                "y": 240
+            },
+            {
+                "type": "goto_reverse",
+                "x": 900,
+                "y": 240
+            },
+            {
+                "type": "face",
+                "x": 2000,
+                "y": 240
+            }
+        ],
+        "start3000": [
+            {
+                "type": "go",
+                "dist": 100
+            },
+            {
+                "type": "goto",
+                "x": 1150,
+                "y": 2760
+            },
+            {
+                "type": "goto_reverse",
+                "x": 900,
+                "y": 2760
+            },
+            {
+                "type": "face",
+                "x": 2000,
+                "y": 2760
+            }
+        ]
+    },
+    "actions": {
+        "ax12": {
+            "baud": 115200,
+            "serie": "/dev/serial/by-path/platform-3f980000.usb-usb-0:1.1.2:1.0-port0"
+        },
+        "qik": {
+            "serie": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5XK3RJT-if00-port0",
+            "baud": 9600
+        },
+        "dataDir": "/home/pi/IA/actions/",
+        "init": [1],
+        "funnyAction": {
+            "actionId": -1,
+            "score": 0
+        }
+    },
+    "detection": {
+        "ultrasound": {
+            "type": "srf08",
+            "windowSize": 2,
+            "i2cConfigList": [
+                {
+                    "desc": "Avant gauche (0x70)",
+                    "address": 112,
+                    "maxAnalogGain": 31,
+                    "range": 135,
+                    "x": 80,
+                    "y": 130,
+                    "angle": 45,
+                    "threshold": 350
+                },
+                {
+                    "desc": "Avant milieu (0x73)",
+                    "address": 115,
+                    "maxAnalogGain": 31,
+                    "range": 13,
+                    "x": 80,
+                    "y": 0,
+                    "angle": 0,
+                    "threshold": 350
+                },
+                {
+                    "desc": "Avant droit (0x74)",
+                    "address": 116,
+                    "maxAnalogGain": 31,
+                    "range": 13,
+                    "x": 80,
+                    "y": -135,
+                    "angle": -45,
+                    "threshold": 350
+                },
+                {
+                    "desc": "Arrière (0x71)",
+                    "address": 113,
+                    "maxAnalogGain": 31,
+                    "range": 13,
+                    "x": -80,
+                    "y": 0,
+                    "angle": 180,
+                    "threshold": 350
+                }
+            ]
+        }
+    }
+}
