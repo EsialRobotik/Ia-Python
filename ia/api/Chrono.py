@@ -66,6 +66,14 @@ class Chrono:
         self.timer = threading.Timer(self.match_duration, master_loop.match_end)
         self.timer.start()
 
+    def start(self):
+        """
+        Starts the match timer.
+        This method records the current timestamp as the start time of the match.
+        """
+
+        self.timestamp_start = datetime.now().timestamp()
+
     def get_time_since_beginning(self):
         """
         Calculate the time elapsed since the start timestamp in seconds.
