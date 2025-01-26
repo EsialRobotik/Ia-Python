@@ -4,6 +4,7 @@ import json
 from tests.TestChrono import TestChrono
 from tests.TestPullCord import TestPullCord
 from tests.TestColorSelector import TestColorSelector
+from tests.TestNextion import TestNextion
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process a mode and a year.")
@@ -22,4 +23,6 @@ if __name__ == "__main__":
                 TestPullCord(config_data).test()
             case 'color':
                 TestColorSelector(config_data).test()
+            case 'nextion':
+                TestNextion(config_data).test()
         
