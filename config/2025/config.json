@@ -18,6 +18,169 @@
         "host": "localhost",
         "port": 4269
     },
+    "detection": {
+        "ultrasound": {
+            "type": "srf04",
+            "windowSize": 3,
+            "gpioList": [
+                {
+                    "desc": "Avant gauche",
+                    "trigger": 22,
+                    "echo": 21,
+                    "x": 100,
+                    "y": 105,
+                    "angle": 30,
+                    "threshold": 500
+                },
+                {
+                    "desc": "Milieu",
+                    "trigger": 13,
+                    "echo": 12,
+                    "x": 115,
+                    "y": 0,
+                    "angle": 0,
+                    "threshold": 500
+                },
+                {
+                    "desc": "Avant droit",
+                    "trigger": 2,
+                    "echo": 0,
+                    "x": 100,
+                    "y": -105,
+                    "angle": -30,
+                    "threshold": 500
+                },
+                {
+                    "desc": "Arrière",
+                    "trigger": 25,
+                    "echo": 24,
+                    "x": -110,
+                    "y": 0,
+                    "angle": 180,
+                    "threshold": 300
+                }
+            ]
+        },
+        "lidar": {
+            "serialPort": "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0",
+            "baudRate": 115200,
+            "quality": 10,
+            "distance" : 1000,
+            "period": 200
+        }
+    },
+    "asserv": {
+        "baudRate": 115200,
+        "serialPort": "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066FFF383133524157185717-if02",
+        "start0": [
+            {
+                "type": "go_timed",
+                "dist": -200
+            },
+            {
+                "type": "set_y",
+                "value": 78,
+                "theta": 1.570796327
+            },
+            {
+                "type": "go",
+                "dist": 300
+            },
+            {
+                "type": "turn",
+                "dist": 90
+            },
+            {
+                "type": "go_timed",
+                "dist": -200
+            },
+            {
+                "type": "set_x",
+                "value": 1922,
+                "theta": 3.14159265359
+            },
+            {
+                "type": "go",
+                "dist": 300
+            },
+            {
+                "type": "goto_back",
+                "x": 1800,
+                "y": 378
+            },
+            {
+                "type": "face",
+                "x": 1800,
+                "y": 3000
+            },
+            {
+                "type": "goto_back",
+                "x": 1800,
+                "y": 120
+            },
+            {
+                "type": "face",
+                "x": 1800,
+                "y": 3000
+            }
+        ],
+        "start3000": [
+            {
+                "type": "go_timed",
+                "dist": -200
+            },
+            {
+                "type": "set_y",
+                "value": 2922,
+                "theta": -1.570796327
+            },
+            {
+                "type": "go",
+                "dist": 300
+            },
+            {
+                "type": "turn",
+                "dist": -90
+            },
+            {
+                "type": "go_timed",
+                "dist": -200
+            },
+            {
+                "type": "set_x",
+                "value": 1922,
+                "theta": 3.14159265359
+            },
+            {
+                "type": "go",
+                "dist": 300
+            },
+            {
+                "type": "goto_back",
+                "x": 1800,
+                "y": 2622
+            },
+            {
+                "type": "face",
+                "x": 1800,
+                "y": 0
+            },
+            {
+                "type": "goto_back",
+                "x": 1800,
+                "y": 2880
+            },
+            {
+                "type": "face",
+                "x": 1800,
+                "y": 0
+            }
+        ]
+    },
+
+
+
+
     
     "table": {
         "sizeX": 2000,
@@ -305,114 +468,6 @@
     
     "commandFile": "configCollection.json",   
     
-    "asserv": {
-        "baud": 115200,
-        "serie": "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066FFF383133524157185717-if02",
-        "start0": [
-            {
-                "type": "go_timed",
-                "dist": -200
-            },
-            {
-                "type": "set_y",
-                "value": 78,
-                "theta": 1.570796327
-            },
-            {
-                "type": "go",
-                "dist": 300
-            },
-            {
-                "type": "turn",
-                "dist": 90
-            },
-            {
-                "type": "go_timed",
-                "dist": -200
-            },
-            {
-                "type": "set_x",
-                "value": 1922,
-                "theta": 3.14159265359
-            },
-            {
-                "type": "go",
-                "dist": 300
-            },
-            {
-                "type": "goto_back",
-                "x": 1800,
-                "y": 378
-            },
-            {
-                "type": "face",
-                "x": 1800,
-                "y": 3000
-            },
-            {
-                "type": "goto_back",
-                "x": 1800,
-                "y": 120
-            },
-            {
-                "type": "face",
-                "x": 1800,
-                "y": 3000
-            }
-        ],
-        "start3000": [
-            {
-                "type": "go_timed",
-                "dist": -200
-            },
-            {
-                "type": "set_y",
-                "value": 2922,
-                "theta": -1.570796327
-            },
-            {
-                "type": "go",
-                "dist": 300
-            },
-            {
-                "type": "turn",
-                "dist": -90
-            },
-            {
-                "type": "go_timed",
-                "dist": -200
-            },
-            {
-                "type": "set_x",
-                "value": 1922,
-                "theta": 3.14159265359
-            },
-            {
-                "type": "go",
-                "dist": 300
-            },
-            {
-                "type": "goto_back",
-                "x": 1800,
-                "y": 2622
-            },
-            {
-                "type": "face",
-                "x": 1800,
-                "y": 0
-            },
-            {
-                "type": "goto_back",
-                "x": 1800,
-                "y": 2880
-            },
-            {
-                "type": "face",
-                "x": 1800,
-                "y": 0
-            }
-        ]
-    },
     "actions": {
         "ax12": {
             "comment": "FTDI AX12",
@@ -426,56 +481,5 @@
         },
         "dataDir": "/home/pi/IA/actions/",
         "init": ["MAMMA_INIT"]
-    },
-    "detection": {
-        "ultrasound": {
-            "type": "srf04",
-            "windowSize": 3,
-            "gpioList": [
-                {
-                    "desc": "Avant gauche",
-                    "in": 22,
-                    "out": 21,
-                    "x": 100,
-                    "y": 105,
-                    "angle": 30,
-                    "threshold": 500
-                },
-                {
-                    "desc": "Milieu",
-                    "in": 13,
-                    "out": 12,
-                    "x": 115,
-                    "y": 0,
-                    "angle": 0,
-                    "threshold": 500
-                },
-                {
-                    "desc": "Avant droit",
-                    "in": 2,
-                    "out": 0,
-                    "x": 100,
-                    "y": -105,
-                    "angle": -30,
-                    "threshold": 500
-                },
-                {
-                    "desc": "Arrière",
-                    "in": 25,
-                    "out": 24,
-                    "x": -110,
-                    "y": 0,
-                    "angle": 180,
-                    "threshold": 300
-                }
-            ]
-        },
-        "lidar": {
-            "serie": "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0",
-            "baud": 115200,
-            "quality": 10,
-            "distance" : 1000,
-            "period": 200
-        }
     }
 }
