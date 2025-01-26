@@ -37,7 +37,7 @@ class NextionNX32224T024:
     """
 
 
-    def __init__(self, serialPort, baudRate, color0):
+    def __init__(self, serialPort: str, baudRate: int, color0: str):
         """
         Initializes the NextionNX32224T024 object.
         Args:
@@ -68,7 +68,7 @@ class NextionNX32224T024:
         self.read_thread.daemon = True
         self.read_thread.start()
 
-    def send_instruction(self, instruction):
+    def send_instruction(self, instruction: str):
         """
         Sends an instruction to the Nextion display.
         This method encodes the given instruction as an ASCII string and appends
@@ -81,7 +81,7 @@ class NextionNX32224T024:
         logger.info(f"Sending instruction: {instruction}")
         self.serial.write(instruction.encode('ascii') + b'\xff\xff\xff')
 
-    def goto_page(self, page_name):
+    def goto_page(self, page_name: str):
         """
         Navigate to a specific page on the Nextion display.
         Parameters:
@@ -107,7 +107,7 @@ class NextionNX32224T024:
             page = "page4"
         self.send_instruction(f"page {page}")
 
-    def display_color(self, color):
+    def display_color(self, color: str):
         """
         Updates the display with the specified color.
         Args:
@@ -116,7 +116,7 @@ class NextionNX32224T024:
 
         self.send_instruction(f"robotcolor.txt=\"{color.upper()}\"")
 
-    def display_calibration_status(self, status):
+    def display_calibration_status(self, status: str):
         """
         Updates the display with the current calibration status.
         Args:
@@ -126,7 +126,7 @@ class NextionNX32224T024:
         self.status += "\r\n"+status
         self.send_instruction(f"status.txt=\"{self.status}\"")
 
-    def display_score(self, score):
+    def display_score(self, score: int):
         """
         Updates the display to show the given score.
         Args:
@@ -135,7 +135,7 @@ class NextionNX32224T024:
 
         self.send_instruction(f"score.val={score}")
 
-    def parse_line(self, line):
+    def parse_line(self, line: str):
         """
         Parses a given line of text and performs actions based on its content.
         Args:

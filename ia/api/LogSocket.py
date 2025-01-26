@@ -17,7 +17,7 @@ class LogSocket:
         Returns the socket handler.
     """
 
-    def __init__(self, host, port, who):
+    def __init__(self, host: str, port: int, who: str):
         """
         Initializes a LogSocket object.
         Args:

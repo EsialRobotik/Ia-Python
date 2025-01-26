@@ -25,7 +25,7 @@ class Chrono:
         Returns the time elapsed since the match started in seconds.
     """
 
-    def __init__(self, match_duration):
+    def __init__(self, match_duration: int):
         """
         Initializes a new instance of the Chorno class.
         Args:

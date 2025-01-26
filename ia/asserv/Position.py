@@ -15,7 +15,7 @@ class Position:
         Returns a string representation of the position.
     """
 
-    def __init__(self, x, y, theta=0):
+    def __init__(self, x: int, y: int, theta: float = 0):
         """
         Initialize a new Position instance.
         Args:

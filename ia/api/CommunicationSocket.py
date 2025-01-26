@@ -32,7 +32,7 @@ class CommunicationSocket:
     """
 
 
-    def __init__(self, host, port):
+    def __init__(self, host: str, port: int):
         """
         Initializes the CommunicationSocket instance.
         Args:
@@ -83,7 +83,7 @@ class CommunicationSocket:
             except socket.error as e:
                 logger.error(f"Failed to receive message: {e}")
 
-    def send_message(self, message):
+    def send_message(self, message: str):
         """
         Sends a message through the socket.
         Args:

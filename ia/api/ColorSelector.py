@@ -18,7 +18,7 @@ class ColorSelector:
     """
     
 
-    def __init__(self, pin):
+    def __init__(self, pin: int):
         """
         Initialize the ColorDetector with the specified pin.
         Args:

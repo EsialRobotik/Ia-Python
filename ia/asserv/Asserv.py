@@ -50,7 +50,7 @@ class Asserv:
         go_start(is_color0): Executes the go start sequence based on the color configuration.
     """
 
-    def __init__(self, serialPort, baudRate, gostart_config):
+    def __init__(self, serialPort: str, baudRate: int, gostart_config):
         """
         Initializes the Asserv object with the given serial port, baud rate, and gostart configuration.
         Args:
@@ -140,7 +140,7 @@ class Asserv:
         self.asserv_status = AsservStatus.STATUS_IDLE
         self.serial.write(b"r")
 
-    def go(self, dist):
+    def go(self, dist: int):
         """
         Initiates movement of the robot for a specified distance.
         Args:
@@ -163,7 +163,7 @@ class Asserv:
         self.direction = MovementDirection.FORWARD if dist > 0 else MovementDirection.BACKWARD
         self.serial.write(f"v{dist}".encode())
 
-    def turn(self, degree):
+    def turn(self, degree: int):
         """
         Rotates the robot by a specified degree.
         Args:
@@ -185,7 +185,7 @@ class Asserv:
         self.direction = MovementDirection.NONE
         self.serial.write(f"t{degree}".encode())
 
-    def go_to(self, position):
+    def go_to(self, position: Position):
         """
         Moves the robot to the specified position.
         Args:
@@ -206,7 +206,7 @@ class Asserv:
         self.direction = MovementDirection.FORWARD
         self.serial.write(f"g{position.x}#{position.y}".encode())
 
-    def go_to_chain(self, position):
+    def go_to_chain(self, position: Position):
         """
         Moves the robot to the specified position and a chain of movements.
         Args:
@@ -227,7 +227,7 @@ class Asserv:
         self.direction = MovementDirection.FORWARD
         self.serial.write(f"e{position.x}#{position.y}".encode())
 
-    def go_to_reverse(self, position):
+    def go_to_reverse(self, position: Position):
         """
         Initiates a reverse movement to the specified position.
         Args:
@@ -249,7 +249,7 @@ class Asserv:
         self.direction = MovementDirection.BACKWARD
         self.serial.write(f"b{position.x}#{position.y}".encode())
 
-    def face(self, position):
+    def face(self, position: Position):
         """
         Directs the robot to face a given position.
         Args:
@@ -267,7 +267,7 @@ class Asserv:
         self.direction = MovementDirection.NONE
         self.serial.write(f"f{position.x}#{position.y}".encode())
 
-    def set_odometrie(self, x, y, theta):
+    def set_odometrie(self, x: int, y: int, theta: float):
         """
         Sets the odometry values for the robot.
         Parameters:
@@ -281,7 +281,7 @@ class Asserv:
         logger.info("setOdometrie")
         self.serial.write(f"P{x}#{y}#{theta}".encode())
 
-    def enable_low_speed(self, enable):
+    def enable_low_speed(self, enable: bool):
         """
         Enables or disables low speed mode for the robot.
         Parameters:
@@ -293,7 +293,7 @@ class Asserv:
         logger.info(f"enableLowSpeed : {enable}")
         self.serial.write(b"n" if enable else b"N")
 
-    def set_speed(self, pct):
+    def set_speed(self, pct: int):
         """
         Set the speed of the robot.
         This method sets the speed of the robot to the specified percentage.
@@ -308,7 +308,7 @@ class Asserv:
         logger.info(f"setSpeed {pct}%")
         self.enable_low_speed(pct != 100)
 
-    def set_speed_callage(self, pct):
+    def set_speed_callage(self, pct: int):
         """
         Set the speed of the robot by sending a command to the serial interface.
         Parameters:
@@ -320,7 +320,7 @@ class Asserv:
         logger.info(f"setSpeed {pct}%")
         self.serial.write(f"S{pct}".encode())
 
-    def enable_regulator_angle(self, enable):
+    def enable_regulator_angle(self, enable: bool):
         """
         Enables or disables the angle regulator.
         This method sends a command to the serial interface to enable or disable
@@ -346,7 +346,7 @@ class Asserv:
         logger.info("resetRegulatorAngle")
         self.serial.write(b"Rar")
 
-    def enable_regulator_distance(self, enable):
+    def enable_regulator_distance(self, enable: bool):
         """
         Enable or disable the distance regulator.
         This method sends a command to the serial interface to enable or disable
@@ -369,7 +369,7 @@ class Asserv:
         logger.info("resetRegulatorDistance")
         self.serial.write(b"Rdr")
 
-    def enable_motors(self, enable):
+    def enable_motors(self, enable: bool):
         """
         Enable or disable the motors.
         This method sends a command to the motor controller to enable or disable the motors.
@@ -381,7 +381,7 @@ class Asserv:
         logger.info(f"enable motors {enable}")
         self.serial.write(f"M{1 if enable else 0}".encode())
 
-    def parse_asserv_position(self, str):
+    def parse_asserv_position(self):
         """
         Parses a string containing asserv position data and updates the object's attributes accordingly.
         The input string is expected to have the following format:
@@ -411,7 +411,7 @@ class Asserv:
         """
 
         try:
-            str = str.strip()
+            str = self.serial.readline().decode().strip()
             logger.debug(f"Position : {str}")
             if str.startswith("#"):
                 str = str[1:]
@@ -451,7 +451,7 @@ class Asserv:
         while not (self.queue_size == 0 and self.asserv_status == AsservStatus.STATUS_IDLE):
             sleep(0.005)
 
-    def wait_for_halted_or_blocked(self, timeout_ms):
+    def wait_for_halted_or_blocked(self, timeout_ms: int):
         """
         Waits for the asserv system to halt or become blocked within a specified timeout.
         Args:
@@ -464,7 +464,7 @@ class Asserv:
         while self.asserv_status == AsservStatus.STATUS_RUNNING and (time.time() - start_time) * 1000 < timeout_ms:
             sleep(0.01)
 
-    def go_start(self, is_color0):
+    def go_start(self, is_color0: bool):
         """
         Executes a series of movement instructions to start the robot.
         Parameters:
