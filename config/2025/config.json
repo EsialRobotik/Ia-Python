@@ -1,20 +1,12 @@
 {
-    "desc": "Configuration du robot 2025 - ?? Princess",
-    "matchDuration": 89,
-
+    "desc": "Configuration du robot 2024 - MamaPrincess",
     "gpioColorSelector": 5,
-    "gpioPullCord": 4,
-    
+    "gpioTirette": 4,
+    "matchDuration": 89,
     "table0Path": "table0.tbl",
     "table3000Path": "table3000.tbl",
     "tableJsonPath": "table.json",
     "commandFile": "configCollection.json",
-
-    "nextion": {
-        "baud": 115200,
-        "serie": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5XK3RJT-if00-port0"
-    },
-
     "comSocket": {
         "host": "192.168.42.103",
         "port": 4269
@@ -26,7 +18,10 @@
         "logPort": 1664,
         "who": "princess"
     },
-    
+    "nextion": {
+        "baud": 115200,
+        "serie": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5XK3RJT-if00-port0"
+    },
     "log": {
         "stdout": {
             "active": true,

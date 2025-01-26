@@ -21,7 +21,7 @@ class TestPullCord(AbstractTest):
             This method runs indefinitely and will need to be manually stopped.
         """
 
-        pullCord = PullCord(self.config_data['gpioTirette'])
+        pullCord = PullCord(self.config_data['gpioPullCord'])
         while(True):
             print(f"Pull cord : {pullCord.get_state()}")
             sleep(0.5)

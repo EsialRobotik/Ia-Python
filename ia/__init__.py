@@ -1,1 +1,1 @@
-# This file makes all directories as packages
+from .Test import Test

@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 import argparse
 import json
 
@@ -15,7 +11,7 @@ if __name__ == "__main__":
     parser.add_argument("year", type=int, help="Year in integer format")
     args = parser.parse_args()
 
-    print(f"The provided year is: {args.year}")
+    print(f"Run {args.mode} for year {args.year}")
     with open(f'config/{args.year}/config.json') as config_file:
         config_data = json.load(config_file)
         config_file.close()
