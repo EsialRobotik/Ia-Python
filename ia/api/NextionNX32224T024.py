@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import serial
 from time import sleep
 import threading
@@ -50,6 +53,7 @@ class NextionNX32224T024:
             read_thread (threading.Thread): The thread responsible for reading data from the serial port.
         """
 
+        logger.info(f"Creating NextionNX32224T024 object with serial port {serialPort} and baud rate {baudRate}.")
         self.status = ""
         self.color = ""
         self.calibrationStarted = False
@@ -74,6 +78,7 @@ class NextionNX32224T024:
             instruction (str): The instruction to send to the Nextion display.
         """
 
+        logger.info(f"Sending instruction: {instruction}")
         self.serial.write(instruction.encode('ascii') + b'\xff\xff\xff')
 
     def goto_page(self, page_name):
@@ -143,6 +148,7 @@ class NextionNX32224T024:
               the internal color attribute with the new color value.
         """
 
+        logger.info(f"Parsing line: {line}")
         if line.startswith("gopage"):
             page = line.split(" ")[1]
             self.goto_page(page)
@@ -172,6 +178,7 @@ class NextionNX32224T024:
             None
         """
 
+        logger.info("Waiting for calibration to start.")
         while True:
             sleep(0.05)
             if self.calibrationStarted:

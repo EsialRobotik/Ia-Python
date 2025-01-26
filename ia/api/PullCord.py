@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 from gpiozero import Button
 from time import sleep
 
@@ -26,6 +29,7 @@ class PullCord:
             pin (int): The GPIO pin number to which the pull cord button is connected.
         """
 
+        logger.info(f"Creating PullCord object with pin {pin}.")
         self.button = Button(pin)
 
     def get_state(self):
@@ -47,6 +51,7 @@ class PullCord:
             expected_state: The state that the object is expected to reach.
         """
 
+        logger.info(f"Waiting for pull cord to be {'inserted' if expected_state else 'removed'}.")
         while self.get_state() != expected_state:
             sleep(0.1)
 

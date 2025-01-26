@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 from gpiozero import Button
 
 class ColorSelector:
@@ -22,6 +25,7 @@ class ColorSelector:
             pin (int): The pin number to which the ColorDetector is connected.
         """
 
+        logger.info(f"Creating ColorSelector object with pin {pin}.")
         self.button = Button(pin)
     
     def is_color_0(self):
