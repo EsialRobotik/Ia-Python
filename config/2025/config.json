@@ -300,9 +300,8 @@
     },
     "loggerSocket": {
         "active": true,
-        "host": "192.168.42.103",
-        "port": 4269,
-        "logPort": 1664,
+        "host": "localhost",
+        "port": 1664,
         "who": "princess"
     },
     
