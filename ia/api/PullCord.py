@@ -1,7 +1,7 @@
 from gpiozero import Button
 from time import sleep
 
-class PullCordDetector:
+class PullCord:
     """
     A class to detect the state of a pull cord using a button.
     Attributes:
@@ -11,7 +11,7 @@ class PullCordDetector:
     Methods:
     --------
     __init__(pin):
-        Initializes the PullCordDetector with the specified pin.
+        Initializes the PullCord with the specified pin.
     get_state():
         Returns the current state of the button (pressed or not pressed).
     wait_for_state(expected_state):
@@ -21,7 +21,7 @@ class PullCordDetector:
 
     def __init__(self, pin):
         """
-        Initializes the PullCordDetector with the specified pin.
+        Initializes the PullCord with the specified pin.
         Args:
             pin (int): The GPIO pin number to which the pull cord button is connected.
         """

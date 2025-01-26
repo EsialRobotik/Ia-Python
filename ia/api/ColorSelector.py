@@ -1,6 +1,6 @@
 from gpiozero import Button
 
-class ColorButton(Button):
+class ColorSelector:
     """
     A class used to represent a Color Button.
     Inherits from the Button class and adds functionality to detect a specific color state.
@@ -22,7 +22,7 @@ class ColorButton(Button):
             pin (int): The pin number to which the ColorDetector is connected.
         """
 
-        super().__init__(pin)
+        self.button = Button(pin)
     
     def is_color_0(self):
         """
@@ -31,8 +31,8 @@ class ColorButton(Button):
             bool: True if the color sensor is not pressed, False otherwise.
         """
 
-        return not self.is_pressed
+        return not self.button.is_pressed
     
 # Example usage:
-# color_button = ColorButton(pin=17)
+# color_button = ColorSelector(pin=17)
 # print(color_button.is_color_0())
