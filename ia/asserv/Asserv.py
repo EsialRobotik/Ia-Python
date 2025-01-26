@@ -412,6 +412,7 @@ class Asserv:
 
         try:
             str = str.strip()
+            logger.debug(f"Position : {str}")
             if str.startswith("#"):
                 str = str[1:]
                 if "#" in str:
@@ -435,7 +436,7 @@ class Asserv:
                     self.asserv_status = AsservStatus.STATUS_BLOCKED
                 self.queue_size = int(data[4])
         except Exception as e:
-            logger.info(f"Trace asserv non parsable : {str}")
+            logger.debug(f"Trace asserv non parsable : {str}")
 
     def wait_for_asserv(self):
         """
