@@ -10,11 +10,12 @@ from tests.TestPullCord import TestPullCord
 from tests.TestColorSelector import TestColorSelector
 from tests.TestNextion import TestNextion
 from tests.TestLogSocket import TestLogSocket
+from tests.TestCommunicationSocket import TestCommunicationSocket
 
 if __name__ == "__main__":
     # manage arguments
     parser = argparse.ArgumentParser(description="Process a mode and a year.")
-    parser.add_argument("mode", type=str, help="System to check from :  chrono, pullcord, color, nection, log_socket")
+    parser.add_argument("mode", type=str, help="System to check from :  chrono, pullcord, color, nection, log_socket, com_socket")
     parser.add_argument("year", type=int, help="Year in integer format")
     parser.add_argument("log_level", type=str, help="Year in integer format")
     args = parser.parse_args()
@@ -48,4 +49,6 @@ if __name__ == "__main__":
                 TestNextion(config_data).test()
             case 'log_socket':
                 TestLogSocket(config_data).test()
+            case 'com_socket':
+                TestCommunicationSocket(config_data).test()
         

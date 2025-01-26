@@ -8,6 +8,16 @@
         "baudRate": 115200,
         "serialPort": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5XK3RJT-if00-port0"
     },
+    "loggerSocket": {
+        "active": true,
+        "host": "localhost",
+        "port": 1664,
+        "who": "princess"
+    },
+    "comSocket": {
+        "host": "localhost",
+        "port": 4269
+    },
     
     "table": {
         "sizeX": 2000,
@@ -294,38 +304,7 @@
     
     
     "commandFile": "configCollection.json",   
-    "comSocket": {
-        "host": "192.168.42.103",
-        "port": 4269
-    },
-    "loggerSocket": {
-        "active": true,
-        "host": "localhost",
-        "port": 1664,
-        "who": "princess"
-    },
     
-    "log": {
-        "stdout": {
-            "active": true,
-            "logFormat": "%d [%l][%T/%i][%n] %m",
-            "dateFormat": "yyyy-MM-dd HH:mm:ss"
-        },
-        "file": {
-            "active": true,
-            "logFormat": "%d [%L][%T/%i][%n] %m",
-            "dateFormat": "yyyy-MM-dd_HH-mm-ss",
-            "fileFormat": "./archives/log-%d/log.log"
-        },
-        "socket": {
-            "active": true,
-            "logFormat": "%d [%W][%L][%T/%i][%n] %m",
-            "dateFormat": "yyyy-MM-dd HH:mm:ss",
-            "host": "192.168.42.103",
-            "port": 1664,
-            "whoami": "princess"
-        }
-    },
     "asserv": {
         "baud": 115200,
         "serie": "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066FFF383133524157185717-if02",
