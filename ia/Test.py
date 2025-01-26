@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import argparse
 import json
+
 from tests.TestChrono import TestChrono
 from tests.TestPullCord import TestPullCord
 from tests.TestColorSelector import TestColorSelector
