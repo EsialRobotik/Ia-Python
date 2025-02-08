@@ -64,7 +64,8 @@ class NextionNX32224T024:
             port=serialPort,
             baudrate=baudRate,
             parity=serial.PARITY_NONE,
-            stopbits=serial.STOPBITS_ONE
+            stopbits=serial.STOPBITS_ONE,
+            timeout=0.1
         )
         self.read_thread = threading.Thread(target=self.read_serial)
         self.read_thread.daemon = True
@@ -201,5 +202,8 @@ class NextionNX32224T024:
         """
 
         while True:
-            line = self.serial.readline().decode('ascii').strip()
+            line = self.serial.readline().decode('ascii').strip().replace("@", "")
+            if len(line) == 0:
+                continue
+            logger.info(f"Received line: {line}")
             self.parse_line(line)
