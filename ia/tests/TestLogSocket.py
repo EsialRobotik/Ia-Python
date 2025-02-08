@@ -1,5 +1,4 @@
 import logging
-logger = logging.getLogger(__name__)
 
 from tests.AbstractTest import AbstractTest
 from api.LogSocket import LogSocket
@@ -32,6 +31,7 @@ class TestLogSocket(AbstractTest):
         - "log socket Test 4" at ERROR level.
         """
 
+        logger = logging.getLogger(__name__)
         # create a socket handler
         socket_handler = LogSocket(
             host=self.config_data['loggerSocket']['host'],

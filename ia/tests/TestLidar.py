@@ -3,6 +3,7 @@ from tests.AbstractTest import AbstractTest
 from time import sleep
 from api.detection.lidar.Lidar import Lidar
 from asserv.Asserv import Asserv
+import logging
 
 class TestLidar(AbstractTest):
     """
@@ -17,6 +18,7 @@ class TestLidar(AbstractTest):
     """
 
     def test(self):
+        logger = logging.getLogger(__name__)
         """
         Test method for initializing and using the Lidar class.
         This method initializes a Lidar object with configuration data and continuously
@@ -51,5 +53,5 @@ class TestLidar(AbstractTest):
             )
         )
         while True:
-            print(lidar.get_detected_points())
+            logger.info(lidar.get_detected_points())
             sleep(1)

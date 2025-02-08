@@ -2,6 +2,7 @@ import serial
 from ax12.AX12Exception import AX12Exception
 from ax12.enums.AX12Address import AX12Address
 from ax12.AX12 import AX12
+import logging
 
 class AX12LinkSerial:
     """
@@ -123,8 +124,9 @@ class AX12LinkSerial:
         Raises:
             AX12Exception: If an error occurs while disabling the torque.
         """
+        logger = logging.getLogger(__name__)
         try:
             ax = AX12(AX12Address.AX12_ADDRESS_BROADCAST.value, self)
             ax.disable_torque()
         except AX12Exception as e:
-            print(f"Error disabling torque: {e}")
+            logger.error(f"Error disabling torque: {e}")

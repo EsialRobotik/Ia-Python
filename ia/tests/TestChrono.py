@@ -1,3 +1,4 @@
+import logging
 import time
 
 from api.Chrono import Chrono
@@ -29,17 +30,17 @@ class TestChrono(AbstractTest):
         Returns:
             None
         """
-
+        logger = logging.getLogger(__name__)
         match_duration = self.config_data['matchDuration']
-        print(f"Match duration: {self.config_data['matchDuration']} seconds")
+        logger.info(f"Match duration: {self.config_data['matchDuration']} seconds")
         # Create a chrono
         chrono = Chrono(match_duration=match_duration)
         chrono.start()
         # Print the remaining time
-        print(f"Time since begining : {chrono.get_time_since_beginning()}")
-        print(chrono)
+        logger.info(f"Time since begining : {chrono.get_time_since_beginning()}")
+        logger.info(chrono)
         # Simulate 30 seconds of match time
         time.sleep(5)
         # Print the remaining time again
-        print(f"Time since begining : {chrono.get_time_since_beginning()}")
-        print(chrono)
+        logger.info(f"Time since begining : {chrono.get_time_since_beginning()}")
+        logger.info(chrono)

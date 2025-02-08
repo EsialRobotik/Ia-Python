@@ -1,3 +1,4 @@
+import sys
 import logging
 import logging.handlers
 logger = logging.getLogger(__name__)
@@ -17,23 +18,25 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process a mode and a year.")
     parser.add_argument("mode", type=str, help="System to check from :  chrono, pullcord, color, nection, log_socket, com_socket")
     parser.add_argument("year", type=int, help="Year in integer format")
-    parser.add_argument("log_level", type=str, help="Year in integer format")
+    parser.add_argument("log_level", type=str, help="Set log level among : CRITICAL, FATAL, ERROR, WARN, INFO, DEBUG")
     args = parser.parse_args()
 
     # set logger level
     logging.getLogger('').setLevel(logging.getLevelNamesMapping()[args.log_level.upper()])
     # create file handler which logs even debug messages
     file_handler = logging.FileHandler('logs/log.log')
+    stdout_handler = logging.StreamHandler(sys.stdout)
     
     # create formatter and add it to the handlers
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
+    stdout_handler.setFormatter(formatter)
     # add the handlers to the logger
-    logging.getLogger('').addHandler(file_handler)
+    logging.getLogger().addHandler(file_handler)
+    logging.getLogger().addHandler(stdout_handler)
     logger.info("init logger")
 
     # run the test
-    print(f"Run {args.mode} for year {args.year}")
     logger.info(f"Run {args.mode} for year {args.year}")
     with open(f'config/{args.year}/config.json') as config_file:
         config_data = json.load(config_file)

@@ -1,6 +1,7 @@
 from api.PullCord import PullCord
 from tests.AbstractTest import AbstractTest
 from time import sleep
+import logging
 
 class TestPullCord(AbstractTest):
     """
@@ -20,8 +21,8 @@ class TestPullCord(AbstractTest):
         Note:
             This method runs indefinitely and will need to be manually stopped.
         """
-
+        logger = logging.getLogger(__name__)
         pullCord = PullCord(self.config_data['gpioPullCord'])
         while(True):
-            print(f"Pull cord : {pullCord.get_state()}")
+            logger.info(f"Pull cord : {pullCord.get_state()}")
             sleep(0.5)

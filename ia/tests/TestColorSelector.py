@@ -1,6 +1,7 @@
 from api.ColorSelector import ColorSelector
 from tests.AbstractTest import AbstractTest
 from time import sleep
+import logging
 
 class TestColorSelector(AbstractTest):
     """
@@ -18,7 +19,8 @@ class TestColorSelector(AbstractTest):
         It then enters an infinite loop, printing the result of the color detection every 0.5 seconds.
         """
 
+        logger = logging.getLogger(__name__)
         colorSelector = ColorSelector(self.config_data['gpioColorSelector'])
         while(True):
-            print(f"Color 0 : {colorSelector.is_color_0()}")
+            logger.info(f"Color 0 : {colorSelector.is_color_0()}")
             sleep(0.5)

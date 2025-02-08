@@ -1,6 +1,7 @@
 from tests.AbstractTest import AbstractTest
 from time import sleep
 from api.detection.ultrasound.Srf04 import Srf04
+import logging
 
 class TestSrf04(AbstractTest):
     """
@@ -34,6 +35,7 @@ class TestSrf04(AbstractTest):
             Prints the distance readings from each sensor every second.
         """
 
+        logger = logging.getLogger(__name__)
         gpioList = self.config_data["detection"]["ultrasound"]["gpioList"];
         frontLeft = Srf04(
             trigger=gpioList[0]['trigger'],
@@ -68,8 +70,8 @@ class TestSrf04(AbstractTest):
             threshold=gpioList[3]['threshold']
         )
         while True:
-            print(f"Front Left: {frontLeft.get_distance()}")
-            print(f"Front Middle: {frontMiddle.get_distance()}")
-            print(f"Front Right: {frontRight.get_distance()}")
-            print(f"Back: {back.get_distance()}")
+            logger.info(f"Front Left: {frontLeft.get_distance()}")
+            logger.info(f"Front Middle: {frontMiddle.get_distance()}")
+            logger.info(f"Front Right: {frontRight.get_distance()}")
+            logger.info(f"Back: {back.get_distance()}")
             sleep(1)
