@@ -70,8 +70,8 @@ class TestSrf04(AbstractTest):
             threshold=gpioList[3]['threshold']
         )
         while True:
-            logger.info(f"Front Left: {frontLeft.get_distance()}")
-            logger.info(f"Front Middle: {frontMiddle.get_distance()}")
-            logger.info(f"Front Right: {frontRight.get_distance()}")
-            logger.info(f"Back: {back.get_distance()}")
+            logger.info(f"Front Left: {frontLeft.get_distance()}mm")
+            logger.info(f"Front Middle: {frontMiddle.get_distance()}mm")
+            logger.info(f"Front Right: {frontRight.get_distance()}mm")
+            logger.info(f"Back: {back.get_distance()}mm")
             sleep(1)

@@ -2,7 +2,7 @@
     "desc": "Configuration du robot 2025 - ?? Princess",
     "matchDuration": 89,
 
-    "gpioColorSelector": 24,
+    "gpioColorSelector": 5,
     "gpioPullCord": 23,
     "nextion": {
         "baudRate": 115200,
@@ -25,8 +25,8 @@
             "gpioList": [
                 {
                     "desc": "Avant gauche",
-                    "trigger": 22,
-                    "echo": 21,
+                    "trigger": 5,
+                    "echo": 6,
                     "x": 100,
                     "y": 105,
                     "angle": 30,
@@ -34,8 +34,8 @@
                 },
                 {
                     "desc": "Milieu",
-                    "trigger": 13,
-                    "echo": 12,
+                    "trigger": 10,
+                    "echo": 9,
                     "x": 115,
                     "y": 0,
                     "angle": 0,
@@ -43,8 +43,8 @@
                 },
                 {
                     "desc": "Avant droit",
-                    "trigger": 2,
-                    "echo": 0,
+                    "trigger": 17,
+                    "echo": 27,
                     "x": 100,
                     "y": -105,
                     "angle": -30,
@@ -52,8 +52,8 @@
                 },
                 {
                     "desc": "Arrière",
-                    "trigger": 25,
-                    "echo": 24,
+                    "trigger": 19,
+                    "echo": 26,
                     "x": -110,
                     "y": 0,
                     "angle": 180,

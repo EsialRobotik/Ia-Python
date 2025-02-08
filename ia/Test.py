@@ -1,6 +1,7 @@
 import sys
 import logging
 import logging.handlers
+
 logger = logging.getLogger(__name__)
 
 import argparse
@@ -12,6 +13,7 @@ from tests.TestColorSelector import TestColorSelector
 from tests.TestNextion import TestNextion
 from tests.TestLogSocket import TestLogSocket
 from tests.TestCommunicationSocket import TestCommunicationSocket
+from tests.TestSrf04 import TestSrf04
 
 if __name__ == "__main__":
     # manage arguments
@@ -54,4 +56,6 @@ if __name__ == "__main__":
                 TestLogSocket(config_data).test()
             case 'com_socket':
                 TestCommunicationSocket(config_data).test()
+            case 'srf04':
+                TestSrf04(config_data).test()
         

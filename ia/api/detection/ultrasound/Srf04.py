@@ -34,7 +34,7 @@ class Srf04:
     """
 
 
-    def __init__(self, trigger: int, echo: int, x: int, y: int, angle: int, threshold: int):
+    def __init__(self, trigger: int, echo: int, x: int, y: int, angle: int, threshold: int) -> None:
         """
         Initializes the Srf04 sensor with the given parameters.
         Args:
@@ -55,25 +55,25 @@ class Srf04:
         self.angle = angle
         self.threshold = threshold
 
-    def get_position(self):
+    def get_position(self) -> Position:
         """
         Returns the position of the sensor as a Position object.
         """
         
         return Position(x=self.x, y=self.y, theta=self.angle)
     
-    def get_threshold(self):
+    def get_threshold(self) -> int:
         """
         Returns the distance threshold of the sensor.
         """
 
         return self.threshold
     
-    def get_distance(self):
+    def get_distance(self) -> int:
         """
         Get the distance measured by the SRF04 sensor.
         Returns:
             float: The distance measured by the sensor in millimeters.
         """
 
-        return self.sensor.distance * 10
+        return int(self.sensor.distance * 1000)
