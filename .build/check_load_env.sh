@@ -2,6 +2,6 @@
 
 if [ ! -f .env.local ]
 then
-    echo "Fichier .en.local manquant. Dupliquez le .env.local.dist en ajustant vos valeurs et réessayez"
+    echo "Fichier .env.local manquant. Dupliquez le .env.local.dist en ajustant vos valeurs et réessayez"
     exit 1
 fi
