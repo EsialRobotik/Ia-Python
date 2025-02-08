@@ -2,8 +2,8 @@
     "desc": "Configuration du robot 2025 - ?? Princess",
     "matchDuration": 89,
 
-    "gpioColorSelector": 5,
-    "gpioPullCord": 4,
+    "gpioColorSelector": 24,
+    "gpioPullCord": 23,
     "nextion": {
         "baudRate": 115200,
         "serialPort": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5XK3RJT-if00-port0"
