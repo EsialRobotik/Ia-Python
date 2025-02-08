@@ -36,6 +36,8 @@ class NextionNX32224T024:
             Continuously reads from the serial connection and processes incoming data.
     """
 
+    A_END_OF_CMD = [0xff, 0xff, 0xff]
+    S_END_OF_CMD = bytearray(A_END_OF_CMD)
 
     def __init__(self, serialPort: str, baudRate: int, color0: str):
         """
@@ -44,7 +46,7 @@ class NextionNX32224T024:
             serialPort (str): The serial port to which the Nextion display is connected.
             baudRate (int): The baud rate for the serial communication.
             color0 (str): The name for color0.
-        Attributes:
+        Attributes:end
             status (str): The status of the display.
             color (str): The current color setting of the display.
             calibrationStarted (bool): Indicates if the calibration process has started.
@@ -79,7 +81,7 @@ class NextionNX32224T024:
         """
 
         logger.info(f"Sending instruction: {instruction}")
-        self.serial.write(instruction.encode('ascii') + b'\xff\xff\xff')
+        self.serial.write(bytearray(instruction, encoding="ASCII") + self.S_END_OF_CMD)
 
     def goto_page(self, page_name: str):
         """
@@ -199,6 +201,5 @@ class NextionNX32224T024:
         """
 
         while True:
-            if self.serial.in_waiting > 0:
-                line = self.serial.readline().decode('ascii').strip()
-                self.parse_line(line)
+            line = self.serial.readline().decode('ascii').strip()
+            self.parse_line(line)
