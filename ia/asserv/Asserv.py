@@ -86,6 +86,7 @@ class Asserv:
         self.asserv_status = AsservStatus.STATUS_IDLE
         self.queue_size = 0
         self.gostart_config = gostart_config
+        self.reading_buffer = []
         self.lock = threading.Lock()
         self.read_thread = threading.Thread(target=self.parse_asserv_position)
         self.read_thread.daemon = True
@@ -410,33 +411,34 @@ class Asserv:
             Exception: If the input string is not parsable, an exception is caught and a log message is generated.
         """
 
-        try:
-            str = self.serial.readline().decode().strip()
-            logger.debug(f"Position : {str}")
-            if str.startswith("#"):
-                str = str[1:]
-                if "#" in str:
-                    return
-                data = str.split(";")
+        while True:
+            try:
+                str = self.serial.readline().decode().strip()
+                logger.debug(f"Position : {str}")
+                if str.startswith("#"):
+                    str = str[1:]
+                    if "#" in str:
+                        continue
+                    data = str.split(";")
 
-                self.position.x = int(data[0])
-                self.position.y = int(data[1])
-                self.position.theta = float(data[2])
-                asserv_status_int = int(data[3])
-                if asserv_status_int == 0:
-                    with self.lock:
-                        self.status_countdown -= 1
-                        if self.status_countdown <= 0:
-                            self.asserv_status = AsservStatus.STATUS_IDLE
-                elif asserv_status_int == 1:
-                    self.asserv_status = AsservStatus.STATUS_RUNNING
-                elif asserv_status_int == 2:
-                    self.asserv_status = AsservStatus.STATUS_HALTED
-                elif asserv_status_int == 3:
-                    self.asserv_status = AsservStatus.STATUS_BLOCKED
-                self.queue_size = int(data[4])
-        except Exception as e:
-            logger.debug(f"Trace asserv non parsable : {str}")
+                    self.position.x = int(data[0])
+                    self.position.y = int(data[1])
+                    self.position.theta = float(data[2])
+                    asserv_status_int = int(data[3])
+                    if asserv_status_int == 0:
+                        with self.lock:
+                            self.status_countdown -= 1
+                            if self.status_countdown <= 0:
+                                self.asserv_status = AsservStatus.STATUS_IDLE
+                    elif asserv_status_int == 1:
+                        self.asserv_status = AsservStatus.STATUS_RUNNING
+                    elif asserv_status_int == 2:
+                        self.asserv_status = AsservStatus.STATUS_HALTED
+                    elif asserv_status_int == 3:
+                        self.asserv_status = AsservStatus.STATUS_BLOCKED
+                    self.queue_size = int(data[4])
+            except Exception as e:
+                logger.debug(f"Trace asserv non parsable : {str}")
 
     def wait_for_asserv(self):
         """

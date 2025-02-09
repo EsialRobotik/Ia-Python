@@ -15,6 +15,7 @@ from tests.TestLogSocket import TestLogSocket
 from tests.TestCommunicationSocket import TestCommunicationSocket
 from tests.TestSrf04 import TestSrf04
 from tests.TestLidar import TestLidar
+from tests.TestAsserv import TestAsserv
 
 if __name__ == "__main__":
     # manage arguments
@@ -61,4 +62,6 @@ if __name__ == "__main__":
                 TestSrf04(config_data).test()
             case 'lidar':
                 TestLidar(config_data).test()
+            case 'asserv':
+                TestAsserv(config_data).test()
         
