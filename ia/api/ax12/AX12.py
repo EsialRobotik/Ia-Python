@@ -1,10 +1,12 @@
-from ia.api.ax12.AX12LinkSerial import AX12LinkSerial
-from ax12.AX12LinkException import AX12LinkException
-from ax12.AX12Exception import AX12Exception
-from ax12.enums.AX12Instr import AX12Instr
-from ax12.enums.AX12Register import AX12Register
-from ax12.enums.AX12Error import AX12Error
-from ax12.enums.AX12Address import AX12Address
+from api.ax12.AX12LinkSerial import AX12LinkSerial
+from api.ax12.AX12LinkException import AX12LinkException
+from api.ax12.AX12Exception import AX12Exception
+from api.ax12.enums.AX12Instr import AX12Instr
+from api.ax12.enums.AX12Register import AX12Register
+from api.ax12.enums.AX12Error import AX12Error
+from api.ax12.enums.AX12Address import AX12Address
+import logging
+
 
 class AX12:
     """
@@ -32,6 +34,7 @@ class AX12:
         """
         self.address = address
         self.serialLink = serialLink
+        self.logger =  logging.getLogger(__name__)
 
     def get_address(self) -> int:
         """
@@ -90,12 +93,12 @@ class AX12:
         params[0] = register.regi
         for i in range(register.size):
             params[i + 1] = (value >> (i * 8)) & 0xFF
-        
-        status = self.serialLink.send_request(self.address, AX12Instr.AX12_INSTR_WRITE_DATA, params)
+
+        status = self.send_request(AX12Instr.AX12_INSTR_WRITE_DATA, params)
         if len(status) == 0 and self.address != self.AX12_ADDRESS_BROADCAST:
             raise AX12Exception("AX12_ERR_NO_RESPONSE")
         
-    def send_request(self, instruction: AX12Instr, *params: bytes) -> bytearray:
+    def send_request(self, instruction: AX12Instr, params: bytearray) -> bytearray:
         """
         Sends a request to the AX12 device with the specified instruction and parameters.
         Args:
@@ -117,15 +120,15 @@ class AX12:
         buffer = bytearray(len(params) + 6)
         pos = 0
         checksum = 0
-        buffer[pos] = self.int_to_unsigned_byte(0xFF)
+        buffer[pos] = self.int_to_unsigned_byte(0xFF)[0]
         pos += 1
-        buffer[pos] = self.int_to_unsigned_byte(0xFF)
+        buffer[pos] = self.int_to_unsigned_byte(0xFF)[0]
         pos += 1
         checksum += self.address
         buffer[pos] = self.address
         pos += 1
-        checksum += self.int_to_unsigned_byte(len(params) + 2)
-        buffer[pos] = self.int_to_unsigned_byte(len(params) + 2)
+        checksum += self.int_to_unsigned_byte(len(params) + 2)[0]
+        buffer[pos] = self.int_to_unsigned_byte(len(params) + 2)[0]
         pos += 1
         checksum += instruction.instr
         buffer[pos] = instruction.instr
@@ -135,11 +138,11 @@ class AX12:
             checksum += param
             pos += 1
         checksum = (~checksum) & 0xFF
-        buffer[pos] = self.int_to_unsigned_byte(checksum)
+        buffer[pos] = self.int_to_unsigned_byte(checksum)[0]
 
         response = self.serialLink.send_command(buffer)
         if len(response) > 0:
-            validation = self.validate_packet(response, self.unsigned_byte_to_int(self.address))
+            validation = self.validate_packet(response, self.address)
             if validation is not None:
                 raise AX12Exception(validation)
             errors = self.extract_errors(response[4])
@@ -289,13 +292,13 @@ class AX12:
         if len(packet) < 6:
             return f"La taille minimale du packet n'est pas valide ({len(packet)})"
 
-        if packet[0] != packet[1] or packet[0] != AX12.int_to_unsigned_byte(0xFF):
+        if packet[0] != packet[1] or packet[0] != AX12.int_to_unsigned_byte(0xFF)[0]:
             return "Le header du paquet n'est pas valide"
 
-        if AX12.unsigned_byte_to_int(packet[2]) != ax12_addr:
-            return "Le paquet ne contient pas le bon id de l'actions"
+        if packet[2] != ax12_addr:
+            return "Le paquet ne contient pas le bon id de l'action"
 
-        l = AX12.self.unsigned_byte_to_int(packet[3])
+        l = packet[3]
         if l < 2 or l > len(packet) - 2:
             return "La taille de la charge utile mentionnée par le paquet ne correspond pas à la taille reelle"
 
@@ -307,7 +310,7 @@ class AX12:
             cc += packet[5 + l]
             l -= 1
 
-        if (~cc & 0xFF) != AX12.self.unsigned_byte_to_int(packet[-1]):
+        if (~cc & 0xFF) != packet[-1]:
             return "Le checksum n'est pas valide"
 
         return None
@@ -344,7 +347,10 @@ class AX12:
             AX12Exception: If there is no response from the device or if the payload size does not match the expected size.
         """
 
-        status = self.send_request(AX12Instr.AX12_INSTR_READ_DATA, register.regi, self.int_to_unsigned_byte(register.size))
+        params = bytearray(2)
+        params[0] = register.regi
+        params[1] = register.size
+        status = self.send_request(AX12Instr.AX12_INSTR_READ_DATA, params)
         if len(status) == 0:
             raise AX12Exception(AX12Error.AX12_ERR_NO_RESPONSE)
         
@@ -354,7 +360,7 @@ class AX12:
         
         value = 0
         for i in range(len(payload)):
-            value += self.unsigned_byte_to_int(payload[i]) << (i * 8)
+            value += payload[i] << (i * 8)
         
         return value
 
@@ -373,7 +379,7 @@ class AX12:
         if len(packet) == 0:
             return bytearray()
         
-        taille = AX12.unsigned_byte_to_int(packet[3]) - 2
+        taille = packet[3] - 2
         params = bytearray(taille)
         for i in range(taille):
             params[i] = packet[5 + i]

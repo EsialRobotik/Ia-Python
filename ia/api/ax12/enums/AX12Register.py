@@ -1,4 +1,5 @@
 from enum import Enum
+import logging
 
 class AX12Register(Enum):
     AX12_EEPROM_ID = (0x03, 1, True)
@@ -15,10 +16,7 @@ class AX12Register(Enum):
     AX12_RAM_PRESENT_POSITION = (0x24, 2, False)
 
     def __init__(self, regi, size, writable):
-        self.regi = self.int_to_unsigned_byte(regi)
+        self.regi = regi
         self.size = size
         self.writable = writable
-
-    @staticmethod
-    def int_to_unsigned_byte(value):
-        return value & 0xFF
+        logging.getLogger(__name__).info(self)

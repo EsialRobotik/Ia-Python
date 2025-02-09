@@ -1,4 +1,4 @@
-from ax12.enums.AX12Error import AX12Error
+from api.ax12.enums.AX12Error import AX12Error
 
 class AX12Exception(Exception):
     """

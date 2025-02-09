@@ -1,8 +1,5 @@
 import serial
-from ax12.AX12Exception import AX12Exception
-from ax12.enums.AX12Address import AX12Address
-from ax12.AX12 import AX12
-import logging
+from api.ax12.AX12Exception import AX12Exception
 
 class AX12LinkSerial:
     """
@@ -21,7 +18,6 @@ class AX12LinkSerial:
         enable_rts(enable: bool) -> None: Enables or disables the RTS (Request to Send) signal.
         is_dtr_enabled() -> bool: Checks if the DTR (Data Terminal Ready) signal is enabled.
         is_rts_enabled() -> bool: Checks if the RTS (Request to Send) signal is enabled.
-        disable_ax12_and_shutdown_link() -> None: Disables the AX12 torque and shuts down the serial link.
     """
 
     def __init__(self, serialPort: str, baud_rate: int) -> None:
@@ -51,7 +47,11 @@ class AX12LinkSerial:
             self.serial.rts = False
             self.serial.open()
         except serial.SerialException as e:
-            raise AX12Exception("Error initializing serial port: " + str(e))
+            if str(e) == 'Port is already open.':
+                self.serial.close()
+                self.serial.open()
+            else:
+                raise AX12Exception("Error initializing serial port: " + str(e))
         
     def send_command(self, cmd: bytes) -> bytearray:
         """
@@ -116,17 +116,3 @@ class AX12LinkSerial:
             bool: True if RTS is enabled, False otherwise.
         """
         return self.rts_enabled
-    
-    def disable_ax12_and_shutdown_link(self) -> None:
-        """
-        Disables the AX12 torque and shuts down the serial link.
-
-        Raises:
-            AX12Exception: If an error occurs while disabling the torque.
-        """
-        logger = logging.getLogger(__name__)
-        try:
-            ax = AX12(AX12Address.AX12_ADDRESS_BROADCAST.value, self)
-            ax.disable_torque()
-        except AX12Exception as e:
-            logger.error(f"Error disabling torque: {e}")

@@ -13,6 +13,8 @@ from tests.TestColorSelector import TestColorSelector
 from tests.TestNextion import TestNextion
 from tests.TestLogSocket import TestLogSocket
 from tests.TestCommunicationSocket import TestCommunicationSocket
+from tests.TestAX12 import TestAX12
+from tests.TestAX12 import TestAX12
 from tests.TestSrf04 import TestSrf04
 from tests.TestLidar import TestLidar
 from tests.TestAsserv import TestAsserv
@@ -58,6 +60,10 @@ if __name__ == "__main__":
                 TestLogSocket(config_data).test()
             case 'com_socket':
                 TestCommunicationSocket(config_data).test()
+            case 'ax12':
+                TestAX12(config_data).test()
+            case 'ax12':
+                TestAX12(config_data).test()
             case 'srf04':
                 TestSrf04(config_data).test()
             case 'lidar':
