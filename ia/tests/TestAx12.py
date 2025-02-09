@@ -6,7 +6,7 @@ from api.ax12 import AX12LinkSerial
 import logging
 from time import sleep
 
-class TestAX12(AbstractTest):
+class TestAx12(AbstractTest):
     """
     A test class for the AX12 servos.
     This class is used to test the functionality of the AX12 servos by 

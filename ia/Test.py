@@ -13,8 +13,7 @@ from tests.TestColorSelector import TestColorSelector
 from tests.TestNextion import TestNextion
 from tests.TestLogSocket import TestLogSocket
 from tests.TestCommunicationSocket import TestCommunicationSocket
-from tests.TestAX12 import TestAX12
-from tests.TestAX12 import TestAX12
+from tests.TestAx12 import TestAX12
 from tests.TestSrf04 import TestSrf04
 from tests.TestLidar import TestLidar
 from tests.TestAsserv import TestAsserv
