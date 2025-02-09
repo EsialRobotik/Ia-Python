@@ -1,4 +1,8 @@
 import logging
+import logging.handlers
+import socket
+import threading
+import time
 
 from tests.AbstractTest import AbstractTest
 from api.LogSocket import LogSocket
@@ -31,15 +35,32 @@ class TestLogSocket(AbstractTest):
         - "log socket Test 4" at ERROR level.
         """
 
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect(('localhost', 4269))
+        self.sock.send(b'logListener')
+        self.read_thread = threading.Thread(target=self.receive_message)
+        self.read_thread.daemon = True
+        self.read_thread.start()
+
         logger = logging.getLogger(__name__)
         # create a socket handler
         socket_handler = LogSocket(
-            host=self.config_data['loggerSocket']['host'],
-            port=self.config_data['loggerSocket']['port'],
-            who=self.config_data['loggerSocket']['who']
+            host='localhost',
+            who='testBot'
         ).get()
         logging.getLogger('').addHandler(socket_handler)
         logger.info("log socket Test 1")
         logger.debug("log socket Test 2")
         logger.warning("log socket Test 3")
         logger.error("log socket Test 4")
+        time.sleep(2)
+        self.sock.close()
+
+    def receive_message(self):
+        print("Starting to receive messages")
+        while True:
+            try:
+                message = self.sock.recv(1024).decode('utf-8')
+                print(f"Received message: {message}")
+            except socket.error as e:
+                print(f"Failed to receive message: {e}")

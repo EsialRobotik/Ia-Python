@@ -30,7 +30,8 @@ if __name__ == "__main__":
     # set logger level
     logging.getLogger('').setLevel(logging.getLevelNamesMapping()[args.log_level.upper()])
     # create file handler which logs even debug messages
-    file_handler = logging.FileHandler('logs/log.log')
+    file_handler = logging.handlers.RotatingFileHandler(filename='logs/log.log', backupCount=50)
+    file_handler.doRollover()
     stdout_handler = logging.StreamHandler(sys.stdout)
     
     # create formatter and add it to the handlers

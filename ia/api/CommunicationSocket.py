@@ -55,8 +55,7 @@ class CommunicationSocket:
         try:
             self.sock.connect((self.host, self.port))
             logger.info(f"Connected to {self.host} on port {self.port}")
-            self.sock.sendall(b"robot")
-            logger.info("Sent 'robot' message")
+            self.send_message("robot")
         except socket.error as e:
             logger.error(f"Failed to connect to {self.host} on port {self.port}: {e}")
         self.read_thread = threading.Thread(target=self.receive_message)
@@ -78,7 +77,7 @@ class CommunicationSocket:
             try:
                 message = self.sock.recv(1024).decode('utf-8')
                 logger.info(f"Received message: {message}")
-                if message.length > 0:
+                if len(message) > 0:
                     self.last_message = message
             except socket.error as e:
                 logger.error(f"Failed to receive message: {e}")
@@ -96,7 +95,7 @@ class CommunicationSocket:
         """
 
         try:
-            self.sock.sendall(message.encode('utf-8'))
+            self.sock.send(f"{message}".encode())
             logger.info(f"Sent message: {message}")
         except socket.error as e:
             logger.error(f"Failed to send message: {e}")
