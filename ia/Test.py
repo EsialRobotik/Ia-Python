@@ -14,6 +14,7 @@ from tests.TestNextion import TestNextion
 from tests.TestLogSocket import TestLogSocket
 from tests.TestCommunicationSocket import TestCommunicationSocket
 from tests.TestSrf04 import TestSrf04
+from tests.TestLidar import TestLidar
 
 if __name__ == "__main__":
     # manage arguments
@@ -58,4 +59,6 @@ if __name__ == "__main__":
                 TestCommunicationSocket(config_data).test()
             case 'srf04':
                 TestSrf04(config_data).test()
+            case 'lidar':
+                TestLidar(config_data).test()
         
