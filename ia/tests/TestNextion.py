@@ -1,6 +1,8 @@
-from tests.AbstractTest import AbstractTest
-from api.NextionNX32224T024 import NextionNX32224T024
 from time import sleep
+
+from ia.api import NextionNX32224T024
+from ia.tests import AbstractTest
+
 
 class TestNextion(AbstractTest):
     """
@@ -13,7 +15,7 @@ class TestNextion(AbstractTest):
         calibration status messages, and updating the score.
     """
 
-    def test(self):
+    def test(self) -> None:
         """
         Test method to interact with the Nextion display.
         This method performs the following actions:
@@ -29,23 +31,23 @@ class TestNextion(AbstractTest):
         """
 
         nextion = NextionNX32224T024(
-            serialPort=self.config_data['nextion']['serialPort'], 
-            baudRate=self.config_data['nextion']['baudRate'], 
+            serial_port=self.config_data['nextion']['serialPort'],
+            baud_rate=self.config_data['nextion']['baudRate'],
             color0=self.config_data['table']['color0']
         )
         nextion.goto_page("init")
         nextion.wait_for_calibration()
         nextion.display_calibration_status("Coucou")
         sleep(0.5)
-        nextion.display_calibration_status("La forme ?");
+        nextion.display_calibration_status("La forme ?")
         sleep(0.5)
-        nextion.display_calibration_status("Bien ou bien ?");
+        nextion.display_calibration_status("Bien ou bien ?")
         sleep(0.5)
-        nextion.display_calibration_status("Allez, qu'on en finisse");
+        nextion.display_calibration_status("Allez, qu'on en finisse")
         sleep(2)
-        nextion.goto_page("ready");
+        nextion.goto_page("ready")
         sleep(2)
-        nextion.goto_page("score");
+        nextion.goto_page("score")
         score = 0
         for i in range(5):
             sleep(0.5)

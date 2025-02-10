@@ -1,5 +1,6 @@
-from enum import Enum
 import logging
+from enum import Enum
+
 
 class AX12Register(Enum):
     AX12_EEPROM_ID = (0x03, 1, True)
@@ -15,7 +16,7 @@ class AX12Register(Enum):
     AX12_RAM_MOVING_SPEED = (0x20, 2, True)
     AX12_RAM_PRESENT_POSITION = (0x24, 2, False)
 
-    def __init__(self, regi, size, writable):
+    def __init__(self, regi: int, size: int, writable: bool) -> None:
         self.regi = regi
         self.size = size
         self.writable = writable

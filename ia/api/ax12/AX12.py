@@ -1,11 +1,7 @@
-from api.ax12.AX12LinkSerial import AX12LinkSerial
-from api.ax12.AX12LinkException import AX12LinkException
-from api.ax12.AX12Exception import AX12Exception
-from api.ax12.enums.AX12Instr import AX12Instr
-from api.ax12.enums.AX12Register import AX12Register
-from api.ax12.enums.AX12Error import AX12Error
-from api.ax12.enums.AX12Address import AX12Address
 import logging
+
+from ia.api.ax12 import AX12LinkSerial, AX12LinkException, AX12Exception
+from ia.api.ax12.enums import AX12Register, AX12Instr, AX12Error, AX12Address
 
 
 class AX12:
@@ -14,7 +10,7 @@ class AX12:
 
     Attributes:
         address (int): The address of the AX12 servomotor.
-        serialLink (AX12LinkSerial): The serial link used for communication with the servomotor.
+        serial_link (AX12LinkSerial): The serial link used for communication with the servomotor.
 
     Methods:
         __init__(address: int, serialLink: AX12LinkSerial): Initializes the AX12 instance with the specified address and serial link.
@@ -24,7 +20,7 @@ class AX12:
         write(register: AX12Register, value: int) -> None: Writes a value to a specified register.
     """
 
-    def __init__(self, address: int, serialLink: AX12LinkSerial) -> None:
+    def __init__(self, address: int, serial_link: AX12LinkSerial) -> None:
         """
         Initializes the AX12 instance with the specified address and serial link.
 
@@ -33,7 +29,7 @@ class AX12:
             serialLink (AX12LinkSerial): The serial link used for communication with the servomotor.
         """
         self.address = address
-        self.serialLink = serialLink
+        self.serial_link = serial_link
         self.logger =  logging.getLogger(__name__)
 
     def get_address(self) -> int:
@@ -140,7 +136,7 @@ class AX12:
         checksum = (~checksum) & 0xFF
         buffer[pos] = self.int_to_unsigned_byte(checksum)[0]
 
-        response = self.serialLink.send_command(buffer)
+        response = self.serial_link.send_command(buffer)
         if len(response) > 0:
             validation = self.validate_packet(response, self.address)
             if validation is not None:
@@ -352,7 +348,7 @@ class AX12:
         params[1] = register.size
         status = self.send_request(AX12Instr.AX12_INSTR_READ_DATA, params)
         if len(status) == 0:
-            raise AX12Exception(AX12Error.AX12_ERR_NO_RESPONSE)
+            raise AX12Exception(AX12Error.AX12_ERR_NO_RESPONSE.value)
         
         payload = self.extract_payload(status)
         if len(payload) != register.size:
@@ -399,9 +395,9 @@ class AX12:
         - AX12Address.AX12_ADDRESS_BROADCAST
         """
 
-        if address == AX12Address.AX12_ADDRESS_BROADCAST:
+        if address == AX12Address.AX12_ADDRESS_BROADCAST.value:
             return
-        if address < AX12Address.AX12_ADDRESS_MIN or address > AX12Address.AX12_ADDRESS_MAX:
+        if address < AX12Address.AX12_ADDRESS_MIN.value or address > AX12Address.AX12_ADDRESS_MAX.value:
             raise ValueError(f"L'adresse de l'AX12 doit être contenue dans la plage [{AX12Address.AX12_ADDRESS_MIN} ~ {AX12Address.AX12_ADDRESS_MAX}] ou correspondre à l'adresse de BroadCast {AX12Address.AX12_ADDRESS_BROADCAST}. Obtenu : {address}")
 
     @staticmethod

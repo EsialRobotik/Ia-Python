@@ -11,7 +11,7 @@ class AbstractTest(ABC):
     """
 
 
-    def __init__(self, config_data):
+    def __init__(self, config_data: dict) -> None:
         """
         Initializes the AbstractTest instance with the provided configuration data.
         Args:
@@ -21,7 +21,7 @@ class AbstractTest(ABC):
         self.config_data = config_data
 
     @abstractmethod
-    def test(self):
+    def test(self) -> None:
         """
         Executes the test.
 

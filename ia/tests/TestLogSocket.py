@@ -4,8 +4,9 @@ import socket
 import threading
 import time
 
-from tests.AbstractTest import AbstractTest
-from api.LogSocket import LogSocket
+from ia.api import LogSocket
+from ia.tests import AbstractTest
+
 
 class TestLogSocket(AbstractTest):
     """
@@ -16,7 +17,7 @@ class TestLogSocket(AbstractTest):
             Logs messages with different severity levels (info, debug, warning, error) to test the socket handler.
     """
 
-    def test(self):
+    def test(self) -> None:
         """
         Test method to create a socket handler and log messages at different levels.
         This method performs the following steps:
@@ -44,10 +45,7 @@ class TestLogSocket(AbstractTest):
 
         logger = logging.getLogger(__name__)
         # create a socket handler
-        socket_handler = LogSocket(
-            host='localhost',
-            who='testBot'
-        ).get()
+        socket_handler = LogSocket(host='localhost').get()
         logging.getLogger('').addHandler(socket_handler)
         logger.info("log socket Test 1")
         logger.debug("log socket Test 2")

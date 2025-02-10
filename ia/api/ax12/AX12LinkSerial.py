@@ -1,5 +1,7 @@
 import serial
-from api.ax12.AX12Exception import AX12Exception
+
+from ia.api.ax12 import AX12Exception
+
 
 class AX12LinkSerial:
     """

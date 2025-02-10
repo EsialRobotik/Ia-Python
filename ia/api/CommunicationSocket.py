@@ -31,8 +31,7 @@ class CommunicationSocket:
         Sends a message to the server.
     """
 
-
-    def __init__(self, host: str, port: int):
+    def __init__(self, host: str, port: int) -> None:
         """
         Initializes the CommunicationSocket instance.
         Args:
@@ -62,7 +61,7 @@ class CommunicationSocket:
         self.read_thread.daemon = True
         self.read_thread.start()
         
-    def receive_message(self):
+    def receive_message(self) -> None:
         """
         Continuously receives messages from the socket.
         This method runs an infinite loop that attempts to receive messages from the socket.
@@ -82,7 +81,7 @@ class CommunicationSocket:
             except socket.error as e:
                 logger.error(f"Failed to receive message: {e}")
 
-    def send_message(self, message: str):
+    def send_message(self, message: str) -> None:
         """
         Sends a message through the socket.
         Args:

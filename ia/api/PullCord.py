@@ -22,7 +22,7 @@ class PullCord:
     """
 
 
-    def __init__(self, pin: int):
+    def __init__(self, pin: int) -> None:
         """
         Initializes the PullCord with the specified pin.
         Args:
@@ -32,7 +32,7 @@ class PullCord:
         logger.info(f"Creating PullCord object with pin {pin}.")
         self.button = Button(pin)
 
-    def get_state(self):
+    def get_state(self) -> bool:
         """
         Get the current state of the button.
         Returns:
@@ -41,7 +41,7 @@ class PullCord:
 
         return self.button.is_pressed
 
-    def wait_for_state(self, expected_state: bool):
+    def wait_for_state(self, expected_state: bool) -> None:
         """
         Waits until the state of the object matches the expected state.
         This method continuously checks the current state of the object by calling

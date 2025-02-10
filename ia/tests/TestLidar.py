@@ -1,9 +1,10 @@
-from api.PullCord import PullCord
-from tests.AbstractTest import AbstractTest
-from time import sleep
-from api.detection.lidar.Lidar import Lidar
-from asserv.Asserv import Asserv
 import logging
+from time import sleep
+
+from ia.api.detection.lidar import Lidar
+from ia.asserv import Asserv
+from ia.tests import AbstractTest
+
 
 class TestLidar(AbstractTest):
     """
@@ -17,7 +18,7 @@ class TestLidar(AbstractTest):
         Initializes the Lidar sensor and continuously prints the detected points.
     """
 
-    def test(self):
+    def test(self) -> None:
         logger = logging.getLogger(__name__)
         """
         Test method for initializing and using the Lidar class.
@@ -48,8 +49,8 @@ class TestLidar(AbstractTest):
             distance=self.config_data["detection"]["lidar"]["distance"], 
             period=self.config_data["detection"]["lidar"]["period"], 
             asserv=Asserv(
-                serialPort=self.config_data["asserv"]["serialPort"], 
-                baudRate=self.config_data["asserv"]["baudRate"],
+                serial_port=self.config_data["asserv"]["serialPort"],
+                baud_rate=self.config_data["asserv"]["baudRate"],
                 gostart_config={}
             )
         )

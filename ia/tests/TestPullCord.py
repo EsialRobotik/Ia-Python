@@ -1,7 +1,9 @@
-from api.PullCord import PullCord
-from tests.AbstractTest import AbstractTest
-from time import sleep
 import logging
+from time import sleep
+
+from ia.api import PullCord
+from ia.tests import AbstractTest
+
 
 class TestPullCord(AbstractTest):
     """
@@ -12,7 +14,7 @@ class TestPullCord(AbstractTest):
         Continuously checks and prints the state of the pull cord detector at regular intervals.
     """
 
-    def test(self):
+    def test(self) -> None:
         """
         Continuously prints the state of the pull cord at regular intervals.
         This method initializes a PullCord object using the GPIO pin
@@ -23,6 +25,6 @@ class TestPullCord(AbstractTest):
         """
         logger = logging.getLogger(__name__)
         pullCord = PullCord(self.config_data['gpioPullCord'])
-        while(True):
+        while True:
             logger.info(f"Pull cord : {pullCord.get_state()}")
             sleep(0.5)

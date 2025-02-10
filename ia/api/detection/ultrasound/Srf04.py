@@ -1,8 +1,10 @@
 import logging
+
+from ia.asserv import Position
+
 logger = logging.getLogger(__name__)
 
 from gpiozero import DistanceSensor
-from asserv.Position import Position
 
 class Srf04:
     """

@@ -1,12 +1,11 @@
-from api.PullCord import PullCord
-from tests.AbstractTest import AbstractTest
-from time import sleep
-from api.ax12 import AX12
-from api.ax12 import AX12LinkSerial
 import logging
 from time import sleep
 
-class TestAx12(AbstractTest):
+from ia.api.ax12 import AX12LinkSerial, AX12
+from ia.tests import AbstractTest
+
+
+class TestAX12(AbstractTest):
     """
     A test class for the AX12 servos.
     This class is used to test the functionality of the AX12 servos by 
@@ -18,7 +17,7 @@ class TestAx12(AbstractTest):
         Initializes the AX12 servo prints its position and blinks its led
     """
 
-    def test(self):
+    def test(self) -> None:
         logger = logging.getLogger(__name__)
         """
         Test method for initializing and using the AX12 class.
@@ -36,6 +35,7 @@ class TestAx12(AbstractTest):
         Loop:
             Continuously blink the AX12 led every second.
         """
+
         logger.info(f"Instanciation de la laision série {self.config_data['actions']['ax12']['serie']}@{self.config_data['actions']['ax12']['baud']}...")
         link = AX12LinkSerial(self.config_data['actions']['ax12']['serie'], self.config_data['actions']['ax12']['baud'])
 
@@ -43,7 +43,7 @@ class TestAx12(AbstractTest):
         logger.info(f"Instanciation de l'ax12 n°{axid}...")
         ax12 = AX12(
             address=axid,
-            serialLink=link
+            serial_link=link
         )
 
         logger.info(f"Position brute actuelle du sevro : {ax12.read_servo_position()}")

@@ -1,7 +1,9 @@
-from api.ColorSelector import ColorSelector
-from tests.AbstractTest import AbstractTest
-from time import sleep
 import logging
+from time import sleep
+
+from ia.api import ColorSelector
+from ia.tests import AbstractTest
+
 
 class TestColorSelector(AbstractTest):
     """
@@ -12,7 +14,7 @@ class TestColorSelector(AbstractTest):
         Continuously checks and prints the status of color detection using the ColorSelector instance.
     """
 
-    def test(self):
+    def test(self) -> None:
         """
         Tests the color detection functionality.
         This method initializes a ColorSelector object with the GPIO pin specified in the configuration data.
@@ -21,6 +23,6 @@ class TestColorSelector(AbstractTest):
 
         logger = logging.getLogger(__name__)
         colorSelector = ColorSelector(self.config_data['gpioColorSelector'])
-        while(True):
+        while True:
             logger.info(f"Color 0 : {colorSelector.is_color_0()}")
             sleep(0.5)

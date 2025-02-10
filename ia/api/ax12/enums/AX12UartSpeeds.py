@@ -1,4 +1,6 @@
 from enum import Enum
+from typing import Optional, Type
+
 
 class AX12UartSpeeds(Enum):
     SPEED_1000000 = (1, 1000000)
@@ -11,20 +13,20 @@ class AX12UartSpeeds(Enum):
     SPEED_19200 = (103, 19200)
     SPEED_9600 = (207, 9600)
 
-    def __init__(self, byte_val, int_val):
+    def __init__(self, byte_val: int, int_val: int) -> None:
         self.byte_val = self.int_to_unsigned_byte(byte_val)
         self.int_val = int_val
 
     @staticmethod
-    def int_to_unsigned_byte(value):
+    def int_to_unsigned_byte(value: int) -> int:
         return value & 0xFF
 
     @classmethod
-    def from_value(cls, speed):
+    def from_value(cls: Type['AX12UartSpeeds'], speed: int) -> Optional['AX12UartSpeeds']:
         for speed_enum in cls:
             if speed_enum.int_val == speed:
                 return speed_enum
         return None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.int_val} bps"

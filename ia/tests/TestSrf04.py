@@ -1,7 +1,9 @@
-from tests.AbstractTest import AbstractTest
-from time import sleep
-from api.detection.ultrasound.Srf04 import Srf04
 import logging
+from time import sleep
+
+from ia.api.detection.ultrasound import Srf04
+from ia.tests import AbstractTest
+
 
 class TestSrf04(AbstractTest):
     """
@@ -16,7 +18,7 @@ class TestSrf04(AbstractTest):
             Continuously reads and prints the distance measurements from each sensor.
     """
 
-    def test(self):
+    def test(self) -> None:
         """
         Tests the functionality of the Srf04 ultrasonic sensors.
         This method initializes four Srf04 sensors (front left, front middle, front right, and back)

@@ -11,7 +11,7 @@ class NextionNX32224T024:
     Attributes:
         status (str): The status message to be displayed.
         color (str): The current color displayed.
-        calibrationStarted (bool): Flag to indicate if calibration has started.
+        calibration_started (bool): Flag to indicate if calibration has started.
         color0 (str): The initial color to be compared against.
         serial (serial.Serial): The serial connection to the Nextion display.
         read_thread (threading.Thread): The thread for reading serial data.
@@ -39,30 +39,30 @@ class NextionNX32224T024:
     A_END_OF_CMD = [0xff, 0xff, 0xff]
     S_END_OF_CMD = bytearray(A_END_OF_CMD)
 
-    def __init__(self, serialPort: str, baudRate: int, color0: str):
+    def __init__(self, serial_port: str, baud_rate: int, color0: str) -> None:
         """
         Initializes the NextionNX32224T024 object.
         Args:
-            serialPort (str): The serial port to which the Nextion display is connected.
-            baudRate (int): The baud rate for the serial communication.
+            serial_port (str): The serial port to which the Nextion display is connected.
+            baud_rate (int): The baud rate for the serial communication.
             color0 (str): The name for color0.
         Attributes:end
             status (str): The status of the display.
             color (str): The current color setting of the display.
-            calibrationStarted (bool): Indicates if the calibration process has started.
+            calibration_started (bool): Indicates if the calibration process has started.
             color0 (str): The name for color0.
             serial (serial.Serial): The serial connection to the Nextion display.
             read_thread (threading.Thread): The thread responsible for reading data from the serial port.
         """
 
-        logger.info(f"Creating NextionNX32224T024 object with serial port {serialPort} and baud rate {baudRate}.")
+        logger.info(f"Creating NextionNX32224T024 object with serial port {serial_port} and baud rate {baud_rate}.")
         self.status = ""
         self.color = ""
-        self.calibrationStarted = False
+        self.calibration_started = False
         self.color0 = color0
         self.serial = serial.Serial(
-            port=serialPort,
-            baudrate=baudRate,
+            port=serial_port,
+            baudrate=baud_rate,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             timeout=0.1
@@ -71,7 +71,7 @@ class NextionNX32224T024:
         self.read_thread.daemon = True
         self.read_thread.start()
 
-    def send_instruction(self, instruction: str):
+    def send_instruction(self, instruction: str) -> None:
         """
         Sends an instruction to the Nextion display.
         This method encodes the given instruction as an ASCII string and appends
@@ -84,7 +84,7 @@ class NextionNX32224T024:
         logger.info(f"Sending instruction: {instruction}")
         self.serial.write(bytearray(instruction, encoding="ASCII") + self.S_END_OF_CMD)
 
-    def goto_page(self, page_name: str):
+    def goto_page(self, page_name: str) -> None:
         """
         Navigate to a specific page on the Nextion display.
         Parameters:
@@ -93,11 +93,11 @@ class NextionNX32224T024:
         Raises:
         ValueError: If an invalid page_name is provided.
         Example:
-        >>> goto_page("init")
+        >>> self.goto_page("init")
         This will navigate to the "page0" on the Nextion display.
         """
 
-        page = "unknow"
+        page = "unknown"
         if page_name == "init":
             page = "page0"
         elif page_name == "color":
@@ -110,7 +110,7 @@ class NextionNX32224T024:
             page = "page4"
         self.send_instruction(f"page {page}")
 
-    def display_color(self, color: str):
+    def display_color(self, color: str) -> None:
         """
         Updates the display with the specified color.
         Args:
@@ -119,7 +119,7 @@ class NextionNX32224T024:
 
         self.send_instruction(f"robotcolor.txt=\"{color.upper()}\"")
 
-    def display_calibration_status(self, status: str):
+    def display_calibration_status(self, status: str) -> None:
         """
         Updates the display with the current calibration status.
         Args:
@@ -129,7 +129,7 @@ class NextionNX32224T024:
         self.status += "\r\n"+status
         self.send_instruction(f"status.txt=\"{self.status}\"")
 
-    def display_score(self, score: int):
+    def display_score(self, score: int) -> None:
         """
         Updates the display to show the given score.
         Args:
@@ -138,7 +138,7 @@ class NextionNX32224T024:
 
         self.send_instruction(f"score.val={score}")
 
-    def parse_line(self, line: str):
+    def parse_line(self, line: str) -> None:
         """
         Parses a given line of text and performs actions based on its content.
         Args:
@@ -157,12 +157,12 @@ class NextionNX32224T024:
             self.goto_page(page)
             if page == "calibration":
                 self.display_calibration_status("Debut calibration")
-                self.calibrationStarted = True
+                self.calibration_started = True
         elif line.startswith("color"):
             self.display_color(line.split(" ")[1])
             self.color = line.split(" ")[1]
 
-    def is_color0(self):
+    def is_color0(self) -> bool:
         """
         Check if the current color is equal to color0.
         Returns:
@@ -171,7 +171,7 @@ class NextionNX32224T024:
 
         return self.color == self.color0
     
-    def wait_for_calibration(self):
+    def wait_for_calibration(self) -> None:
         """
         Waits for the calibration process to start.
         This method enters an infinite loop, checking every 0.05 seconds if the 
@@ -184,10 +184,10 @@ class NextionNX32224T024:
         logger.info("Waiting for calibration to start.")
         while True:
             sleep(0.05)
-            if self.calibrationStarted:
+            if self.calibration_started:
                 return
             
-    def read_serial(self):
+    def read_serial(self) -> None:
         """
         Continuously reads data from the serial port.
         This method runs an infinite loop that checks if there is any data waiting

@@ -17,13 +17,11 @@ class LogSocket:
         Returns the socket handler.
     """
 
-    def __init__(self, host: str, who: str):
+    def __init__(self, host: str) -> None:
         """
         Initializes a LogSocket object.
         Args:
             host (str): The host for the socket connection.
-            port (int): The port number for the socket connection.
-            who (str): Identifier for the log messages.
         Attributes:
             socket_handler (logging.handlers.SocketHandler): The handler for sending log messages to a remote socket.
         """
@@ -31,7 +29,7 @@ class LogSocket:
         self.socket_handler = logging.handlers.SocketHandler(host, logging.handlers.DEFAULT_TCP_LOGGING_PORT)
         logger.info(f"Creating LogSocket object with host {host} and port {logging.handlers.DEFAULT_TCP_LOGGING_PORT}.")
 
-    def get(self):
+    def get(self) -> logging.handlers.SocketHandler:
         """
         Retrieve the socket handler.
         Returns:

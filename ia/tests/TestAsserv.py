@@ -1,15 +1,16 @@
 import logging
 import time
 
-from tests.AbstractTest import AbstractTest
-from asserv.Asserv import Asserv
+from ia.asserv import Asserv
+from ia.tests import AbstractTest
+
 
 class TestAsserv(AbstractTest):
-    def test(self):
+    def test(self) -> None:
         logger = logging.getLogger(__name__)
         asserv = Asserv(
-            serialPort=self.config_data['asserv']['serialPort'],
-            baudRate=self.config_data['asserv']['baudRate'],
+            serial_port=self.config_data['asserv']['serialPort'],
+            baud_rate=self.config_data['asserv']['baudRate'],
             gostart_config={}
         )
         while True:

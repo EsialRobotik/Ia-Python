@@ -16,9 +16,8 @@ class ColorSelector:
     isColor0():
         Checks if the button is not pressed, indicating the detection of color 0.
     """
-    
 
-    def __init__(self, pin: int):
+    def __init__(self, pin: int) -> None:
         """
         Initialize the ColorDetector with the specified pin.
         Args:
@@ -28,7 +27,7 @@ class ColorSelector:
         logger.info(f"Creating ColorSelector object with pin {pin}.")
         self.button = Button(pin)
     
-    def is_color_0(self):
+    def is_color_0(self) -> bool:
         """
         Check if the color sensor is not pressed.
         Returns:

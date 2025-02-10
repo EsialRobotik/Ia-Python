@@ -1,4 +1,5 @@
-from api.ax12.enums.AX12Error import AX12Error
+from ia.api.ax12.enums import AX12Error
+
 
 class AX12Exception(Exception):
     """
@@ -12,7 +13,7 @@ class AX12Exception(Exception):
     """
 
 
-    def __init__(self, msg: str =None, *errors: AX12Error):
+    def __init__(self, msg: str =None, *errors: AX12Error) -> None:
         """
         Initialize an AX12Exception instance.
         Args:
@@ -23,7 +24,7 @@ class AX12Exception(Exception):
         super().__init__(msg)
         self.errors = errors
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Returns a string representation of the AX12Exception instance.
         This method constructs a string by combining the string representation
@@ -47,7 +48,7 @@ class AX12Exception(Exception):
             sb.append(str(err))
         return ''.join(sb)
 
-    def contains(self, err: AX12Error):
+    def contains(self, err: AX12Error) -> bool:
         """
         Check if the specified AX12Error is in the list of errors.
         Args:

@@ -1,4 +1,7 @@
 import logging
+
+from ia.MasterLoop import MasterLoop
+
 logger = logging.getLogger(__name__)
 
 from datetime import datetime
@@ -25,9 +28,9 @@ class Chrono:
         Returns the time elapsed since the match started in seconds.
     """
 
-    def __init__(self, match_duration: int):
+    def __init__(self, match_duration: int) -> None:
         """
-        Initializes a new instance of the Chorno class.
+        Initializes a new instance of the Chrono class.
         Args:
             match_duration (int): The duration of the match in seconds.
         Attributes:
@@ -41,7 +44,7 @@ class Chrono:
         self.timestamp_start = None
         self.timer = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Returns a string representation of the remaining match duration.
         The method calculates the remaining time by subtracting the elapsed time 
@@ -54,7 +57,7 @@ class Chrono:
         chrono = self.match_duration - (current_time - self.timestamp_start)
         return f"{chrono} / {self.match_duration}"
 
-    def start_match(self, master_loop):
+    def start_match(self, master_loop: MasterLoop) -> None:
         """
         Starts the match timer and schedules the match end.
         This method records the current timestamp as the start time of the match
@@ -70,7 +73,7 @@ class Chrono:
         self.timer = threading.Timer(self.match_duration, master_loop.match_end)
         self.timer.start()
 
-    def start(self):
+    def start(self) -> None:
         """
         Starts the match timer.
         This method records the current timestamp as the start time of the match.
@@ -79,7 +82,7 @@ class Chrono:
         logger.info("Starting match timer...")
         self.timestamp_start = int(datetime.now().timestamp())
 
-    def get_time_since_beginning(self):
+    def get_time_since_beginning(self) -> int:
         """
         Calculate the time elapsed since the start timestamp in seconds.
         Returns:

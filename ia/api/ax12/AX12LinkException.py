@@ -7,7 +7,7 @@ class AX12LinkException(Exception):
         previous -- previous exception that caused this error
     """
 
-    def __init__(self, reason: str, previous: Exception =None):
+    def __init__(self, reason: str, previous: Exception =None) -> None:
         """
         Initializes the AX12LinkException with a reason and an optional previous exception.
         Args:
@@ -19,7 +19,7 @@ class AX12LinkException(Exception):
         self.previous = previous
         super().__init__(reason)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """
         Returns a string representation of the AX12LinkException.
         If there is a previous exception, it includes the reason and the previous exception's message.

@@ -1,20 +1,19 @@
 import logging
+
+from ia.asserv import Position, AsservStatus, MovementDirection
+
 logger = logging.getLogger(__name__)
 
 import serial
 import threading
-from time import sleep
-from time import time
-from asserv.Position import Position
-from asserv.AsservStatus import AsservStatus
-from asserv.MovementDirection import MovementDirection
+import time
 
 class Asserv:
     """
     The Asserv class provides an interface to control a robot's movement and position using a serial connection.
     Attributes:
-        serialPort (str): The serial port to which the robot is connected.
-        baudRate (int): The baud rate for the serial communication.
+        serial_port (str): The serial port to which the robot is connected.
+        baud_rate (int): The baud rate for the serial communication.
         serial (serial.Serial): The serial connection object.
         position (Position): The current position of the robot.
         direction (MovementDirection): The current movement direction of the robot.
@@ -50,16 +49,16 @@ class Asserv:
         go_start(is_color0): Executes the go start sequence based on the color configuration.
     """
 
-    def __init__(self, serialPort: str, baudRate: int, gostart_config):
+    def __init__(self, serial_port: str, baud_rate: int, gostart_config: dict) -> None:
         """
         Initializes the Asserv object with the given serial port, baud rate, and gostart configuration.
         Args:
-            serialPort (str): The serial port to be used for communication.
-            baudRate (int): The baud rate for the serial communication.
+            serial_port (str): The serial port to be used for communication.
+            baud_rate (int): The baud rate for the serial communication.
             gostart_config (dict): Configuration settings for the gostart.
         Attributes:
-            serialPort (str): The serial port to be used for communication.
-            baudRate (int): The baud rate for the serial communication.
+            serial_port (str): The serial port to be used for communication.
+            baud_rate (int): The baud rate for the serial communication.
             serial (serial.Serial): The serial communication object.
             position (Position): The current position of the robot.
             direction (None): The current direction of the robot (initially None).
@@ -71,12 +70,12 @@ class Asserv:
             read_thread (threading.Thread): A thread for reading and parsing the asserv position.
         """
 
-        self.serialPort = serialPort
-        self.baudRate = baudRate
-        logger.info(f"Creating Asserv object with serial port {serialPort} and baud rate {baudRate}.")
+        self.serial_port = serial_port
+        self.baud_rate = baud_rate
+        logger.info(f"Creating Asserv object with serial port {serial_port} and baud rate {baud_rate}.")
         self.serial = serial.Serial(
-            port=serialPort,
-            baudrate=baudRate,
+            port=serial_port,
+            baudrate=baud_rate,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE
         )
@@ -92,7 +91,7 @@ class Asserv:
         self.read_thread.daemon = True
         self.read_thread.start()
 
-    def initialize(self):
+    def initialize(self) -> None:
         """
         Initializes the Asserv system by sending an initialization command
         to the serial interface and logging the initialization process.
@@ -104,7 +103,7 @@ class Asserv:
         logger.info("init")
         self.serial.write(b"I")
 
-    def stop(self):
+    def stop(self) -> None:
         """
         Stops the robot by sending the stop command "M0" to the serial interface.
         This method logs the stop action and writes the stop command to the serial port
@@ -114,7 +113,7 @@ class Asserv:
         logger.info("stop")
         self.serial.write(b"M0")
 
-    def emergency_stop(self):
+    def emergency_stop(self) -> None:
         """
         Immediately halts the robot's movement and updates its status.
         This method performs the following actions:
@@ -130,7 +129,7 @@ class Asserv:
         self.serial.write(b"h")
         self.direction = MovementDirection.NONE
 
-    def emergency_reset(self):
+    def emergency_reset(self) -> None:
         """
         Resets the system to an idle state in case of an emergency.
         This method logs an emergency reset event, sets the asserv_status to 
@@ -141,7 +140,7 @@ class Asserv:
         self.asserv_status = AsservStatus.STATUS_IDLE
         self.serial.write(b"r")
 
-    def go(self, dist: int):
+    def go(self, dist: int) -> None:
         """
         Initiates movement of the robot for a specified distance.
         Args:
@@ -164,7 +163,7 @@ class Asserv:
         self.direction = MovementDirection.FORWARD if dist > 0 else MovementDirection.BACKWARD
         self.serial.write(f"v{dist}".encode())
 
-    def turn(self, degree: int):
+    def turn(self, degree: int) -> None:
         """
         Rotates the robot by a specified degree.
         Args:
@@ -186,7 +185,7 @@ class Asserv:
         self.direction = MovementDirection.NONE
         self.serial.write(f"t{degree}".encode())
 
-    def go_to(self, position: Position):
+    def go_to(self, position: Position) -> None:
         """
         Moves the robot to the specified position.
         Args:
@@ -207,7 +206,7 @@ class Asserv:
         self.direction = MovementDirection.FORWARD
         self.serial.write(f"g{position.x}#{position.y}".encode())
 
-    def go_to_chain(self, position: Position):
+    def go_to_chain(self, position: Position) -> None:
         """
         Moves the robot to the specified position and a chain of movements.
         Args:
@@ -228,7 +227,7 @@ class Asserv:
         self.direction = MovementDirection.FORWARD
         self.serial.write(f"e{position.x}#{position.y}".encode())
 
-    def go_to_reverse(self, position: Position):
+    def go_to_reverse(self, position: Position) -> None:
         """
         Initiates a reverse movement to the specified position.
         Args:
@@ -250,7 +249,7 @@ class Asserv:
         self.direction = MovementDirection.BACKWARD
         self.serial.write(f"b{position.x}#{position.y}".encode())
 
-    def face(self, position: Position):
+    def face(self, position: Position) -> None:
         """
         Directs the robot to face a given position.
         Args:
@@ -268,7 +267,7 @@ class Asserv:
         self.direction = MovementDirection.NONE
         self.serial.write(f"f{position.x}#{position.y}".encode())
 
-    def set_odometrie(self, x: int, y: int, theta: float):
+    def set_odometrie(self, x: int, y: int, theta: float) -> None:
         """
         Sets the odometry values for the robot.
         Parameters:
@@ -282,7 +281,7 @@ class Asserv:
         logger.info("setOdometrie")
         self.serial.write(f"P{x}#{y}#{theta}".encode())
 
-    def enable_low_speed(self, enable: bool):
+    def enable_low_speed(self, enable: bool) -> None:
         """
         Enables or disables low speed mode for the robot.
         Parameters:
@@ -294,7 +293,7 @@ class Asserv:
         logger.info(f"enableLowSpeed : {enable}")
         self.serial.write(b"n" if enable else b"N")
 
-    def set_speed(self, pct: int):
+    def set_speed(self, pct: int) -> None:
         """
         Set the speed of the robot.
         This method sets the speed of the robot to the specified percentage.
@@ -309,7 +308,7 @@ class Asserv:
         logger.info(f"setSpeed {pct}%")
         self.enable_low_speed(pct != 100)
 
-    def set_speed_callage(self, pct: int):
+    def set_speed_callage(self, pct: int) -> None:
         """
         Set the speed of the robot by sending a command to the serial interface.
         Parameters:
@@ -321,7 +320,7 @@ class Asserv:
         logger.info(f"setSpeed {pct}%")
         self.serial.write(f"S{pct}".encode())
 
-    def enable_regulator_angle(self, enable: bool):
+    def enable_regulator_angle(self, enable: bool) -> None:
         """
         Enables or disables the angle regulator.
         This method sends a command to the serial interface to enable or disable
@@ -335,7 +334,7 @@ class Asserv:
         logger.info(f"enableRegulatorAngle : {enable}")
         self.serial.write(b"Rae" if enable else b"Rad")
 
-    def reset_regulator_angle(self):
+    def reset_regulator_angle(self) -> None:
         """
         Resets the regulator angle by sending a specific command to the serial interface.
         This method logs the action and writes the command "Rar" to the serial interface
@@ -347,7 +346,7 @@ class Asserv:
         logger.info("resetRegulatorAngle")
         self.serial.write(b"Rar")
 
-    def enable_regulator_distance(self, enable: bool):
+    def enable_regulator_distance(self, enable: bool) -> None:
         """
         Enable or disable the distance regulator.
         This method sends a command to the serial interface to enable or disable
@@ -361,7 +360,7 @@ class Asserv:
         logger.info(f"enableRegulatorDistance : {enable}")
         self.serial.write(b"Rde" if enable else b"Rdd")
 
-    def reset_regulator_distance(self):
+    def reset_regulator_distance(self) -> None:
         """
         Resets the distance regulator by sending a reset command to the serial interface.
         This method logs the reset action and writes the reset command "Rdr" to the serial port.
@@ -370,7 +369,7 @@ class Asserv:
         logger.info("resetRegulatorDistance")
         self.serial.write(b"Rdr")
 
-    def enable_motors(self, enable: bool):
+    def enable_motors(self, enable: bool) -> None:
         """
         Enable or disable the motors.
         This method sends a command to the motor controller to enable or disable the motors.
@@ -382,7 +381,7 @@ class Asserv:
         logger.info(f"enable motors {enable}")
         self.serial.write(f"M{1 if enable else 0}".encode())
 
-    def parse_asserv_position(self):
+    def parse_asserv_position(self) -> None:
         """
         Parses a string containing asserv position data and updates the object's attributes accordingly.
         The input string is expected to have the following format:
@@ -440,7 +439,7 @@ class Asserv:
             except Exception as e:
                 logger.debug(f"Trace asserv non parsable : {str}")
 
-    def wait_for_asserv(self):
+    def wait_for_asserv(self) -> None:
         """
         Waits for the asservissement process to complete.
         This method continuously checks the status of the asservissement process
@@ -451,9 +450,9 @@ class Asserv:
         """
 
         while not (self.queue_size == 0 and self.asserv_status == AsservStatus.STATUS_IDLE):
-            sleep(0.005)
+            time.sleep(0.005)
 
-    def wait_for_halted_or_blocked(self, timeout_ms: int):
+    def wait_for_halted_or_blocked(self, timeout_ms: int) -> None:
         """
         Waits for the asserv system to halt or become blocked within a specified timeout.
         Args:
@@ -462,11 +461,11 @@ class Asserv:
             None
         """
 
-        start_time = time.time()
-        while self.asserv_status == AsservStatus.STATUS_RUNNING and (time.time() - start_time) * 1000 < timeout_ms:
-            sleep(0.01)
+        start_time = int(time.time())
+        while self.asserv_status == AsservStatus.STATUS_RUNNING and (int(time.time()) - start_time) * 1000 < timeout_ms:
+            time.sleep(0.01)
 
-    def go_start(self, is_color0: bool):
+    def go_start(self, is_color0: bool) -> None:
         """
         Executes a series of movement instructions to start the robot.
         Parameters:
@@ -493,7 +492,7 @@ class Asserv:
 
         start = self.gostart_config["start0" if is_color0 else "start3000"]
         self.set_speed_callage(25)
-        sleep(0.15)
+        time.sleep(0.15)
         for instruction in start:
             temp = instruction
             logger.debug(temp)
@@ -505,7 +504,7 @@ class Asserv:
                 self.go(temp["dist"])
                 self.wait_for_halted_or_blocked(500)
                 self.emergency_stop()
-                sleep(0.15)
+                time.sleep(0.15)
                 self.emergency_reset()
                 logger.info(f"Go timed end {temp['dist']}")
             elif temp["type"] == "turn":
@@ -542,5 +541,5 @@ class Asserv:
                 raise Exception(f"Unknown instruction {temp}")
             self.wait_for_asserv()
         self.set_speed_callage(100)
-        sleep(0.15)
+        time.sleep(0.15)
         logger.info("goStart finished")

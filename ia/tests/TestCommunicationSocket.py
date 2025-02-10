@@ -1,7 +1,9 @@
-from api.CommunicationSocket import CommunicationSocket
-from tests.AbstractTest import AbstractTest
-from time import sleep
 import logging
+from time import sleep
+
+from ia.api import CommunicationSocket
+from ia.tests import AbstractTest
+
 
 class TestCommunicationSocket(AbstractTest):
     def test(self):

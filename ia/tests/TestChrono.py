@@ -1,8 +1,9 @@
 import logging
 import time
 
-from api.Chrono import Chrono
-from tests.AbstractTest import AbstractTest
+from ia.api import Chrono
+from ia.tests import AbstractTest
+
 
 class TestChrono(AbstractTest):
     """
@@ -14,7 +15,7 @@ class TestChrono(AbstractTest):
     """
 
 
-    def test(self):
+    def test(self) -> None:
         """
         Test the Chrono class functionality.
         This method performs the following steps:
