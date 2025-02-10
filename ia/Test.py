@@ -1,6 +1,5 @@
-import sys
-import logging
 import logging.handlers
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +12,7 @@ from tests.TestColorSelector import TestColorSelector
 from tests.TestNextion import TestNextion
 from tests.TestLogSocket import TestLogSocket
 from tests.TestCommunicationSocket import TestCommunicationSocket
-from tests.TestAx12 import TestAX12
+from tests.TestAx12 import TestAx12
 from tests.TestSrf04 import TestSrf04
 from tests.TestLidar import TestLidar
 from tests.TestAsserv import TestAsserv
@@ -32,7 +31,6 @@ if __name__ == "__main__":
     file_handler = logging.handlers.RotatingFileHandler(filename='logs/log.log', backupCount=50)
     file_handler.doRollover()
     stdout_handler = logging.StreamHandler(sys.stdout)
-    
     # create formatter and add it to the handlers
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
@@ -61,9 +59,7 @@ if __name__ == "__main__":
             case 'com_socket':
                 TestCommunicationSocket(config_data).test()
             case 'ax12':
-                TestAX12(config_data).test()
-            case 'ax12':
-                TestAX12(config_data).test()
+                TestAx12(config_data).test()
             case 'srf04':
                 TestSrf04(config_data).test()
             case 'lidar':
