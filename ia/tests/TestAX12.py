@@ -50,6 +50,10 @@ class TestAX12(AbstractTest):
         logger.info(f"Clignotement de la led pour toujours...")
         while True:
             ax12.set_led(True)
-            sleep(1)
+            ax12.set_servo_position(300)
+            while ax12.is_moving():
+                sleep(0.1)
             ax12.set_led(False)
-            sleep(1)
+            ax12.set_servo_position(400)
+            while ax12.is_moving():
+                sleep(0.1)

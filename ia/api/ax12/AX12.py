@@ -91,7 +91,7 @@ class AX12:
             params[i + 1] = (value >> (i * 8)) & 0xFF
 
         status = self.send_request(AX12Instr.AX12_INSTR_WRITE_DATA, params)
-        if len(status) == 0 and self.address != self.AX12_ADDRESS_BROADCAST:
+        if len(status) == 0 and self.address != AX12Address.AX12_ADDRESS_BROADCAST:
             raise AX12Exception("AX12_ERR_NO_RESPONSE")
         
     def send_request(self, instruction: AX12Instr, params: bytearray) -> bytearray:
@@ -267,6 +267,12 @@ class AX12:
         """
 
         self.write(AX12Register.AX12_RAM_TORQUE_ENABLE, 0)
+
+    def is_moving(self) -> bool:
+        """
+        Indicates if the AX12 is currently moving
+        """
+        return self.read(AX12Register.AX12_RAM_MOVING_SPEED) > 0
 
     @staticmethod
     def validate_packet(packet: bytearray, ax12_addr: int) -> (str | None):
