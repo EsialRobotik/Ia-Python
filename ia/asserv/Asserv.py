@@ -1,6 +1,7 @@
 import logging
 
-from ia.asserv import Position, AsservStatus, MovementDirection
+from ia.asserv import AsservStatus, MovementDirection
+from ia.utils import Position
 
 logger = logging.getLogger(__name__)
 

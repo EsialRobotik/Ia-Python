@@ -1,3 +1,6 @@
+from ia.utils.Direction import Direction
+
+
 class Position:
     """
     A class to represent a position in a 2D space with an optional orientation.
@@ -37,3 +40,31 @@ class Position:
         """
 
         return f"Position(x={self.x}, y={self.y}, theta={self.theta})"
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, Position):
+            return self.x == other.x and self.y == other.y
+        return False
+
+    def get_direction_to_go_to(self, p: 'Position') -> Direction:
+        if self.x == p.x:
+            if self.y == p.y:
+                return Direction.NULL
+            elif self.y < p.y:
+                return Direction.S
+            else:
+                return Direction.N
+        elif self.x < p.x:
+            if self.y == p.y:
+                return Direction.E
+            elif self.y > p.y:
+                return Direction.SE
+            else:
+                return Direction.NE
+        else:
+            if self.y == p.y:
+                return Direction.W
+            elif self.y > p.y:
+                return Direction.SW
+            else:
+                return Direction.NW

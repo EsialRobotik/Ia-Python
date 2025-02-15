@@ -1,6 +1,6 @@
 import logging
 
-from ia.asserv import Position
+from ia.utils import Position
 
 logger = logging.getLogger(__name__)
 
