@@ -1,6 +1,8 @@
 import logging.handlers
 import sys
 
+from ia.tests import TestPathfinding
+
 logger = logging.getLogger(__name__)
 
 import argparse
@@ -66,4 +68,6 @@ if __name__ == "__main__":
                 TestLidar(config_data).test()
             case 'asserv':
                 TestAsserv(config_data).test()
+            case 'pathfinding':
+                TestPathfinding(config_data).test()
         

@@ -7,5 +7,6 @@ from .TestCommunicationSocket import TestCommunicationSocket
 from .TestLidar import TestLidar
 from .TestLogSocket import TestLogSocket
 from .TestNextion import TestNextion
+from .TestPathfinding import TestPathfinding
 from .TestPullCord import TestPullCord
 from .TestSrf04 import TestSrf04
