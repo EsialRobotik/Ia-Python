@@ -438,19 +438,6 @@ class Table:
 
     def is_area_forbidden(self, x: int, y: int) -> bool:
         """
-        Checks if an area is forbidden.
-
-        Args:
-            x (int): The x-coordinate.
-            y (int): The y-coordinate.
-
-        Returns:
-            bool: True if the area is forbidden, False otherwise.
-        """
-        return self.forbidden_area[x][y]
-
-    def is_area_forbidden_safe(self, x: int, y: int) -> bool:
-        """
         Checks if a position is in a forbidden zone or outside the table.
 
         Args:

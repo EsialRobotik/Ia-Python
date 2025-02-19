@@ -37,10 +37,10 @@ class Astar:
         for x in range(self.dim_x):
             self.grid[x] = [None] * self.dim_y
             for y in range(self.dim_y):
-                if (self.table.is_area_forbidden_safe(x, y) or
-                    self.table.is_area_forbidden_safe(x - 1, y) or
-                    self.table.is_area_forbidden_safe(x - 1, y - 1) or
-                    self.table.is_area_forbidden_safe(x, y - 1)):
+                if (self.table.is_area_forbidden(x, y) or
+                    self.table.is_area_forbidden(x - 1, y) or
+                    self.table.is_area_forbidden(x - 1, y - 1) or
+                    self.table.is_area_forbidden(x, y - 1)):
                     self.grid[x][y] = None
                 else:
                     self.grid[x][y] = Node(x, y)
