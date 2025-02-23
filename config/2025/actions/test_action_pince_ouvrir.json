@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "O",
+    "description": "Test l'ouverture de la pince",
+    "payload": {
+        "type": "position",
+        "id": 12,
+        "angleRaw": 400
+    }
+}

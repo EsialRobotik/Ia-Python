@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "F",
+    "description": "Test la fermeture de la pince",
+    "payload": {
+        "type": "position",
+        "id": 12,
+        "angleRaw": 300
+    }
+}

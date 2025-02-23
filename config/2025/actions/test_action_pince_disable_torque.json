@@ -1,0 +1,9 @@
+{
+    "type": "AX12",
+    "alias": "D",
+    "description": "Test la desactivation du couple de la pince",
+    "payload": {
+        "type": "disableTorque",
+        "id": 12
+    }
+}

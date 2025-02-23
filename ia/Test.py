@@ -18,6 +18,7 @@ from tests.TestAX12 import TestAX12
 from tests.TestSrf04 import TestSrf04
 from tests.TestLidar import TestLidar
 from tests.TestAsserv import TestAsserv
+from tests.TestActions import TestActions
 
 if __name__ == "__main__":
     # manage arguments
@@ -68,6 +69,8 @@ if __name__ == "__main__":
                 TestLidar(config_data).test()
             case 'asserv':
                 TestAsserv(config_data).test()
+            case 'actions':
+                TestActions(config_data).test()
             case 'pathfinding':
                 TestPathfinding(config_data).test()
         
