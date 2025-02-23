@@ -1,3 +1,5 @@
 gpiozero
 pyserial
 smbus2
+numpy
+shapely

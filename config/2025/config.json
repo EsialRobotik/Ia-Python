@@ -206,7 +206,7 @@
         "id": "start0_1",
         "forme": "polygone",
         "desc": "Depart Bleu 1",
-        "active": true,
+        "type": "color3000",
         "points": [
           {
             "x": 0,
@@ -230,7 +230,7 @@
         "id": "start0_2",
         "forme": "polygone",
         "desc": "Depart Bleu 2",
-        "active": true,
+        "type": "color3000",
         "points": [
           {
             "x": 1550,
@@ -254,7 +254,7 @@
         "id": "start0_3",
         "forme": "polygone",
         "desc": "Depart Bleu 3",
-        "active": true,
+        "type": "color3000",
         "points": [
           {
             "x": 775,
@@ -278,7 +278,7 @@
         "id": "start3000_1",
         "forme": "polygone",
         "desc": "Depart Jaune 1",
-        "active": true,
+        "type": "color0",
         "points": [
           {
             "x": 0,
@@ -302,7 +302,7 @@
         "id": "start3000_2",
         "forme": "polygone",
         "desc": "Depart Jaune 2",
-        "active": true,
+        "type": "color0",
         "points": [
           {
             "x": 1550,
@@ -326,7 +326,7 @@
         "id": "start3000_3",
         "forme": "polygone",
         "desc": "Depart Jaune 3",
-        "active": true,
+        "type": "color0",
         "points": [
           {
             "x": 775,
