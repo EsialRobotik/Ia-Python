@@ -6,6 +6,7 @@ from ia.tests import AbstractTest
 from ia.actions.ActionRepository import ActionRepository
 from ia.actions.ActionRepositoryFactory import ActionRepositoryFactory
 from ia.actions.ax12.ActionAX12Position import ActionAX12Position
+import time
 
 class TestActions(AbstractTest):
     """
@@ -47,5 +48,7 @@ class TestActions(AbstractTest):
             if actionRepo.hasAction(command):
                 actionRepo.getAction(command).reset()
                 actionRepo.getAction(command).execute()
+                while not actionRepo.getAction(command).finished():
+                    time.sleep(0.01)
             else:
                 print(f"L'action '{command}' n'existe pas")

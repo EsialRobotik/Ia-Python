@@ -1,0 +1,12 @@
+{
+    "type": "list",
+    "alias": "P",
+    "description": "Test l'ouverture et la fermeture de la pince",
+    "payload": {
+        "list": [
+            "O",
+            "W",
+            "F"
+        ]
+    }
+}

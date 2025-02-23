@@ -12,3 +12,6 @@ class ActionRepository:
             return self.actionsList[actionId]
         else:
             raise f'Action id {actionId} not found in action collection'
+
+    def registerAction(self, actiactionId: str, action: AbstractAction) -> None:
+        self.actionsList[actiactionId] = action

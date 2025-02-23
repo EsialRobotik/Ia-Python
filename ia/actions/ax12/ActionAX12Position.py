@@ -28,7 +28,7 @@ class ActionAX12Position(AbstractAction):
         return self.executed
 
     def stop(self) -> None:
-        # TODO asservir l'AX12 à  sa position courante ?
+        self.ax12.disable_torque()
         return None
 
     def reset(self) -> None:
