@@ -1,5 +1,4 @@
 import logging
-import math
 
 from ia.asserv import Asserv, AsservStatus
 from ia.step import StepSubType, Step
@@ -174,72 +173,3 @@ class MovementManager:
         return (self.asserv.asserv_status == AsservStatus.STATUS_BLOCKED
             and self.current_step.sub_type != StepSubType.GO
             and self.current_step.timeout == 0)
-
-    def is_trajectory_blocked(self, detected_points: list[Position]) -> bool:
-        """
-        Checks if the trajectory is blocked by any detected points.
-
-        Parameters
-        ----------
-        detected_points : list[Position]
-            The list of detected points to check against the trajectory.
-
-        Returns
-        -------
-        bool
-            True if the trajectory is blocked, False otherwise.
-        """
-        if not self.goto_queue:
-            return False
-
-        current_position = self.asserv.position
-        trajectory = list(self.goto_queue)
-        if trajectory:
-            trajectory.insert(0, Position(current_position.x, current_position.y))
-
-        for i in range(len(trajectory) - 1):
-            start = trajectory[i]
-            end = trajectory[i + 1]
-            for center in detected_points:
-                if self.is_segment_intersecting_circle(start, end, center, 150):
-                    return True
-        return False
-
-    def is_segment_intersecting_circle(self, start: Position, end: Position, center: Position, radius: int) -> bool:
-        """
-        Checks if a line segment intersects with a circle.
-
-        Parameters
-        ----------
-        start : Position
-            The starting point of the segment.
-        end : Position
-            The ending point of the segment.
-        center : Position
-            The center of the circle.
-        radius : int
-            The radius of the circle.
-
-        Returns
-        -------
-        bool
-            True if the segment intersects the circle, False otherwise.
-        """
-        dx = end.x - start.x
-        dy = end.y - start.y
-        fx = start.x - center.x
-        fy = start.y - center.y
-
-        a = dx * dx + dy * dy
-        b = 2 * (fx * dx + fy * dy)
-        c = (fx * fx + fy * fy) - radius * radius
-
-        discriminant = b * b - 4 * a * c
-        if discriminant < 0:
-            return False
-
-        discriminant = math.sqrt(discriminant)
-        t1 = (-b - discriminant) / (2 * a)
-        t2 = (-b + discriminant) / (2 * a)
-
-        return 0 <= t1 <= 1 or 0 <= t2 <= 1

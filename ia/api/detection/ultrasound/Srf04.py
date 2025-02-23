@@ -1,12 +1,12 @@
 import logging
 
-from ia.utils import Position
+from ia.api.detection.ultrasound.Srf import Srf
 
 logger = logging.getLogger(__name__)
 
 from gpiozero import DistanceSensor
 
-class Srf04:
+class Srf04(Srf):
     """
     A class to represent an SRF04 ultrasonic sensor.
     Attributes
@@ -36,7 +36,7 @@ class Srf04:
     """
 
 
-    def __init__(self, trigger: int, echo: int, x: int, y: int, angle: int, threshold: int) -> None:
+    def __init__(self, trigger: int, echo: int, x: int, y: int, angle: int, threshold: int, window_size: int) -> None:
         """
         Initializes the Srf04 sensor with the given parameters.
         Args:
@@ -48,34 +48,20 @@ class Srf04:
             threshold (int): Distance threshold for detection.
         """
 
+        super().__init__(x, y, angle, threshold, window_size)
         logger.info(f"Creating Srf04 object with trigger {trigger}, echo {echo}, x {x}, y {y}, angle {angle}, threshold {threshold}.")
         self.trigger = trigger
         self.echo = echo
-        self.sensor = DistanceSensor(echo=echo, trigger=trigger)
-        self.x = x
-        self.y = y
-        self.angle = angle
-        self.threshold = threshold
+        self.sensor = DistanceSensor(
+            echo=echo,
+            trigger=trigger,
+            queue_len= self.window_size
+        )
 
-    def get_position(self) -> Position:
-        """
-        Returns the position of the sensor as a Position object.
-        """
-        
-        return Position(x=self.x, y=self.y, theta=self.angle)
-    
-    def get_threshold(self) -> int:
-        """
-        Returns the distance threshold of the sensor.
-        """
-
-        return self.threshold
-    
     def get_distance(self) -> int:
         """
-        Get the distance measured by the SRF04 sensor.
+        Return the average measured distance from the sensor in the window of size windows_size in millimeters.
         Returns:
-            float: The distance measured by the sensor in millimeters.
+            float: The average distance measured by the sensor in millimeters.
         """
-
-        return int(self.sensor.distance * 1000)
+        return int(self.sensor.value * 1000)

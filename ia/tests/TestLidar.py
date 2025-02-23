@@ -55,5 +55,5 @@ class TestLidar(AbstractTest):
             )
         )
         while True:
-            logger.info(lidar.get_detected_points())
+            logger.info(lidar.detected_points)
             sleep(1)

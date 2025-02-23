@@ -2,6 +2,7 @@ import logging
 
 from ia.api.detection.lidar import LidarCoordinate, LidarMode
 from ia.asserv import Asserv
+from ia.utils import Position
 
 logger = logging.getLogger(__name__)
 
@@ -156,7 +157,7 @@ class Lidar:
                         rotated_x = relative_x * math.cos(angle) + relative_y * math.sin(angle)
                         rotated_y = -relative_x * math.sin(angle) + relative_y * math.cos(angle)
                         logger.debug(f"Lidar detection: {self.asserv.position}")
-                        self.detected_points.append((round(rotated_x), round(rotated_y)))
+                        self.detected_points.append(Position(round(rotated_x), round(rotated_y)))
                     except ValueError:
                         logger.error(f"Parsing error: {point}")
                 else:
@@ -284,12 +285,3 @@ class Lidar:
         """
         logger.info(f"Set lidar coordinate mode to f{coordinate_mode.value}")
         self.lidar_serial.write(f'f{coordinate_mode.value}'.encode())
-
-    def get_detected_points(self) -> List[Tuple[int, int]]:
-        """
-        Returns the list of points detected by the Lidar.
-
-        Returns:
-            List[Tuple[int, int]]: The list of detected points.
-        """
-        return self.detected_points

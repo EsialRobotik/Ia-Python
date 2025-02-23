@@ -1,4 +1,6 @@
 import heapq
+import logging
+import time
 from typing import Dict, List, Tuple, Optional
 
 import numpy as np
@@ -17,9 +19,9 @@ class Pathfinding:
         Configuration data for the table.
     resolution : int
         Size of a grid cell in mm.
-    cols : int
+    size_x : int
         Number of columns in the grid.
-    rows : int
+    size_y : int
         Number of rows in the grid.
     marge : int
         Margin to be considered around obstacles.
@@ -68,14 +70,15 @@ class Pathfinding:
 
         self.config = table_config
         self.resolution = 10  # Taille d'une case en mm
-        self.cols = self.config["sizeX"] // self.resolution
-        self.rows = self.config["sizeY"] // self.resolution
+        self.size_x = self.config["sizeX"] // self.resolution
+        self.size_y = self.config["sizeY"] // self.resolution
         self.marge = self.config["marge"]
         self.active_color = active_color  # Color0 ou Color3000
-        self.grid = np.zeros((self.rows, self.cols), dtype=np.uint8)
+        self.grid = np.zeros((self.size_y, self.size_x), dtype=np.uint8)
 
         self.set_obstacles()
         self.set_dynamic_zones()
+        self.logger = logging.getLogger(__name__)
 
     def set_obstacles(self) -> None:
         """
@@ -227,7 +230,7 @@ class Pathfinding:
         """
 
         row, col = y // self.resolution, x // self.resolution
-        if 0 <= row < self.rows and 0 <= col < self.cols:
+        if 0 <= row < self.size_y and 0 <= col < self.size_x:
             self.grid[row, col] = value
 
     def heuristic(self, a: Tuple[int, int], b: Tuple[int, int]) -> int:
@@ -278,7 +281,7 @@ class Pathfinding:
             (1, 1), (-1, -1), (1, -1), (-1, 1)
         ]]
         return [(nx, ny) for nx, ny in neighbors
-                if 0 <= nx < self.cols and 0 <= ny < self.rows and self.grid[ny, nx] == 0]
+                if 0 <= nx < self.size_x and 0 <= ny < self.size_y and self.grid[ny, nx] == 0]
 
     def a_star(self, start: Tuple[int, int], goal: Tuple[int, int]) -> Optional[List[Position]]:
         """
@@ -302,8 +305,10 @@ class Pathfinding:
             A list of Position objects representing the path from start to goal, or None if no path is found.
         """
 
+        start_time = time.time_ns()
         start = (start[0] // self.resolution, start[1] // self.resolution)
         goal = (goal[0] // self.resolution, goal[1] // self.resolution)
+        self.logger.info(f"A* Compute path from {start} to {goal}")
 
         open_set = [(0, start)]
         came_from = {}
@@ -318,6 +323,7 @@ class Pathfinding:
                 while current in came_from:
                     path.append(current)
                     current = came_from[current]
+                self.logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms")
                 return self.simplify_path([(x * self.resolution, y * self.resolution) for x, y in path[::-1]])
 
             for neighbor in self.get_neighbors(current):
@@ -329,6 +335,7 @@ class Pathfinding:
                     f_score[neighbor] = tentative_g_score + self.heuristic(neighbor, goal)
                     heapq.heappush(open_set, (f_score[neighbor], neighbor))
 
+        self.logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms without path")
         return []  # Pas de chemin trouvé
 
     def simplify_path(self, path: List[Tuple[int, int]]) -> List[Position]:

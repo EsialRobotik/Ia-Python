@@ -45,7 +45,8 @@ class TestSrf04(AbstractTest):
             x=gpioList[0]['x'],
             y=gpioList[0]['y'],
             angle=gpioList[0]['angle'],
-            threshold=gpioList[0]['threshold']
+            threshold=gpioList[0]['threshold'],
+            window_size= self.config_data["detection"]["ultrasound"]["windowSize"]
         )
         frontMiddle = Srf04(
             trigger=gpioList[1]['trigger'],
@@ -53,7 +54,8 @@ class TestSrf04(AbstractTest):
             x=gpioList[1]['x'],
             y=gpioList[1]['y'],
             angle=gpioList[1]['angle'],
-            threshold=gpioList[1]['threshold']
+            threshold=gpioList[1]['threshold'],
+            window_size = self.config_data["detection"]["ultrasound"]["windowSize"]
         )
         frontRight = Srf04(
             trigger=gpioList[2]['trigger'],
@@ -61,7 +63,8 @@ class TestSrf04(AbstractTest):
             x=gpioList[2]['x'],
             y=gpioList[2]['y'],
             angle=gpioList[2]['angle'],
-            threshold=gpioList[2]['threshold']
+            threshold=gpioList[2]['threshold'],
+            window_size = self.config_data["detection"]["ultrasound"]["windowSize"]
         )
         back = Srf04(
             trigger=gpioList[3]['trigger'],
@@ -69,7 +72,8 @@ class TestSrf04(AbstractTest):
             x=gpioList[3]['x'],
             y=gpioList[3]['y'],
             angle=gpioList[3]['angle'],
-            threshold=gpioList[3]['threshold']
+            threshold=gpioList[3]['threshold'],
+            window_size = self.config_data["detection"]["ultrasound"]["windowSize"]
         )
         while True:
             logger.info(f"Front Left: {frontLeft.get_distance()}mm")

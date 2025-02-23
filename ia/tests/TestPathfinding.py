@@ -13,9 +13,7 @@ class TestPathfinding(AbstractTest):
         logger.info(f"Initialisation in {(time.time_ns() - total_time) / 1000000:.2f} ms")
         start = (1800, 750)
         goal = (700, 580)
-        start_time = time.time_ns()
         path = table.a_star(start, goal)
-        logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms")
         if path is not None:
             for position in path:
                 logger.info(position)
