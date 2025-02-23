@@ -1,27 +1,24 @@
+import logging
 import time
 
-from ia.pathfinding import Table, Pathfinding
-from ia.pathfinding.astar.Astar import Astar
+from ia.pathfinding import Pathfinding
 from ia.tests import AbstractTest
-from ia.utils import Position
 
 
 class TestPathfinding(AbstractTest):
     def test(self) -> None:
-        file_path = 'config/2025/table0.tbl'
-        table = Table(file_path)
-        table.load_json_from_file(file_path='config/2025/config.json')
-        astart = Astar(table)
-        pathfinding = Pathfinding(astart)
-        pathfinding.compute_path(
-            start=Position(x=1000, y=700),
-            end=Position(x=1700, y=2000)
-        )
-        while not pathfinding.is_computation_ended():
-            time.sleep(0.05)
-        path = pathfinding.get_last_computed_path()
+        logger = logging.getLogger(__name__)
+        total_time = time.time_ns()
+        table = Pathfinding(table_config=self.config_data['table'], active_color='color0')  # Utilisation de la configuration JSON
+        logger.info(f"Initialisation in {(time.time_ns() - total_time) / 1000000:.2f} ms")
+        start = (1800, 750)
+        goal = (700, 580)
+        start_time = time.time_ns()
+        path = table.a_star(start, goal)
+        logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms")
         if path is not None:
             for position in path:
-                print(position)
+                logger.info(position)
         else:
-            print("Aucun chemin trouvé")
+            logger.info("Aucun chemin trouvé")
+        logger.info(f"Total computation in {(time.time_ns() - total_time) / 1000000:.2f} ms")
