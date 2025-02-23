@@ -1,5 +1,6 @@
 from .AbstractTest import AbstractTest
 from .TestAX12 import TestAX12
+from .TestActions import TestActions
 from .TestAsserv import TestAsserv
 from .TestChrono import TestChrono
 from .TestColorSelector import TestColorSelector
