@@ -1,6 +1,10 @@
+import logging
+import threading
+
 import serial
 
-from ia.api.ax12 import AX12Exception
+from ia.api.ax12 import AX12Exception, AX12, AX12LinkException
+from ia.api.ax12.enums import AX12Address
 
 
 class AX12LinkSerial:
@@ -22,12 +26,12 @@ class AX12LinkSerial:
         is_rts_enabled() -> bool: Checks if the RTS (Request to Send) signal is enabled.
     """
 
-    def __init__(self, serialPort: str, baud_rate: int) -> None:
+    def __init__(self, serial_port: str, baud_rate: int) -> None:
         """
         Initializes the serial connection with the specified parameters.
 
         Args:
-            serialPort (str): The serial port to use for the connection.
+            serial_port (str): The serial port to use for the connection.
             baud_rate (int): The baud rate for the serial communication.
 
         Raises:
@@ -36,9 +40,10 @@ class AX12LinkSerial:
         self.dtr_enabled = False
         self.rts_enabled = False
         self.lecture = bytearray()
+        self.logger = logging.getLogger(__name__)
         try:
             self.serial = serial.Serial(
-                port=serialPort,
+                port=serial_port,
                 baudrate=baud_rate,
                 bytesize=serial.EIGHTBITS,
                 stopbits=serial.STOPBITS_ONE,
@@ -118,3 +123,18 @@ class AX12LinkSerial:
             bool: True if RTS is enabled, False otherwise.
         """
         return self.rts_enabled
+
+    def disable_ax12_and_shutdown_link(self) -> None:
+        """
+        Disables the AX12 torque and shuts down the link.
+
+        Raises:
+            AX12Exception: If an error occurs while disabling the torque or closing the link.
+        """
+        with threading.Lock():
+            ax = AX12(AX12Address.AX12_ADDRESS_BROADCAST.value, self)
+            try:
+                ax.disable_torque()
+                self.serial.close()
+            except (IOError, AX12LinkException, AX12Exception) as e:
+                self.logger.error(f"Error disabling AX12 torque or shutting down link: {e}")
