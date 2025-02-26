@@ -1,17 +1,45 @@
 from ia.actions.AbstractAction import AbstractAction
 
 class ActionRepository:
-    def __init__(self, actionList: dict[str, AbstractAction]):
-        self.actionsList = actionList
+    """
+    Class to manage a repository of actions.
+    """
+
+    def __init__(self, action_list: dict[str, AbstractAction]):
+        """
+        Initialize the ActionRepository with a dictionary of actions.
+
+        :param action_list: A dictionary where the keys are action IDs and the values are AbstractAction instances.
+        """
+        self.actions_list = action_list
     
-    def hasAction(self, actionId: str) -> bool:
-        return actionId in self.actionsList
+    def has_action(self, action_id: str) -> bool:
+        """
+        Check if the action repository contains an action with the given ID.
 
-    def getAction(self, actionId: str) -> AbstractAction:
-        if actionId in self.actionsList:
-            return self.actionsList[actionId]
+        :param action_id: The ID of the action to check.
+        :return: True if the action exists in the repository, False otherwise.
+        """
+        return action_id in self.actions_list
+
+    def get_action(self, action_id: str) -> AbstractAction:
+        """
+        Retrieve an action from the repository by its ID.
+
+        :param action_id: The ID of the action to retrieve.
+        :return: The AbstractAction instance associated with the given ID.
+        :raises KeyError: If the action ID is not found in the repository.
+        """
+        if action_id in self.actions_list:
+            return self.actions_list[action_id]
         else:
-            raise f'Action id {actionId} not found in action collection'
+            raise f'Action id {action_id} not found in action collection'
 
-    def registerAction(self, actiactionId: str, action: AbstractAction) -> None:
-        self.actionsList[actiactionId] = action
+    def register_action(self, action_id: str, action: AbstractAction) -> None:
+        """
+        Register a new action in the repository.
+
+        :param action_id: The ID of the action to register.
+        :param action: The AbstractAction instance to register.
+        """
+        self.actions_list[action_id] = action

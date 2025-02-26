@@ -41,7 +41,7 @@ class ActionManager:
         action_id : str
             The ID of the action to execute.
         """
-        return self.action_repository.getAction(action_id)
+        return self.action_repository.get_action(action_id)
 
     def execute_command(self, action_id: str) -> None:
         """
@@ -54,7 +54,7 @@ class ActionManager:
         """
         self.logger.info(f"Execute action {action_id}")
         self.action_flag = None
-        self.current_action = self.action_repository.getAction(action_id)
+        self.current_action = self.action_repository.get_action(action_id)
         self.current_action.reset()
         thread = threading.Thread(target=self.current_action.execute())
         thread.start()

@@ -1,46 +1,76 @@
-from ia.actions.AbstractAction import AbstractAction
-from ia.api.ax12.AX12 import AX12
-from ia.api.ax12.AX12Position import AX12Position
-from typing import Optional
-from ia.actions.ActionRepository import ActionRepository
-from typing import List
-import threading
-import time
 import logging
+import threading
+from typing import Optional
+
+from ia.actions.AbstractAction import AbstractAction
+
 
 class ActionWait(AbstractAction):
+    """
+    Class to represent a wait action that pauses execution for a specified duration.
+    """
 
-    def __init__(self, durationSeconds: float, flags: Optional[str]) -> None:
+    def __init__(self, duration_seconds: float, flags: Optional[str]) -> None:
+        """
+        Initialize the ActionWait with a duration and optional flags.
+
+        :param duration_seconds: The duration to wait in seconds.
+        :param flags: Optional flags to help in the decision process.
+        """
         self.logger = logging.getLogger(__name__)
-        self.durationSeconds = durationSeconds
+        self.duration_seconds = duration_seconds
         self.flags = flags
-        self.timerThread = None
+        self.timer_thread = None
+        self.is_finished = False
 
     def execute(self) -> None:
-        if self.timerThread == None:
-            self.logger.debug(f"start waiting of {self.durationSeconds} second(s)")
-            self.isFinished = False
-            self.timerThread = threading.Timer(self.durationSeconds, self.timerEnd)
-            self.timerThread.start()
+        """
+        Execute the wait action by starting a timer thread.
+        """
+        if self.timer_thread is None:
+            self.logger.debug(f"start waiting of {self.duration_seconds} second(s)")
+            self.is_finished = False
+            self.timer_thread = threading.Timer(self.duration_seconds, self.timer_end)
+            self.timer_thread.start()
 
     def finished(self) -> bool:
-        return self.isFinished
+        """
+        Check if the wait action has finished executing.
+
+        :return: True if the wait action has finished executing, False otherwise.
+        """
+        return self.is_finished
 
     def stop(self) -> None:
-        if not self.timerThread == None and self.timerThread.is_alive:
-            self.timerThread.cancel()
+        """
+        Stop the wait action if it is currently running.
+        """
+        if not self.timer_thread is None and self.timer_thread.is_alive:
+            self.timer_thread.cancel()
 
     def reset(self) -> None:
-        if self.timerThread == None:
+        """
+        Reset the wait action so it can be re-executed with execute().
+        """
+        if self.timer_thread is None:
             return
-        if self.timerThread.is_alive:
-            self.timerThread.cancel()
-        self.timerThread = None
+        if self.timer_thread.is_alive:
+            self.timer_thread.cancel()
+        self.timer_thread = None
 
-    def getFlag(self) -> Optional[str]:
+    def get_flag(self) -> Optional[str]:
+        """
+        Retrieve the flag associated with the wait action.
+
+        :return: The flag associated with the wait action, or None if no flag is set.
+        """
         return self.flags
 
-    def timerEnd(self):
+    def timer_end(self):
+        """
+        Callback function called when the timer ends.
+        It sets the `is_finished` flag to True and logs the completion of the wait action.
+        """
         self.logger.debug(f"waiting finished")
-        self.isFinished = True
+        self.is_finished = True
     

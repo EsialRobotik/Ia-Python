@@ -1,74 +1,106 @@
-from ia.actions.AbstractAction import AbstractAction
-from ia.api.ax12.AX12 import AX12
-from ia.api.ax12.AX12Position import AX12Position
-from typing import Optional
-from ia.actions.ActionRepository import ActionRepository
-from typing import List
 import threading
 import time
+from typing import List
+from typing import Optional
+
+from ia.actions.AbstractAction import AbstractAction
+from ia.actions.ActionRepository import ActionRepository
+
 
 class ActionList(AbstractAction):
+    """
+    Class to manage and execute a list of actions sequentially.
+    """
 
-    def __init__(self, actionRepository: ActionRepository, actionList: List[str], flags: Optional[str]) -> None:
-        self.actionList = actionList
-        self.actionRepository = actionRepository
+    def __init__(self, action_repository: ActionRepository, action_list: List[str], flags: Optional[str]) -> None:
+        """
+        Initialize the ActionList with a repository of actions, a list of action IDs, and optional flags.
+
+        :param action_repository: The repository containing available actions.
+        :param action_list: A list of action IDs to be executed in sequence.
+        :param flags: Optional flags to help in the decision process.
+        """
+        self.action_list = action_list
+        self.action_repository = action_repository
         self.flags = flags
         self.thread = None
-        self.isFinished = False
-        self.requestStop = False
+        self.is_finished = False
+        self.request_stop = False
     
-    def checkActionListForMissing(self):
-        '''
+    def check_action_list_for_missing(self):
+        """
         Check that each action of the actionList exists in the action repository
-        '''
-        missingsIDs = []
-        for a in self.actionList:
-            if not self.actionRepository.hasAction(a):
-                missingsIDs.append(a)
-        if len(missingsIDs) > 0:
-            missingActionIdsStr = ", ".join(missingsIDs)
-            raise Exception(f"A least on action from the action list is missing form the action repository : {missingActionIdsStr}")
+        """
+        missing_ids = []
+        for a in self.action_list:
+            if not self.action_repository.has_action(a):
+                missing_ids.append(a)
+        if len(missing_ids) > 0:
+            missing_action_ids_str = ", ".join(missing_ids)
+            raise Exception(f"A least on action from the action list is missing form the action repository : {missing_action_ids_str}")
 
     def execute(self) -> None:
-        if self.thread == None:
-            self.thread = threading.Thread(target=self.threadFunction)
+        """
+        Start the execution of the action list in a separate thread.
+        """
+        if self.thread is None:
+            self.thread = threading.Thread(target=self.thread_function)
             self.thread.daemon = True
             self.thread.start()
 
-
     def finished(self) -> bool:
-        if self.thread == None:
+        """
+        Check if the action list has finished executing.
+
+        :return: True if the action list has finished executing, False otherwise.
+        """
+        if self.thread is None:
             return False
-        return self.isFinished
+        return self.is_finished
 
     def stop(self) -> None:
-        self.requestStop = True
+        """
+        Request to stop the execution of the action list.
+        """
+        self.request_stop = True
 
     def reset(self) -> None:
-        if self.thread == None:
+        """
+        Reset the action list so it can be re-executed with execute().
+        """
+        if self.thread is None:
             return
         if self.thread.is_alive:
             self.stop()
             self.thread.join()
-        for actionId in self.actionList:
-            self.actionRepository.getAction(actionId).reset()
+        for actionId in self.action_list:
+            self.action_repository.get_action(actionId).reset()
         self.thread = None
 
-    def getFlag(self) -> Optional[str]:
+    def get_flag(self) -> Optional[str]:
+        """
+        Return potential existing flag of the action list to help AI in its decision process.
+
+        :return: The flag associated with the action list, or None if no flag is set.
+        """
         return self.flags
 
-    def threadFunction(self):
-        '''
-        Programm of the local Thread
-        '''
-        self.isFinished = False
-        self.requestStop = False
-        for actionId in self.actionList:
-            if not self.requestStop:
-                action = self.actionRepository.getAction(actionId)
+    def thread_function(self):
+        """
+        Function executed in a separate thread to run the actions in the action list sequentially.
+        It sets the `is_finished` flag to False at the start and to True at the end.
+        It iterates over each action ID in the action list, retrieves the corresponding action from the repository,
+        and executes it. It waits for each action to finish before moving to the next one.
+        If a stop request is made, it stops the current action and exits the loop.
+        """
+        self.is_finished = False
+        self.request_stop = False
+        for actionId in self.action_list:
+            if not self.request_stop:
+                action = self.action_repository.get_action(actionId)
                 action.execute()
-                while not action.finished() and self.requestStop == False:
+                while not action.finished() and self.request_stop == False:
                     time.sleep(0.01)
-                if self.requestStop:
+                if self.request_stop:
                     action.stop()
-        self.isFinished = True
+        self.is_finished = True

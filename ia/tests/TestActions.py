@@ -1,12 +1,10 @@
 import logging
-from time import sleep
-
-from ia.api.ax12 import AX12LinkSerial, AX12, AX12Position
-from ia.tests import AbstractTest
-from ia.actions.ActionRepository import ActionRepository
-from ia.actions.ActionRepositoryFactory import ActionRepositoryFactory
-from ia.actions.ax12.ActionAX12Position import ActionAX12Position
 import time
+
+from ia.actions.ActionRepositoryFactory import ActionRepositoryFactory
+from ia.api.ax12 import AX12LinkSerial
+from ia.tests import AbstractTest
+
 
 class TestActions(AbstractTest):
     """
@@ -41,14 +39,14 @@ class TestActions(AbstractTest):
 
         logger.info(f"Instanciation de la laision série {self.config_data['actions']['ax12']['serie']}@{self.config_data['actions']['ax12']['baud']}...")
         link = AX12LinkSerial(self.config_data['actions']['ax12']['serie'], self.config_data['actions']['ax12']['baud'])
-        actionRepo = ActionRepositoryFactory.fromJsonFiles(self.config_data['actions']['dataDir'], link)
+        actionRepo = ActionRepositoryFactory.from_json_files(self.config_data['actions']['dataDir'], link)
 
         while True:
             command = input("Action: ")
-            if actionRepo.hasAction(command):
-                actionRepo.getAction(command).reset()
-                actionRepo.getAction(command).execute()
-                while not actionRepo.getAction(command).finished():
+            if actionRepo.has_action(command):
+                actionRepo.get_action(command).reset()
+                actionRepo.get_action(command).execute()
+                while not actionRepo.get_action(command).finished():
                     time.sleep(0.01)
             else:
                 print(f"L'action '{command}' n'existe pas")
