@@ -1,17 +1,24 @@
-import socket
-import threading
-import time
-import pickle
 import logging
 import logging.handlers
+import pickle
+import socket
 import socketserver
 import struct
 import sys
+import threading
+import time
 
 log_listener = None
 
 class Server:
-    def __init__(self):
+    """
+    A class to represent the server that handles communication with robots and logging.
+    """
+
+    def __init__(self) -> None:
+        """
+        Initializes the Server instance.
+        """
         self.robots = []
         
         self.init_communication_server()
@@ -19,7 +26,10 @@ class Server:
         print('About to start TCP server...')
         self.tcpserver.serve_until_stopped()
 
-    def init_communication_server(self):
+    def init_communication_server(self) -> None:
+        """
+        Initializes the communication server socket and starts a thread to accept connections.
+        """
         self.communication_server_socket = socket.socket()
         self.communication_server_socket.bind(('', 4269)) # empty host allow any ip to connect
         self.communication_server_socket.listen(10)
@@ -27,7 +37,10 @@ class Server:
         comm_connection_thread.daemon = True
         comm_connection_thread.start()
 
-    def accept_communication_connection(self):
+    def accept_communication_connection(self) -> None:
+        """
+        Accepts incoming connections and handles them based on the type of connection.
+        """
         global log_listener
         while True:
             conn, address = self.communication_server_socket.accept()
@@ -50,6 +63,15 @@ class Server:
                 log_listener.send("logListener connected".encode())
 
     def communication_between_robots(self, conn: socket):
+        """
+        Handles communication between connected robots.
+
+        This method continuously listens for messages from a connected robot
+        and forwards the received messages to all other connected robots.
+
+        Args:
+            conn (socket): The socket connection to the robot.
+        """
         while True:
             data = conn.recv(1024).decode()
             print("from connected robot: " + str(data))
@@ -62,7 +84,8 @@ class Server:
                 robot.send(data.encode())
 
 class LogRecordStreamHandler(socketserver.StreamRequestHandler):
-    """Handler for a streaming logging request.
+    """
+    Handler for a streaming logging request.
 
     This basically logs the record using whatever logging policy is
     configured locally.
@@ -100,6 +123,15 @@ class LogRecordStreamHandler(socketserver.StreamRequestHandler):
                 log_listener.send(formatter.format(record).encode())
 
     def unPickle(self, data):
+        """
+        Unpickles the given data.
+
+        Args:
+            data (bytes): The pickled data to unpickle.
+
+        Returns:
+            object: The unpickled Python object.
+        """
         return pickle.loads(data)
 
 class LogRecordSocketReceiver(socketserver.ThreadingTCPServer):
@@ -111,13 +143,25 @@ class LogRecordSocketReceiver(socketserver.ThreadingTCPServer):
 
     def __init__(self, host='',
                  port=logging.handlers.DEFAULT_TCP_LOGGING_PORT,
-                 handler=LogRecordStreamHandler):
+                 handler=LogRecordStreamHandler) -> None:
+        """
+        Simple TCP socket-based logging receiver suitable for testing.
+        """
+
         socketserver.ThreadingTCPServer.__init__(self, (host, port), handler)
         self.abort = 0
         self.timeout = 1
         self.logname = None
 
     def serve_until_stopped(self):
+        """
+        Serve requests until the server is stopped.
+
+        This method uses the `select` module to wait for incoming connections
+        and handle them. It continues to serve requests until the `abort`
+        attribute is set to a non-zero value.
+        """
+
         import select
         abort = 0
         while not abort:

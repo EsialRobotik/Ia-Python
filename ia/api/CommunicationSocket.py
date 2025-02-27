@@ -7,6 +7,7 @@ import threading
 class CommunicationSocket:
     """
     A class to handle socket communication.
+
     Attributes:
     -----------
     host : str
@@ -19,6 +20,7 @@ class CommunicationSocket:
         The socket object used for communication.
     read_thread : threading.Thread
         The thread responsible for reading messages from the server.
+
     Methods:
     --------
     __init__(self, host, port):
