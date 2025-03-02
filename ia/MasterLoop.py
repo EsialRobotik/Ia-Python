@@ -46,6 +46,10 @@ class MasterLoop:
         self.astar_launch = False
         self.logger = logging.getLogger(__name__)
 
+        self.something_detected = False
+        self.moving_forward = False
+        self.is_color0 = True
+
     def init(self) -> None:
         """
         Initialize the Nextion display and perform the necessary setup steps.
@@ -72,11 +76,6 @@ class MasterLoop:
         )
         self.logger.info("Initialisation du communication manager OK")
 
-        self.logger.info("Initialisation de la stratégie")
-        self.nextion_display.display_calibration_status("Initialisation de la stratégie")
-        self.strategy_manager.prepare_objectives(self.nextion_display.is_color0())
-        self.logger.info("Initialisation de la stratégie OK")
-
         self.logger.info("Initialisation des actionneurs")
         self.nextion_display.display_calibration_status("Initialisation des actionneurs")
         self.action_manager.init()
@@ -89,6 +88,18 @@ class MasterLoop:
         self.nextion_display.display_calibration_status("Attente tirette pour départ")
         self.pull_cord.wait_for_state(True)
         self.logger.info("Tirette insérée, fin de la calibration")
+
+        self.logger.info("Pré-chargement de la stratégie")
+        self.is_color0 = self.nextion_display.is_color0()
+        self.strategy_manager.prepare_objectives(self.is_color0)
+        self.logger.info(f"Stratégie chargée : {len(self.strategy_manager.objectives)} objectifs")
+
+        # Prepare first objective and step
+        self.current_objective = self.strategy_manager.get_next_objective()
+        self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
+        self.logger.info(f"Premier Objectif : {self.current_objective}")
+        self.logger.info(f"Première Step : {self.current_step}")
+
         self.logger.info("Prêt pour départ")
         self.nextion_display.goto_page("ready")
 
@@ -204,23 +215,65 @@ class MasterLoop:
             return True
         return False
 
+    def must_stop_from_emergency_detection(self) -> bool:
+        # On vérifie la détection courte portée des SRF
+        if self.detection_manager.is_emergency_detection_front():
+            self.logger.info("Détection avant")
+            self.movement_manager.halt_asserv(True)
+            self.moving_forward = True
+            self.something_detected = True
+            return True
+        elif self.detection_manager.is_emergency_detection_back():
+            self.logger.info("Détection arrière")
+            self.movement_manager.halt_asserv(True)
+            self.moving_forward = False
+            self.something_detected = True
+            return True
+        return False
+
+    def update_step(self) -> None:
+        self.logger.info(f"Step terminée : {self.current_step.description}")
+
+        if self.current_step.action_flag is not None:
+            self.logger.info(f"Lever de l'action flage : {self.current_step.action_flag}")
+            self.strategy_manager.add_action_flag(self.current_step.action_flag)
+
+        self.current_step = None
+        if self.current_objective.has_next_step():
+            self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
+            self.logger.info(f"Prochaine Step : {self.current_step.description}")
+        else:
+            self.logger.info(
+                f"Objectif terminé : {self.current_objective.description} - {self.current_objective.points}")
+            self.score += self.current_objective.points
+            self.update_score()
+
+            if self.current_objective.action_flag is not None:
+                self.logger.info(f"Lever de l'action flage : {self.current_objective.action_flag}")
+                self.strategy_manager.add_action_flag(self.current_objective.action_flag)
+
+            self.current_objective = self.strategy_manager.get_next_objective()
+            if self.current_objective is None:
+                self.logger.info("Plus d'objectif, fin du match")
+                self.interrupted = True
+            else:
+                self.logger.info(f"Prochain Objectif : {self.current_objective.description}")
+                self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
+                self.logger.info(f"Première Step : {self.current_step.description}")
+        self.execute_current_step()
+
+    def check_detection_status(self) -> None:
+        if self.moving_forward and not self.detection_manager.is_emergency_detection_front(False):
+            self.logger.info("Fin détection avant")
+            self.movement_manager.resume_asserv()
+            self.something_detected = False
+        elif not self.moving_forward and not self.detection_manager.is_emergency_detection_back(False):
+            self.logger.info("Fin détection arrière")
+            self.movement_manager.resume_asserv()
+            self.something_detected = False
+
     def main_loop(self) -> None:
         self.logger.info("Début de la boucle principale")
-        something_detected = False
-        moving_forward = False
-        is_color0 = self.nextion_display.is_color0()
-        self.strategy_manager.prepare_objectives(is_color0)
-        self.logger.info(f"Stratégie chargée : {len(self.strategy_manager.objectives)} objectifs")
-
-        # Prepare first objective and step
-        self.current_objective = self.strategy_manager.get_next_objective()
-        self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
-        self.logger.info(f"Premier Objectif : {self.current_objective}")
-        self.logger.info(f"Première Step : {self.current_step}")
-
-        # Attente insertion tirette
-        self.logger.info("Attente insertion tirette")
-        self.pull_cord.wait_for_state(True)
 
         # Attente lancement du match en retirant la tirette
         self.logger.info("Attente lancement match")
@@ -237,20 +290,10 @@ class MasterLoop:
         # Boucle principale
         while not self.interrupted:
             # Si pas d'obstacle détecté par les SRF
-            if not something_detected:
+            if not self.something_detected:
 
                 # On vérifie la détection courte portée des SRF
-                if self.detection_manager.is_emergency_detection_front():
-                    self.logger.info("Détection avant")
-                    self.movement_manager.halt_asserv(True)
-                    moving_forward = True
-                    something_detected = True
-                    continue
-                elif self.detection_manager.is_emergency_detection_back():
-                    self.logger.info("Détection arrière")
-                    self.movement_manager.halt_asserv(True)
-                    moving_forward = False
-                    something_detected = True
+                if self.must_stop_from_emergency_detection():
                     continue
 
                 # Si le pathfinding est en cours, on l'attends
@@ -266,34 +309,8 @@ class MasterLoop:
                         time.sleep(0.01)
                 else:
                     if self.current_step_ended():
-                        self.logger.info(f"Step terminée : {self.current_step.description}")
-
-                        if self.current_step.action_flag is not None:
-                            self.logger.info(f"Lever de l'action flage : {self.current_step.action_flag}")
-                            self.strategy_manager.add_action_flag(self.current_step.action_flag)
-
-                        self.current_step = None
-                        if self.current_objective.has_next_step():
-                            self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
-                            self.logger.info(f"Prochaine Step : {self.current_step.description}")
-                        else:
-                            self.logger.info(f"Objectif terminé : {self.current_objective.description} - {self.current_objective.points}")
-                            self.score += self.current_objective.points
-                            self.update_score()
-
-                            if self.current_objective.action_flag is not None:
-                                self.logger.info(f"Lever de l'action flage : {self.current_objective.action_flag}")
-                                self.strategy_manager.add_action_flag(self.current_objective.action_flag)
-
-                            self.current_objective = self.strategy_manager.get_next_objective()
-                            if self.current_objective is None:
-                                self.logger.info("Plus d'objectif, fin du match")
-                                break
-                            else:
-                                self.logger.info(f"Prochain Objectif : {self.current_objective.description}")
-                                self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
-                                self.logger.info(f"Première Step : {self.current_step.description}")
-                        self.execute_current_step()
+                        # On passe à la step ou l'objectif suivant
+                        self.update_step()
                     else:
                         if (self.movement_manager.asserv.asserv_status == AsservStatus.STATUS_BLOCKED
                                 and (self.current_step.sub_type != StepSubType.GO or self.current_step.timeout == 0)):
@@ -307,16 +324,11 @@ class MasterLoop:
 
             # Si obstacle détecté par les SRF
             else:
-                if moving_forward and not self.detection_manager.is_emergency_detection_front(False):
-                    self.logger.info("Fin détection avant")
-                    self.movement_manager.resume_asserv()
-                    something_detected = False
-                elif not moving_forward and not self.detection_manager.is_emergency_detection_back(False):
-                    self.logger.info("Fin détection arrière")
-                    self.movement_manager.resume_asserv()
-                    something_detected = False
+                self.check_detection_status()
+
             # On check les communications serveurs
             self.communication_manager.read_from_server()
+            # On laisse souffler le CPU mais pas trop
             time.sleep(0.001)
 
         self.logger.info("Fin de la boucle principale")
