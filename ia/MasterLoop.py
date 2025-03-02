@@ -11,7 +11,7 @@ from ia.actions import ActionRepositoryFactory
 from ia.api import Chrono, PullCord, NextionNX32224T024
 from ia.api.ax12 import AX12LinkSerial
 from ia.api.detection.lidar import Lidar
-from ia.api.detection.ultrasound import Srf04
+from ia.api.detection.ultrasound import SrfFactory
 from ia.asserv import AsservStatus, Asserv
 from ia.manager import ActionManager, CommunicationManager, DetectionManager, MovementManager, StrategyManager
 from ia.pathfinding import Pathfinding
@@ -390,18 +390,10 @@ if __name__ == "__main__":
         ultrasound_config = config_data["detection"]["ultrasound"]
         srf = []
         for srf in ultrasound_config['gpioList']:
-            # todo gérer différent type de srf ?
-            srf.append(
-                Srf04(
-                    trigger=srf['trigger'],
-                    echo=srf['echo'],
-                    x=srf['x'],
-                    y=srf['y'],
-                    angle=srf['angle'],
-                    threshold=srf['threshold'],
-                    window_size=ultrasound_config["windowSize"]
-                )
-            )
+            srf.append(SrfFactory.build_srf(
+                srf_config=srf,
+                window_size=ultrasound_config["windowSize"]
+            ))
         detection_manager = DetectionManager(
             sensors=srf,
             lidar=lidar,
