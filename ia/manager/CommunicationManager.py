@@ -95,6 +95,4 @@ class CommunicationManager:
             elif data_split[0] == "add-zone":
                 self.pathfinding.update_dynamic_zone(data_split[1], True)
             elif data_split[0] == "action-data":
-                action_executor = self.action_manager.get_action_executor(int(data_split[1]))
-                action_executor.set_data(data_split[2])
-                self.action_manager.execute_command(int(data_split[1]))
+                self.action_manager.execute_command(data_split[1])

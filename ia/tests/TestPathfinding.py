@@ -3,6 +3,7 @@ import time
 
 from ia.pathfinding import Pathfinding
 from ia.tests import AbstractTest
+from ia.utils import Position
 
 
 class TestPathfinding(AbstractTest):
@@ -11,9 +12,10 @@ class TestPathfinding(AbstractTest):
         total_time = time.time_ns()
         table = Pathfinding(table_config=self.config_data['table'], active_color='color0')  # Utilisation de la configuration JSON
         logger.info(f"Initialisation in {(time.time_ns() - total_time) / 1000000:.2f} ms")
-        start = (1800, 750)
-        goal = (700, 580)
-        path = table.a_star(start, goal)
+        start = Position(1800, 750)
+        goal = Position(700, 580)
+        table.a_star(start, goal)
+        path = table.path
         if path is not None:
             for position in path:
                 logger.info(position)

@@ -1,7 +1,7 @@
 import heapq
 import logging
 import time
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple
 
 import numpy as np
 from shapely.geometry import Polygon, Point
@@ -15,6 +15,8 @@ class Pathfinding:
 
     Attributes
     ----------
+    computation_finished: bool
+        Whether the pathfinding computation has finished.
     config : dict
         Configuration data for the table.
     resolution : int
@@ -68,6 +70,7 @@ class Pathfinding:
             The active color for the pathfinding ('color0' or 'color3000').
         """
 
+        self.computation_finished = True
         self.config = table_config
         self.resolution = 10  # Taille d'une case en mm
         self.size_x = self.config["sizeX"] // self.resolution
@@ -78,6 +81,7 @@ class Pathfinding:
 
         self.set_obstacles()
         self.set_dynamic_zones()
+        self.path = []
         self.logger = logging.getLogger(__name__)
 
     def set_obstacles(self) -> None:
@@ -283,7 +287,7 @@ class Pathfinding:
         return [(nx, ny) for nx, ny in neighbors
                 if 0 <= nx < self.size_x and 0 <= ny < self.size_y and self.grid[ny, nx] == 0]
 
-    def a_star(self, start: Tuple[int, int], goal: Tuple[int, int]) -> Optional[List[Position]]:
+    def a_star(self, start: Position, goal: Position) -> None:
         """
         Optimized implementation of the A* algorithm.
 
@@ -291,6 +295,8 @@ class Pathfinding:
         position to the goal position on the grid. It uses a priority queue to explore nodes
         based on their estimated cost to reach the goal, considering both the actual cost
         from the start and the heuristic estimate to the goal.
+
+        During execution, computation_finished is set to False and the path is stored in the path attribute.
 
         Parameters
         ----------
@@ -301,13 +307,14 @@ class Pathfinding:
 
         Returns
         -------
-        list of Position or None
-            A list of Position objects representing the path from start to goal, or None if no path is found.
+        None
         """
 
         start_time = time.time_ns()
-        start = (start[0] // self.resolution, start[1] // self.resolution)
-        goal = (goal[0] // self.resolution, goal[1] // self.resolution)
+        self.computation_finished = False
+        self.path = []
+        start = (start.x // self.resolution, start.y // self.resolution)
+        goal = (goal.x // self.resolution, goal.y // self.resolution)
         self.logger.info(f"A* Compute path from {start} to {goal}")
 
         open_set = [(0, start)]
@@ -324,7 +331,9 @@ class Pathfinding:
                     path.append(current)
                     current = came_from[current]
                 self.logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms")
-                return self.simplify_path([(x * self.resolution, y * self.resolution) for x, y in path[::-1]])
+                self.computation_finished = True
+                self.path = self.simplify_path([(x * self.resolution, y * self.resolution) for x, y in path[::-1]])
+                return
 
             for neighbor in self.get_neighbors(current):
                 move_cost = 1 if abs(neighbor[0] - current[0]) + abs(neighbor[1] - current[1]) == 1 else 1.4
@@ -336,7 +345,8 @@ class Pathfinding:
                     heapq.heappush(open_set, (f_score[neighbor], neighbor))
 
         self.logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms without path")
-        return []  # Pas de chemin trouvé
+        self.computation_finished = True
+        return  # Pas de chemin trouvé
 
     def simplify_path(self, path: List[Tuple[int, int]]) -> List[Position]:
         """

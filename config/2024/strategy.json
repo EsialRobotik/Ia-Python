@@ -1,13 +1,13 @@
 {
-  "couleur0": [
+  "color0": [
     {
-      "desc": "Panneaux solaire",
+      "description": "Panneaux solaire",
       "id": 1,
       "points": 15,
-      "priorite": 1,
-      "taches": [
+      "priority": 1,
+      "tasks": [
         {
-          "desc": "Sortie doigt solaire droit",
+          "description": "Sortie doigt solaire droit",
           "id": 1,
           "positionX": 0,
           "positionY": 0,
@@ -18,7 +18,7 @@
           "timeout": -1
         },
         {
-          "desc": "Pas trop vite !!",
+          "description": "Pas trop vite !!",
           "id": 2,
           "positionX": 0,
           "positionY": 0,
@@ -30,7 +30,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 1",
+          "description": "Panneau 1",
           "id": 3,
           "positionX": 1800,
           "positionY": 350,
@@ -42,7 +42,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 1",
+          "description": "Panneau 1",
           "id": 4,
           "positionX": 1800,
           "positionY": 3000,
@@ -54,7 +54,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 2",
+          "description": "Panneau 2",
           "id": 5,
           "positionX": 1800,
           "positionY": 600,
@@ -66,7 +66,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 2",
+          "description": "Panneau 2",
           "id": 6,
           "positionX": 1800,
           "positionY": 3000,
@@ -78,7 +78,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 3",
+          "description": "Panneau 3",
           "id": 7,
           "positionX": 1800,
           "positionY": 750,
@@ -90,7 +90,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ranger doigt solaire droit",
+          "description": "Ranger doigt solaire droit",
           "id": 8,
           "positionX": 0,
           "positionY": 0,
@@ -101,7 +101,7 @@
           "timeout": -1
         },
         {
-          "desc": "A fond !!!",
+          "description": "A fond !!!",
           "id": 9,
           "positionX": 0,
           "positionY": 0,
@@ -115,13 +115,13 @@
       ]
     },
     {
-      "desc": "Plante jardinière",
+      "description": "Plante jardinière",
       "id": 2,
       "points": 5,
-      "priorite": 1,
-      "taches": [
+      "priority": 1,
+      "tasks": [
         {
-          "desc": "Position plante",
+          "description": "Position plante",
           "id": 1,
           "positionX": 700,
           "positionY": 580,
@@ -133,7 +133,7 @@
           "timeout": -1
         },
         {
-          "desc": "Alignement plante",
+          "description": "Alignement plante",
           "id": 2,
           "positionX": 700,
           "positionY": 3000,
@@ -145,7 +145,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ramasse plante",
+          "description": "Ramasse plante",
           "id": 3,
           "positionX": 0,
           "positionY": 0,
@@ -156,7 +156,7 @@
           "timeout": -1
         },
         {
-          "desc": "Pas trop vite !!",
+          "description": "Pas trop vite !!",
           "id": 4,
           "positionX": 0,
           "positionY": 0,
@@ -168,7 +168,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 5,
           "positionX": 0,
           "positionY": 0,
@@ -179,7 +179,7 @@
           "timeout": -1
         },
         {
-          "desc": "Alignement plante",
+          "description": "Alignement plante",
           "id": 6,
           "positionX": 700,
           "positionY": 3000,
@@ -191,7 +191,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 7,
           "positionX": 0,
           "positionY": 0,
@@ -202,7 +202,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 8,
           "positionX": 0,
           "positionY": 0,
@@ -213,7 +213,7 @@
           "timeout": -1
         },
         {
-          "desc": "Sortie plante",
+          "description": "Sortie plante",
           "id": 9,
           "positionX": 700,
           "positionY": 650,
@@ -225,7 +225,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 10,
           "positionX": 612,
           "positionY": 390,
@@ -237,7 +237,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 11,
           "positionX": 612,
           "positionY": 0,
@@ -249,7 +249,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position pot",
+          "description": "Ajustement position pot",
           "id": 12,
           "positionX": 0,
           "positionY": 0,
@@ -260,7 +260,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 13,
           "positionX": 612,
           "positionY": 0,
@@ -272,7 +272,7 @@
           "timeout": -1
         },
         {
-          "desc": "Depose plante",
+          "description": "Depose plante",
           "id": 14,
           "positionX": 0,
           "positionY": 0,
@@ -283,7 +283,7 @@
           "timeout": -1
         },
         {
-          "desc": "Depose plante",
+          "description": "Depose plante",
           "id": 15,
           "positionX": 0,
           "positionY": 0,
@@ -294,7 +294,7 @@
           "timeout": -1
         },
         {
-          "desc": "On baisse la pince pour ramasser le pot",
+          "description": "On baisse la pince pour ramasser le pot",
           "id": 16,
           "positionX": 0,
           "positionY": 0,
@@ -305,7 +305,7 @@
           "timeout": -1
         },
         {
-          "desc": "On ramasse le pot",
+          "description": "On ramasse le pot",
           "id": 17,
           "positionX": 0,
           "positionY": 0,
@@ -316,7 +316,7 @@
           "timeout": -1
         },
         {
-          "desc": "On se libère",
+          "description": "On se libère",
           "id": 18,
           "positionX": 612,
           "positionY": 500,
@@ -328,7 +328,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 19,
           "positionX": 250,
           "positionY": 785,
@@ -340,7 +340,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 20,
           "positionX": 0,
           "positionY": 785,
@@ -352,7 +352,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 21,
           "positionX": 215,
           "positionY": 785,
@@ -364,7 +364,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 22,
           "positionX": 0,
           "positionY": 785,
@@ -376,7 +376,7 @@
           "timeout": -1
         },
         {
-          "desc": "On lache tout",
+          "description": "On lache tout",
           "id": 23,
           "positionX": 0,
           "positionY": 0,
@@ -387,7 +387,7 @@
           "timeout": -1
         },
         {
-          "desc": "On range le bras",
+          "description": "On range le bras",
           "id": 24,
           "positionX": 0,
           "positionY": 0,
@@ -398,7 +398,7 @@
           "timeout": -1
         },
         {
-          "desc": "On se libère",
+          "description": "On se libère",
           "id": 25,
           "positionX": 0,
           "positionY": 0,
@@ -410,7 +410,7 @@
           "timeout": -1
         },
         {
-          "desc": "A fond !!!",
+          "description": "A fond !!!",
           "id": 26,
           "positionX": 0,
           "positionY": 0,
@@ -424,13 +424,13 @@
       ]
     },
     {
-      "desc": "Plante jardinière",
+      "description": "Plante jardinière",
       "id": 3,
       "points": 5,
-      "priorite": 1,
-      "taches": [
+      "priority": 1,
+      "tasks": [
         {
-          "desc": "Position plante",
+          "description": "Position plante",
           "id": 1,
           "positionX": 700,
           "positionY": 580,
@@ -442,7 +442,7 @@
           "timeout": -1
         },
         {
-          "desc": "Alignement plante",
+          "description": "Alignement plante",
           "id": 2,
           "positionX": 700,
           "positionY": 3000,
@@ -454,7 +454,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ramasse plante",
+          "description": "Ramasse plante",
           "id": 3,
           "positionX": 0,
           "positionY": 0,
@@ -465,7 +465,7 @@
           "timeout": -1
         },
         {
-          "desc": "Pas trop vite !!",
+          "description": "Pas trop vite !!",
           "id": 4,
           "positionX": 0,
           "positionY": 0,
@@ -477,7 +477,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 5,
           "positionX": 0,
           "positionY": 0,
@@ -488,7 +488,7 @@
           "timeout": -1
         },
         {
-          "desc": "Alignement plante",
+          "description": "Alignement plante",
           "id": 6,
           "positionX": 700,
           "positionY": 3000,
@@ -500,7 +500,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 7,
           "positionX": 0,
           "positionY": 0,
@@ -511,7 +511,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 8,
           "positionX": 0,
           "positionY": 0,
@@ -522,7 +522,7 @@
           "timeout": -1
         },
         {
-          "desc": "Sortie plante",
+          "description": "Sortie plante",
           "id": 9,
           "positionX": 700,
           "positionY": 650,
@@ -534,7 +534,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 10,
           "positionX": 612,
           "positionY": 390,
@@ -546,7 +546,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 11,
           "positionX": 612,
           "positionY": 0,
@@ -558,7 +558,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position pot",
+          "description": "Ajustement position pot",
           "id": 12,
           "positionX": 0,
           "positionY": 0,
@@ -569,7 +569,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 13,
           "positionX": 612,
           "positionY": 0,
@@ -581,7 +581,7 @@
           "timeout": -1
         },
         {
-          "desc": "Depose plante",
+          "description": "Depose plante",
           "id": 14,
           "positionX": 0,
           "positionY": 0,
@@ -592,7 +592,7 @@
           "timeout": -1
         },
         {
-          "desc": "Depose plante",
+          "description": "Depose plante",
           "id": 15,
           "positionX": 0,
           "positionY": 0,
@@ -603,7 +603,7 @@
           "timeout": -1
         },
         {
-          "desc": "On baisse la pince pour ramasser le pot",
+          "description": "On baisse la pince pour ramasser le pot",
           "id": 16,
           "positionX": 0,
           "positionY": 0,
@@ -614,7 +614,7 @@
           "timeout": -1
         },
         {
-          "desc": "On ramasse le pot",
+          "description": "On ramasse le pot",
           "id": 17,
           "positionX": 0,
           "positionY": 0,
@@ -625,7 +625,7 @@
           "timeout": -1
         },
         {
-          "desc": "On se libère",
+          "description": "On se libère",
           "id": 18,
           "positionX": 612,
           "positionY": 500,
@@ -637,7 +637,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 19,
           "positionX": 250,
           "positionY": 785,
@@ -649,7 +649,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 20,
           "positionX": 0,
           "positionY": 785,
@@ -661,7 +661,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 21,
           "positionX": 215,
           "positionY": 785,
@@ -673,7 +673,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 22,
           "positionX": 0,
           "positionY": 785,
@@ -685,7 +685,7 @@
           "timeout": -1
         },
         {
-          "desc": "On lache tout",
+          "description": "On lache tout",
           "id": 23,
           "positionX": 0,
           "positionY": 0,
@@ -696,7 +696,7 @@
           "timeout": -1
         },
         {
-          "desc": "On range le bras",
+          "description": "On range le bras",
           "id": 24,
           "positionX": 0,
           "positionY": 0,
@@ -707,7 +707,7 @@
           "timeout": -1
         },
         {
-          "desc": "On se libère",
+          "description": "On se libère",
           "id": 25,
           "positionX": 0,
           "positionY": 0,
@@ -719,7 +719,7 @@
           "timeout": -1
         },
         {
-          "desc": "A fond !!!",
+          "description": "A fond !!!",
           "id": 26,
           "positionX": 0,
           "positionY": 0,
@@ -733,13 +733,13 @@
       ]
     },
     {
-      "desc": "Panneaux solaire",
+      "description": "Panneaux solaire",
       "id": 4,
       "points": 10,
-      "priorite": 1,
-      "taches": [
+      "priority": 1,
+      "tasks": [
         {
-          "desc": "Position plante",
+          "description": "Position plante",
           "id": 1,
           "positionX": 450,
           "positionY": 650,
@@ -751,7 +751,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position plante",
+          "description": "Position plante",
           "id": 2,
           "positionX": 450,
           "positionY": 450,
@@ -765,15 +765,15 @@
       ]
     }
   ],
-  "couleur3000": [
+  "color3000": [
     {
-      "desc": "Panneaux solaire",
+      "description": "Panneaux solaire",
       "id": 1,
       "points": 15,
-      "priorite": 1,
-      "taches": [
+      "priority": 1,
+      "tasks": [
         {
-          "desc": "Sortie doigt solaire gauche",
+          "description": "Sortie doigt solaire gauche",
           "id": 1,
           "positionX": 0,
           "positionY": 0,
@@ -784,7 +784,7 @@
           "timeout": -1
         },
         {
-          "desc": "Pas trop vite !!",
+          "description": "Pas trop vite !!",
           "id": 2,
           "positionX": 0,
           "positionY": 3000,
@@ -796,7 +796,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 1",
+          "description": "Panneau 1",
           "id": 3,
           "positionX": 1800,
           "positionY": 2650,
@@ -808,7 +808,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 1",
+          "description": "Panneau 1",
           "id": 4,
           "positionX": 1800,
           "positionY": 0,
@@ -820,7 +820,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 2",
+          "description": "Panneau 2",
           "id": 5,
           "positionX": 1800,
           "positionY": 2400,
@@ -832,7 +832,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 2",
+          "description": "Panneau 2",
           "id": 6,
           "positionX": 1800,
           "positionY": 0,
@@ -844,7 +844,7 @@
           "timeout": -1
         },
         {
-          "desc": "Panneau 3",
+          "description": "Panneau 3",
           "id": 7,
           "positionX": 1800,
           "positionY": 2250,
@@ -856,7 +856,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ranger doigt solaire gauche",
+          "description": "Ranger doigt solaire gauche",
           "id": 8,
           "positionX": 0,
           "positionY": 0,
@@ -867,7 +867,7 @@
           "timeout": -1
         },
         {
-          "desc": "A fond !!!",
+          "description": "A fond !!!",
           "id": 9,
           "positionX": 0,
           "positionY": 3000,
@@ -881,13 +881,13 @@
       ]
     },
     {
-      "desc": "Plante jardinière",
+      "description": "Plante jardinière",
       "id": 2,
       "points": 5,
-      "priorite": 1,
-      "taches": [
+      "priority": 1,
+      "tasks": [
         {
-          "desc": "Position plante",
+          "description": "Position plante",
           "id": 1,
           "positionX": 700,
           "positionY": 2420,
@@ -899,7 +899,7 @@
           "timeout": -1
         },
         {
-          "desc": "Alignement plante",
+          "description": "Alignement plante",
           "id": 2,
           "positionX": 700,
           "positionY": 0,
@@ -911,7 +911,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ramasse plante",
+          "description": "Ramasse plante",
           "id": 3,
           "positionX": 0,
           "positionY": 3000,
@@ -922,7 +922,7 @@
           "timeout": -1
         },
         {
-          "desc": "Pas trop vite !!",
+          "description": "Pas trop vite !!",
           "id": 4,
           "positionX": 0,
           "positionY": 3000,
@@ -934,7 +934,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 5,
           "positionX": 0,
           "positionY": 3000,
@@ -945,7 +945,7 @@
           "timeout": -1
         },
         {
-          "desc": "Alignement plante",
+          "description": "Alignement plante",
           "id": 6,
           "positionX": 700,
           "positionY": 0,
@@ -957,7 +957,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 7,
           "positionX": 0,
           "positionY": 3000,
@@ -968,7 +968,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 8,
           "positionX": 0,
           "positionY": 3000,
@@ -979,7 +979,7 @@
           "timeout": -1
         },
         {
-          "desc": "Sortie plante",
+          "description": "Sortie plante",
           "id": 9,
           "positionX": 700,
           "positionY": 2350,
@@ -991,7 +991,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 10,
           "positionX": 612,
           "positionY": 2610,
@@ -1003,7 +1003,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 11,
           "positionX": 612,
           "positionY": 3000,
@@ -1015,7 +1015,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position pot",
+          "description": "Ajustement position pot",
           "id": 12,
           "positionX": 0,
           "positionY": 3000,
@@ -1026,7 +1026,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 13,
           "positionX": 612,
           "positionY": 3000,
@@ -1038,7 +1038,7 @@
           "timeout": -1
         },
         {
-          "desc": "Depose plante",
+          "description": "Depose plante",
           "id": 14,
           "positionX": 0,
           "positionY": 3000,
@@ -1049,7 +1049,7 @@
           "timeout": -1
         },
         {
-          "desc": "Depose plante",
+          "description": "Depose plante",
           "id": 15,
           "positionX": 0,
           "positionY": 3000,
@@ -1060,7 +1060,7 @@
           "timeout": -1
         },
         {
-          "desc": "On baisse la pince pour ramasser le pot",
+          "description": "On baisse la pince pour ramasser le pot",
           "id": 16,
           "positionX": 0,
           "positionY": 3000,
@@ -1071,7 +1071,7 @@
           "timeout": -1
         },
         {
-          "desc": "On ramasse le pot",
+          "description": "On ramasse le pot",
           "id": 17,
           "positionX": 0,
           "positionY": 3000,
@@ -1082,7 +1082,7 @@
           "timeout": -1
         },
         {
-          "desc": "On se libère",
+          "description": "On se libère",
           "id": 18,
           "positionX": 612,
           "positionY": 2500,
@@ -1094,7 +1094,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 19,
           "positionX": 250,
           "positionY": 2215,
@@ -1106,7 +1106,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 20,
           "positionX": 0,
           "positionY": 2215,
@@ -1118,7 +1118,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 21,
           "positionX": 215,
           "positionY": 2215,
@@ -1130,7 +1130,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 22,
           "positionX": 0,
           "positionY": 2215,
@@ -1142,7 +1142,7 @@
           "timeout": -1
         },
         {
-          "desc": "On lache tout",
+          "description": "On lache tout",
           "id": 23,
           "positionX": 0,
           "positionY": 3000,
@@ -1153,7 +1153,7 @@
           "timeout": -1
         },
         {
-          "desc": "On range le bras",
+          "description": "On range le bras",
           "id": 24,
           "positionX": 0,
           "positionY": 3000,
@@ -1164,7 +1164,7 @@
           "timeout": -1
         },
         {
-          "desc": "On se libère",
+          "description": "On se libère",
           "id": 25,
           "positionX": 0,
           "positionY": 3000,
@@ -1176,7 +1176,7 @@
           "timeout": -1
         },
         {
-          "desc": "A fond !!!",
+          "description": "A fond !!!",
           "id": 26,
           "positionX": 0,
           "positionY": 3000,
@@ -1190,13 +1190,13 @@
       ]
     },
     {
-      "desc": "Plante jardinière",
+      "description": "Plante jardinière",
       "id": 3,
       "points": 5,
-      "priorite": 1,
-      "taches": [
+      "priority": 1,
+      "tasks": [
         {
-          "desc": "Position plante",
+          "description": "Position plante",
           "id": 1,
           "positionX": 700,
           "positionY": 2420,
@@ -1208,7 +1208,7 @@
           "timeout": -1
         },
         {
-          "desc": "Alignement plante",
+          "description": "Alignement plante",
           "id": 2,
           "positionX": 700,
           "positionY": 0,
@@ -1220,7 +1220,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ramasse plante",
+          "description": "Ramasse plante",
           "id": 3,
           "positionX": 0,
           "positionY": 3000,
@@ -1231,7 +1231,7 @@
           "timeout": -1
         },
         {
-          "desc": "Pas trop vite !!",
+          "description": "Pas trop vite !!",
           "id": 4,
           "positionX": 0,
           "positionY": 3000,
@@ -1243,7 +1243,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 5,
           "positionX": 0,
           "positionY": 3000,
@@ -1254,7 +1254,7 @@
           "timeout": -1
         },
         {
-          "desc": "Alignement plante",
+          "description": "Alignement plante",
           "id": 6,
           "positionX": 700,
           "positionY": 0,
@@ -1266,7 +1266,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 7,
           "positionX": 0,
           "positionY": 3000,
@@ -1277,7 +1277,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position plante",
+          "description": "Ajustement position plante",
           "id": 8,
           "positionX": 0,
           "positionY": 3000,
@@ -1288,7 +1288,7 @@
           "timeout": -1
         },
         {
-          "desc": "Sortie plante",
+          "description": "Sortie plante",
           "id": 9,
           "positionX": 700,
           "positionY": 2350,
@@ -1300,7 +1300,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 10,
           "positionX": 612,
           "positionY": 2610,
@@ -1312,7 +1312,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 11,
           "positionX": 612,
           "positionY": 3000,
@@ -1324,7 +1324,7 @@
           "timeout": -1
         },
         {
-          "desc": "Ajustement position pot",
+          "description": "Ajustement position pot",
           "id": 12,
           "positionX": 0,
           "positionY": 3000,
@@ -1335,7 +1335,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position pot",
+          "description": "Position pot",
           "id": 13,
           "positionX": 612,
           "positionY": 3000,
@@ -1347,7 +1347,7 @@
           "timeout": -1
         },
         {
-          "desc": "Depose plante",
+          "description": "Depose plante",
           "id": 14,
           "positionX": 0,
           "positionY": 3000,
@@ -1358,7 +1358,7 @@
           "timeout": -1
         },
         {
-          "desc": "Depose plante",
+          "description": "Depose plante",
           "id": 15,
           "positionX": 0,
           "positionY": 3000,
@@ -1369,7 +1369,7 @@
           "timeout": -1
         },
         {
-          "desc": "On baisse la pince pour ramasser le pot",
+          "description": "On baisse la pince pour ramasser le pot",
           "id": 16,
           "positionX": 0,
           "positionY": 3000,
@@ -1380,7 +1380,7 @@
           "timeout": -1
         },
         {
-          "desc": "On ramasse le pot",
+          "description": "On ramasse le pot",
           "id": 17,
           "positionX": 0,
           "positionY": 3000,
@@ -1391,7 +1391,7 @@
           "timeout": -1
         },
         {
-          "desc": "On se libère",
+          "description": "On se libère",
           "id": 18,
           "positionX": 612,
           "positionY": 2500,
@@ -1403,7 +1403,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 19,
           "positionX": 250,
           "positionY": 2215,
@@ -1415,7 +1415,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 20,
           "positionX": 0,
           "positionY": 2215,
@@ -1427,7 +1427,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 21,
           "positionX": 215,
           "positionY": 2215,
@@ -1439,7 +1439,7 @@
           "timeout": -1
         },
         {
-          "desc": "On va a la jardiniere",
+          "description": "On va a la jardiniere",
           "id": 22,
           "positionX": 0,
           "positionY": 2215,
@@ -1451,7 +1451,7 @@
           "timeout": -1
         },
         {
-          "desc": "On lache tout",
+          "description": "On lache tout",
           "id": 23,
           "positionX": 0,
           "positionY": 3000,
@@ -1462,7 +1462,7 @@
           "timeout": -1
         },
         {
-          "desc": "On range le bras",
+          "description": "On range le bras",
           "id": 24,
           "positionX": 0,
           "positionY": 3000,
@@ -1473,7 +1473,7 @@
           "timeout": -1
         },
         {
-          "desc": "On se libère",
+          "description": "On se libère",
           "id": 25,
           "positionX": 0,
           "positionY": 3000,
@@ -1485,7 +1485,7 @@
           "timeout": -1
         },
         {
-          "desc": "A fond !!!",
+          "description": "A fond !!!",
           "id": 26,
           "positionX": 0,
           "positionY": 3000,
@@ -1499,13 +1499,13 @@
       ]
     },
     {
-      "desc": "Panneaux solaire",
+      "description": "Panneaux solaire",
       "id": 4,
       "points": 10,
-      "priorite": 1,
-      "taches": [
+      "priority": 1,
+      "tasks": [
         {
-          "desc": "Position plante",
+          "description": "Position plante",
           "id": 1,
           "positionX": 450,
           "positionY": 2350,
@@ -1517,7 +1517,7 @@
           "timeout": -1
         },
         {
-          "desc": "Position plante",
+          "description": "Position plante",
           "id": 2,
           "positionX": 450,
           "positionY": 2550,

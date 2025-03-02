@@ -96,7 +96,7 @@ class DetectionManager:
 
         return Position(x_obstacle_relative_to_table, y_obstacle_relative_to_table)
 
-    def is_emergency_detection_front(self) -> bool:
+    def is_emergency_detection_front(self, ignore_direction: bool = False) -> bool:
         """
         Check if an emergency detection is triggered by the front sensors.
 
@@ -104,7 +104,7 @@ class DetectionManager:
             bool: True if an emergency detection is triggered, False otherwise.
         """
 
-        if self.asserv.direction != MovementDirection.FORWARD:
+        if not ignore_direction and self.asserv.direction != MovementDirection.FORWARD:
             return False
 
         for sensor in self.sensors[:-1]:
@@ -112,7 +112,7 @@ class DetectionManager:
                 return self.must_stop(self.get_obstacle_position(sensor, sensor.get_distance()))
         return False
 
-    def is_emergency_detection_back(self) -> bool:
+    def is_emergency_detection_back(self, ignore_direction: bool = False) -> bool:
         """
         Check if an emergency detection is triggered by the back sensor.
 
@@ -120,7 +120,7 @@ class DetectionManager:
             bool: True if an emergency detection is triggered, False otherwise.
         """
 
-        if self.asserv.direction != MovementDirection.BACKWARD:
+        if not ignore_direction and self.asserv.direction != MovementDirection.BACKWARD:
             return False
 
         sensor = self.sensors[-1]

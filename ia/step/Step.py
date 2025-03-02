@@ -10,7 +10,7 @@ class Step:
 
     Attributes
     ----------
-    desc : str
+    description : str
         Description of the step.
     step_id : int
         Identifier of the step.
@@ -72,7 +72,7 @@ class Step:
             Flag indicating if the step is needed, default is False.
         """
 
-        self.desc = config_node["desc"]
+        self.description = config_node["description"]
         self.step_id = config_node["id"]
         self.id_action = config_node["actionId"]
 
@@ -84,19 +84,21 @@ class Step:
             self.sub_type = config_node["subtype"].upper()
             if not self.sub_type in StepSubType:
                 raise ValueError(f"Unknown subtype: {self.sub_type}")
-            self.distance = config_node.get("dist", 0)
-            self.timeout = config_node.get("timeout", 0)
-            self.position = Position(config_node.get("positionX", 0), config_node.get("positionY", 0))
-            self.distance = config_node.get("dist", 0)
-            self.item_id = config_node.get("itemId", None)
-            self.y_positive_exclusive = config_node.get("yPositiveExclusive", False)
-            self.y_negative_exclusive = config_node.get("yNegativeExclusive", False)
+        else:
+            self.sub_type = None
+        self.distance = config_node.get("dist", 0)
+        self.timeout = config_node.get("timeout", 0)
+        self.position = Position(config_node.get("positionX", 0), config_node.get("positionY", 0))
+        self.distance = config_node.get("dist", 0)
+        self.item_id = config_node.get("itemId", None)
+        self.y_positive_exclusive = config_node.get("yPositiveExclusive", False)
+        self.y_negative_exclusive = config_node.get("yNegativeExclusive", False)
 
         self.skip_flag = config_node.get("skipFlag", False)
         self.needed_flag = config_node.get("neededFlag", False)
 
     def __str__(self):
-        return (f"Step{{desc='{self.desc}', step_id={self.step_id}, id_action={self.id_action}, "
+        return (f"Step{{desc='{self.description}', step_id={self.step_id}, id_action={self.id_action}, "
                 f"position={self.position}, action_type={self.action_type}, sub_type={self.sub_type}, "
                 f"distance={self.distance}, y_positive_exclusive={self.y_positive_exclusive}, "
                 f"y_negative_exclusive={self.y_negative_exclusive}}}")

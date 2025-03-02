@@ -49,6 +49,7 @@ class ActionRepositoryFactory:
                                     if "list" in action_config["payload"]:
                                         action_list = ActionList(action_repository, action_config["payload"]["list"], None)
                                         actions[action_id_long] = action_list
+                                # todo ajouter les actions Serial pour ascenseur et autres
                                 else:
                                     raise Exception(f"Unhandled action type : {action_type}")
                             if "alias" in action_config:

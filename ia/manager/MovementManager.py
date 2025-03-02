@@ -21,6 +21,17 @@ class MovementManager:
         self.is_match_started = False
         self.current_step = None
 
+    def current_position(self) -> Position:
+        """
+        Get the current position of the robot.
+
+        Returns
+        -------
+        Position
+            The current position of the robot.
+        """
+        return self.asserv.position
+
     def execute_movement(self, trajectory: list[Position]) -> None:
         """
         Call for a goto solved by astar.
