@@ -44,11 +44,8 @@ class StrategyManager:
                 self.action_finished[objective_config.get('id')] = False
 
     def __str__(self) -> str:
-        return (f'StrategyManager(year={self.year}, '
-            f'current_index={self.current_index}, '
-            f'objectives={self.objectives}, '
-            f'action_flags={self.action_flags}, '
-            f'action_finished={self.action_finished})')
+        return (f"StrategyManager(year={self.year}, current_index={self.current_index}, objectives={self.objectives}, "
+                f"action_flags={self.action_flags}, action_finished={self.action_finished})")
 
     def add_action_flag(self, flag: str) -> None:
         """

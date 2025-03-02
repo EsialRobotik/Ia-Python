@@ -2,6 +2,7 @@ import logging.handlers
 import sys
 
 from ia.tests import TestPathfinding
+from ia.tests.TestStrategyManager import TestStrategyManager
 
 logger = logging.getLogger(__name__)
 
@@ -50,27 +51,29 @@ if __name__ == "__main__":
         config_file.close()
         match args.mode:
             case 'chrono':
-                TestChrono(config_data).test()
+                TestChrono(config_data, args.year).test()
             case 'pullcord':
-                TestPullCord(config_data).test()
+                TestPullCord(config_data, args.year).test()
             case 'color':
-                TestColorSelector(config_data).test()
+                TestColorSelector(config_data, args.year).test()
             case 'nextion':
-                TestNextion(config_data).test()
+                TestNextion(config_data, args.year).test()
             case 'log_socket':
-                TestLogSocket(config_data).test()
+                TestLogSocket(config_data, args.year).test()
             case 'com_socket':
-                TestCommunicationSocket(config_data).test()
+                TestCommunicationSocket(config_data, args.year).test()
             case 'ax12':
-                TestAX12(config_data).test()
+                TestAX12(config_data, args.year).test()
             case 'srf04':
-                TestSrf04(config_data).test()
+                TestSrf04(config_data, args.year).test()
             case 'lidar':
-                TestLidar(config_data).test()
+                TestLidar(config_data, args.year).test()
             case 'asserv':
-                TestAsserv(config_data).test()
+                TestAsserv(config_data, args.year).test()
             case 'actions':
-                TestActions(config_data).test()
+                TestActions(config_data, args.year).test()
             case 'pathfinding':
-                TestPathfinding(config_data).test()
+                TestPathfinding(config_data, args.year).test()
+            case 'strategy':
+                TestStrategyManager(config_data, args.year).test()
         

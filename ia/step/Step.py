@@ -1,6 +1,7 @@
 from typing import Dict
 
-from ia.step import StepType, StepSubType
+from ia.step.StepSubType import StepSubType
+from ia.step.StepType import StepType
 from ia.utils import Position
 
 

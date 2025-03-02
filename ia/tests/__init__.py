@@ -11,3 +11,4 @@ from .TestNextion import TestNextion
 from .TestPathfinding import TestPathfinding
 from .TestPullCord import TestPullCord
 from .TestSrf04 import TestSrf04
+from .TestStrategyManager import TestStrategyManager

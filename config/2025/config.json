@@ -1,7 +1,6 @@
 {
   "desc": "Configuration du robot 2025 - ?? Princess",
   "matchDuration": 89,
-  "commandFile": "configCollection.json",
 
   "gpioColorSelector": 5,
   "gpioPullCord": 23,
