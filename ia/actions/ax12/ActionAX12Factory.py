@@ -31,9 +31,9 @@ class ActionAX12Factory:
                     position = AX12Position.buildFromDegrees(json_object["angleRaw"])
                 else:
                     raise Exception("No 'angleRaw' nor 'angleDegree' property found in AX12 json of type position")
-                return ActionAX12Position(ActionAX12Factory.ax12_from_json(ax12_link), position)
+                return ActionAX12Position(ActionAX12Factory.ax12_from_json(json_object, ax12_link), position)
             elif ax12_action_type == "disableTorque":
-                return ActionAX12DisableTorque(ActionAX12Factory.ax12_from_json(ax12_link))
+                return ActionAX12DisableTorque(ActionAX12Factory.ax12_from_json(json_object, ax12_link))
             raise Exception(f"Unhandled AX12 json type {ax12_action_type}")
         raise Exception("Property 'type' not found in AX12 json")
 

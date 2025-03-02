@@ -73,4 +73,5 @@ if __name__ == "__main__":
                 TestPathfinding(config_data, args.year).test()
             case 'strategy':
                 TestStrategyManager(config_data, args.year).test()
-        
+            case default:
+                raise logger.error(f"Mode {args.mode} does not exist")

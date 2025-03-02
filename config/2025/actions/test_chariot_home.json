@@ -1,0 +1,16 @@
+{
+    "type": "actuator",
+    "alias": "H",
+    "description": "Teste le home du chariot",
+    "payload": {
+        "actuatorLink": "chariot",
+        "commands": [
+            {
+                "command": "z",
+                "comment": "home chariot",
+                "async": false,
+                "timeout": 3
+            }
+        ]
+    }
+}

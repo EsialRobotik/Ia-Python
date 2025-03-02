@@ -7,6 +7,8 @@ from ia.actions.ActionRepository import ActionRepository
 from ia.actions.ActionWait import ActionWait
 from ia.actions.ax12.ActionAX12Factory import ActionAX12Factory
 from ia.api.ax12 import AX12LinkSerial
+from ia.actions.actuators.ActuatorLinkRepository import ActuatorLinkRepository
+from ia.actions.actuators.ActuatorActionFactory import ActuatorActionFactory
 
 
 class ActionRepositoryFactory:
@@ -15,7 +17,7 @@ class ActionRepositoryFactory:
     """
 
     @staticmethod
-    def from_json_files(folder: str, ax12_link_serial: AX12LinkSerial) -> ActionRepository:
+    def from_json_files(folder: str, ax12_link_serial: AX12LinkSerial, actuator_link_repository: ActuatorLinkRepository) -> ActionRepository:
         """
         Read all actions json found into the given folder and put them into an ActionRepository object
         """
@@ -37,21 +39,23 @@ class ActionRepositoryFactory:
 
                             if "type" in action_config:
                                 action_type = action_config["type"]
-                                if action_type == "AX12":
-                                    ax12_action = ActionAX12Factory.action_ax12_from_json(action_config["payload"], ax12_link_serial)
-                                    actions[action_id_long] = ax12_action
-                                elif action_type == "wait":
-                                    if "duration" in action_config["payload"]:
-                                        actions[action_id_long] = ActionWait(action_config["payload"]["duration"], None)
-                                    else:
-                                        raise Exception(f"'duration' not found in wait action config payload")
-                                elif action_type == "list":
-                                    if "list" in action_config["payload"]:
-                                        action_list = ActionList(action_repository, action_config["payload"]["list"], None)
-                                        actions[action_id_long] = action_list
-                                # todo ajouter les actions Serial pour ascenseur et autres
-                                else:
-                                    raise Exception(f"Unhandled action type : {action_type}")
+                                match action_type:
+                                    case "AX12":
+                                        ax12_action = ActionAX12Factory.action_ax12_from_json(action_config["payload"], ax12_link_serial)
+                                        actions[action_id_long] = ax12_action
+                                    case "wait":
+                                        if "duration" in action_config["payload"]:
+                                            actions[action_id_long] = ActionWait(action_config["payload"]["duration"], None)
+                                        else:
+                                            raise Exception(f"'duration' not found in wait action config payload")
+                                    case "list":
+                                        if "list" in action_config["payload"]:
+                                            action_list = ActionList(action_repository, action_config["payload"]["list"], None)
+                                            actions[action_id_long] = action_list
+                                    case "actuator":
+                                        actions[action_id_long] = ActuatorActionFactory.action_actuator_from_json(action_config["payload"], actuator_link_repository)
+                                    case default:
+                                        raise Exception(f"Unhandled action type : {action_type}")
                             if "alias" in action_config:
                                 action_alias = action_config["alias"]
                                 if action_alias in actions:

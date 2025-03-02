@@ -4,6 +4,7 @@ import time
 from ia.actions.ActionRepositoryFactory import ActionRepositoryFactory
 from ia.api.ax12 import AX12LinkSerial
 from ia.tests import AbstractTest
+from ia.actions.actuators.ActuatorLinkRepositoryFactory import ActuatorLinkRepositoryFactory
 
 
 class TestActions(AbstractTest):
@@ -37,9 +38,12 @@ class TestActions(AbstractTest):
             Continuously blink the AX12 led every second.
         """
 
-        logger.info(f"Instanciation de la laision série {self.config_data['actions']['ax12']['serie']}@{self.config_data['actions']['ax12']['baud']}...")
-        link = AX12LinkSerial(self.config_data['actions']['ax12']['serie'], self.config_data['actions']['ax12']['baud'])
-        actionRepo = ActionRepositoryFactory.from_json_files(self.config_data['actions']['dataDir'], link)
+        logger.info(f"Instanciation of ax12 serial link {self.config_data['actions']['ax12']['serie']}@{self.config_data['actions']['ax12']['baud']}...")
+        ax12_link_serial = AX12LinkSerial(self.config_data['actions']['ax12']['serie'], self.config_data['actions']['ax12']['baud'])
+        logger.info("Instanciation of actuators serial links...")
+        actuator_link_repository = ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(self.config_data['actions']['actuators'])
+        logger.info("Instanciation action repository...")
+        actionRepo = ActionRepositoryFactory.from_json_files(self.config_data['actions']['dataDir'], ax12_link_serial, actuator_link_repository)
 
         while True:
             command = input("Action: ")
