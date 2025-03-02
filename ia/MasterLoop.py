@@ -7,7 +7,9 @@ import threading
 import time
 from typing import Optional, Dict
 
+from ia.actions import ActionRepositoryFactory
 from ia.api import Chrono, PullCord, NextionNX32224T024
+from ia.api.ax12 import AX12LinkSerial
 from ia.api.detection.lidar import Lidar
 from ia.api.detection.ultrasound import Srf04
 from ia.asserv import AsservStatus, Asserv
@@ -360,11 +362,18 @@ if __name__ == "__main__":
 
         # Init action manager
         logger.info("Init action manager")
-        # todo
+        ax12_link = AX12LinkSerial(
+            serial_port=config_data["action"]["ax12"]["serialPort"],
+            baud_rate=config_data["action"]["ax12"]["baudRate"]
+        )
+        action_repository = ActionRepositoryFactory.from_json_files(
+            folder=config_data['actions']['dataDir'],
+            ax12_link_serial=ax12_link
+        )
         action_manager = ActionManager(
-            action_repository={},
-            ax12_link={},
-            actions_config={},
+            action_repository=action_repository,
+            ax12_link=ax12_link,
+            actions_config=config_data["actions"],
         )
         logger.info("Init action manager OK")
 
