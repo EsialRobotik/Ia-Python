@@ -154,13 +154,13 @@ class MovementManager:
             self.current_step = None
         return is_finished
 
-    def go_start(self, is_color0: bool) -> None:
+    def go_start(self, color: str) -> None:
         """
         Executes the goStart command on the asserv.
 
         Parameters:
         ----------
-        is_color0 : bool
+        color : str
             Determines the starting configuration based on color.
 
         Returns:
@@ -168,7 +168,7 @@ class MovementManager:
         None
         """
         try:
-            self.asserv.go_start(is_color0)
+            self.asserv.go_start(color)
         except Exception as e:
             self.logger.error(e)
 

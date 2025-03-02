@@ -466,12 +466,11 @@ class Asserv:
         while self.asserv_status == AsservStatus.STATUS_RUNNING and (int(time.time()) - start_time) * 1000 < timeout_ms:
             time.sleep(0.01)
 
-    def go_start(self, is_color0: bool) -> None:
+    def go_start(self, color: str) -> None:
         """
         Executes a series of movement instructions to start the robot.
         Parameters:
-        is_color0 (bool): Determines the starting configuration based on color. 
-                          If True, uses "start0" configuration, otherwise uses "start3000".
+        color (str): Determines the starting configuration based on color
         The method processes a list of instructions, where each instruction is a dictionary 
         containing the type of movement and associated parameters. The supported instruction 
         types are:
@@ -491,7 +490,7 @@ class Asserv:
         The method also logs each instruction and its execution status.
         """
 
-        start = self.gostart_config["start0" if is_color0 else "start3000"]
+        start = self.gostart_config[color]
         self.set_speed_callage(25)
         time.sleep(0.15)
         for instruction in start:

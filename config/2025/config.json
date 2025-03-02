@@ -2,7 +2,6 @@
   "desc": "Configuration du robot 2025 - ?? Princess",
   "matchDuration": 89,
 
-  "gpioColorSelector": 5,
   "gpioPullCord": 23,
   "nextion": {
     "baudRate": 115200,
@@ -72,7 +71,8 @@
   "asserv": {
     "baudRate": 115200,
     "serialPort": "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066FFF383133524157185717-if02",
-    "start0": [
+    "goStart": {
+      "bleu": [
       {
         "type": "go_timed",
         "dist": -200
@@ -124,7 +124,7 @@
         "y": 3000
       }
     ],
-    "start3000": [
+      "jaune": [
       {
         "type": "go_timed",
         "dist": -200
@@ -176,6 +176,7 @@
         "y": 0
       }
     ]
+    }
   },
   "actions": {
     "ax12": {
@@ -197,15 +198,15 @@
   "table": {
     "sizeX": 2000,
     "sizeY": 3000,
-    "color0": "Bleu",
-    "color3000": "Jaune",
+    "color0": "bleu",
+    "color3000": "jaune",
     "marge": 180,
     "forbiddenZones": [
       {
         "id": "start0_1",
         "forme": "polygone",
         "desc": "Depart Bleu 1",
-        "type": "color3000",
+        "type": "jaune",
         "points": [
           {
             "x": 0,
@@ -229,7 +230,7 @@
         "id": "start0_2",
         "forme": "polygone",
         "desc": "Depart Bleu 2",
-        "type": "color3000",
+        "type": "jaune",
         "points": [
           {
             "x": 1550,
@@ -253,7 +254,7 @@
         "id": "start0_3",
         "forme": "polygone",
         "desc": "Depart Bleu 3",
-        "type": "color3000",
+        "type": "jaune",
         "points": [
           {
             "x": 775,
@@ -277,7 +278,7 @@
         "id": "start3000_1",
         "forme": "polygone",
         "desc": "Depart Jaune 1",
-        "type": "color0",
+        "type": "bleu",
         "points": [
           {
             "x": 0,
@@ -301,7 +302,7 @@
         "id": "start3000_2",
         "forme": "polygone",
         "desc": "Depart Jaune 2",
-        "type": "color0",
+        "type": "bleu",
         "points": [
           {
             "x": 1550,
@@ -325,7 +326,7 @@
         "id": "start3000_3",
         "forme": "polygone",
         "desc": "Depart Jaune 3",
-        "type": "color0",
+        "type": "bleu",
         "points": [
           {
             "x": 775,

@@ -1,25 +1,21 @@
+import argparse
+import json
 import logging.handlers
 import sys
 
 from ia.tests import TestPathfinding
 from ia.tests.TestStrategyManager import TestStrategyManager
-
-logger = logging.getLogger(__name__)
-
-import argparse
-import json
-
-from tests.TestChrono import TestChrono
-from tests.TestPullCord import TestPullCord
-from tests.TestColorSelector import TestColorSelector
-from tests.TestNextion import TestNextion
-from tests.TestLogSocket import TestLogSocket
-from tests.TestCommunicationSocket import TestCommunicationSocket
 from tests.TestAX12 import TestAX12
-from tests.TestSrf04 import TestSrf04
-from tests.TestLidar import TestLidar
-from tests.TestAsserv import TestAsserv
 from tests.TestActions import TestActions
+from tests.TestAsserv import TestAsserv
+from tests.TestChrono import TestChrono
+from tests.TestColorSelector import TestColorSelector
+from tests.TestCommunicationSocket import TestCommunicationSocket
+from tests.TestLidar import TestLidar
+from tests.TestLogSocket import TestLogSocket
+from tests.TestNextion import TestNextion
+from tests.TestPullCord import TestPullCord
+from tests.TestSrf04 import TestSrf04
 
 if __name__ == "__main__":
     # manage arguments
@@ -42,6 +38,7 @@ if __name__ == "__main__":
     # add the handlers to the logger
     logging.getLogger().addHandler(file_handler)
     logging.getLogger().addHandler(stdout_handler)
+    logger = logging.getLogger(__name__)
     logger.info("init logger")
 
     # run the test
