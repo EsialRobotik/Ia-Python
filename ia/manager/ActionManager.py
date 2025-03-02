@@ -10,6 +10,21 @@ from ia.api.ax12 import AX12LinkSerial
 class ActionManager:
     """
     Manages the execution of actions using a repository and AX12 actuators.
+
+    Attributes
+    ----------
+    action_repository : ActionRepository
+        The repository containing available actions.
+    ax12_link : AX12LinkSerial
+        The serial link to the AX12 actuators.
+    actions_config : Dict
+        The configuration dictionary for actions.
+    action_flag : str, optional
+        List of flags for the current action.
+    current_action : AbstractAction
+        The current action being executed.
+    logger : logging.Logger
+        Logger for the ActionManager.
     """
 
     def __init__(self, action_repository: ActionRepository, ax12_link: AX12LinkSerial, actions_config: Dict) -> None:
@@ -77,7 +92,7 @@ class ActionManager:
             True if the last execution is finished, False otherwise.
         """
         if self.current_action.finished():
-            self.action_flag = self.current_action.get_action_flag()
+            self.action_flag = self.current_action.get_flag()
             return True
         return False
 

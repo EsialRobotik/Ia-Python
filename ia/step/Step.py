@@ -33,10 +33,12 @@ class Step:
         Flag indicating if the step is exclusive to positive Y coordinates, default is False.
     y_negative_exclusive : bool, optional
         Flag indicating if the step is exclusive to negative Y coordinates, default is False.
-    skip_flag : bool, optional
-        Flag indicating if the step should be skipped, default is False.
-    needed_flag : bool, optional
-        Flag indicating if the step is needed, default is False.
+    skip_flag : str, optional
+            Flag indicating if the step should be skipped, default is None.
+    needed_flag : str, optional
+        Flag needed to execute the step, default is None.
+    action_flag : str, optional
+        Flag raised when step is finished, default is None.
     """
 
     def __init__(self, config_node: Dict):
@@ -45,32 +47,8 @@ class Step:
 
         Attributes
         ----------
-        desc : str
-            Description of the step.
-        step_id : int
-            Identifier of the step.
-        id_action : int
-            Identifier of the action associated with the step.
-        action_type : StepType
-            Type of the action.
-        sub_type : StepSubType, optional
-            Subtype of the action, if applicable.
-        distance : int, optional
-            Distance associated with the step, default is 0.
-        timeout : int, optional
-            Timeout for the step, default is 0.
-        position : Position, optional
-            Position associated with the step, default is (0, 0).
-        item_id : int, optional
-            Identifier of the item, if applicable.
-        y_positive_exclusive : bool, optional
-            Flag indicating if the step is exclusive to positive Y coordinates, default is False.
-        y_negative_exclusive : bool, optional
-            Flag indicating if the step is exclusive to negative Y coordinates, default is False.
-        skip_flag : bool, optional
-            Flag indicating if the step should be skipped, default is False.
-        needed_flag : bool, optional
-            Flag indicating if the step is needed, default is False.
+        config_node : Dict
+            Dictionary containing the configuration for the objective.
         """
 
         self.description = config_node["description"]
@@ -92,11 +70,12 @@ class Step:
         self.position = Position(config_node.get("positionX", 0), config_node.get("positionY", 0))
         self.distance = config_node.get("dist", 0)
         self.item_id = config_node.get("itemId", None)
-        self.y_positive_exclusive = config_node.get("yPositiveExclusive", False)
-        self.y_negative_exclusive = config_node.get("yNegativeExclusive", False)
+        self.y_positive_exclusive = config_node.get("yPositiveExclusive", None)
+        self.y_negative_exclusive = config_node.get("yNegativeExclusive", None)
 
-        self.skip_flag = config_node.get("skipFlag", False)
-        self.needed_flag = config_node.get("neededFlag", False)
+        self.skip_flag = config_node.get("skipFlag", None)
+        self.needed_flag = config_node.get("neededFlag", None)
+        self.action_flag = config_node.get("actionFlag", None)
 
     def __str__(self):
         return (f"Step{{desc='{self.description}', step_id={self.step_id}, id_action={self.id_action}, "

@@ -158,7 +158,7 @@ class MasterLoop:
                 path.append(Position(end_pos.x, end_pos.y))
                 while self.current_objective.get_next_step_real() is not None and \
                         self.current_objective.get_next_step_real().sub_type == StepSubType.GOTO_CHAIN:
-                    self.current_step = self.current_objective.get_next_step()
+                    self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
                     self.logger.info(f"Compute enchain, step = {self.current_step.description}")
                     end_pos = self.current_step.position
                     path.append(Position(end_pos.x, end_pos.y))
@@ -214,7 +214,7 @@ class MasterLoop:
 
         # Prepare first objective and step
         self.current_objective = self.strategy_manager.get_next_objective()
-        self.current_step = self.current_objective.get_next_step()
+        self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
         self.logger.info(f"Premier Objectif : {self.current_objective}")
         self.logger.info(f"Première Step : {self.current_step}")
 
@@ -267,21 +267,31 @@ class MasterLoop:
                 else:
                     if self.current_step_ended():
                         self.logger.info(f"Step terminée : {self.current_step.description}")
+
+                        if self.current_step.action_flag is not None:
+                            self.logger.info(f"Lever de l'action flage : {self.current_step.action_flag}")
+                            self.strategy_manager.add_action_flag(self.current_step.action_flag)
+
                         self.current_step = None
                         if self.current_objective.has_next_step():
-                            self.current_step = self.current_objective.get_next_step()
+                            self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
                             self.logger.info(f"Prochaine Step : {self.current_step.description}")
                         else:
                             self.logger.info(f"Objectif terminé : {self.current_objective.description} - {self.current_objective.points}")
                             self.score += self.current_objective.points
                             self.update_score()
+
+                            if self.current_objective.action_flag is not None:
+                                self.logger.info(f"Lever de l'action flage : {self.current_objective.action_flag}")
+                                self.strategy_manager.add_action_flag(self.current_objective.action_flag)
+
                             self.current_objective = self.strategy_manager.get_next_objective()
                             if self.current_objective is None:
                                 self.logger.info("Plus d'objectif, fin du match")
                                 break
                             else:
                                 self.logger.info(f"Prochain Objectif : {self.current_objective.description}")
-                                self.current_step = self.current_objective.get_next_step()
+                                self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
                                 self.logger.info(f"Première Step : {self.current_step.description}")
                         self.execute_current_step()
                     else:
