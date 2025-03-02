@@ -1,5 +1,5 @@
 import logging
-from typing import Dict
+from typing import Dict, Optional
 
 from ia.step import Step
 
@@ -32,7 +32,7 @@ class Objective:
         """
         return self.step_index < len(self.step_list) - 1
 
-    def get_next_step(self) -> Step | None:
+    def get_next_step(self) -> Optional[Step]:
         """
         Get the next step in the step list, considering skip and needed flags and increment cursor.
 
@@ -46,7 +46,7 @@ class Objective:
 
         return step
 
-    def get_next_step_real(self) -> Step | None:
+    def get_next_step_real(self) -> Optional[Step]:
         """
         Get the next step in the step list.
 

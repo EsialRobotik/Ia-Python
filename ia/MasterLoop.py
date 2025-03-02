@@ -1,8 +1,10 @@
 import logging
 import threading
 import time
+from typing import Optional
 
 from ia.api import ColorSelector, Chrono, PullCord, NextionNX32224T024
+from ia.asserv import AsservStatus
 from ia.manager import ActionManager, CommunicationManager, DetectionManager, MovementManager, StrategyManager
 from ia.pathfinding import Pathfinding
 from ia.step import StepType, StepSubType, Step, Objective
@@ -11,8 +13,8 @@ from ia.utils import Position
 
 class MasterLoop:
 
-    current_objective: Objective
-    current_step: Step
+    current_objective: Optional[Objective]
+    current_step: Optional[Step]
 
     def __init__(
         self,
@@ -199,7 +201,7 @@ class MasterLoop:
 
         # Lancement du match
         self.logger.info("Match lancé")
-        self.chrono.start()
+        self.chrono.start_match(self.match_end())
         self.nextion_display.goto_page("score")
         self.movement_manager.is_match_started = True
         self.execute_current_step()
@@ -237,13 +239,34 @@ class MasterLoop:
                         time.sleep(0.01)
                 else:
                     if self.current_step_ended():
-                        # todo dépiler et passer à l'action suivante
-                        pass
+                        self.logger.info(f"Step terminée : {self.current_step.description}")
+                        self.current_step = None
+                        if self.current_objective.has_next_step():
+                            self.current_step = self.current_objective.get_next_step()
+                            self.logger.info(f"Prochaine Step : {self.current_step.description}")
+                        else:
+                            self.logger.info(f"Objectif terminé : {self.current_objective.description} - {self.current_objective.points}")
+                            self.score += self.current_objective.points
+                            self.update_score()
+                            self.current_objective = self.strategy_manager.get_next_objective()
+                            if self.current_objective is None:
+                                self.logger.info("Plus d'objectif, fin du match")
+                                break
+                            else:
+                                self.logger.info(f"Prochain Objectif : {self.current_objective.description}")
+                                self.current_step = self.current_objective.get_next_step()
+                                self.logger.info(f"Première Step : {self.current_step.description}")
+                        self.execute_current_step()
                     else:
-                        # todo vérifier blocage asserv et réagir
-                        # todo vérifier trajectoire bloquée et réagir
-                        pass
-                    pass
+                        if (self.movement_manager.asserv.asserv_status == AsservStatus.STATUS_BLOCKED
+                                and (self.current_step.sub_type != StepSubType.GO or self.current_step.timeout == 0)):
+                            self.logger.info("Asserv bloquée")
+                            # todo faut faire un truc intelligent maintenant
+                        elif (self.current_step.sub_type == StepSubType.GOTO_ASTAR
+                              and self.detection_manager.is_trajectory_blocked(self.movement_manager.goto_queue)):
+                            self.logger.info("Trajectoire bloquée, lancement recalcul")
+                            self.movement_manager.halt_asserv(False)
+                            self.execute_current_step()
 
             # Si obstacle détecté par les SRF
             else:
@@ -258,4 +281,7 @@ class MasterLoop:
             # On check les communications serveurs
             self.communication_manager.read_from_server()
             time.sleep(0.001)
-            pass
+
+        self.logger.info("Fin de la boucle principale")
+        self.logger.info(f"Score final : {self.score}")
+        self.logger.info(f"Temps restant : {self.chrono}")

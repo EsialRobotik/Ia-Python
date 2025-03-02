@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 from ia.step import Objective
 
@@ -58,7 +59,7 @@ class StrategyManager:
         """
         self.action_flags.append(flag)
 
-    def get_next_objective(self) -> Objective | None:
+    def get_next_objective(self) -> Optional[Objective]:
         """
         Get the next objective to perform.
 

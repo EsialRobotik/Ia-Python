@@ -1,7 +1,5 @@
 import logging
 
-from ia.MasterLoop import MasterLoop
-
 logger = logging.getLogger(__name__)
 
 from datetime import datetime
@@ -57,20 +55,19 @@ class Chrono:
         chrono = self.match_duration - (current_time - self.timestamp_start)
         return f"{chrono} / {self.match_duration}"
 
-    def start_match(self, master_loop: MasterLoop) -> None:
+    def start_match(self, match_end: callable) -> None:
         """
         Starts the match timer and schedules the match end.
         This method records the current timestamp as the start time of the match
         and initializes a timer that will call the `match_end` method of the 
         `master_loop` object after the duration of the match has elapsed.
         Args:
-            master_loop (object): An object that contains the `match_end` method 
-                                  to be called when the match duration ends.
+            match_end (callable): A callback for the end of the match
         """
 
         logger.info("Starting match timer...")
-        self.timestamp_start = int(datetime.now().timestamp())
-        self.timer = threading.Timer(self.match_duration, master_loop.match_end)
+        self.start()
+        self.timer = threading.Timer(self.match_duration, match_end)
         self.timer.start()
 
     def start(self) -> None:
