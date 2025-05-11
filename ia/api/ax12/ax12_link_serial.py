@@ -1,12 +1,8 @@
 import logging
-import threading
 
 import serial
 
 from ia.api.ax12.ax12_exception import AX12Exception
-from ia.api.ax12.ax12_link_exception import AX12LinkException
-from ia.api.ax12.ax12_servo import AX12Servo
-from ia.api.ax12.enums.ax12_address import AX12Address
 
 
 class AX12LinkSerial:
@@ -125,18 +121,3 @@ class AX12LinkSerial:
             bool: True if RTS is enabled, False otherwise.
         """
         return self.rts_enabled
-
-    def disable_ax12_and_shutdown_link(self) -> None:
-        """
-        Disables the AX12 torque and shuts down the link.
-
-        Raises:
-            AX12Exception: If an error occurs while disabling the torque or closing the link.
-        """
-        with threading.Lock():
-            ax = AX12Servo(AX12Address.AX12_ADDRESS_BROADCAST.value, self)
-            try:
-                ax.disable_torque()
-                self.serial.close()
-            except (IOError, AX12LinkException, AX12Exception) as e:
-                self.logger.error(f"Error disabling AX12 torque or shutting down link: {e}")

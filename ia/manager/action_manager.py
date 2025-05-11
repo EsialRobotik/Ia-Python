@@ -6,7 +6,11 @@ from typing import Dict
 from ia.actions.abstract_action import AbstractAction
 from ia.actions.action_repository import ActionRepository
 from ia.api.ax12 import ax12_link_serial
+from ia.api.ax12.ax12_exception import AX12Exception
+from ia.api.ax12.ax12_link_exception import AX12LinkException
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
+from ia.api.ax12.ax12_servo import AX12Servo
+from ia.api.ax12.enums.ax12_address import AX12Address
 
 
 class ActionManager:
@@ -82,7 +86,14 @@ class ActionManager:
         """
         self.ax12_link.enable_dtr(False)
         self.ax12_link.enable_rts(False)
-        self.ax12_link.disable_ax12_and_shutdown_link()
+        # Disable torque for all AX12 servos
+        with threading.Lock():
+            ax = AX12Servo(AX12Address.AX12_ADDRESS_BROADCAST.value, self.ax12_link)
+            try:
+                ax.disable_torque()
+                self.ax12_link.serial.close()
+            except (IOError, AX12LinkException, AX12Exception) as e:
+                self.logger.error(f"Error disabling AX12 torque or shutting down link: {e}")
 
     def is_last_execution_finished(self) -> bool:
         """
