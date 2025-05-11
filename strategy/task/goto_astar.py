@@ -1,0 +1,48 @@
+import time
+
+from ia.utils.position import Position
+from strategy.enum.mirror import Mirror
+from strategy.enum.sub_type import SubType
+from strategy.enum.type import Type
+from strategy.task.abstract_task import AbstractTask
+
+
+class GoToAstar(AbstractTask):
+
+    def __init__(self, desc: str, position_x: int, position_y: int, mirror: Mirror = Mirror.MIRRORY):
+        super().__init__(
+            desc=desc,
+            position_x=position_x,
+            position_y=position_y,
+            task_type=Type.DEPLACEMENT,
+            subtype=SubType.GOTO_ASTAR,
+            mirror=mirror
+        )
+        self.path_finding = None
+
+    def execute(self, start_point: Position):
+        self.path_finding.a_star(
+            Position(start_point.x, start_point.y),
+            Position(self.position_x, self.position_y)
+        )
+        while not self.path_finding.computation_finished:
+            time.sleep(0.05)
+
+        result = []
+        self.end_point = start_point
+        path = self.path_finding.path
+        if not path:
+            print("Erreur de pathfinding")
+            return ""
+
+        for p in path:
+            if self.end_point.x != p.x or self.end_point.y != p.y:
+                self.end_point = Position(p.x, p.y, self.calculate_theta(self.end_point, p.x, p.y))
+            result.append(
+                {
+                    "task": self.desc,
+                    "command": f"goto-astar#{p.x};{p.y}",
+                    "position": self.end_point.to_dict()
+                }
+            )
+        return result

@@ -1,0 +1,110 @@
+[
+    {
+        "task": "Position de d\u00e9part",
+        "command": "start",
+        "position": {
+            "x": 1800,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Suppression zone de d\u00e9part",
+        "command": "delete-zone#start_bleu_back",
+        "position": {
+            "x": 1800,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Suppression zone de d\u00e9part",
+        "command": "delete-zone#start_bleu_side",
+        "position": {
+            "x": 1800,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Suppression zone de d\u00e9part",
+        "command": "delete-zone#start_bleu_front",
+        "position": {
+            "x": 1800,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Vitesse de d\u00e9pose banderole",
+        "command": "speed#25",
+        "position": {
+            "x": 1800,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Position d\u00e9pose banderole",
+        "command": "go#50",
+        "position": {
+            "x": 1850,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "D\u00e9pose banderole",
+        "command": "action#banderole_depose",
+        "position": {
+            "x": 1850,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Recule banderole",
+        "command": "go#-300",
+        "position": {
+            "x": 1550,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Vitesse normale",
+        "command": "speed#100",
+        "position": {
+            "x": 1550,
+            "y": 1775,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Positionnement sur le gradin SO",
+        "command": "goto-astar#1540;1780",
+        "position": {
+            "x": 1540,
+            "y": 1780,
+            "theta": 2.641592653589793
+        }
+    },
+    {
+        "task": "Positionnement sur le gradin SO",
+        "command": "goto-astar#1300;2020",
+        "position": {
+            "x": 1300,
+            "y": 2020,
+            "theta": 2.141592653589793
+        }
+    },
+    {
+        "task": "Positionnement sur le gradin SO",
+        "command": "goto-astar#1300;2250",
+        "position": {
+            "x": 1300,
+            "y": 2250,
+            "theta": 1.5707963267948966
+        }
+    }
+]
