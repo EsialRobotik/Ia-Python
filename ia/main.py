@@ -52,9 +52,9 @@ if __name__ == "__main__":
         table_config=config_data["table"]
         logger.info("Init asservissement")
         asserv = Asserv(
-            serial_port=config_data["asservissement"]["serialPort"],
-            baud_rate=config_data["asservissement"]["baudRate"],
-            gostart_config=config_data["asservissement"]["goStart"],
+            serial_port=config_data["asserv"]["serialPort"],
+            baud_rate=config_data["asserv"]["baudRate"],
+            gostart_config=config_data["asserv"]["goStart"],
         )
         logger.info("Init asservissement OK")
 

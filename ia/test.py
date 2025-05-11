@@ -65,7 +65,7 @@ if __name__ == "__main__":
                 TestSrf04(config_data, args.year).test()
             case 'lidar':
                 TestLidar(config_data, args.year).test()
-            case 'asservissement':
+            case 'asserv':
                 TestAsserv(config_data, args.year).test()
             case 'actions':
                 TestActions(config_data, args.year).test()

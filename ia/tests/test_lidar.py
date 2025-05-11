@@ -49,8 +49,8 @@ class TestLidar(AbstractTest):
             distance=self.config_data["detection"]["lidar"]["distance"], 
             period=self.config_data["detection"]["lidar"]["period"], 
             asserv=Asserv(
-                serial_port=self.config_data["asservissement"]["serialPort"],
-                baud_rate=self.config_data["asservissement"]["baudRate"],
+                serial_port=self.config_data["asserv"]["serialPort"],
+                baud_rate=self.config_data["asserv"]["baudRate"],
                 gostart_config={}
             )
         )

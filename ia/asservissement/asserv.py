@@ -103,7 +103,7 @@ class Asserv:
         """
 
         logger.info("init")
-        self.serial.write(b"I")
+        self.serial.write(f"I\n".encode())
 
     def stop(self) -> None:
         """
@@ -113,7 +113,7 @@ class Asserv:
         """
 
         logger.info("stop")
-        self.serial.write(b"M0")
+        self.serial.write(f"M0\n".encode())
 
     def emergency_stop(self) -> None:
         """
@@ -128,7 +128,7 @@ class Asserv:
 
         logger.info("emergencyStop")
         self.asserv_status = AsservStatus.STATUS_HALTED
-        self.serial.write(b"h")
+        self.serial.write(f"h\n".encode())
         self.direction = MovementDirection.NONE
 
     def emergency_reset(self) -> None:
@@ -140,7 +140,7 @@ class Asserv:
 
         logger.info("emergencyReset")
         self.asserv_status = AsservStatus.STATUS_IDLE
-        self.serial.write(b"r")
+        self.serial.write(f"r\n".encode())
 
     def go(self, dist: int) -> None:
         """
@@ -163,7 +163,7 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.FORWARD if dist > 0 else MovementDirection.BACKWARD
-        self.serial.write(f"v{dist}".encode())
+        self.serial.write(f"v{dist}\n".encode())
 
     def turn(self, degree: int) -> None:
         """
@@ -185,7 +185,7 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.NONE
-        self.serial.write(f"t{degree}".encode())
+        self.serial.write(f"t{degree}\n".encode())
 
     def go_to(self, position: Position) -> None:
         """
@@ -206,7 +206,7 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.FORWARD
-        self.serial.write(f"g{position.x}#{position.y}".encode())
+        self.serial.write(f"g{position.x}#{position.y}\n".encode())
 
     def go_to_chain(self, position: Position) -> None:
         """
@@ -227,7 +227,7 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.FORWARD
-        self.serial.write(f"e{position.x}#{position.y}".encode())
+        self.serial.write(f"e{position.x}#{position.y}\n".encode())
 
     def go_to_reverse(self, position: Position) -> None:
         """
@@ -249,7 +249,7 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.BACKWARD
-        self.serial.write(f"b{position.x}#{position.y}".encode())
+        self.serial.write(f"b{position.x}#{position.y}\n".encode())
 
     def face(self, position: Position) -> None:
         """
@@ -267,7 +267,7 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.NONE
-        self.serial.write(f"f{position.x}#{position.y}".encode())
+        self.serial.write(f"f{position.x}#{position.y}\n".encode())
 
     def set_odometrie(self, x: int, y: int, theta: float) -> None:
         """
@@ -281,7 +281,7 @@ class Asserv:
         """
 
         logger.info("setOdometrie")
-        self.serial.write(f"P{x}#{y}#{theta}".encode())
+        self.serial.write(f"P{x}#{y}#{theta}\n".encode())
 
     def enable_low_speed(self, enable: bool) -> None:
         """
@@ -293,7 +293,7 @@ class Asserv:
         """
 
         logger.info(f"enableLowSpeed : {enable}")
-        self.serial.write(b"n" if enable else b"N")
+        self.serial.write(f"n\n".encode() if enable else f"N\n".encode())
 
     def set_speed(self, pct: int) -> None:
         """
@@ -320,7 +320,7 @@ class Asserv:
         """
 
         logger.info(f"setSpeed {pct}%")
-        self.serial.write(f"S{pct}".encode())
+        self.serial.write(f"S{pct}\n".encode())
 
     def enable_regulator_angle(self, enable: bool) -> None:
         """
@@ -334,7 +334,7 @@ class Asserv:
         """
 
         logger.info(f"enableRegulatorAngle : {enable}")
-        self.serial.write(b"Rae" if enable else b"Rad")
+        self.serial.write(f"Rae\n".encode() if enable else f"Rad\n".encode())
 
     def reset_regulator_angle(self) -> None:
         """
@@ -346,7 +346,7 @@ class Asserv:
         """
 
         logger.info("resetRegulatorAngle")
-        self.serial.write(b"Rar")
+        self.serial.write(f"Rar\n".encode())
 
     def enable_regulator_distance(self, enable: bool) -> None:
         """
@@ -360,7 +360,7 @@ class Asserv:
         """
 
         logger.info(f"enableRegulatorDistance : {enable}")
-        self.serial.write(b"Rde" if enable else b"Rdd")
+        self.serial.write(f"Rde\n".encode() if enable else f"Rdd\n".encode())
 
     def reset_regulator_distance(self) -> None:
         """
@@ -369,7 +369,7 @@ class Asserv:
         """
 
         logger.info("resetRegulatorDistance")
-        self.serial.write(b"Rdr")
+        self.serial.write(f"Rdr\n".encode())
 
     def enable_motors(self, enable: bool) -> None:
         """
@@ -381,7 +381,7 @@ class Asserv:
         """
 
         logger.info(f"enable motors {enable}")
-        self.serial.write(f"M{1 if enable else 0}".encode())
+        self.serial.write(f"M{1 if enable else 0}\n".encode())
 
     def parse_asserv_position(self) -> None:
         """
@@ -439,7 +439,7 @@ class Asserv:
                         self.asserv_status = AsservStatus.STATUS_BLOCKED
                     self.queue_size = int(data[4])
             except Exception as e:
-                logger.debug(f"Trace asservissement non parsable : {str}")
+                logger.debug("Trace asservissement non parsable")
 
     def wait_for_asserv(self) -> None:
         """
