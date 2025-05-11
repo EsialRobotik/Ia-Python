@@ -40,7 +40,7 @@ class TestAX12(AbstractTest):
         logger.info(f"Instanciation de la laision série {self.config_data['actions']['ax12']['serie']}@{self.config_data['actions']['ax12']['baud']}...")
         link = AX12LinkSerial(self.config_data['actions']['ax12']['serie'], self.config_data['actions']['ax12']['baud'])
 
-        axid = 12
+        axid = self.config_data['actions']['ax12']['test-id']
         logger.info(f"Instanciation de l'ax12 n°{axid}...")
         ax12 = AX12Servo(
             address=axid,
@@ -51,10 +51,6 @@ class TestAX12(AbstractTest):
         logger.info(f"Clignotement de la led pour toujours...")
         while True:
             ax12.set_led(True)
-            ax12.set_servo_position(300)
-            while ax12.is_moving():
-                sleep(0.1)
+            sleep(0.2)
             ax12.set_led(False)
-            ax12.set_servo_position(400)
-            while ax12.is_moving():
-                sleep(0.1)
+            sleep(0.2)
