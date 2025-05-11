@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 
 from ia.api.nextion_nx32224t024 import NextionNX32224T024
@@ -30,6 +31,8 @@ class TestNextion(AbstractTest):
             score (int): Variable to keep track of the score.
         """
 
+        logger = logging.getLogger(__name__)
+        logger.info("Test Nextion")
         nextion = NextionNX32224T024(
             serial_port=self.config_data['nextion']['serialPort'],
             baud_rate=self.config_data['nextion']['baudRate'],
@@ -37,6 +40,7 @@ class TestNextion(AbstractTest):
         )
         nextion.goto_page("init")
         nextion.wait_for_calibration()
+        logger.info("Couleur is_color0 : %s", nextion.is_color0())
         nextion.display_calibration_status("Coucou")
         sleep(0.5)
         nextion.display_calibration_status("La forme ?")
