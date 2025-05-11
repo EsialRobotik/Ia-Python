@@ -173,3 +173,9 @@ cython_debug/
 
 # custom
 logs/
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/.gitignore
+/.idea/Ia-Python.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
