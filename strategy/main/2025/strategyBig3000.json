@@ -82,20 +82,20 @@
     },
     {
         "task": "Positionnement sur le gradin SO",
-        "command": "goto-astar#1540;1780",
+        "command": "goto-astar#1550;1770",
         "position": {
-            "x": 1540,
-            "y": 1780,
-            "theta": 2.641592653589793
+            "x": 1550,
+            "y": 1770,
+            "theta": -1.5707963267948966
         }
     },
     {
         "task": "Positionnement sur le gradin SO",
-        "command": "goto-astar#1300;2020",
+        "command": "goto-astar#1300;1770",
         "position": {
             "x": 1300,
-            "y": 2020,
-            "theta": 2.141592653589793
+            "y": 1770,
+            "theta": 3.141592653589793
         }
     },
     {

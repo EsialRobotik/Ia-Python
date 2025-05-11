@@ -21,12 +21,15 @@ class GoToAstar(AbstractTask):
         self.path_finding = None
 
     def execute(self, start_point: Position):
+        total_time = time.time_ns()
+        print(f"Compute pathfinding from {start_point} to ({self.position_x},{self.position_y})")
         self.path_finding.a_star(
             Position(start_point.x, start_point.y),
             Position(self.position_x, self.position_y)
         )
         while not self.path_finding.computation_finished:
             time.sleep(0.05)
+        print(f"Total computation in {(time.time_ns() - total_time) / 1000000:.2f} ms")
 
         result = []
         self.end_point = start_point

@@ -1,9 +1,9 @@
-import heapq
 import logging
+import math
 import time
 from typing import Dict, List, Tuple
 
-import numpy as np
+import networkx as nx
 from shapely.geometry import Polygon, Point
 
 from ia.utils.position import Position
@@ -29,8 +29,6 @@ class AStar:
         Margin to be considered around obstacles.
     active_color : str
         The active color for the pathfinding ('color0' or 'color3000').
-    grid : np.ndarray
-        The grid representing the table with obstacles and dynamic zones.
 
     Methods
     -------
@@ -77,7 +75,7 @@ class AStar:
         self.size_y = self.config["sizeY"] // self.resolution
         self.marge = self.config["marge"]
         self.active_color = active_color  # Color0 ou Color3000
-        self.grid = np.zeros((self.size_y, self.size_x), dtype=np.uint8)
+        self.graph = nx.grid_2d_graph(self.size_x, self.size_y)
 
         self.set_obstacles()
         self.set_dynamic_zones()
@@ -97,12 +95,6 @@ class AStar:
         None
         """
 
-        for zone in self.config["forbiddenZones"]:
-            if zone["type"] != self.active_color:
-                if zone["forme"] == "polygone":
-                    self.mark_zone(zone["points"], self.marge)
-                elif zone["forme"] == "cercle":
-                    self.mark_circle(zone["centre"], zone["rayon"] + self.marge)
         for zone in self.config["forbiddenZones"]:
             if zone["type"] != self.active_color:
                 if zone["forme"] == "polygone":
@@ -150,7 +142,10 @@ class AStar:
 
         for zone in self.config["dynamicZones"]:
             if zone["id"] == zone_id:
-                zone["active"] = active
+                if zone["forme"] == "polygone":
+                    self.mark_zone(zone["points"], self.marge, active=active)
+                elif zone["forme"] == "cercle":
+                    self.mark_circle(zone["centre"], zone["rayon"] + self.marge, active=active)
 
     def mark_zone(self, points: List[Dict[str, int]], marge: int, active: bool = True) -> None:
         """
@@ -173,14 +168,21 @@ class AStar:
         None
         """
 
-        poly = Polygon([(p["x"], p["y"]) for p in points]).buffer(marge)
+        poly = Polygon([(p["x"] // self.resolution, p["y"] // self.resolution) for p in points]).buffer(marge // self.resolution)
         minx, miny, maxx, maxy = map(int, poly.bounds)
-        value = 1 if active else 0
 
-        for x in range(minx, maxx, self.resolution):
-            for y in range(miny, maxy, self.resolution):
+        for x in range(max(0, minx), min(maxx, self.size_x)):
+            for y in range(max(0, miny), min(maxy, self.size_y)):
                 if poly.contains(Point(x, y)):
-                    self.set_grid(x, y, value)
+                    if active and self.graph.has_node((x, y)):
+                        self.graph.remove_node((x, y))
+                    elif not active and not self.graph.has_node((x, y)):
+                        self.graph.add_node((x, y))
+                        # Reconnecter le noeud aux voisins
+                        neighbors = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
+                        for nx, ny in neighbors:
+                            if 0 <= nx < self.size_x and 0 <= ny < self.size_y and self.graph.has_node((nx, ny)):
+                                self.graph.add_edge((x, y), (nx, ny))
 
     def mark_circle(self, center: Dict[str, int], radius: int, active: bool = True) -> None:
         """
@@ -203,41 +205,23 @@ class AStar:
         None
         """
 
-        cx, cy = center["x"], center["y"]
-        r_sq = radius ** 2
-        value = 1 if active else 0
+        cx, cy = center["x"] // self.resolution, center["y"] // self.resolution
+        r_sq = (radius ** 2) // self.resolution
 
-        for x in range(cx - radius, cx + radius, self.resolution):
-            for y in range(cy - radius, cy + radius, self.resolution):
+        for x in range(max(0, cx - radius), min(cx + radius, self.size_x)):
+            for y in range(max(0, cy - radius), min(cy + radius, self.size_y)):
                 if (x - cx) ** 2 + (y - cy) ** 2 <= r_sq:
-                    self.set_grid(x, y, value)
+                    if active and self.graph.has_node((x, y)):
+                        self.graph.remove_node((x, y))
+                    elif not active and not self.graph.has_node((x, y)):
+                        self.graph.add_node((x, y))
+                        # Reconnecter le noeud aux voisins
+                        neighbors = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
+                        for nx, ny in neighbors:
+                            if 0 <= nx < self.size_x and 0 <= ny < self.size_y and self.graph.has_node((nx, ny)):
+                                self.graph.add_edge((x, y), (nx, ny))
 
-    def set_grid(self, x: int, y: int, value: int) -> None:
-        """
-        Marks or clears a cell in the grid.
-
-        This method takes the x and y coordinates of a cell and sets its value in the grid.
-        The value can be used to mark the cell as an obstacle or clear it.
-
-        Parameters
-        ----------
-        x : int
-            The x-coordinate of the cell.
-        y : int
-            The y-coordinate of the cell.
-        value : int
-            The value to set in the cell (e.g., 1 for obstacle, 0 for clear).
-
-        Returns
-        -------
-        None
-        """
-
-        row, col = y // self.resolution, x // self.resolution
-        if 0 <= row < self.size_y and 0 <= col < self.size_x:
-            self.grid[row, col] = value
-
-    def heuristic(self, a: Tuple[int, int], b: Tuple[int, int]) -> int:
+    def heuristic(self, a, b, previous_direction=None) -> int:
         """
         Heuristic function based on Manhattan distance for the A* algorithm.
 
@@ -258,34 +242,29 @@ class AStar:
             The Manhattan distance between the two points.
         """
 
-        return abs(a[0] - b[0]) + abs(a[1] - b[1])
+        #(x1, y1) = a
+        #(x2, y2) = b
+        #return abs(x1 - x2) + abs(y1 - y2)
+        dx = abs(a[0] - b[0])
+        dy = abs(a[1] - b[1])
 
-    def get_neighbors(self, node: Tuple[int, int]) -> List[Tuple[int, int]]:
-        """
-        Returns accessible neighbors, including diagonals.
+        if previous_direction is None:
+            return dx + dy
 
-        This method takes a node's coordinates and returns a list of accessible neighboring nodes.
-        It considers both orthogonal and diagonal movements and ensures that the neighbors are within
-        the grid boundaries and not marked as obstacles.
+        direction = (a[0] - previous_direction[0], a[1] - previous_direction[1])
+        next_direction = (b[0] - a[0], b[1] - a[1])
 
-        Parameters
-        ----------
-        node : tuple of int
-            The coordinates of the current node (x, y).
+        if direction == (0, 0):
+            return dx + dy
 
-        Returns
-        -------
-        list of tuple of int
-            A list of accessible neighboring nodes' coordinates.
-        """
+        # Calcul de l'angle entre les deux directions
+        dot_product = direction[0] * next_direction[0] + direction[1] * next_direction[1]
+        magnitude_a = math.sqrt(direction[0] ** 2 + direction[1] ** 2)
+        magnitude_b = math.sqrt(next_direction[0] ** 2 + next_direction[1] ** 2)
+        cos_theta = dot_product / (magnitude_a * magnitude_b)
 
-        x, y = node
-        neighbors = [(x + dx, y + dy) for dx, dy in [
-            (1, 0), (-1, 0), (0, 1), (0, -1),
-            (1, 1), (-1, -1), (1, -1), (-1, 1)
-        ]]
-        return [(nx, ny) for nx, ny in neighbors
-                if self.size_x > nx >= 0 == self.grid[ny, nx] and 0 <= ny < self.size_y]
+        angle_penalty = 10 * (1 - cos_theta)  # Plus l'angle est grand, plus la pénalité est forte
+        return dx + dy + angle_penalty
 
     def a_star(self, start: Position, goal: Position) -> None:
         """
@@ -317,36 +296,17 @@ class AStar:
         goal = (goal.x // self.resolution, goal.y // self.resolution)
         self.logger.info(f"A* Compute path from {start} to {goal}")
 
-        open_set = [(0, start)]
-        came_from = {}
-        g_score = {start: 0}
-        f_score = {start: self.heuristic(start, goal)}
-        heapq.heapify(open_set)
+        try:
+            path = nx.astar_path(self.graph, start, goal, heuristic=self.heuristic)
+            self.logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms")
+            self.path = self.simplify_path([(x * self.resolution, y * self.resolution) for x, y in path])
+            self.computation_finished = True
+            self.logger.info(f"A* path simplified in {(time.time_ns() - start_time) / 1000000:.2f} ms")
+        except nx.NetworkXNoPath:
+            self.logger.info("Aucun chemin trouvé avec les obstacles placés.")
 
-        while open_set:
-            _, current = heapq.heappop(open_set)
-            if current == goal:
-                path = []
-                while current in came_from:
-                    path.append(current)
-                    current = came_from[current]
-                self.logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms")
-                self.computation_finished = True
-                self.path = self.simplify_path([(x * self.resolution, y * self.resolution) for x, y in path[::-1]])
-                return
-
-            for neighbor in self.get_neighbors(current):
-                move_cost = 1 if abs(neighbor[0] - current[0]) + abs(neighbor[1] - current[1]) == 1 else 1.4
-                tentative_g_score = g_score[current] + move_cost
-                if neighbor not in g_score or tentative_g_score < g_score[neighbor]:
-                    came_from[neighbor] = current
-                    g_score[neighbor] = tentative_g_score
-                    f_score[neighbor] = tentative_g_score + self.heuristic(neighbor, goal)
-                    heapq.heappush(open_set, (f_score[neighbor], neighbor))
-
-        self.logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms without path")
         self.computation_finished = True
-        return  # Pas de chemin trouvé
+        return
 
     def simplify_path(self, path: List[Tuple[int, int]]) -> List[Position]:
         """
