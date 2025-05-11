@@ -80,4 +80,4 @@ class TestSrf04(AbstractTest):
             logger.info(f"Front Middle: {frontMiddle.get_distance()}mm")
             logger.info(f"Front Right: {frontRight.get_distance()}mm")
             logger.info(f"Back: {back.get_distance()}mm")
-            sleep(1)
+            sleep(0.5)

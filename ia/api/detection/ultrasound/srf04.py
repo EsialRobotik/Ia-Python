@@ -50,8 +50,6 @@ class Srf04(Srf):
 
         super().__init__(x, y, angle, threshold, window_size)
         logger.info(f"Creating Srf04 object with trigger {trigger}, echo {echo}, x {x}, y {y}, angle {angle}, threshold {threshold}.")
-        self.trigger = trigger
-        self.echo = echo
         self.sensor = DistanceSensor(
             echo=echo,
             trigger=trigger,
