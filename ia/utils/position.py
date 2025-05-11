@@ -68,3 +68,10 @@ class Position:
                 return Direction.SW
             else:
                 return Direction.NW
+
+    def to_dict(self):
+        return  {
+            "x": self.x,
+            "y": self.y,
+            "theta": self.theta
+        }
