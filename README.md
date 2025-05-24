@@ -41,5 +41,5 @@ pip install -r requirements.txt
 ```
 ### Robot
 ```
-sudo apt-get install python3-gpiozero python3-pyserial python3-smbus2 python3-numpy python3-shapely
+sudo apt-get install python3-gpiozero python3-smbus2 python3-numpy python3-shapely python3-networkx
 ```
