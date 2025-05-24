@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pgs",
+    "description": "Sort la pince gauche",
+    "payload": {
+        "type": "position",
+        "id": 11,
+        "angleDegree": 40.3
+    }
+}

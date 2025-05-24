@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "asp",
+    "description": "Place l'ascenseur pour que les 2 ventouses survolent les plateformes",
+    "payload": {
+        "type": "position",
+        "id": 13,
+        "angleDegree": 70
+    }
+}

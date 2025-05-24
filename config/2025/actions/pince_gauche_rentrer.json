@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pgr",
+    "description": "Rentre la pince gauche",
+    "payload": {
+        "type": "position",
+        "id": 11,
+        "angleDegree": 32.3
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pdr",
+    "description": "Rentre la pince droite",
+    "payload": {
+        "type": "position",
+        "id": 10,
+        "angleDegree": 93.5
+    }
+}

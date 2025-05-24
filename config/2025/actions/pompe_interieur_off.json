@@ -1,0 +1,14 @@
+{
+    "type": "actuator",
+    "alias": "pio",
+    "description": "Désactive la pompe des pinces ventouses intérieures",
+    "payload": {
+        "actuatorLink": "pompes",
+        "commands": [
+            {
+                "command": "s10",
+                "async": true
+            }
+        ]
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "type": "actuator",
+    "alias": "pia",
+    "description": "Active la pompe des pinces ventouses intérieures en mode aspirer",
+    "payload": {
+        "actuatorLink": "pompes",
+        "commands": [
+            {
+                "command": "s1255",
+                "async": true
+            }
+        ]
+    }
+}

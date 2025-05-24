@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "ai",
+    "description": "Règle les paramètre d'accélération et de précision de l'AX12 de l'ascenseur",
+    "payload": {
+        "type": "complianceSlope",
+        "id": 13,
+        "value": 128
+    }
+}

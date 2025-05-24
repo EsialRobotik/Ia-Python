@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "ateh",
+    "description": "Place l'ascenseur à la hauteur maximale",
+    "payload": {
+        "type": "position",
+        "id": 13,
+        "angleDegree": 290
+    }
+}

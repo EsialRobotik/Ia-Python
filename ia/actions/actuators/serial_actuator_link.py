@@ -38,6 +38,7 @@ class SerialActuatorLink(AbstractActuatorLink):
         response = bytearray()
         try:
             self.serial.write(cmd)
+            self.serial.write(f"\n".encode())
             self.serial.flush()
 
             writetime = time.time()

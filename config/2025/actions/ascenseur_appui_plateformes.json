@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "aap",
+    "description": "Place l'ascenseur pour que les 2 ventouses apuient sur laplateforme supérieure",
+    "payload": {
+        "type": "position",
+        "id": 13,
+        "angleDegree": 40.0
+    }
+}

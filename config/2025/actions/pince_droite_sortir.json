@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pds",
+    "description": "Sort la pince droite",
+    "payload": {
+        "type": "position",
+        "id": 10,
+        "angleDegree": 78
+    }
+}

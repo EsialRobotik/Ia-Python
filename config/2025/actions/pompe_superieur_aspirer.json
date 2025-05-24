@@ -1,0 +1,14 @@
+{
+    "type": "actuator",
+    "alias": "psa",
+    "description": "Active la pompe des ventouses supérieures",
+    "payload": {
+        "actuatorLink": "pompes",
+        "commands": [
+            {
+                "command": "s0255",
+                "async": true
+            }
+        ]
+    }
+}

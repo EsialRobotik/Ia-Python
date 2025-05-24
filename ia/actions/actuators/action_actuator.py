@@ -60,8 +60,6 @@ class ActionActuator(AbstractAction):
         if self.thread.is_alive:
             self.stop()
             self.thread.join()
-        for actionId in self.action_list:
-            self.action_repository.get_action(actionId).reset()
         self.thread = None
 
     def get_flag(self) -> Optional[str]:
