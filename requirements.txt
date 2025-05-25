@@ -4,3 +4,4 @@ smbus2
 numpy
 shapely
 networkx
+lupa

@@ -1,9 +1,9 @@
 import logging
-import math
 import time
 from typing import Dict, List, Tuple
 
 import networkx as nx
+from lupa import LuaRuntime
 from shapely.geometry import Polygon, Point
 
 from ia.utils.position import Position
@@ -75,7 +75,9 @@ class AStar:
         self.size_y = self.config["sizeY"] // self.resolution
         self.marge = self.config["marge"]
         self.active_color = active_color  # Color0 ou Color3000
-        self.graph = nx.grid_2d_graph(self.size_x, self.size_y)
+        self.position_open_check = {
+            x: {y: True for y in range(self.size_y)} for x in range(self.size_x)
+        }
 
         self.set_obstacles()
         self.set_dynamic_zones()
@@ -174,15 +176,10 @@ class AStar:
         for x in range(max(0, minx), min(maxx, self.size_x)):
             for y in range(max(0, miny), min(maxy, self.size_y)):
                 if poly.contains(Point(x, y)):
-                    if active and self.graph.has_node((x, y)):
-                        self.graph.remove_node((x, y))
-                    elif not active and not self.graph.has_node((x, y)):
-                        self.graph.add_node((x, y))
-                        # Reconnecter le noeud aux voisins
-                        neighbors = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
-                        for nx, ny in neighbors:
-                            if 0 <= nx < self.size_x and 0 <= ny < self.size_y and self.graph.has_node((nx, ny)):
-                                self.graph.add_edge((x, y), (nx, ny))
+                    if active:
+                        self.position_open_check[x][y] = False
+                    else:
+                        self.position_open_check[x][y] = True
 
     def mark_circle(self, center: Dict[str, int], radius: int, active: bool = True) -> None:
         """
@@ -211,60 +208,10 @@ class AStar:
         for x in range(max(0, cx - radius), min(cx + radius, self.size_x)):
             for y in range(max(0, cy - radius), min(cy + radius, self.size_y)):
                 if (x - cx) ** 2 + (y - cy) ** 2 <= r_sq:
-                    if active and self.graph.has_node((x, y)):
-                        self.graph.remove_node((x, y))
-                    elif not active and not self.graph.has_node((x, y)):
-                        self.graph.add_node((x, y))
-                        # Reconnecter le noeud aux voisins
-                        neighbors = [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]
-                        for nx, ny in neighbors:
-                            if 0 <= nx < self.size_x and 0 <= ny < self.size_y and self.graph.has_node((nx, ny)):
-                                self.graph.add_edge((x, y), (nx, ny))
-
-    def heuristic(self, a, b, previous_direction=None) -> int:
-        """
-        Heuristic function based on Manhattan distance for the A* algorithm.
-
-        This function calculates the Manhattan distance between two points, which is
-        the sum of the absolute differences of their Cartesian coordinates. It is used
-        to estimate the cost of the cheapest path from the current node to the goal.
-
-        Parameters
-        ----------
-        a : tuple of int
-            The coordinates of the first point (x, y).
-        b : tuple of int
-            The coordinates of the second point (x, y).
-
-        Returns
-        -------
-        int
-            The Manhattan distance between the two points.
-        """
-
-        #(x1, y1) = a
-        #(x2, y2) = b
-        #return abs(x1 - x2) + abs(y1 - y2)
-        dx = abs(a[0] - b[0])
-        dy = abs(a[1] - b[1])
-
-        if previous_direction is None:
-            return dx + dy
-
-        direction = (a[0] - previous_direction[0], a[1] - previous_direction[1])
-        next_direction = (b[0] - a[0], b[1] - a[1])
-
-        if direction == (0, 0):
-            return dx + dy
-
-        # Calcul de l'angle entre les deux directions
-        dot_product = direction[0] * next_direction[0] + direction[1] * next_direction[1]
-        magnitude_a = math.sqrt(direction[0] ** 2 + direction[1] ** 2)
-        magnitude_b = math.sqrt(next_direction[0] ** 2 + next_direction[1] ** 2)
-        cos_theta = dot_product / (magnitude_a * magnitude_b)
-
-        angle_penalty = 10 * (1 - cos_theta)  # Plus l'angle est grand, plus la pénalité est forte
-        return dx + dy + angle_penalty
+                    if active:
+                        self.position_open_check[x][y] = False
+                    else:
+                        self.position_open_check[x][y] = True
 
     def a_star(self, start: Position, goal: Position) -> None:
         """
@@ -292,14 +239,37 @@ class AStar:
         start_time = time.time_ns()
         self.computation_finished = False
         self.path = []
-        start = (start.x // self.resolution, start.y // self.resolution)
-        goal = (goal.x // self.resolution, goal.y // self.resolution)
         self.logger.info(f"A* Compute path from {start} to {goal}")
 
         try:
-            path = nx.astar_path(self.graph, start, goal, heuristic=self.heuristic)
+            # Créer une instance de l'environnement Lua
+            lua = LuaRuntime(unpack_returned_tuples=True)
+
+            # Ajouter le chemin de recherche Lua
+            lua.execute('package.path = package.path .. ";./ia/pathfinding/?.lua"')
+
+            # Charger le fichier Lua
+            with open("ia/pathfinding/luafinding.lua", "r") as lua_file:
+                lua_code = lua_file.read()
+
+            # Exécuter le code Lua
+            lua.execute(lua_code)
+
+            lua_finding = lua.globals().Luafinding
+            path = lua_finding(
+                start.x // self.resolution, start.y // self.resolution,
+                goal.x // self.resolution, goal.y // self.resolution,
+                lua.table_from(self.position_open_check)
+            )
+
             self.logger.info(f"A* end computation in {(time.time_ns() - start_time) / 1000000:.2f} ms")
-            self.path = self.simplify_path([(x * self.resolution, y * self.resolution) for x, y in path])
+
+            decoded_path = []
+            for key, value in path['Path'].items():
+                point = dict(value)
+                decoded_path.append((point['x'] * self.resolution, point['y'] * self.resolution))
+
+            self.path = self.simplify_path(decoded_path)
             self.computation_finished = True
             self.logger.info(f"A* path simplified in {(time.time_ns() - start_time) / 1000000:.2f} ms")
         except nx.NetworkXNoPath:
