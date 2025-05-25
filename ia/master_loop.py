@@ -68,6 +68,19 @@ class MasterLoop:
         self.logger.info("Attente lancement calibration")
         self.nextion_display.wait_for_calibration()
 
+        self.logger.info("Initialisation des actionneurs")
+        self.nextion_display.display_calibration_status("Initialisation des actionneurs")
+        self.action_manager.init()
+
+        self.logger.info("Calage bordure")
+        self.nextion_display.display_calibration_status("Calage bordure")
+        self.movement_manager.go_start(self.nextion_display.color)
+
+        self.logger.info("Calibration OK, attente tirette")
+        self.nextion_display.display_calibration_status("Attente tirette pour départ")
+        self.pull_cord.wait_for_state(True)
+        self.logger.info("Tirette insérée, fin de la calibration")
+
         self.logger.info("Initialisation du pathfinding")
         self.nextion_display.display_calibration_status("Initialisation du pathfinding")
         self.pathfinding = AStar(
@@ -84,19 +97,6 @@ class MasterLoop:
             comm_config=self.comm_config
         )
         self.logger.info("Initialisation du communication manager OK")
-
-        self.logger.info("Initialisation des actionneurs")
-        self.nextion_display.display_calibration_status("Initialisation des actionneurs")
-        self.action_manager.init()
-
-        self.logger.info("Calage bordure")
-        self.nextion_display.display_calibration_status("Calage bordure")
-        self.movement_manager.go_start(self.nextion_display.color)
-
-        self.logger.info("Calibration OK, attente tirette")
-        self.nextion_display.display_calibration_status("Attente tirette pour départ")
-        self.pull_cord.wait_for_state(True)
-        self.logger.info("Tirette insérée, fin de la calibration")
 
         self.logger.info("Pré-chargement de la stratégie")
         self.is_color0 = self.nextion_display.is_color0()

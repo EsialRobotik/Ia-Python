@@ -3,8 +3,10 @@ import time
 from typing import Dict, List, Tuple
 
 import networkx as nx
+import numpy as np
 from lupa import LuaRuntime
 from shapely.geometry import Polygon, Point
+from shapely.prepared import prep
 
 from ia.utils.position import Position
 
@@ -79,10 +81,14 @@ class AStar:
             x: {y: True for y in range(self.size_y)} for x in range(self.size_x)
         }
 
-        self.set_obstacles()
-        self.set_dynamic_zones()
-        self.path = []
         self.logger = logging.getLogger(__name__)
+        start_time = time.time_ns()
+        self.set_obstacles()
+        self.logger.info(f"set_obstacles in {(time.time_ns() - start_time) / 1000000:.2f} ms")
+        start_time = time.time_ns()
+        self.set_dynamic_zones()
+        self.logger.info(f"set_dynamic_zones in {(time.time_ns() - start_time) / 1000000:.2f} ms")
+        self.path = []
 
     def set_obstacles(self) -> None:
         """
@@ -171,15 +177,22 @@ class AStar:
         """
 
         poly = Polygon([(p["x"] // self.resolution, p["y"] // self.resolution) for p in points]).buffer(marge // self.resolution)
+        prepared_poly = prep(poly)
         minx, miny, maxx, maxy = map(int, poly.bounds)
+
+        # Créer un masque temporaire
+        mask = np.zeros((self.size_x, self.size_y), dtype=bool)
 
         for x in range(max(0, minx), min(maxx, self.size_x)):
             for y in range(max(0, miny), min(maxy, self.size_y)):
-                if poly.contains(Point(x, y)):
-                    if active:
-                        self.position_open_check[x][y] = False
-                    else:
-                        self.position_open_check[x][y] = True
+                if prepared_poly.contains(Point(x, y)):
+                    mask[x, y] = True
+
+        # Appliquer le masque à position_open_check
+        for x in range(mask.shape[0]):
+            for y in range(mask.shape[1]):
+                if mask[x, y]:
+                    self.position_open_check[x][y] = not active
 
     def mark_circle(self, center: Dict[str, int], radius: int, active: bool = True) -> None:
         """
