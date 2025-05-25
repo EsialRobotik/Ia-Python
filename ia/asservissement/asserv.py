@@ -505,7 +505,7 @@ class Asserv:
                 self.go(temp["dist"])
                 self.wait_for_halted_or_blocked(500)
                 self.emergency_stop()
-                time.sleep(0.15)
+                time.sleep(2)
                 self.emergency_reset()
                 logger.info(f"Go timed end {temp['dist']}")
             elif temp["type"] == "turn":

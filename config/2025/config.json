@@ -78,7 +78,7 @@
       "jaune": [
         {
           "type": "go_timed",
-          "dist": -200
+          "dist": -400
         },
         {
           "type": "set_x",
@@ -87,7 +87,7 @@
         },
         {
           "type": "go",
-          "dist": 300
+          "dist": 500
         },
         {
           "type": "turn",
@@ -95,7 +95,7 @@
         },
         {
           "type": "go_timed",
-          "dist": -200
+          "dist": -400
         },
         {
           "type": "set_y",
@@ -118,7 +118,7 @@
         },
         {
           "type": "goto",
-          "x": 1800,
+          "x": 1750,
           "y": 1225
         },
         {
@@ -130,7 +130,7 @@
       "bleu": [
         {
           "type": "go_timed",
-          "dist": -200
+          "dist": -400
         },
         {
           "type": "set_x",
@@ -139,7 +139,7 @@
         },
         {
           "type": "go",
-          "dist": 300
+          "dist": 500
         },
         {
           "type": "turn",
@@ -147,7 +147,7 @@
         },
         {
           "type": "go_timed",
-          "dist": -200
+          "dist": -400
         },
         {
           "type": "set_y",
@@ -170,7 +170,7 @@
         },
         {
           "type": "goto",
-          "x": 1800,
+          "x": 1750,
           "y": 1775
         },
         {
@@ -199,7 +199,7 @@
     ],
     "dataDir": "/home/pi/IAPYTHON/config/2025/actions",
     "init": [
-      "MAMMA_INIT"
+      "ascenseur_init"
     ]
   },
 
