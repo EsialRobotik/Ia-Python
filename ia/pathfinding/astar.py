@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 from typing import Dict, List, Tuple
 
@@ -257,20 +258,34 @@ class AStar:
             # Créer une instance de l'environnement Lua
             lua = LuaRuntime(unpack_returned_tuples=True)
 
-            # Ajouter le chemin de recherche Lua
-            lua.execute('package.path = package.path .. ";./ia/pathfinding/?.lua"')
-
             # Charger le fichier Lua
-            with open("ia/pathfinding/luafinding.lua", "r") as lua_file:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            lua_file_path = os.path.join(current_dir, "luafinding.lua")
+            lua.execute(f'package.path = package.path .. ";{current_dir}/?.lua"')
+            with open(lua_file_path, "r") as lua_file:
                 lua_code = lua_file.read()
 
             # Exécuter le code Lua
             lua.execute(lua_code)
 
+            # start and goal positions in grid coordinates
+            start_reduced = Position(start.x // self.resolution, start.y // self.resolution)
+            goal_reduced = Position(goal.x // self.resolution, goal.y // self.resolution)
+
+            if not self.position_open_check[start_reduced.x][start_reduced.y]:
+                self.logger.error("Start position is blocked, cannot compute path.")
+                self.computation_finished = True
+                return
+
+            if not self.position_open_check[goal_reduced.x][goal_reduced.y]:
+                self.logger.error("Goal position is blocked, cannot compute path.")
+                self.computation_finished = True
+                return
+
             lua_finding = lua.globals().Luafinding
             path = lua_finding(
-                start.x // self.resolution, start.y // self.resolution,
-                goal.x // self.resolution, goal.y // self.resolution,
+                start_reduced.x, start_reduced.y,
+                goal_reduced.x, goal_reduced.y,
                 lua.table_from(self.position_open_check)
             )
 
@@ -284,8 +299,10 @@ class AStar:
             self.path = self.simplify_path(decoded_path)
             self.computation_finished = True
             self.logger.info(f"A* path simplified in {(time.time_ns() - start_time) / 1000000:.2f} ms")
-        except Exception:
-            self.logger.info("Aucun chemin trouvé avec les obstacles placés.")
+        except Exception as e:
+            self.logger.error("Aucun chemin trouvé avec les obstacles placés.")
+            self.logger.error(str(e))
+
 
         self.computation_finished = True
         return
