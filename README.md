@@ -43,3 +43,39 @@ pip install -r requirements.txt
 ```
 sudo apt-get install python3-gpiozero python3-smbus2 python3-numpy python3-shapely python3-networkx python3-lupa
 ```
+
+## Lancer les tests
+```
+python ia/test.py {mode} {annee} {log_level}
+```
+### Les modes
+Les modes disponibles sont :
+- chrono : Test le chrono
+- pullcord : Test la tirette
+- color : Test le sélecteur de couleur
+- nextion : Test l'écran Nextion
+- log_socket : Test la connexion au socket de log
+- com_socket : Test la connexion au socket de communication
+- ax12 : Test les servomoteurs AX-12
+- srf04 : Test les capteurs à ultrasons SRF04
+- lidar : Test le lidar
+- asserv : Test l'asservissement
+- actions : Test les actions, permet de lancer des actions via la console
+- pathfinding : Test le pathfinding
+- strategy : Test le strategy_manager
+
+### Année
+L'année doit avoir son répertoire dans `config`
+
+### Log level
+Les niveaux de log disponibles sont :
+- `DEBUG`'
+- `INFO`
+- `WARNING`
+- `ERROR`
+- `CRITICAL`
+
+## Lancer l'IA
+```
+python ia/main.py {annee} {log_level}
+```
