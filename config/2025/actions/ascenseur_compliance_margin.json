@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "acm",
+    "description": "Règle la précision de l'AX12 de l'ascenseur",
+    "payload": {
+        "type": "complianceMargin",
+        "id": 13,
+        "value": 1
+    }
+}

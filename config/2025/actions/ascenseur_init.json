@@ -1,10 +1,14 @@
 {
-    "type": "AX12",
+    "type": "list",
     "alias": "ai",
-    "description": "Règle les paramètre d'accélération et de précision de l'AX12 de l'ascenseur",
+    "dscription": "Initialise l'ascenseur",
     "payload": {
-        "type": "complianceSlope",
-        "id": 13,
-        "value": 128
+        "list": [
+            "pinces_sortir",
+            "ascenseur_compliance_margin",
+            "ascenseur_compliance_slop",
+            "ascenseur_survole_bordure",
+            "pinces_rentrer"
+        ]
     }
 }

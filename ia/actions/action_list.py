@@ -1,3 +1,4 @@
+import logging
 import threading
 import time
 from typing import List
@@ -68,13 +69,17 @@ class ActionList(AbstractAction):
         """
         Reset the action list so it can be re-executed with execute().
         """
+        logger = logging.getLogger(__name__)
         if self.thread is None:
             return
         if self.thread.is_alive:
             self.stop()
             self.thread.join()
         for actionId in self.action_list:
-            self.action_repository.get_action(actionId).reset()
+            if self.action_repository.has_action(actionId):
+                self.action_repository.get_action(actionId).reset()
+            else:
+                logger.error(f"no action with id {actionId} found in action list")
         self.thread = None
 
     def get_flag(self) -> Optional[str]:
@@ -93,14 +98,18 @@ class ActionList(AbstractAction):
         and executes it. It waits for each action to finish before moving to the next one.
         If a stop request is made, it stops the current action and exits the loop.
         """
+        logger = logging.getLogger(__name__)
         self.is_finished = False
         self.request_stop = False
         for actionId in self.action_list:
             if not self.request_stop:
-                action = self.action_repository.get_action(actionId)
-                action.execute()
-                while not action.finished() and self.request_stop == False:
-                    time.sleep(0.01)
-                if self.request_stop:
-                    action.stop()
+                if (not self.action_repository.has_action(actionId)):
+                    logger.error(f"no action with id {actionId} found in action list")
+                else:
+                    action = self.action_repository.get_action(actionId)
+                    action.execute()
+                    while not action.finished() and self.request_stop == False:
+                        time.sleep(0.01)
+                    if self.request_stop:
+                        action.stop()
         self.is_finished = True

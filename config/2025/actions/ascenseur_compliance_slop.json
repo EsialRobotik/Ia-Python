@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "acs",
+    "description": "Règle l'accélération de l'AX12 de l'ascenseur",
+    "payload": {
+        "type": "complianceSlope",
+        "id": 13,
+        "value": 128
+    }
+}

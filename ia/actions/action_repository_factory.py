@@ -33,7 +33,7 @@ class ActionRepositoryFactory:
                     logger.debug(f"loading {full_path}...")
                     with open(full_path) as action_file:
                         try:
-                            action_id_long = file[:-5].upper()
+                            action_id_long = file[:-5]
                             action_config = json.load(action_file)
                             action_file.close()
 
@@ -52,6 +52,8 @@ class ActionRepositoryFactory:
                                         if "list" in action_config["payload"]:
                                             action_list = ActionList(action_repository, action_config["payload"]["list"], None)
                                             actions[action_id_long] = action_list
+                                        else:
+                                            raise Exception(f"'list' not found in list action config payload")
                                     case "actuator":
                                         actions[action_id_long] = ActuatorActionFactory.action_actuator_from_json(action_config["payload"], actuator_link_repository)
                                     case default:
