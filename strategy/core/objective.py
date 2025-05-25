@@ -14,21 +14,20 @@ class Objective:
         self.tasks = tasks if tasks is not None else []
         self.skip_flag = skip_flag
 
-    def generate_mirror(self, mirror_tasks: List[AbstractTask], specific_tasks: Optional[List[AbstractTask]] = None, mirror_size: int = 3000) -> None:
-        specific_tasks = specific_tasks if specific_tasks is not None else []
+    def generate_mirror(self, mirror_tasks: List[AbstractTask], specific_tasks: List[Optional[AbstractTask]], mirror_size: int = 3000) -> None:
         self.tasks = []
 
-        for task in mirror_tasks:
+        for index, task in enumerate(mirror_tasks):
             if task.mirror == Mirror.NONE:
                 self.tasks.append(task)
+            elif task.mirror == Mirror.SPECIFIC:
+                self.tasks.append(specific_tasks[index])
             elif task.mirror == Mirror.MIRRORY:
                 mirrored_task = copy.deepcopy(task)
                 mirrored_task.position_y = mirror_size - mirrored_task.position_y
                 if mirrored_task.item_id is not None:
                     mirrored_task.item_id = mirrored_task.item_id.replace("0_", f"{mirror_size}_")
                 self.tasks.append(mirrored_task)
-
-        self.tasks.extend(specific_tasks)
 
         if len(self.tasks) != len(mirror_tasks):
             tasks = "\t\t".join([str(obj) for obj in self.tasks])
