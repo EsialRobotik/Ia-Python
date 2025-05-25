@@ -2,7 +2,6 @@ import logging
 import time
 from typing import Dict, List, Tuple
 
-import networkx as nx
 import numpy as np
 from lupa import LuaRuntime
 from shapely.geometry import Polygon, Point
@@ -285,7 +284,7 @@ class AStar:
             self.path = self.simplify_path(decoded_path)
             self.computation_finished = True
             self.logger.info(f"A* path simplified in {(time.time_ns() - start_time) / 1000000:.2f} ms")
-        except nx.NetworkXNoPath:
+        except Exception:
             self.logger.info("Aucun chemin trouvé avec les obstacles placés.")
 
         self.computation_finished = True

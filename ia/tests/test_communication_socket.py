@@ -11,12 +11,12 @@ class TestCommunicationSocket(AbstractTest):
         socket1 = CommunicationSocket(
             host=self.config_data['comSocket']['host'],
             port=self.config_data['comSocket']['port'],
-        );
+        )
         sleep(1)
         socket2 = CommunicationSocket(
             host=self.config_data['comSocket']['host'],
             port=self.config_data['comSocket']['port'],
-        );
+        )
         sleep(1)
         socket1.send_message("Hello from socket1")
         sleep(1)
