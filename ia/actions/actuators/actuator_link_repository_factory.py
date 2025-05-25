@@ -9,13 +9,13 @@ class ActuatorLinkRepositoryFactory:
 
     @staticmethod
     def serial_actuator_link_from_json(actuator_config: json):
-        if not 'serialport' in actuator_config:
+        if not 'serialPort' in actuator_config:
             raise "Missing 'serie' config key in serial actuator configuration"
         
-        if not 'baudrate' in actuator_config:
+        if not 'baudRate' in actuator_config:
             raise "Missing 'serie' config key in serial actuator configuration"
         
-        return SerialActuatorLink(actuator_config['serialport'], actuator_config['baudrate'])
+        return SerialActuatorLink(actuator_config['serialPort'], actuator_config['baudRate'])
 
     @staticmethod
     def actuator_link_repository_from_json(actuators_links_config: json) -> ActuatorLinkRepository:

@@ -79,3 +79,6 @@ Les niveaux de log disponibles sont :
 ```
 python ia/main.py {annee} {log_level}
 ```
+
+## Divers
+Source du pathfinding LUA : https://github.com/GlorifiedPig/Luafinding/tree/master

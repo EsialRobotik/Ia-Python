@@ -439,7 +439,7 @@ class Asserv:
                         self.asserv_status = AsservStatus.STATUS_BLOCKED
                     self.queue_size = int(data[4])
             except Exception as e:
-                logger.debug("Trace asservissement non parsable")
+                logger.error("Trace asservissement non parsable")
 
     def wait_for_asserv(self) -> None:
         """

@@ -28,7 +28,7 @@ class ActionWait(AbstractAction):
         Execute the wait action by starting a timer thread.
         """
         if self.timer_thread is None:
-            self.logger.debug(f"start waiting of {self.duration_seconds} second(s)")
+            self.logger.info(f"start waiting of {self.duration_seconds} second(s)")
             self.is_finished = False
             self.timer_thread = threading.Timer(self.duration_seconds, self.timer_end)
             self.timer_thread.start()
@@ -71,6 +71,6 @@ class ActionWait(AbstractAction):
         Callback function called when the timer ends.
         It sets the `is_finished` flag to True and logs the completion of the wait action.
         """
-        self.logger.debug(f"waiting finished")
+        self.logger.info(f"waiting finished")
         self.is_finished = True
     

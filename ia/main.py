@@ -5,6 +5,7 @@ import sys
 import time
 
 from ia.actions.action_repository_factory import ActionRepositoryFactory
+from ia.actions.actuators.actuator_link_repository_factory import ActuatorLinkRepositoryFactory
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
 from ia.api.chrono import Chrono
 from ia.api.detection.lidar.lidar_rpa2 import LidarRpA2
@@ -61,12 +62,15 @@ if __name__ == "__main__":
         # Init action manager
         logger.info("Init action manager")
         ax12_link = AX12LinkSerial(
-            serial_port=config_data["action"]["ax12"]["serialPort"],
-            baud_rate=config_data["action"]["ax12"]["baudRate"]
+            serial_port=config_data["actions"]["ax12"]["serialPort"],
+            baud_rate=config_data["actions"]["ax12"]["baudRate"]
         )
         action_repository = ActionRepositoryFactory.from_json_files(
             folder=config_data['actions']['dataDir'],
-            ax12_link_serial=ax12_link
+            ax12_link_serial=ax12_link,
+            actuator_link_repository=ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(
+                config_data['actions']['actuators']
+            )
         )
         action_manager = ActionManager(
             action_repository=action_repository,
@@ -87,9 +91,9 @@ if __name__ == "__main__":
         )
         ultrasound_config = config_data["detection"]["ultrasound"]
         srf = []
-        for srf in ultrasound_config['gpioList']:
+        for srfConfig in ultrasound_config['gpioList']:
             srf.append(SrfFactory.build_srf(
-                srf_config=srf,
+                srf_config=srfConfig,
                 window_size=ultrasound_config["windowSize"]
             ))
         detection_manager = DetectionManager(

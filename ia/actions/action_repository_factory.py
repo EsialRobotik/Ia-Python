@@ -30,7 +30,7 @@ class ActionRepositoryFactory:
             for file in files:
                 if file.endswith(".json"):
                     full_path = os.path.join(root, file)
-                    logger.debug(f"loading {full_path}...")
+                    logger.info(f"loading {full_path}...")
                     with open(full_path) as action_file:
                         try:
                             action_id_long = file[:-5]
@@ -67,7 +67,7 @@ class ActionRepositoryFactory:
                                 actions[action_alias] = actions[action_id_long]
                             actions_count += 1
                         except Exception as e:
-                            logger.debug(f"loading error : {e}")
+                            logger.error(f"loading error : {e}")
 
         logger.info(f"Count of actions loaded from json files : {actions_count} ({actions_alias_count} alias))")
         for action_id in actions.keys():

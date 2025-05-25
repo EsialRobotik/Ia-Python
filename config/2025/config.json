@@ -184,8 +184,8 @@
   "actions": {
     "ax12": {
       "comment": "FTDI AX12",
-      "serie": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_00000000-if00-port0",
-      "baud": 115200,
+      "serialPort": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_00000000-if00-port0",
+      "baudRate": 115200,
       "test-id": 12
     },
     "actuators": [
@@ -193,11 +193,11 @@
         "type": "serial",
         "id": "pompes",
         "comment": "Arduino Pompes",
-        "serialport": "/dev/serial/by-id/usb-1a86_USB2.0-Ser_-if00-port0",
-        "baudrate": 115200
+        "serialPort": "/dev/serial/by-id/usb-1a86_USB2.0-Ser_-if00-port0",
+        "baudRate": 115200
       }
     ],
-    "dataDir": "/home/pi/IAPYTHON_JBG/config/2025/actions",
+    "dataDir": "/home/pi/IAPYTHON/config/2025/actions",
     "init": [
       "MAMMA_INIT"
     ]

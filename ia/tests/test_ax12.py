@@ -37,8 +37,8 @@ class TestAX12(AbstractTest):
             Continuously blink the AX12 led every second.
         """
 
-        logger.info(f"Instanciation de la laision série {self.config_data['actions']['ax12']['serie']}@{self.config_data['actions']['ax12']['baud']}...")
-        link = AX12LinkSerial(self.config_data['actions']['ax12']['serie'], self.config_data['actions']['ax12']['baud'])
+        logger.info(f"Instanciation de la laision série {self.config_data['actions']['ax12']['serialPort']}@{self.config_data['actions']['ax12']['baudRate']}...")
+        link = AX12LinkSerial(self.config_data['actions']['ax12']['serialPort'], self.config_data['actions']['ax12']['baudRate'])
 
         axid = self.config_data['actions']['ax12']['test-id']
         logger.info(f"Instanciation de l'ax12 n°{axid}...")
