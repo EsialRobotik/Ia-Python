@@ -106,6 +106,7 @@ class ActionManager:
         """
         if self.current_action.finished():
             self.action_flag = self.current_action.get_flag()
+            self.logger.info(f"Action finished")
             return True
         return False
 
