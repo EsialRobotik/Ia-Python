@@ -79,7 +79,7 @@
       "jaune": [
         {
           "type": "speed",
-            "value": 25
+            "value": 20
         },
         {
           "type": "go_timed",
@@ -139,7 +139,7 @@
       "bleu": [
         {
           "type": "speed",
-            "value": 25
+            "value": 20
         },
         {
           "type": "go_timed",
