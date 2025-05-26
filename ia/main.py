@@ -116,7 +116,7 @@ if __name__ == "__main__":
 
         # Init chrono
         logger.info("Init chrono")
-        chrono = Chrono(config_data)
+        chrono = Chrono(config_data['matchDuration'])
         logger.info("Init chrono OK")
 
         # Init pull cord
