@@ -36,7 +36,7 @@ class Srf04(Srf):
     """
 
 
-    def __init__(self, trigger: int, echo: int, x: int, y: int, angle: int, threshold: int, window_size: int) -> None:
+    def __init__(self, desc: str, trigger: int, echo: int, x: int, y: int, angle: int, threshold: int, window_size: int) -> None:
         """
         Initializes the Srf04 sensor with the given parameters.
         Args:
@@ -48,7 +48,7 @@ class Srf04(Srf):
             threshold (int): Distance threshold for detection.
         """
 
-        super().__init__(x, y, angle, threshold, window_size)
+        super().__init__(desc, x, y, angle, threshold, window_size)
         logger.info(f"Creating Srf04 object with trigger {trigger}, echo {echo}, x {x}, y {y}, angle {angle}, threshold {threshold}.")
         self.sensor = DistanceSensor(
             echo=echo,

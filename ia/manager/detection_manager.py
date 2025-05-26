@@ -84,16 +84,24 @@ class DetectionManager:
             position: The position of the detected obstacle.
         """
 
-        x_obstacle_relative_to_robot = sensor.get_position().x + distance * math.cos(sensor.get_position().theta)
-        y_obstacle_relative_to_robot = sensor.get_position().y + distance * math.sin(sensor.get_position().theta)
+        # Position relative au robot
+        x_obstacle_relative_to_robot = distance * math.cos(sensor.get_position().theta)
+        y_obstacle_relative_to_robot = distance * math.sin(sensor.get_position().theta)
 
-        x_obstacle_relative_to_table = int(sensor.get_position().x +
-            x_obstacle_relative_to_robot * math.cos(sensor.get_position().theta) -
-            y_obstacle_relative_to_robot * math.sin(sensor.get_position().theta))
+        # Position du robot sur la table
+        robot_position = self.asserv.position
 
-        y_obstacle_relative_to_table = int(sensor.get_position().y +
-            x_obstacle_relative_to_robot * math.sin(sensor.get_position().theta) +
-            y_obstacle_relative_to_robot * math.cos(sensor.get_position().theta))
+        # Changement de repère (robot -> table)
+        x_obstacle_relative_to_table = int(
+            robot_position.x +
+            x_obstacle_relative_to_robot * math.cos(robot_position.theta) -
+            y_obstacle_relative_to_robot * math.sin(robot_position.theta)
+        )
+        y_obstacle_relative_to_table = int(
+            robot_position.y +
+            x_obstacle_relative_to_robot * math.sin(robot_position.theta) +
+            y_obstacle_relative_to_robot * math.cos(robot_position.theta)
+        )
 
         return Position(x_obstacle_relative_to_table, y_obstacle_relative_to_table)
 

@@ -10,6 +10,7 @@ class SrfFactory:
         """
         if srf_config['type'] == 'srf04':
             return Srf04(
+                desc=srf_config['desc'],
                 trigger=srf_config['trigger'],
                 echo=srf_config['echo'],
                 x=srf_config['x'],
