@@ -46,14 +46,16 @@ class Step:
         self.description = config_node["desc"]
         self.id_action = config_node["action_id"]
 
-        self.action_type = config_node["type"].upper()
-        if not self.action_type in StepType._value2member_map_:
+        if not config_node["type"].upper() in StepType._value2member_map_:
             raise ValueError(f"Unknown action type: {self.action_type}")
+        else:
+            self.action_type = StepType[config_node["type"].upper()]
 
         if "subtype" in config_node:
-            self.sub_type = config_node["subtype"].upper()
-            if not self.sub_type in StepSubType._value2member_map_:
+            if not config_node["subtype"].upper() in StepSubType._value2member_map_:
                 raise ValueError(f"Unknown subtype: {self.sub_type}")
+            else:
+                self.sub_type = StepSubType[config_node["subtype"].upper()]
         else:
             self.sub_type = None
         self.distance = config_node.get("dist", 0)
@@ -68,4 +70,5 @@ class Step:
     def __str__(self):
         return (f"Step{{desc='{self.description}', id_action={self.id_action}, "
                 f"position={self.position}, action_type={self.action_type}, sub_type={self.sub_type}, "
-                f"distance={self.distance}}}")
+                f"distance={self.distance}, timeout={self.timeout}, item_id={self.item_id}, "
+                f"skip_flag={self.skip_flag}, needed_flag={self.needed_flag}}}")
