@@ -463,8 +463,8 @@ class Asserv:
             None
         """
 
-        start_time = int(time.time())
-        while self.asserv_status == AsservStatus.STATUS_RUNNING and (int(time.time()) - start_time) * 1000 < timeout_ms:
+        start_time = time.time_ns()
+        while self.asserv_status == AsservStatus.STATUS_RUNNING and ((time.time_ns() - start_time)  / 1000000) < timeout_ms:
             time.sleep(0.01)
 
     def go_start(self, color: str) -> None:
@@ -492,7 +492,6 @@ class Asserv:
         """
 
         start = self.gostart_config[color]
-        self.set_speed_callage(25)
         time.sleep(0.15)
         for instruction in start:
             temp = instruction
@@ -541,6 +540,5 @@ class Asserv:
             else:
                 raise Exception(f"Unknown instruction {temp}")
             self.wait_for_asserv()
-        self.set_speed_callage(100)
         time.sleep(0.15)
         logger.info("goStart finished")
