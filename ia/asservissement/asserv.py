@@ -536,7 +536,7 @@ class Asserv:
                 self.set_odometrie(self.position.x, temp["value"], temp["theta"])
             elif temp["type"] == "speed":
                 logger.info(f"Set speed {temp['value']}")
-                self.set_speed(temp["value"])
+                self.set_speed_callage(temp["value"])
             else:
                 raise Exception(f"Unknown instruction {temp}")
             self.wait_for_asserv()
