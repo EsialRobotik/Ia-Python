@@ -77,7 +77,7 @@ class MasterLoop:
         self.movement_manager.go_start(self.nextion_display.color)
 
         self.logger.info("Calibration OK, attente tirette")
-        self.nextion_display.display_calibration_status("Attente tirette pour départ")
+        self.nextion_display.display_calibration_status("Attente tirette pour depart")
         self.pull_cord.wait_for_state(True)
         self.logger.info("Tirette insérée, fin de la calibration")
 
