@@ -14,6 +14,7 @@
     "who": "princess"
   },
   "comSocket": {
+    "active": false,
     "host": "192.168.42.107",
     "port": 4269
   },

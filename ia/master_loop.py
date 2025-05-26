@@ -89,14 +89,15 @@ class MasterLoop:
         )
         self.logger.info("Initialisation du pathfinding OK")
 
-        self.logger.info("Initialisation du communication manager")
-        self.nextion_display.display_calibration_status("Initialisation du communication manager")
-        self.communication_manager = CommunicationManager(
-            action_manager=self.action_manager,
-            pathfinding=self.pathfinding,
-            comm_config=self.comm_config
-        )
-        self.logger.info("Initialisation du communication manager OK")
+        if self.comm_config['active']:
+            self.logger.info("Initialisation du communication manager")
+            self.nextion_display.display_calibration_status("Initialisation du communication manager")
+            self.communication_manager = CommunicationManager(
+                action_manager=self.action_manager,
+                pathfinding=self.pathfinding,
+                comm_config=self.comm_config
+            )
+            self.logger.info("Initialisation du communication manager OK")
 
         self.logger.info("Pré-chargement de la stratégie")
         self.is_color0 = self.nextion_display.is_color0()
@@ -190,11 +191,13 @@ class MasterLoop:
             if self.current_step.sub_type == StepSubType.DELETE_ZONE:
                 self.logger.info(f"Libération de la zone interdite {self.current_step.item_id}")
                 self.pathfinding.update_dynamic_zone(self.current_step.item_id, False)
-                self.communication_manager.send_delete_zone(self.current_step.item_id)
+                if self.communication_manager is not None:
+                    self.communication_manager.send_delete_zone(self.current_step.item_id)
             elif self.current_step.sub_type == StepSubType.ADD_ZONE:
                 self.logger.info(f"Ajout de la zone interdite {self.current_step.item_id}")
                 self.pathfinding.update_dynamic_zone(self.current_step.item_id, True)
-                self.communication_manager.send_add_zone(self.current_step.item_id)
+                if self.communication_manager is not None:
+                    self.communication_manager.send_add_zone(self.current_step.item_id)
 
     def current_step_ended(self) -> bool:
         """
@@ -243,10 +246,6 @@ class MasterLoop:
     def update_step(self) -> None:
         self.logger.info(f"Step terminée : {self.current_step.description}")
 
-        if self.current_step.action_flag is not None:
-            self.logger.info(f"Lever de l'action flage : {self.current_step.action_flag}")
-            self.strategy_manager.add_action_flag(self.current_step.action_flag)
-
         self.current_step = None
         if self.current_objective.has_next_step():
             self.current_step = self.current_objective.get_next_step(self.strategy_manager.action_flags)
@@ -290,7 +289,7 @@ class MasterLoop:
 
         # Lancement du match
         self.logger.info("Match lancé")
-        self.chrono.start_match(self.match_end())
+        self.chrono.start_match(self.match_end)
         self.nextion_display.goto_page("score")
         self.movement_manager.is_match_started = True
         self.execute_current_step()
@@ -298,6 +297,7 @@ class MasterLoop:
 
         # Boucle principale
         while not self.interrupted:
+
             # Si pas d'obstacle détecté par les SRF
             if not self.something_detected:
 
@@ -335,8 +335,10 @@ class MasterLoop:
             else:
                 self.check_detection_status()
 
-            # On check les communications serveurs
-            self.communication_manager.read_from_server()
+            if self.communication_manager is not None:
+                # On check les communications serveurs
+                self.communication_manager.read_from_server()
+
             # On laisse souffler le CPU mais pas trop
             time.sleep(0.001)
 
