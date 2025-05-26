@@ -9,12 +9,12 @@
   },
   "loggerSocket": {
     "active": true,
-    "host": "192.168.42.103",
+    "host": "192.168.42.107",
     "port": 1664,
     "who": "princess"
   },
   "comSocket": {
-    "host": "192.168.42.103",
+    "host": "192.168.42.107",
     "port": 4269
   },
   "detection": {
@@ -77,6 +77,10 @@
     "goStart": {
       "jaune": [
         {
+          "type": "speed",
+            "value": 25
+        },
+        {
           "type": "go_timed",
           "dist": -400
         },
@@ -107,6 +111,10 @@
           "dist": 300
         },
         {
+          "type": "speed",
+            "value": 100
+        },
+        {
           "type": "goto",
           "x": 1600,
           "y": 1225
@@ -128,6 +136,10 @@
         }
       ],
       "bleu": [
+        {
+          "type": "speed",
+            "value": 25
+        },
         {
           "type": "go_timed",
           "dist": -400
@@ -157,6 +169,10 @@
         {
           "type": "go",
           "dist": 300
+        },
+        {
+          "type": "speed",
+            "value": 100
         },
         {
           "type": "goto",
