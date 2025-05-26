@@ -1,4 +1,5 @@
 import logging
+import time
 
 from ia.asservissement.asserv import Asserv
 from ia.asservissement.asserv_status import AsservStatus
@@ -93,6 +94,8 @@ class MovementManager:
             self.asserv.go_to_chain(Position(step.position.x, step.position.y))
         elif step.sub_type == StepSubType.SET_SPEED:
             self.asserv.set_speed(step.distance)
+        elif step.sub_type == StepSubType.WAIT:
+            time.sleep(step.timeout / 1000.0)  # Convert milliseconds to seconds
 
     def halt_asserv(self, temporary: bool) -> None:
         """
