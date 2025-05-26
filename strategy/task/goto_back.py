@@ -1,9 +1,9 @@
 import math
 
+from ia.strategy.step_sub_type import StepSubType
+from ia.strategy.step_type import StepType
 from ia.utils.position import Position
 from strategy.enum.mirror import Mirror
-from strategy.enum.sub_type import SubType
-from strategy.enum.type import Type
 from strategy.task.abstract_task import AbstractTask
 
 
@@ -13,8 +13,8 @@ class GoToBack(AbstractTask):
             desc=desc,
             position_x=position_x,
             position_y=position_y,
-            task_type=Type.DEPLACEMENT,
-            subtype=SubType.GOTO_BACK,
+            task_type=StepType.MOVEMENT,
+            subtype=StepSubType.GOTO_BACK,
             mirror=mirror
         )
 

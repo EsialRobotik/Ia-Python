@@ -10,8 +10,8 @@ class Strat:
 
     def to_dict(self):
         return {
-            "couleur0": [obj.to_dict() for obj in self.couleur0],
-            "couleur3000": [obj.to_dict() for obj in self.couleur3000]
+            "color0": [obj.to_dict() for obj in self.couleur0],
+            "color3000": [obj.to_dict() for obj in self.couleur3000]
         }
 
     def __str__(self) -> str:
@@ -19,7 +19,7 @@ class Strat:
         couleur3000_str = "\t\t".join([str(obj) for obj in self.couleur3000])
         return (
             "Strat{"
-            f"\n\tcouleur0=[\t\t{couleur0_str}\n\t],"
-            f"\n\tcouleur3000=[\t\t{couleur3000_str}\n\t]"
+            f"\n\tcolor0=[\t\t{couleur0_str}\n\t],"
+            f"\n\tcolor3000=[\t\t{couleur3000_str}\n\t]"
             "\n}"
         )

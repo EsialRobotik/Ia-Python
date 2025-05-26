@@ -9,6 +9,7 @@ from strategy.task.face import Face
 from strategy.task.go import Go
 from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
+from strategy.task.goto_back import GoToBack
 from strategy.task.manipulation import Manipulation
 from strategy.task.set_speed import SetSpeed
 from strategy.task.wait import Wait
@@ -149,7 +150,7 @@ class FreddyPrincess(AbstractMain):
             position_x=1540,
             position_y=775
         ))
-        self.get_gradin(tasks_list)
+        #self.get_gradin(tasks_list)
         tasks_list.add(
             DeleteZone(
                 desc='Suppression zone de dépose du gradin SO',
@@ -172,8 +173,8 @@ class FreddyPrincess(AbstractMain):
             position_x=2000,
             position_y=775
         ))
-        self.depose_gradin(tasks_list)
-        tasks_list.add(GoTo(
+        #self.depose_gradin(tasks_list)
+        tasks_list.add(GoToBack(
             desc='Recule gradin SO / SE',
             position_x=1500,
             position_y=700
@@ -209,7 +210,7 @@ class FreddyPrincess(AbstractMain):
             position_x=830,
             position_y=1100
         ))
-        self.get_gradin(tasks_list)
+        #self.get_gradin(tasks_list)
         tasks_list.add(
             DeleteZone(
                 desc='Suppression zone de dépose du gradin O',
@@ -232,7 +233,11 @@ class FreddyPrincess(AbstractMain):
             position_x=2000,
             position_y=1220
         ))
-        self.depose_gradin(tasks_list)
+        #self.depose_gradin(tasks_list)
+        tasks_list.add(Go(
+            desc='Recule gradin',
+            dist=-50
+        ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Gradin O / E',
             id=1,

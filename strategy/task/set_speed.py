@@ -1,7 +1,7 @@
+from ia.strategy.step_sub_type import StepSubType
+from ia.strategy.step_type import StepType
 from ia.utils.position import Position
 from strategy.enum.mirror import Mirror
-from strategy.enum.sub_type import SubType
-from strategy.enum.type import Type
 from strategy.task.abstract_task import AbstractTask
 
 class SetSpeed(AbstractTask):
@@ -10,8 +10,8 @@ class SetSpeed(AbstractTask):
         super().__init__(
             desc=desc,
             dist=speed,
-            task_type=Type.DEPLACEMENT,
-            subtype=SubType.SET_SPEED,
+            task_type=StepType.MOVEMENT,
+            subtype=StepSubType.SET_SPEED,
             mirror=mirror,
         )
 

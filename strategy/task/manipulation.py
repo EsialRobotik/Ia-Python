@@ -1,15 +1,15 @@
+from ia.strategy.step_sub_type import StepSubType
+from ia.strategy.step_type import StepType
 from ia.utils.position import Position
 from strategy.enum.mirror import Mirror
-from strategy.enum.sub_type import SubType
-from strategy.enum.type import Type
 from strategy.task.abstract_task import AbstractTask
 
 class Manipulation(AbstractTask):
     def __init__(self, desc: str, action_id: str, mirror: Mirror = Mirror.MIRRORY):
         super().__init__(
             desc=desc,
-            task_type=Type.MANIPULATION,
-            subtype=SubType.NONE,
+            task_type=StepType.MANIPULATION,
+            subtype=StepSubType.NONE,
             mirror=mirror,
             action_id=action_id
         )
