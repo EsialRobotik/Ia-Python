@@ -11,7 +11,6 @@ from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.goto_back import GoToBack
 from strategy.task.manipulation import Manipulation
-from strategy.task.set_speed import SetSpeed
 from strategy.task.wait import Wait
 
 
@@ -29,8 +28,8 @@ class FreddyPrincess(AbstractMain):
     def generate(self):
         self.liberation_depart()
         self.banderole()
-        self.gradin_so_se()
-        self.gradin_o_e()
+        #self.gradin_so_se()
+        #self.gradin_o_e()
         self.backstage()
         self.generate_strategy()
 
@@ -89,10 +88,6 @@ class FreddyPrincess(AbstractMain):
     def banderole(self):
         score = 20
         tasks_list = TaskList(mirror_size=3000)
-        tasks_list.add(SetSpeed(
-            desc='Vitesse de dépose banderole',
-            speed=25
-        ))
         tasks_list.add(Go(
             desc='Position dépose banderole',
             dist=80,
@@ -104,11 +99,8 @@ class FreddyPrincess(AbstractMain):
         ))
         tasks_list.add(Go(
             desc='Recule banderole',
-            dist=-320
-        ))
-        tasks_list.add(SetSpeed(
-            desc='Vitesse normale',
-            speed=100
+            dist=-320,
+            timeout=500
         ))
         tasks_list.add(Manipulation(
             desc='Ascenseur survole plateforme',

@@ -36,15 +36,6 @@
         }
     },
     {
-        "task": "Vitesse de d\u00e9pose banderole",
-        "command": "speed#25",
-        "position": {
-            "x": 1750,
-            "y": 1775,
-            "theta": 0.0
-        }
-    },
-    {
         "task": "Position d\u00e9pose banderole",
         "command": "go#80",
         "position": {
@@ -72,15 +63,6 @@
         }
     },
     {
-        "task": "Vitesse normale",
-        "command": "speed#100",
-        "position": {
-            "x": 1510,
-            "y": 1775,
-            "theta": 0.0
-        }
-    },
-    {
         "task": "Ascenseur survole plateforme",
         "command": "action#ascenseur_survole_plateformes",
         "position": {
@@ -90,7 +72,7 @@
         }
     },
     {
-        "task": "Positionnement sur le gradin SO / SE",
+        "task": "Go backstage",
         "command": "goto-astar#1510;1770",
         "position": {
             "x": 1510,
@@ -99,115 +81,16 @@
         }
     },
     {
-        "task": "Positionnement sur le gradin SO / SE",
-        "command": "goto-astar#1300;1980",
+        "task": "Go backstage",
+        "command": "goto-astar#1280;2000",
         "position": {
-            "x": 1300,
-            "y": 1980,
+            "x": 1280,
+            "y": 2000,
             "theta": 2.141592653589793
         }
     },
     {
-        "task": "Positionnement sur le gradin SO / SE",
-        "command": "goto-astar#1300;2220",
-        "position": {
-            "x": 1300,
-            "y": 2220,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin SO / SE",
-        "command": "goto#1300;2225",
-        "position": {
-            "x": 1300,
-            "y": 2225,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "Alignement sur le gradin SO / SE",
-        "command": "face#2000;2225",
-        "position": {
-            "x": 1300,
-            "y": 2225,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Placement gradin SO / SE",
-        "command": "goto#1540;2225",
-        "position": {
-            "x": 1540,
-            "y": 2225,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Suppression zone de d\u00e9pose du gradin SE",
-        "command": "delete-zone#gradin_se",
-        "position": {
-            "x": 1540,
-            "y": 2225,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Zone de d\u00e9pose du gradin SO / SE",
-        "command": "goto#1750;2225",
-        "position": {
-            "x": 1750,
-            "y": 2225,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Alignement d\u00e9pose gradin SO / SE",
-        "command": "face#2000;2225",
-        "position": {
-            "x": 1750,
-            "y": 2225,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Recule gradin SO / SE",
-        "command": "goto-back#1500;2300",
-        "position": {
-            "x": 1500,
-            "y": 2300,
-            "theta": 5.983185307179586
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#1500;2300",
-        "position": {
-            "x": 1500,
-            "y": 2300,
-            "theta": 5.983185307179586
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#1290;2090",
-        "position": {
-            "x": 1290,
-            "y": 2090,
-            "theta": 4.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#1280;2090",
-        "position": {
-            "x": 1280,
-            "y": 2090,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
+        "task": "Go backstage",
         "command": "goto-astar#1280;2150",
         "position": {
             "x": 1280,
@@ -216,7 +99,7 @@
         }
     },
     {
-        "task": "Positionnement sur le gradin O / E",
+        "task": "Go backstage",
         "command": "goto-astar#1270;2160",
         "position": {
             "x": 1270,
@@ -225,7 +108,7 @@
         }
     },
     {
-        "task": "Positionnement sur le gradin O / E",
+        "task": "Go backstage",
         "command": "goto-astar#1270;2180",
         "position": {
             "x": 1270,
@@ -234,7 +117,7 @@
         }
     },
     {
-        "task": "Positionnement sur le gradin O / E",
+        "task": "Go backstage",
         "command": "goto-astar#1250;2200",
         "position": {
             "x": 1250,
@@ -243,7 +126,7 @@
         }
     },
     {
-        "task": "Positionnement sur le gradin O / E",
+        "task": "Go backstage",
         "command": "goto-astar#1250;2210",
         "position": {
             "x": 1250,
@@ -252,199 +135,10 @@
         }
     },
     {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#1210;2250",
-        "position": {
-            "x": 1210,
-            "y": 2250,
-            "theta": 2.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#1200;2250",
-        "position": {
-            "x": 1200,
-            "y": 2250,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#1180;2270",
-        "position": {
-            "x": 1180,
-            "y": 2270,
-            "theta": 2.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#1160;2270",
-        "position": {
-            "x": 1160,
-            "y": 2270,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#1150;2280",
-        "position": {
-            "x": 1150,
-            "y": 2280,
-            "theta": 2.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#950;2280",
-        "position": {
-            "x": 950,
-            "y": 2280,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#940;2270",
-        "position": {
-            "x": 940,
-            "y": 2270,
-            "theta": 4.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#920;2270",
-        "position": {
-            "x": 920,
-            "y": 2270,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#900;2250",
-        "position": {
-            "x": 900,
-            "y": 2250,
-            "theta": 4.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#890;2250",
-        "position": {
-            "x": 890,
-            "y": 2250,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#750;2110",
-        "position": {
-            "x": 750,
-            "y": 2110,
-            "theta": 4.141592653589793
-        }
-    },
-    {
-        "task": "Positionnement sur le gradin O / E",
-        "command": "goto-astar#750;1900",
-        "position": {
-            "x": 750,
-            "y": 1900,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "Alignement sur le gradin O / E",
-        "command": "face#2000;1900",
-        "position": {
-            "x": 750,
-            "y": 1900,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Placement gradin O / E",
-        "command": "goto#830;1900",
-        "position": {
-            "x": 830,
-            "y": 1900,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Suppression zone de d\u00e9pose du gradin E",
-        "command": "delete-zone#gradin_e",
-        "position": {
-            "x": 830,
-            "y": 1900,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Zone de d\u00e9pose du gradin O / E",
-        "command": "goto-astar#830;1900",
-        "position": {
-            "x": 830,
-            "y": 1900,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Zone de d\u00e9pose du gradin O / E",
-        "command": "goto-astar#950;1780",
-        "position": {
-            "x": 950,
-            "y": 1780,
-            "theta": -1.0
-        }
-    },
-    {
-        "task": "Zone de d\u00e9pose du gradin O / E",
-        "command": "goto-astar#1750;1780",
-        "position": {
-            "x": 1750,
-            "y": 1780,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Alignement d\u00e9pose gradin O / E",
-        "command": "face#2000;1780",
-        "position": {
-            "x": 1750,
-            "y": 1780,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Recule gradin",
-        "command": "go#-50",
-        "position": {
-            "x": 1700,
-            "y": 1780,
-            "theta": 0
-        }
-    },
-    {
         "task": "Go backstage",
-        "command": "goto-astar#1700;1780",
+        "command": "goto-astar#1090;2370",
         "position": {
-            "x": 1700,
-            "y": 1780,
-            "theta": 0
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#1110;2370",
-        "position": {
-            "x": 1110,
+            "x": 1090,
             "y": 2370,
             "theta": 2.141592653589793
         }
