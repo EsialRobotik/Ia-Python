@@ -1,9 +1,7 @@
 import logging
-
-logger = logging.getLogger(__name__)
-
-from datetime import datetime
 import threading
+from datetime import datetime
+
 
 class Chrono:
     """
@@ -37,7 +35,8 @@ class Chrono:
             timer (None or threading.Timer): The timer object, initialized to None.
         """
 
-        logger.info(f"Creating Chrono object with match duration of {match_duration} seconds.")
+        self.logger = logging.getLogger(__name__)
+        self.logger.info(f"Creating Chrono object with match duration of {match_duration} seconds.")
         self.match_duration = match_duration
         self.timestamp_start = None
         self.timer = None
@@ -65,7 +64,6 @@ class Chrono:
             match_end (callable): A callback for the end of the match
         """
 
-        logger.info("Starting match timer...")
         self.start()
         self.timer = threading.Timer(self.match_duration, match_end)
         self.timer.start()
@@ -76,7 +74,7 @@ class Chrono:
         This method records the current timestamp as the start time of the match.
         """
 
-        logger.info("Starting match timer...")
+        self.logger.info("Starting match timer...")
         self.timestamp_start = int(datetime.now().timestamp())
 
     def get_time_since_beginning(self) -> int:

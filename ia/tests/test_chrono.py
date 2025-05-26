@@ -31,17 +31,33 @@ class TestChrono(AbstractTest):
         Returns:
             None
         """
-        logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(__name__)
         match_duration = self.config_data['matchDuration']
-        logger.info(f"Match duration: {self.config_data['matchDuration']} seconds")
+        self.logger.info(f"Match duration: {self.config_data['matchDuration']} seconds")
         # Create a chrono
         chrono = Chrono(match_duration=match_duration)
         chrono.start()
         # Print the remaining time
-        logger.info(f"Time since begining : {chrono.get_time_since_beginning()}")
-        logger.info(chrono)
+        self.logger.info(f"Time since begining : {chrono.get_time_since_beginning()}")
+        self.logger.info(chrono)
         # Simulate 30 seconds of match time
         time.sleep(5)
         # Print the remaining time again
-        logger.info(f"Time since begining : {chrono.get_time_since_beginning()}")
-        logger.info(chrono)
+        self.logger.info(f"Time since begining : {chrono.get_time_since_beginning()}")
+        self.logger.info(chrono)
+
+        self.logger.info("Test Chrono finished successfully.")
+        chrono = Chrono(match_duration=5)
+        chrono.start_match(self.end_chrono)
+        time.sleep(6)
+        self.logger.info(f"Time since begining : {chrono.get_time_since_beginning()}")
+
+    def end_chrono(self) -> None:
+        """
+        End the Chrono test.
+        This method is called to clean up after the test is completed.
+        It does not perform any specific actions in this implementation.
+        Returns:
+            None
+        """
+        self.logger.info("End Chrono test.")
