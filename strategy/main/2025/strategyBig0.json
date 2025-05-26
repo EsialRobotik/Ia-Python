@@ -54,6 +54,15 @@
         }
     },
     {
+        "task": "On attends un peu, on est pas des b\u00eates",
+        "command": "wait#1000",
+        "position": {
+            "x": 1830,
+            "y": 1225,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "Recule banderole",
         "command": "go#-320",
         "position": {

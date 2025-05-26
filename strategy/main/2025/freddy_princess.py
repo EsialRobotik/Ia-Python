@@ -91,16 +91,20 @@ class FreddyPrincess(AbstractMain):
         tasks_list.add(Go(
             desc='Position dépose banderole',
             dist=80,
-            timeout=500
+            timeout=1000
         ))
         tasks_list.add(Manipulation(
             desc='Dépose banderole',
             action_id='ascenseur_depose_bordure'
         ))
+        tasks_list.add(Wait(
+            desc='On attends un peu, on est pas des bêtes',
+            ms_count=1000
+        ))
         tasks_list.add(Go(
             desc='Recule banderole',
             dist=-320,
-            timeout=500
+            timeout=1000
         ))
         tasks_list.add(Manipulation(
             desc='Ascenseur survole plateforme',

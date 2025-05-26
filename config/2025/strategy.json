@@ -66,7 +66,7 @@
                     "subtype": "GO",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 500,
+                    "timeout": 1000,
                     "item_id": null,
                     "skip_flag": null,
                     "needed_flag": null
@@ -86,6 +86,20 @@
                     "needed_flag": null
                 },
                 {
+                    "desc": "On attends un peu, on est pas des b\u00eates",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 1000,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
                     "desc": "Recule banderole",
                     "position_x": 0,
                     "position_y": 0,
@@ -94,7 +108,7 @@
                     "subtype": "GO",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 500,
+                    "timeout": 1000,
                     "item_id": null,
                     "skip_flag": null,
                     "needed_flag": null
@@ -221,7 +235,7 @@
                     "subtype": "GO",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 500,
+                    "timeout": 1000,
                     "item_id": null,
                     "skip_flag": null,
                     "needed_flag": null
@@ -241,6 +255,20 @@
                     "needed_flag": null
                 },
                 {
+                    "desc": "On attends un peu, on est pas des b\u00eates",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 1000,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
                     "desc": "Recule banderole",
                     "position_x": 0,
                     "position_y": 3000,
@@ -249,7 +277,7 @@
                     "subtype": "GO",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 500,
+                    "timeout": 1000,
                     "item_id": null,
                     "skip_flag": null,
                     "needed_flag": null
