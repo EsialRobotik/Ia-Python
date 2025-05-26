@@ -4,11 +4,9 @@
     "dscription": "Initialise l'ascenseur et les pinces",
     "payload": {
         "list": [
-            "pinces_sortir",
             "ascenseur_compliance_margin",
             "ascenseur_compliance_slop",
-            "ascenseur_survole_bordure",
-            "pinces_lacher"
+            "ascenseur_survole_bordure"
         ]
     }
 }
