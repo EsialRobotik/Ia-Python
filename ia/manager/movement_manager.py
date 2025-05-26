@@ -77,9 +77,10 @@ class MovementManager:
         if step.sub_type == StepSubType.FACE:
             self.asserv.face(Position(step.position.x, step.position.y))
         elif step.sub_type == StepSubType.GO:
-            self.asserv.go(step.distance)
             if step.timeout > 0:
                 self.asserv.enable_low_speed(True)
+            self.asserv.go(step.distance)
+            if step.timeout > 0:
                 self.asserv.wait_for_halted_or_blocked(step.timeout)
                 self.asserv.emergency_stop()
                 self.asserv.emergency_reset()
