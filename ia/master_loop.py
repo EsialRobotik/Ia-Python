@@ -312,7 +312,6 @@ class MasterLoop:
                         self.logger.info("Astar terminé")
                         self.astar_launch = False
                         self.movement_manager.execute_movement(self.pathfinding.path)
-                        self.execute_current_step()
                     else:
                         # On attend un peu avant de refaire un tour de boucle pour ne pas surcharger le CPU
                         time.sleep(0.01)
