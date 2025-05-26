@@ -1,11 +1,11 @@
 {
     "type": "list",
-    "description": "Rentre les pinces mobiles dans le robot",
+    "description": "Lâche les canettes",
     "alias": "pr",
     "payload": {
         "list": [
             "pince_droite_rentrer",
-            "pince_gauche_rentrer"
+            "pince_gauche_lacher"
         ]
     }
 }

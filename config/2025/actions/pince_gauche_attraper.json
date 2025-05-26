@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pds",
+    "description": "Met les aimants de la pince gauche à fleur de pince pour attraper la canette",
+    "payload": {
+        "type": "position",
+        "id": 3,
+        "angleDegree": 103.2
+    }
+}

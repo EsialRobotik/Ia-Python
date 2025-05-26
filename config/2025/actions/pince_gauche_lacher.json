@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pdr",
+    "description": "Rentre les aimants de la pince gauche pour lâcher la canette",
+    "payload": {
+        "type": "position",
+        "id": 3,
+        "angleDegree": 65
+    }
+}
