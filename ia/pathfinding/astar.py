@@ -269,8 +269,9 @@ class AStar:
             lua.execute(lua_code)
 
             # start and goal positions in grid coordinates
-            start_reduced = Position(start.x // self.resolution, start.y // self.resolution)
-            goal_reduced = Position(goal.x // self.resolution, goal.y // self.resolution)
+            start_reduced = Position(int(start.x // self.resolution), int(start.y // self.resolution))
+            goal_reduced = Position(int(goal.x // self.resolution), int(goal.y // self.resolution))
+            self.logger.info(f"A* Compute path from reduced {start_reduced} to {goal_reduced}")
 
             if not self.position_open_check[start_reduced.x][start_reduced.y]:
                 self.logger.error("Start position is blocked, cannot compute path.")
