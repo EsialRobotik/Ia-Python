@@ -9,33 +9,6 @@
         }
     },
     {
-        "task": "Suppression zone de d\u00e9part",
-        "command": "delete-zone#start_bleu_back",
-        "position": {
-            "x": 1750,
-            "y": 1775,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "Suppression zone de d\u00e9part",
-        "command": "delete-zone#start_bleu_side",
-        "position": {
-            "x": 1750,
-            "y": 1775,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "Suppression zone de d\u00e9part",
-        "command": "delete-zone#start_bleu_front",
-        "position": {
-            "x": 1750,
-            "y": 1775,
-            "theta": 0.0
-        }
-    },
-    {
         "task": "Position d\u00e9pose banderole",
         "command": "go#80",
         "position": {

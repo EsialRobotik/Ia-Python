@@ -22,6 +22,8 @@ class AbstractMain:
         self.start_x_3000: int = 0
         self.start_y_3000: int = 0
         self.start_theta_3000: float = 0.0
+        self.color0 = 'color0'
+        self.color3000 = 'color3000'
 
         self.configPath = "../../../config"
 
@@ -47,7 +49,7 @@ class AbstractMain:
             self.start_y_0,
             self.start_theta_0,
             "strategyBig0.json",
-            'color0'
+            self.color0
         )
 
         print("Test de la strat 3000")
@@ -57,7 +59,7 @@ class AbstractMain:
             self.start_y_3000,
             self.start_theta_3000,
             "strategyBig3000.json",
-            'color3000'
+            self.color3000
         )
 
     def test_strategy(self, objectives, start_x, start_y, start_theta, output_path, color):

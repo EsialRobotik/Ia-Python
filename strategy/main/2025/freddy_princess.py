@@ -24,66 +24,15 @@ class FreddyPrincess(AbstractMain):
         self.start_x_3000: int = 1750
         self.start_y_3000: int = 1775
         self.start_theta_3000: float = 0.0
+        self.color0 = 'jaune'
+        self.color3000 = 'bleu'
 
     def generate(self):
-        self.liberation_depart()
         self.banderole()
         #self.gradin_so_se()
         #self.gradin_o_e()
         self.backstage()
         self.generate_strategy()
-
-    def liberation_depart(self):
-        score = 0
-        tasks_list = TaskList(mirror_size=3000)
-        tasks_list.add(
-            DeleteZone(
-                desc='Suppression zone de départ',
-                item_id='start_jaune_back',
-                mirror=Mirror.SPECIFIC
-            ),
-            DeleteZone(
-                desc='Suppression zone de départ',
-                item_id='start_bleu_back',
-                mirror=Mirror.SPECIFIC
-            ),
-        )
-        tasks_list.add(
-            DeleteZone(
-                desc='Suppression zone de départ',
-                item_id='start_jaune_side',
-                mirror=Mirror.SPECIFIC
-            ),
-            DeleteZone(
-                desc='Suppression zone de départ',
-                item_id='start_bleu_side',
-                mirror=Mirror.SPECIFIC
-            ),
-        )
-        tasks_list.add(
-            DeleteZone(
-                desc='Suppression zone de départ',
-                item_id='start_jaune_front',
-                mirror=Mirror.SPECIFIC
-            ),
-            DeleteZone(
-                desc='Suppression zone de départ',
-                item_id='start_bleu_front',
-                mirror=Mirror.SPECIFIC
-            ),
-        )
-        self.objectifs_couleur_0.append(tasks_list.generate_objective(
-            name='Libération départ jaune',
-            id=1,
-            score=score,
-            priority=1
-        ))
-        self.objectifs_couleur_3000.append(tasks_list.generate_mirror_objective(
-            name='Libération départ bleu',
-            id=1,
-            score=score,
-            priority=1
-        ))
 
     def banderole(self):
         score = 20

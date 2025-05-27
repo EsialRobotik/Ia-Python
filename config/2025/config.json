@@ -231,7 +231,7 @@
         "id": "rampe_jaune",
         "forme": "polygone",
         "desc": "Rampe jaune",
-        "type": "jaune",
+        "type": "all",
         "active": true,
         "points": [
           {
@@ -256,7 +256,7 @@
         "id": "scene",
         "forme": "polygone",
         "desc": "Scéne",
-        "type": "jaune",
+        "type": "all",
         "active": true,
         "points": [
           {
@@ -281,7 +281,7 @@
         "id": "rampe_bleu",
         "forme": "polygone",
         "desc": "Rampe bleu",
-        "type": "bleu",
+        "type": "all",
         "active": true,
         "points": [
           {
@@ -301,9 +301,7 @@
             "y": 1950
           }
         ]
-      }
-    ],
-    "dynamicZones": [
+      },
       {
         "id": "start_jaune_back",
         "forme": "polygone",
@@ -454,8 +452,9 @@
             "y": 2000
           }
         ]
-      },
-
+      }
+    ],
+    "dynamicZones": [
       {
         "id": "gradin_nno",
         "forme": "polygone",

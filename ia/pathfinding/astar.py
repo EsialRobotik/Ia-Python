@@ -104,7 +104,7 @@ class AStar:
         """
 
         for zone in self.config["forbiddenZones"]:
-            if zone["type"] != self.active_color:
+            if zone["type"] != self.active_color or zone["type"] == 'all':
                 if zone["forme"] == "polygone":
                     self.mark_zone(zone["points"], self.marge)
                 elif zone["forme"] == "cercle":

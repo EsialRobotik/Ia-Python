@@ -1,57 +1,6 @@
 {
     "color0": [
         {
-            "desc": "Lib\u00e9ration d\u00e9part jaune",
-            "id": 1,
-            "points": 0,
-            "priority": 1,
-            "tasks": [
-                {
-                    "desc": "Suppression zone de d\u00e9part",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "ELEMENT",
-                    "subtype": "DELETE_ZONE",
-                    "action_id": null,
-                    "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": "start_jaune_back",
-                    "skip_flag": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Suppression zone de d\u00e9part",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "ELEMENT",
-                    "subtype": "DELETE_ZONE",
-                    "action_id": null,
-                    "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": "start_jaune_side",
-                    "skip_flag": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Suppression zone de d\u00e9part",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "ELEMENT",
-                    "subtype": "DELETE_ZONE",
-                    "action_id": null,
-                    "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": "start_jaune_front",
-                    "skip_flag": null,
-                    "needed_flag": null
-                }
-            ],
-            "skip_flag": null
-        },
-        {
             "desc": "Banderole",
             "id": 1,
             "points": 20,
@@ -169,57 +118,6 @@
         }
     ],
     "color3000": [
-        {
-            "desc": "Lib\u00e9ration d\u00e9part bleu",
-            "id": 1,
-            "points": 0,
-            "priority": 1,
-            "tasks": [
-                {
-                    "desc": "Suppression zone de d\u00e9part",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "ELEMENT",
-                    "subtype": "DELETE_ZONE",
-                    "action_id": null,
-                    "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": "start_bleu_back",
-                    "skip_flag": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Suppression zone de d\u00e9part",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "ELEMENT",
-                    "subtype": "DELETE_ZONE",
-                    "action_id": null,
-                    "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": "start_bleu_side",
-                    "skip_flag": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Suppression zone de d\u00e9part",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "ELEMENT",
-                    "subtype": "DELETE_ZONE",
-                    "action_id": null,
-                    "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": "start_bleu_front",
-                    "skip_flag": null,
-                    "needed_flag": null
-                }
-            ],
-            "skip_flag": null
-        },
         {
             "desc": "Banderole",
             "id": 1,
