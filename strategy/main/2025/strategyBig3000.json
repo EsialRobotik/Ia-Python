@@ -73,118 +73,46 @@
     },
     {
         "task": "Go backstage",
-        "command": "goto-astar#1280;2150",
+        "command": "goto-astar#1280;2270",
         "position": {
             "x": 1280,
-            "y": 2150,
+            "y": 2270,
             "theta": 1.5707963267948966
         }
     },
     {
         "task": "Go backstage",
-        "command": "goto-astar#1270;2160",
+        "command": "goto-astar#1190;2360",
         "position": {
-            "x": 1270,
-            "y": 2160,
+            "x": 1190,
+            "y": 2360,
             "theta": 2.141592653589793
         }
     },
     {
         "task": "Go backstage",
-        "command": "goto-astar#1270;2180",
+        "command": "goto-astar#720;2360",
         "position": {
-            "x": 1270,
-            "y": 2180,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#1250;2200",
-        "position": {
-            "x": 1250,
-            "y": 2200,
-            "theta": 2.141592653589793
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#1250;2210",
-        "position": {
-            "x": 1250,
-            "y": 2210,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#1090;2370",
-        "position": {
-            "x": 1090,
-            "y": 2370,
-            "theta": 2.141592653589793
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#850;2370",
-        "position": {
-            "x": 850,
-            "y": 2370,
+            "x": 720,
+            "y": 2360,
             "theta": 3.141592653589793
         }
     },
     {
         "task": "Go backstage",
-        "command": "goto-astar#840;2380",
-        "position": {
-            "x": 840,
-            "y": 2380,
-            "theta": 2.141592653589793
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#820;2380",
-        "position": {
-            "x": 820,
-            "y": 2380,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#800;2400",
-        "position": {
-            "x": 800,
-            "y": 2400,
-            "theta": 2.141592653589793
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#790;2400",
-        "position": {
-            "x": 790,
-            "y": 2400,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "Go backstage",
-        "command": "goto-astar#630;2560",
+        "command": "goto-astar#630;2450",
         "position": {
             "x": 630,
-            "y": 2560,
+            "y": 2450,
             "theta": 2.141592653589793
         }
     },
     {
         "task": "Go backstage",
-        "command": "goto-astar#630;2690",
+        "command": "goto-astar#630;2680",
         "position": {
             "x": 630,
-            "y": 2690,
+            "y": 2680,
             "theta": 1.5707963267948966
         }
     },
@@ -193,8 +121,8 @@
         "command": "face#0;2690",
         "position": {
             "x": 630,
-            "y": 2690,
-            "theta": 3.141592653589793
+            "y": 2680,
+            "theta": 3.1257196377167773
         }
     }
 ]

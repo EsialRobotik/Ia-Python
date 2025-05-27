@@ -202,7 +202,7 @@ class FreddyPrincess(AbstractMain):
         tasks_list.add(GoToAstar(
             desc='Go backstage',
             position_x=630,
-            position_y=310
+            position_y=320
         ))
         tasks_list.add(Face(
             desc='Alignement backstage',

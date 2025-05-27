@@ -88,7 +88,7 @@
                 {
                     "desc": "Go backstage",
                     "position_x": 630,
-                    "position_y": 310,
+                    "position_y": 320,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
@@ -206,7 +206,7 @@
                 {
                     "desc": "Go backstage",
                     "position_x": 630,
-                    "position_y": 2690,
+                    "position_y": 2680,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",

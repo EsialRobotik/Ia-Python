@@ -5,8 +5,7 @@ from typing import Dict, List, Tuple
 
 import numpy as np
 from lupa import LuaRuntime
-from shapely.geometry import Polygon, Point
-from shapely.prepared import prep
+from shapely.geometry import Polygon
 
 from ia.utils.position import Position
 
@@ -105,6 +104,7 @@ class AStar:
 
         for zone in self.config["forbiddenZones"]:
             if zone["type"] != self.active_color or zone["type"] == 'all':
+                self.logger.info(f"Lock forbidden zone {zone['id']}")
                 if zone["forme"] == "polygone":
                     self.mark_zone(zone["points"], self.marge)
                 elif zone["forme"] == "cercle":
@@ -124,6 +124,7 @@ class AStar:
         """
 
         for zone in self.config["dynamicZones"]:
+            self.logger.info(f"Set dynamic zone {zone['id']} - {zone["active"]}")
             if zone["forme"] == "polygone":
                 self.mark_zone(zone["points"], self.marge, active=zone["active"])
             elif zone["forme"] == "cercle":
@@ -177,16 +178,16 @@ class AStar:
         """
 
         poly = Polygon([(p["x"] // self.resolution, p["y"] // self.resolution) for p in points]).buffer(marge // self.resolution)
-        prepared_poly = prep(poly)
         minx, miny, maxx, maxy = map(int, poly.bounds)
 
         # Créer un masque temporaire
         mask = np.zeros((self.size_x, self.size_y), dtype=bool)
 
+        # todo fonctionne uniquement avec des rectangles qui ne sont pas en diagonales dans la table
+        # todo trouver un moyen efficace de vérifier l'appartenance d'un point à un polygone sans défoncer les perfs
         for x in range(max(0, minx), min(maxx, self.size_x)):
             for y in range(max(0, miny), min(maxy, self.size_y)):
-                if prepared_poly.contains(Point(x, y)):
-                    mask[x, y] = True
+                mask[x, y] = True
 
         # Appliquer le masque à position_open_check
         for x in range(mask.shape[0]):
