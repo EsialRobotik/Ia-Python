@@ -271,11 +271,11 @@ class MasterLoop:
         self.execute_current_step()
 
     def check_detection_status(self) -> None:
-        if self.moving_forward and not self.detection_manager.is_emergency_detection_front(False):
+        if self.moving_forward and not self.detection_manager.is_emergency_detection_front(True):
             self.logger.info("Fin détection avant")
             self.movement_manager.resume_asserv()
             self.something_detected = False
-        elif not self.moving_forward and not self.detection_manager.is_emergency_detection_back(False):
+        elif not self.moving_forward and not self.detection_manager.is_emergency_detection_back(True):
             self.logger.info("Fin détection arrière")
             self.movement_manager.resume_asserv()
             self.something_detected = False
