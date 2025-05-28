@@ -3,7 +3,7 @@ import math
 from typing import Dict, List
 
 import numpy as np
-from shapely.geometry import Polygon, Point
+from shapely.geometry import Polygon
 
 from ia.api.detection.lidar.lidar_rpa2 import LidarRpA2
 from ia.api.detection.ultrasound.srf import Srf
@@ -25,15 +25,16 @@ class DetectionManager:
             table_config (Dict): The configuration of the table.
         """
 
+        self.logger = logging.getLogger(__name__)
         self.sensors = sensors
         self.lidar = lidar
         self.asserv = asserv
         self.table_config = table_config
         self.ignore_detection_grid = np.zeros(
-            shape=(self.table_config.get("sizeY"), self.table_config.get("sizeX")),
+            shape=(self.table_config.get("sizeX"), self.table_config.get("sizeY")),
             dtype=np.uint8
         )
-        self.logger = logging.getLogger(__name__)
+        self.set_ignore_detection_grid()
 
     def set_ignore_detection_grid(self) -> None:
         """
@@ -60,8 +61,8 @@ class DetectionManager:
 
         for x in range(minx, maxx):
             for y in range(miny, maxy):
-                if poly.contains(Point(x, y)):
-                    self.ignore_detection_grid[x, y] = True
+                #if poly.contains(Point(x, y)):
+                self.ignore_detection_grid[x, y] = True
 
     def mark_circle(self, center: Dict[str, int], radius: int) -> None:
         cx, cy = center["x"], center["y"]

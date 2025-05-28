@@ -42,7 +42,7 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
     logger.info("Init logger")
 
-    # run the test
+    # run
     logger.info(f"Lancement IA {args.year}")
     with open(f'config/{args.year}/config.json') as config_file:
         config_data = json.load(config_file)
