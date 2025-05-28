@@ -124,7 +124,6 @@ class AStar:
         """
 
         for zone in self.config["dynamicZones"]:
-            self.logger.info(f"Set dynamic zone {zone['id']} - {zone["active"]}")
             if zone["forme"] == "polygone":
                 self.mark_zone(zone["points"], self.marge, active=zone["active"])
             elif zone["forme"] == "cercle":
