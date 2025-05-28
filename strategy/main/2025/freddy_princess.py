@@ -42,10 +42,6 @@ class FreddyPrincess(AbstractMain):
             dist=80,
             timeout=1000
         ))
-        tasks_list.add(Go(
-            desc='Position dépose banderole',
-            dist=-10,
-        ))
         tasks_list.add(Manipulation(
             desc='Dépose banderole',
             action_id='ascenseur_depose_bordure'
@@ -61,7 +57,7 @@ class FreddyPrincess(AbstractMain):
         ))
         tasks_list.add(Manipulation(
             desc='Ascenseur survole plateforme',
-            action_id='ascenseur_survole_plateformes'
+            action_id='ascenseur_tout_en_haut'
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Banderole',
@@ -206,17 +202,17 @@ class FreddyPrincess(AbstractMain):
         tasks_list.add(GoToAstar(
             desc='Go backstage',
             position_x=630,
-            position_y=320
+            position_y=350
         ))
         tasks_list.add(Face(
             desc='Alignement backstage',
             position_x=600,
-            position_y=320
+            position_y=350
         ))
         tasks_list.add(Face(
             desc='Alignement backstage',
             position_x=0,
-            position_y=320
+            position_y=350
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Backstage',

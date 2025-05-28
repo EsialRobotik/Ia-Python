@@ -18,19 +18,10 @@
         }
     },
     {
-        "task": "Position d\u00e9pose banderole",
-        "command": "go#-10",
-        "position": {
-            "x": 1820,
-            "y": 1775,
-            "theta": 0.0
-        }
-    },
-    {
         "task": "D\u00e9pose banderole",
         "command": "action#ascenseur_depose_bordure",
         "position": {
-            "x": 1820,
+            "x": 1830,
             "y": 1775,
             "theta": 0.0
         }
@@ -39,7 +30,7 @@
         "task": "On attends un peu, on est pas des b\u00eates",
         "command": "wait#1000",
         "position": {
-            "x": 1820,
+            "x": 1830,
             "y": 1775,
             "theta": 0.0
         }
@@ -48,35 +39,35 @@
         "task": "Recule banderole",
         "command": "go#-320",
         "position": {
-            "x": 1500,
+            "x": 1510,
             "y": 1775,
             "theta": 0.0
         }
     },
     {
         "task": "Ascenseur survole plateforme",
-        "command": "action#ascenseur_survole_plateformes",
+        "command": "action#ascenseur_tout_en_haut",
         "position": {
-            "x": 1500,
+            "x": 1510,
             "y": 1775,
             "theta": 0.0
         }
     },
     {
         "task": "Go backstage",
-        "command": "goto-astar#1500;1770",
+        "command": "goto-astar#1510;1770",
         "position": {
-            "x": 1500,
+            "x": 1510,
             "y": 1770,
             "theta": -1.5707963267948966
         }
     },
     {
         "task": "Go backstage",
-        "command": "goto-astar#1280;1990",
+        "command": "goto-astar#1280;2000",
         "position": {
             "x": 1280,
-            "y": 1990,
+            "y": 2000,
             "theta": 2.141592653589793
         }
     },
@@ -118,28 +109,28 @@
     },
     {
         "task": "Go backstage",
-        "command": "goto-astar#630;2680",
+        "command": "goto-astar#630;2650",
         "position": {
             "x": 630,
-            "y": 2680,
+            "y": 2650,
             "theta": 1.5707963267948966
         }
     },
     {
         "task": "Alignement backstage",
-        "command": "face#600;2680",
+        "command": "face#600;2650",
         "position": {
             "x": 630,
-            "y": 2680,
+            "y": 2650,
             "theta": 3.141592653589793
         }
     },
     {
         "task": "Alignement backstage",
-        "command": "face#0;2680",
+        "command": "face#0;2650",
         "position": {
             "x": 630,
-            "y": 2680,
+            "y": 2650,
             "theta": 3.141592653589793
         }
     }

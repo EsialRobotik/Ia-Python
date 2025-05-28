@@ -21,20 +21,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Position d\u00e9pose banderole",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": -10,
-                    "type": "MOVEMENT",
-                    "subtype": "GO",
-                    "action_id": null,
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "skip_flag": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "D\u00e9pose banderole",
                     "position_x": 0,
                     "position_y": 0,
@@ -83,7 +69,7 @@
                     "dist": 0,
                     "type": "MANIPULATION",
                     "subtype": "NONE",
-                    "action_id": "ascenseur_survole_plateformes",
+                    "action_id": "ascenseur_tout_en_haut",
                     "mirror": "mirrory",
                     "timeout": -1,
                     "item_id": null,
@@ -102,7 +88,7 @@
                 {
                     "desc": "Go backstage",
                     "position_x": 630,
-                    "position_y": 320,
+                    "position_y": 350,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
@@ -116,7 +102,7 @@
                 {
                     "desc": "Alignement backstage",
                     "position_x": 600,
-                    "position_y": 320,
+                    "position_y": 350,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "FACE",
@@ -130,7 +116,7 @@
                 {
                     "desc": "Alignement backstage",
                     "position_x": 0,
-                    "position_y": 320,
+                    "position_y": 350,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "FACE",
@@ -167,20 +153,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Position d\u00e9pose banderole",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": -10,
-                    "type": "MOVEMENT",
-                    "subtype": "GO",
-                    "action_id": null,
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "skip_flag": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "D\u00e9pose banderole",
                     "position_x": 0,
                     "position_y": 3000,
@@ -229,7 +201,7 @@
                     "dist": 0,
                     "type": "MANIPULATION",
                     "subtype": "NONE",
-                    "action_id": "ascenseur_survole_plateformes",
+                    "action_id": "ascenseur_tout_en_haut",
                     "mirror": "mirrory",
                     "timeout": -1,
                     "item_id": null,
@@ -248,7 +220,7 @@
                 {
                     "desc": "Go backstage",
                     "position_x": 630,
-                    "position_y": 2680,
+                    "position_y": 2650,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
@@ -262,7 +234,7 @@
                 {
                     "desc": "Alignement backstage",
                     "position_x": 600,
-                    "position_y": 2680,
+                    "position_y": 2650,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "FACE",
@@ -276,7 +248,7 @@
                 {
                     "desc": "Alignement backstage",
                     "position_x": 0,
-                    "position_y": 2680,
+                    "position_y": 2650,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "FACE",
