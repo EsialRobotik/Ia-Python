@@ -82,6 +82,7 @@ class MovementManager:
                 self.asserv.enable_low_speed(True)
             self.asserv.go(step.distance)
             if step.timeout > 0:
+                time.sleep(0.11)  # Wait a bit to ensure the asservissement has received the command
                 self.asserv.wait_for_halted_or_blocked(step.timeout)
                 self.asserv.emergency_stop()
                 self.asserv.emergency_reset()

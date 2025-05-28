@@ -280,7 +280,7 @@ class Asserv:
         None
         """
 
-        logger.info("setOdometrie")
+        logger.info(f"setOdometrie P{x}#{y}#{theta}")
         self.serial.write(f"P{x}#{y}#{theta}\n".encode())
 
     def enable_low_speed(self, enable: bool) -> None:
@@ -502,6 +502,7 @@ class Asserv:
             elif temp["type"] == "go_timed":
                 logger.info(f"Go timed {temp['dist']}")
                 self.go(temp["dist"])
+                time.sleep(0.11)  # Wait a bit to ensure the asservissement has received the command
                 self.wait_for_halted_or_blocked(500)
                 self.emergency_stop()
                 time.sleep(2)
