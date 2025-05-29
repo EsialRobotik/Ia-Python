@@ -1,0 +1,11 @@
+{
+    "type": "list",
+    "description": "Met toutes les pinces extérieures en position neutre",
+    "alias": "pep",
+    "payload": {
+        "list": [
+            "pince_ext_gauche_pousser",
+            "pince_ext_droite_pousser"
+        ]
+    }
+}

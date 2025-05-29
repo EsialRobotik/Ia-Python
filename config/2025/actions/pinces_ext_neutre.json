@@ -1,0 +1,11 @@
+{
+    "type": "list",
+    "description": "Met toutes les pinces extérieures en position neutre",
+    "alias": "pen",
+    "payload": {
+        "list": [
+            "pince_ext_gauche_neutre",
+            "pince_ext_droite_neutre"
+        ]
+    }
+}
