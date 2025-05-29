@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pigl",
+    "description": "Lache la canette de la pince intérieure gauche",
+    "payload": {
+        "type": "position",
+        "id": 9,
+        "angleDegree": 119
+    }
+}

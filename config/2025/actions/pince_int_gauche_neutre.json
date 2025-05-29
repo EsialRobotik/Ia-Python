@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pign",
+    "description": "Met en position neutre la pince intérieure gauche pour maintenire la canette",
+    "payload": {
+        "type": "position",
+        "id": 9,
+        "angleDegree": 162
+    }
+}

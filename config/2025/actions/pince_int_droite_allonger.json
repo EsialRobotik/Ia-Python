@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pida",
+    "description": "Allonge la pince intérieure droite pour attraper la canette",
+    "payload": {
+        "type": "position",
+        "id": 3,
+        "angleDegree": 148
+    }
+}

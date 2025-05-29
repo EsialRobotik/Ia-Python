@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pedn",
+    "description": "Met en position neutre la pince extérieure droite pour maintenir la canette",
+    "payload": {
+        "type": "position",
+        "id": 5,
+        "angleDegree": 219
+    }
+}

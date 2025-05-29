@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "pegp",
+    "description": "Pousse la canette de la pince extérieure gauche",
+    "payload": {
+        "type": "position",
+        "id": 12,
+        "angleDegree": 152
+    }
+}
