@@ -1,10 +1,10 @@
 {
     "type": "AX12",
     "alias": "asb",
-    "description": "Place l'ascenseur pour que les 2 ventouses survolent la bordure avec la banderole",
+    "description": "Place l'ascenseur pour que la banderole survole la bordure",
     "payload": {
         "type": "position",
         "id": 13,
-        "angleDegree": 200
+        "angleDegree": 125
     }
 }
