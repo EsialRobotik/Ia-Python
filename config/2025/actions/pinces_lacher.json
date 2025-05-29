@@ -1,11 +1,13 @@
 {
     "type": "list",
-    "description": "Lâche les canettes",
-    "alias": "pr",
+    "description": "Met toutes le pinces en position pousser",
+    "alias": "pp",
     "payload": {
         "list": [
-            "pince_droite_rentrer",
-            "pince_gauche_lacher"
+            "pince_ext_gauche_pousser",
+            "pince_ext_droite_pousser",
+            "pince_int_gauche_lacher",
+            "pince_int_droite_lacher"
         ]
     }
 }
