@@ -39,7 +39,7 @@ class FreddyPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(Go(
             desc='Position dépose banderole',
-            dist=80,
+            dist=150,
             timeout=1000
         ))
         tasks_list.add(Manipulation(
