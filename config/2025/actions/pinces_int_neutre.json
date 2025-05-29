@@ -1,0 +1,11 @@
+{
+    "type": "list",
+    "description": "Met toutes les pinces intérieures en position neutre",
+    "alias": "pin",
+    "payload": {
+        "list": [
+            "pince_int_gauche_neutre",
+            "pince_int_droite_neutre"
+        ]
+    }
+}

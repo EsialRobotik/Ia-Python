@@ -1,0 +1,11 @@
+{
+    "type": "list",
+    "description": "Met toutes les pinces intérieures en position pousser",
+    "alias": "pip",
+    "payload": {
+        "list": [
+            "pince_int_gauche_pousser",
+            "pince_int_droite_pousser"
+        ]
+    }
+}

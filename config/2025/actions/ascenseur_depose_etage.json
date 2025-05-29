@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "ade",
+    "description": "Dépose l'étage 1 sur l'étage 0",
+    "payload": {
+        "type": "position",
+        "id": 13,
+        "angleDegree": 265
+    }
+}
