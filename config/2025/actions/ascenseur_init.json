@@ -6,7 +6,8 @@
         "list": [
             "ascenseur_compliance_margin",
             "ascenseur_compliance_slop",
-            "ascenseur_survole_bordure"
+            "ascenseur_survole_bordure",
+            "pinces_neutre"
         ]
     }
 }

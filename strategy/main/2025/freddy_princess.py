@@ -11,6 +11,7 @@ from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.goto_back import GoToBack
 from strategy.task.manipulation import Manipulation
+from strategy.task.set_speed import SetSpeed
 from strategy.task.wait import Wait
 
 
@@ -29,8 +30,9 @@ class FreddyPrincess(AbstractMain):
 
     def generate(self):
         self.banderole()
-        #self.gradin_so_se()
-        #self.gradin_o_e()
+        self.gradin_so_se()
+        self.gradin_o_e()
+        #self.gradin_backstage()
         self.backstage()
         self.generate_strategy()
 
@@ -39,7 +41,7 @@ class FreddyPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(Go(
             desc='Position dépose banderole',
-            dist=150,
+            dist=200,
             timeout=1000
         ))
         tasks_list.add(Manipulation(
@@ -48,16 +50,19 @@ class FreddyPrincess(AbstractMain):
         ))
         tasks_list.add(Wait(
             desc='On attends un peu, on est pas des bêtes',
-            ms_count=1000
+            ms_count=500
+        ))
+        tasks_list.add(SetSpeed(
+            desc='Doucement',
+            speed=50
         ))
         tasks_list.add(Go(
             desc='Recule banderole',
             dist=-320,
-            timeout=1000
         ))
-        tasks_list.add(Manipulation(
-            desc='Ascenseur survole plateforme',
-            action_id='ascenseur_tout_en_haut'
+        tasks_list.add(SetSpeed(
+            desc='Retour à vitesse normale',
+            speed=100
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Banderole',
@@ -73,8 +78,12 @@ class FreddyPrincess(AbstractMain):
         ))
 
     def gradin_so_se(self):
-        score = 12
+        score = 4
         tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(Manipulation(
+            desc='Ascenseur tout en bas',
+            action_id='ascenseur_tout_en_bas'
+        ))
         tasks_list.add(GoToAstar(
             desc='Positionnement sur le gradin SO / SE',
             position_x=1300,
@@ -90,12 +99,16 @@ class FreddyPrincess(AbstractMain):
             position_x=2000,
             position_y=775
         ))
+        tasks_list.add(SetSpeed(
+            desc='Low speed',
+            speed=50
+        ))
         tasks_list.add(GoTo(
             desc='Placement gradin SO / SE',
             position_x=1540,
             position_y=775
         ))
-        #self.get_gradin(tasks_list)
+        self.get_gradin(tasks_list)
         tasks_list.add(
             DeleteZone(
                 desc='Suppression zone de dépose du gradin SO',
@@ -110,7 +123,7 @@ class FreddyPrincess(AbstractMain):
         )
         tasks_list.add(GoTo(
             desc='Zone de dépose du gradin SO / SE',
-            position_x=1750,
+            position_x=1700,
             position_y=775
         ))
         tasks_list.add(Face(
@@ -118,10 +131,19 @@ class FreddyPrincess(AbstractMain):
             position_x=2000,
             position_y=775
         ))
-        #self.depose_gradin(tasks_list)
+        self.depose_gradin(tasks_list)
+        tasks_list.add(SetSpeed(
+            desc='Low speed',
+            speed=100
+        ))
         tasks_list.add(GoToBack(
             desc='Recule gradin SO / SE',
             position_x=1500,
+            position_y=700
+        ))
+        tasks_list.add(GoToBack(
+            desc='Recule gradin SO / SE',
+            position_x=1300,
             position_y=700
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
@@ -138,11 +160,15 @@ class FreddyPrincess(AbstractMain):
         ))
 
     def gradin_o_e(self):
-        score = 12
+        score = 4
         tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(Manipulation(
+            desc='Ascenseur survole plateforme',
+            action_id='ascenseur_tout_en_bas'
+        ))
         tasks_list.add(GoToAstar(
             desc='Positionnement sur le gradin O / E',
-            position_x=750,
+            position_x=700,
             position_y=1100
         ))
         tasks_list.add(Face(
@@ -150,12 +176,16 @@ class FreddyPrincess(AbstractMain):
             position_x=2000,
             position_y=1100
         ))
+        tasks_list.add(SetSpeed(
+            desc='Low speed',
+            speed=50
+        ))
         tasks_list.add(GoTo(
             desc='Placement gradin O / E',
             position_x=830,
             position_y=1100
         ))
-        #self.get_gradin(tasks_list)
+        self.get_gradin(tasks_list)
         tasks_list.add(
             DeleteZone(
                 desc='Suppression zone de dépose du gradin O',
@@ -170,7 +200,7 @@ class FreddyPrincess(AbstractMain):
         )
         tasks_list.add(GoToAstar(
             desc='Zone de dépose du gradin O / E',
-            position_x=1750,
+            position_x=1700,
             position_y=1220
         ))
         tasks_list.add(Face(
@@ -178,10 +208,14 @@ class FreddyPrincess(AbstractMain):
             position_x=2000,
             position_y=1220
         ))
-        #self.depose_gradin(tasks_list)
+        self.depose_gradin(tasks_list)
         tasks_list.add(Go(
             desc='Recule gradin',
             dist=-50
+        ))
+        tasks_list.add(SetSpeed(
+            desc='Low speed',
+            speed=100
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Gradin O / E',
@@ -196,23 +230,158 @@ class FreddyPrincess(AbstractMain):
             priority=1
         ))
 
+    def gradin_backstage(self):
+        score = 8
+        tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(Manipulation(
+            desc='Ascenseur tout en bas',
+            action_id='ascenseur_tout_en_bas'
+        ))
+        tasks_list.add(GoToAstar(
+            desc='Positionnement sur le gradin ONO / ENE',
+            position_x=680,
+            position_y=420
+        ))
+        tasks_list.add(GoTo(
+            desc='Positionnement sur le gradin ONO / ENE',
+            position_x=675,
+            position_y=400
+        ))
+        tasks_list.add(Face(
+            desc='Positionnement sur le gradin ONO / ENE',
+            position_x=675,
+            position_y=0
+        ))
+        tasks_list.add(SetSpeed(
+            desc='Low speed',
+            speed=50
+        ))
+        tasks_list.add(GoTo(
+            desc='Positionnement sur le gradin ONO / ENE',
+            position_x=675,
+            position_y=300
+        ))
+        self.get_gradin(tasks_list)
+        tasks_list.add(
+            DeleteZone(
+                desc='Suppression zone de dépose du gradin ONO',
+                item_id='gradin_ono',
+                mirror=Mirror.SPECIFIC
+            ),
+            DeleteZone(
+                desc='Suppression zone de dépose du gradin ENE',
+                item_id='gradin_ene',
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        tasks_list.add(Manipulation(
+            desc="On lève un peu",
+            action_id="ascenseur_appui_plateformes"
+        ))
+        tasks_list.add(Manipulation(
+            desc="On éjecte les extérieurs",
+            action_id="pinces_ext_pousser"
+        ))
+        tasks_list.add(Go(
+            desc="On recule",
+            dist=-50
+        ))
+        tasks_list.add(Manipulation(
+            desc="On remet en neutre",
+            action_id="pinces_ext_neutre"
+        ))
+        tasks_list.add(GoToBack(
+            desc="On recule",
+            position_x=675,
+            position_y=400
+        ))
+        tasks_list.add(Manipulation(
+            desc="On pose",
+            action_id="ascenseur_tout_en_bas"
+        ))
+        # tasks_list.add(GoToAstar(
+        #     desc='Zone de dépose du gradin SO / SE',
+        #     position_x=1550,
+        #     position_y=770
+        # ))
+        # tasks_list.add(GoTo(
+        #     desc='Zone de dépose du gradin SO / SE',
+        #     position_x=1600,
+        #     position_y=775
+        # ))
+        # tasks_list.add(Face(
+        #     desc="On s'aligne pour déposer le gradin",
+        #     position_x=2000,
+        #     position_y=775
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc="On lève",
+        #     action_id="ascenseur_tout_en_haut"
+        # ))
+        # tasks_list.add(GoTo(
+        #     desc='Zone de dépose du gradin SO / SE',
+        #     position_x=1700,
+        #     position_y=775
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='On dépose le gradin',
+        #     action_id="pinces_int_lacher"
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='On dépose le gradin',
+        #     action_id="ascenseur_depose_etage"
+        # ))
+        # tasks_list.add(GoToBack(
+        #     desc="On recule",
+        #     position_x=1550,
+        #     position_y=775
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc="Ascenseur en bas",
+        #     action_id="ascenseur_tout_en_bas"
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='On remet les pinces en neutre',
+        #     action_id="pinces_neutre"
+        # ))
+        # tasks_list.add(SetSpeed(
+        #     desc='Low speed',
+        #     speed=100
+        # ))
+        self.objectifs_couleur_0.append(tasks_list.generate_objective(
+            name='Gradin Backstage',
+            id=1,
+            score=score,
+            priority=1
+        ))
+        self.objectifs_couleur_3000.append(tasks_list.generate_mirror_objective(
+            name='Gradin Backstage',
+            id=1,
+            score=score,
+            priority=1
+        ))
+
     def backstage(self):
         score = 10
         tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(Manipulation(
+            desc='Ascenseur survole plateforme',
+            action_id='ascenseur_tout_en_haut'
+        ))
         tasks_list.add(GoToAstar(
             desc='Go backstage',
             position_x=630,
-            position_y=350
+            position_y=360
         ))
         tasks_list.add(Face(
             desc='Alignement backstage',
-            position_x=600,
-            position_y=350
+            position_x=580,
+            position_y=360
         ))
         tasks_list.add(Face(
             desc='Alignement backstage',
             position_x=0,
-            position_y=350
+            position_y=360
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Backstage',
@@ -228,100 +397,69 @@ class FreddyPrincess(AbstractMain):
         ))
 
     def get_gradin(self, tasks_list: TaskList):
-        tasks_list.add(Manipulation(
-            desc='Ascenseur appui sur les plateformes',
-            action_id='ascenseur_appui_plateformes'
-        ))
-        tasks_list.add(Manipulation(
-            desc='Allumage pompe plateforme',
-            action_id='pompe_superieur_aspirer'
-        ))
-        tasks_list.add(Manipulation(
-            desc='Allumage pompe interieur',
-            action_id='pompe_interieur_aspirer'
-        ))
-        tasks_list.add(Manipulation(
-            desc='Allumage pompe exterieur',
-            action_id='pompe_exterieur_aspirer'
-        ))
-        tasks_list.add(Manipulation(
-            desc='Sortie des pinces',
-            action_id='pinces_sortir'
-        ))
-        tasks_list.add(Wait(
-            desc='Attente de la prise du gradin',
-            ms_count=250
-        ))
-        tasks_list.add(Manipulation(
-            desc='Rentrée des pinces',
-            action_id='pinces_rentrer'
-        ))
         tasks_list.add(Go(
-            desc='Recule gradin',
-            dist=-50
-        ))
-        tasks_list.add(Manipulation(
-            desc='Ascenseur tout en haut',
-            action_id='ascenseur_tout_en_haut'
-        ))
-        tasks_list.add(Go(
-            desc='Avance gradin',
-            dist=50
-        ))
-        tasks_list.add(Manipulation(
-            desc='Sortie des pinces',
-            action_id='pinces_sortir'
-        ))
-        tasks_list.add(Manipulation(
-            desc='Ascenseur depose haut',
-            action_id='ascenseur_tout_en_haut_depose'
+            desc='On avance pour chopper',
+            dist=50,
+            timeout=500
         ))
 
     def depose_gradin(self, tasks_list: TaskList):
         tasks_list.add(Manipulation(
-            desc='Souffler pompe interieur',
-            action_id='pompe_interieur_souffler'
-        ))
-        tasks_list.add(Wait(
-            desc='Attente souffle',
-            ms_count=250
-        ))
-        tasks_list.add(Manipulation(
-            desc='Arret pompe interieur',
-            action_id='pompe_interieur_off'
-        ))
-        tasks_list.add(Manipulation(
-            desc='Arret pompe superieur',
-            action_id='pompe_superieur_off'
-        ))
-        tasks_list.add(Manipulation(
-            desc='Souffler pompe exterieur',
-            action_id='pompe_exterieur_souffler'
-        ))
-        tasks_list.add(Wait(
-            desc='Attente souffle',
-            ms_count=250
-        ))
-        tasks_list.add(Manipulation(
-            desc='Arret pompe exterieur',
-            action_id='pompe_exterieur_off'
-        ))
-        tasks_list.add(Manipulation(
-            desc='Ascenseur tout en haut',
-            action_id='ascenseur_tout_en_haut'
+            desc='On décroche tout',
+            action_id='pinces_lacher'
         ))
         tasks_list.add(Go(
-            desc='Recule gradin',
-            dist=-50
+             desc='On recule',
+             dist=-180
         ))
         tasks_list.add(Manipulation(
-            desc='Rentrée des pinces',
-            action_id='pinces_rentrer'
+            desc='On reviens neutre',
+            action_id='pinces_neutre'
         ))
-        tasks_list.add(Manipulation(
-            desc='Ascenseur survole plateforme',
-            action_id='ascenseur_survole_plateformes'
-        ))
+        # tasks_list.add(Manipulation(
+        #     desc='Souffler pompe interieur',
+        #     action_id='pompe_interieur_souffler'
+        # ))
+        # tasks_list.add(Wait(
+        #     desc='Attente souffle',
+        #     ms_count=250
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='Arret pompe interieur',
+        #     action_id='pompe_interieur_off'
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='Arret pompe superieur',
+        #     action_id='pompe_superieur_off'
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='Souffler pompe exterieur',
+        #     action_id='pompe_exterieur_souffler'
+        # ))
+        # tasks_list.add(Wait(
+        #     desc='Attente souffle',
+        #     ms_count=250
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='Arret pompe exterieur',
+        #     action_id='pompe_exterieur_off'
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='Ascenseur tout en haut',
+        #     action_id='ascenseur_tout_en_haut'
+        # ))
+        # tasks_list.add(Go(
+        #     desc='Recule gradin',
+        #     dist=-50
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='Rentrée des pinces',
+        #     action_id='pinces_rentrer'
+        # ))
+        # tasks_list.add(Manipulation(
+        #     desc='Ascenseur survole plateforme',
+        #     action_id='ascenseur_survole_plateformes'
+        # ))
 
 if __name__ == "__main__":
     logging.getLogger('').setLevel(logging.getLevelNamesMapping()['DEBUG'])
