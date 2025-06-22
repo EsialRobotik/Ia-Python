@@ -55,5 +55,6 @@ class TestLidar(AbstractTest):
             )
         )
         while True:
-            logger.info(lidar.detected_points)
+            for p in lidar.detected_points:
+                logger.info(f"Detection Robot: {p}")
             sleep(1)

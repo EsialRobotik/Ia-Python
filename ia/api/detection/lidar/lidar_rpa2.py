@@ -118,7 +118,7 @@ class LidarRpA2:
         """
 
         self.reset()
-        self.set_coordinate_mode(LidarCoordinate.CARTESIAN)
+        self.set_coordinate_mode(LidarCoordinate.POLAR_RADIANS)
         self.set_mode(LidarMode.CLUSTERING_ONE_LINE)
         self.set_quality(quality)
         self.set_distance(distance)
@@ -151,14 +151,28 @@ class LidarRpA2:
                 coordinates = point.split(';')
                 if len(coordinates) == 2:
                     try:
-                        x = float(coordinates[0])
-                        y = float(coordinates[1])
-                        relative_x = x - self.asserv.position.x
-                        relative_y = y - self.asserv.position.y
-                        angle = self.asserv.position.theta
-                        rotated_x = relative_x * math.cos(angle) + relative_y * math.sin(angle)
-                        rotated_y = -relative_x * math.sin(angle) + relative_y * math.cos(angle)
-                        detected_point = Position(round(rotated_x), round(rotated_y))
+                        angle = float(coordinates[0])
+                        distance = float(coordinates[1])
+
+                        # Position relative au robot
+                        x_obstacle_relative_to_robot = distance * math.cos(angle)
+                        y_obstacle_relative_to_robot = distance * math.sin(angle)
+
+                        robot_position = self.asserv.position
+
+                        # Changement de repère (robot -> table)
+                        x_obstacle_relative_to_table = int(
+                            robot_position.x +
+                            x_obstacle_relative_to_robot * math.cos(robot_position.theta) -
+                            y_obstacle_relative_to_robot * math.sin(robot_position.theta)
+                        )
+                        y_obstacle_relative_to_table = int(
+                            robot_position.y +
+                            x_obstacle_relative_to_robot * math.sin(robot_position.theta) +
+                            y_obstacle_relative_to_robot * math.cos(robot_position.theta)
+                        )
+
+                        detected_point = Position(round(x_obstacle_relative_to_table), round(y_obstacle_relative_to_table))
                         logger.debug(f"Lidar detection: {detected_point}")
                         self.detected_points.append(detected_point)
                     except ValueError:
