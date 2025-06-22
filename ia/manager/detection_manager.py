@@ -210,6 +210,10 @@ class DetectionManager:
         fy = start.y - center.y
 
         a = dx * dx + dy * dy
+
+        if a == 0:
+            return False
+
         b = 2 * (fx * dx + fy * dy)
         c = (fx * fx + fy * fy) - radius * radius
 
