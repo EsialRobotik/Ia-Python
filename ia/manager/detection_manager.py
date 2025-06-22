@@ -85,9 +85,11 @@ class DetectionManager:
             position: The position of the detected obstacle.
         """
 
+        self.logger.debug(f"Sensor {sensor.desc} detected an obstacle at distance {distance}")
+
         # Position relative au robot
-        x_obstacle_relative_to_robot = distance * math.cos(sensor.get_position().theta)
-        y_obstacle_relative_to_robot = distance * math.sin(sensor.get_position().theta)
+        x_obstacle_relative_to_robot = sensor.get_position().x + distance * math.cos(sensor.get_position().theta)
+        y_obstacle_relative_to_robot = sensor.get_position().y + distance * math.sin(sensor.get_position().theta)
 
         # Position du robot sur la table
         robot_position = self.asserv.position

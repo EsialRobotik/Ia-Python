@@ -28,7 +28,7 @@
           "trigger": 5,
           "echo": 6,
           "x": 100,
-          "y": 105,
+          "y": 120,
           "angle": 30,
           "threshold": 400
         },
@@ -37,7 +37,7 @@
           "desc": "Milieu",
           "trigger": 10,
           "echo": 9,
-          "x": 115,
+          "x": 100,
           "y": 0,
           "angle": 0,
           "threshold": 400
@@ -48,7 +48,7 @@
           "trigger": 17,
           "echo": 27,
           "x": 100,
-          "y": -105,
+          "y": -120,
           "angle": -30,
           "threshold": 400
         },
@@ -57,7 +57,7 @@
           "desc": "Arrière",
           "trigger": 19,
           "echo": 26,
-          "x": -110,
+          "x": -100,
           "y": 0,
           "angle": 180,
           "threshold": 300
