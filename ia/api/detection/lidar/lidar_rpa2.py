@@ -158,8 +158,9 @@ class LidarRpA2:
                         angle = self.asserv.position.theta
                         rotated_x = relative_x * math.cos(angle) + relative_y * math.sin(angle)
                         rotated_y = -relative_x * math.sin(angle) + relative_y * math.cos(angle)
-                        logger.debug(f"Lidar detection: {self.asserv.position}")
-                        self.detected_points.append(Position(round(rotated_x), round(rotated_y)))
+                        detected_point = Position(round(rotated_x), round(rotated_y))
+                        logger.debug(f"Lidar detection: {detected_point}")
+                        self.detected_points.append(detected_point)
                     except ValueError:
                         logger.error(f"Parsing error: {point}")
                 else:
