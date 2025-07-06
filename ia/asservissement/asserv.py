@@ -82,6 +82,7 @@ class Asserv:
             stopbits=serial.STOPBITS_ONE
         )
         self.position = Position(0, 0)
+        self.last_log = ''
         self.direction = None
         self.status_countdown = 0
         self.asserv_status = AsservStatus.STATUS_IDLE
@@ -415,6 +416,7 @@ class Asserv:
         while True:
             try:
                 str = self.serial.readline().decode().strip()
+                self.last_log = str
                 logger.debug(f"Position : {str}")
                 if str.startswith("#"):
                     str = str[1:]

@@ -74,7 +74,7 @@
   },
   "asserv": {
     "baudRate": 115200,
-    "serialPort": "/dev/serial/by-id/usb-STMicroelectronics_STM32_STLink_066FFF383133524157185717-if02",
+    "serialPort": "/dev/serial0",
     "goStart": {
       "jaune": [
         {
