@@ -4,8 +4,8 @@
     "alias": "pip",
     "payload": {
         "list": [
-            "pince_int_gauche_pousser",
-            "pince_int_droite_pousser"
+            "pince_int_gauche_allonger",
+            "pince_int_droite_allonger"
         ]
     }
 }

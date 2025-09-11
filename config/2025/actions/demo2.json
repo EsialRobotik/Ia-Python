@@ -1,0 +1,16 @@
+{
+    "type": "list",
+    "alias": "d2",
+    "dscription": "Partie 2 de la démo des gradins",
+    "payload": {
+        "list": [
+            "pn",
+            "duration_1s",
+            "duration_1s",
+            "duration_1s",
+            "asp",
+            "duration_1s",
+            "duration_1s"
+        ]
+    }
+}

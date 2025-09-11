@@ -1,0 +1,13 @@
+{
+    "type": "list",
+    "alias": "d3",
+    "dscription": "Partie 3 de la démo des gradins",
+    "payload": {
+        "list": [
+            "ateb",
+            "duration_1s",
+            "pp",
+            "ateh"
+        ]
+    }
+}

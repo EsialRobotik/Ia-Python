@@ -1,7 +1,7 @@
 {
     "type": "list",
     "description": "Met toutes les pinces intérieures en position lacher",
-    "alias": "pip",
+    "alias": "pil",
     "payload": {
         "list": [
             "pince_int_gauche_lacher",

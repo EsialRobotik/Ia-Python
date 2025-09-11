@@ -1,0 +1,13 @@
+{
+    "type": "list",
+    "alias": "d1",
+    "dscription": "Partie 1 de la démo des gradins",
+    "payload": {
+        "list": [
+            "pn",
+            "ascenseur_init",
+            "duration_1s",
+            "ascenseur_tout_en_bas"
+        ]
+    }
+}
