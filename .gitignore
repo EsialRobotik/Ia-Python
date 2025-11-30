@@ -179,3 +179,5 @@ logs/
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/vcs.xml
+.env.princess
+.env.pami0

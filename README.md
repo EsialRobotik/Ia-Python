@@ -3,8 +3,9 @@
 Python IA for EsialRobotik's Princesses
 
 ## Makefile
-Prérequis : créer un fichier `.env.local` en conant `.env.local.dist` et en mettant les valeurs appropriées des différentes variables d'environnement.
-`Makefile deploy` permet ensuite de copier l'IA sur le robot
+Prérequis : créer un fichier `.env.ROBOT` en clonant `.env.ROBOT.dist` et en mettant les valeurs appropriées des différentes variables d'environnement.
+Les `ROBOT` sont `princess`, `pami0`, `pami1`, etc.
+`Makefile deploy-ROBOT` permet ensuite de copier l'IA sur le robot
 
 ## Configurer votre PYTHONPATH
 Pour que les imports fonctionnent correctement, il faut ajouter le dossier `.` à votre PYTHONPATH.
@@ -38,10 +39,6 @@ source env/bin/activate
 ### Local
 ```
 pip install -r requirements.txt
-```
-### Robot
-```
-sudo apt-get install python3-gpiozero python3-smbus2 python3-numpy python3-shapely python3-networkx python3-lupa
 ```
 
 ## Lancer les tests

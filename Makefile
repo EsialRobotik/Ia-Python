@@ -4,8 +4,10 @@ help: ## Affiche l'aide (commande par défaut)
 coffee: ## Fait du café
 	@echo "Eh oh tu m'as pris pour une cafetière ?"
 
-checkenv: ## Vérifie l'environnement
-	bash .build/check_load_env.sh
+deploy-princess: ## Déploie le code sur le robot
+	bash .build/check_load_env.sh princess
+	bash .build/deploy-princess.sh
 
-deploy: checkenv ## Déploie le code sur le robot
-	bash .build/deploy.sh
+deploy-pami0: ## Déploie le code sur le robot
+	bash .build/check_load_env.sh pami0
+	bash .build/deploy-pami0.sh
