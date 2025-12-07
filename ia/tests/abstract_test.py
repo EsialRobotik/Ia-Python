@@ -1,17 +1,22 @@
 from abc import ABC, abstractmethod
 
+from ia.utils.robot import Robot
+
+
 class AbstractTest(ABC):
     """
     AbstractTest is an abstract base class that defines the structure for test classes.
     Attributes:
         config_data (dict): Configuration data required for the test.
+        year (int): The year of the test.
+        robot (Robot): The robot type for which the test is being conducted.
     Methods:
         test():
             Abstract method that should be implemented by subclasses to execute the test.
     """
 
 
-    def __init__(self, config_data: dict, year: int) -> None:
+    def __init__(self, config_data: dict, year: int, robot: Robot) -> None:
         """
         Initializes the AbstractTest instance with the provided configuration data.
         Args:
@@ -21,6 +26,7 @@ class AbstractTest(ABC):
 
         self.config_data = config_data
         self.year = year
+        self.robot = robot
 
     @abstractmethod
     def test(self) -> None:

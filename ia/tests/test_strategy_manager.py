@@ -8,7 +8,7 @@ class TestStrategyManager(AbstractTest):
     def test(self) -> None:
         logger = logging.getLogger(__name__)
         logger.info('Testing StrategyManager...')
-        strategy_manager = StrategyManager(self.year)
+        strategy_manager = StrategyManager(self.year, self.robot)
         logger.info("/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\ Prepare color0 objectives...")
         strategy_manager.prepare_objectives(is_color0=True)
         logger.info(strategy_manager)
@@ -21,7 +21,7 @@ class TestStrategyManager(AbstractTest):
         second_objective = strategy_manager.get_next_objective()
         logger.info(f'Second objective: {second_objective}')
 
-        strategy_manager = StrategyManager(self.year)
+        strategy_manager = StrategyManager(self.year, self.robot)
         logger.info("/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\/!\ Prepare color3000 objectives...")
         strategy_manager.prepare_objectives(is_color0=False)
         logger.info(strategy_manager)

@@ -214,7 +214,7 @@
         "baudRate": 115200
       }
     ],
-    "dataDir": "/home/pi/IAPYTHON/config/2025/actions",
+    "dataDir": "/home/pi/IAPYTHON/config/princess/2025/actions",
     "init": [
       "ascenseur_init"
     ]

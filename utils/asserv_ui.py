@@ -7,6 +7,7 @@ from textual.widgets import Static, Placeholder, Button, Log, Input
 
 from ia.asservissement.asserv import Asserv
 from ia.utils.position import Position
+from ia.utils.robot import Robot
 
 
 class Header(Placeholder):
@@ -183,9 +184,11 @@ class AsservUi(App):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process a year.")
     parser.add_argument("year", type=int, help="Year in integer format")
+    parser.add_argument("robot", type=str, help="Robot type from Robot enum")
     args = parser.parse_args()
+    robot = Robot(args.robot)
 
-    with open(f'config/{args.year}/config.json') as config_file:
+    with open(f'config/{args.year}/{robot.value}/config.json') as config_file:
         config_data = json.load(config_file)
         config_file.close()
         app = AsservUi(

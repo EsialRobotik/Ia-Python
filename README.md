@@ -43,7 +43,7 @@ pip install -r requirements.txt
 
 ## Lancer les tests
 ```
-python ia/test.py {mode} {annee} {log_level}
+python ia/test.py {mode} {annee} {robot} {log_level}
 ```
 ### Les modes
 Les modes disponibles sont :
@@ -64,6 +64,9 @@ Les modes disponibles sont :
 ### Année
 L'année doit avoir son répertoire dans `config`
 
+### Robot
+Le robot doit avoir son répertoire dans `config/{annee}/` et exister dans l'enum `Robot` dans `ia/utils/robot.py`
+
 ### Log level
 Les niveaux de log disponibles sont :
 - `DEBUG`'
@@ -74,7 +77,7 @@ Les niveaux de log disponibles sont :
 
 ## Lancer l'IA
 ```
-python ia/main.py {annee} {log_level}
+python ia/main.py {annee} {robot} {log_level}
 ```
 
 ## Divers

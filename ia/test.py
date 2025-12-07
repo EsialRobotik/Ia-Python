@@ -5,6 +5,7 @@ import sys
 
 from ia.tests.test_pathfinding import TestPathfinding
 from ia.tests.test_strategy_manager import TestStrategyManager
+from ia.utils.robot import Robot
 from tests.test_actions import TestActions
 from tests.test_asserv import TestAsserv
 from tests.test_ax12 import TestAX12
@@ -22,6 +23,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process a mode and a year.")
     parser.add_argument("mode", type=str, help="System to check from :  chrono, pullcord, color, nection, log_socket, com_socket")
     parser.add_argument("year", type=int, help="Year in integer format")
+    parser.add_argument("robot", type=str, help="Robot type from Robot enum")
     parser.add_argument("log_level", type=str, help="Set log level among : CRITICAL, FATAL, ERROR, WARN, INFO, DEBUG")
     args = parser.parse_args()
 
@@ -42,36 +44,37 @@ if __name__ == "__main__":
     logger.info("init logger")
 
     # run the test
-    logger.info(f"Run {args.mode} for year {args.year}")
-    with open(f'config/{args.year}/config.json') as config_file:
+    robot = Robot(args.robot)
+    logger.info(f"Run {args.mode} for year {args.year} for {robot.value}")
+    with open(f'config/{args.year}/{robot.value}/config.json') as config_file:
         config_data = json.load(config_file)
         config_file.close()
         match args.mode:
             case 'chrono':
-                TestChrono(config_data, args.year).test()
+                TestChrono(config_data, args.year, robot).test()
             case 'pullcord':
-                TestPullCord(config_data, args.year).test()
+                TestPullCord(config_data, args.year, robot).test()
             case 'color':
-                TestColorSelector(config_data, args.year).test()
+                TestColorSelector(config_data, args.year, robot).test()
             case 'nextion':
-                TestNextion(config_data, args.year).test()
+                TestNextion(config_data, args.year, robot).test()
             case 'log_socket':
-                TestLogSocket(config_data, args.year).test()
+                TestLogSocket(config_data, args.year, robot).test()
             case 'com_socket':
-                TestCommunicationSocket(config_data, args.year).test()
+                TestCommunicationSocket(config_data, args.year, robot).test()
             case 'ax12':
-                TestAX12(config_data, args.year).test()
+                TestAX12(config_data, args.year, robot).test()
             case 'srf04':
-                TestSrf04(config_data, args.year).test()
+                TestSrf04(config_data, args.year, robot).test()
             case 'lidar':
-                TestLidar(config_data, args.year).test()
+                TestLidar(config_data, args.year, robot).test()
             case 'asserv':
-                TestAsserv(config_data, args.year).test()
+                TestAsserv(config_data, args.year, robot).test()
             case 'actions':
-                TestActions(config_data, args.year).test()
+                TestActions(config_data, args.year, robot).test()
             case 'pathfinding':
-                TestPathfinding(config_data, args.year).test()
+                TestPathfinding(config_data, args.year, robot).test()
             case 'strategy':
-                TestStrategyManager(config_data, args.year).test()
+                TestStrategyManager(config_data, args.year, robot).test()
             case default:
                 raise logger.error(f"Mode {args.mode} does not exist")

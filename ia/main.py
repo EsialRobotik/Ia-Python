@@ -18,11 +18,13 @@ from ia.manager.detection_manager import DetectionManager
 from ia.manager.movement_manager import MovementManager
 from ia.manager.strategy_manager import StrategyManager
 from ia.master_loop import MasterLoop
+from ia.utils.robot import Robot
 
 if __name__ == "__main__":
     # manage arguments
     parser = argparse.ArgumentParser(description="Process a mode and a year.")
     parser.add_argument("year", type=int, help="Year in integer format")
+    parser.add_argument("robot", type=str, help="Robot type from Robot enum")
     parser.add_argument("log_level", type=str, help="Set log level among : CRITICAL, FATAL, ERROR, WARN, INFO, DEBUG")
     args = parser.parse_args()
 
@@ -43,8 +45,9 @@ if __name__ == "__main__":
     logger.info("Init logger")
 
     # run
-    logger.info(f"Lancement IA {args.year}")
-    with open(f'config/{args.year}/config.json') as config_file:
+    robot = Robot(args.robot)
+    logger.info(f"Lancement IA {args.year} pour {robot.value}")
+    with open(f'config/{args.year}/{robot.value}/config.json') as config_file:
         config_data = json.load(config_file)
         config_file.close()
 
@@ -111,7 +114,7 @@ if __name__ == "__main__":
 
         # Init strategy manager
         logger.info("Init strategy manager")
-        strategy_manager = StrategyManager(year=args.year)
+        strategy_manager = StrategyManager(year=args.year, robot=robot)
         logger.info("Init strategy manager OK")
 
         # Init chrono

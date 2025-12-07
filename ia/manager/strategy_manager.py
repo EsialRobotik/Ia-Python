@@ -2,6 +2,7 @@ import json
 from typing import Optional
 
 from ia.strategy.objective import Objective
+from ia.utils.robot import Robot
 
 
 class StrategyManager:
@@ -11,12 +12,13 @@ class StrategyManager:
     Attributes:
         current_index (int): The current index of the objective being processed.
         year (int): The year of the strategy configuration.
+        robot (Robot): The robot type.
         objectives (list): A list of objectives to be performed.
         action_flags (list): A list of action flags.
         action_finished (dict): A dictionary to track the completion status of actions.
     """
 
-    def __init__(self, year: int) -> None:
+    def __init__(self, year: int, robot: Robot) -> None:
         """
         Initialize the StrategyManager.
 
@@ -25,6 +27,7 @@ class StrategyManager:
         """
         self.current_index = 0
         self.year = year
+        self.robot = robot
         self.objectives = []
         self.action_flags = []
         self.action_finished = {}
@@ -36,7 +39,7 @@ class StrategyManager:
         Args:
             is_color0 (bool): Determines which color strategy to load.
         """
-        with open(f'config/{self.year}/strategy.json') as strategy_file:
+        with open(f'config/{self.year}/{self.robot.value}/strategy.json') as strategy_file:
             strategy = json.load(strategy_file).get('color0' if is_color0 else 'color3000')
             strategy_file.close()
             for objective_config in strategy:
