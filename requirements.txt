@@ -6,3 +6,5 @@ shapely
 networkx
 lupa
 textual
+picamera2
+opencv-python

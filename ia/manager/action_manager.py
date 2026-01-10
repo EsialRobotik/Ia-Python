@@ -11,6 +11,7 @@ from ia.api.ax12.ax12_link_exception import AX12LinkException
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
 from ia.api.ax12.ax12_servo import AX12Servo
 from ia.api.ax12.enums.ax12_address import AX12Address
+from ia.api.camera import Camera
 
 
 class ActionManager:
@@ -23,6 +24,8 @@ class ActionManager:
         The repository containing available actions.
     ax12_link : ax12_link_serial
         The serial link to the AX12 actuators.
+    camera: Camera
+        The camera object for camera-related actions.
     actions_config : Dict
         The configuration dictionary for actions.
     action_flag : str, optional
@@ -51,6 +54,7 @@ class ActionManager:
         self.actions_config = actions_config
         self.action_repository = action_repository
         self.ax12_link = ax12_link
+        self.camera = Camera()
         self.logger = logging.getLogger(__name__)
 
     def get_action(self, action_id: str) -> AbstractAction:
