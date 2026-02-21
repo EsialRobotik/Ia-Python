@@ -121,9 +121,14 @@ class ActionCameraDetectNuts(AbstractAction):
                     nuts.append(("blue", pts))
         
         # Sort the nuts (left most first) 
-        def most_left_point(corners):
-            return min(corners, key=lambda pt: (pt[0], pt[1]))
-        nuts.sort(key=lambda r: most_left_point(r[1]), reverse=False)
+        def most_left_point(crate):
+            corners = crate[1]
+            min_x = corners[0][0]
+            for corner in corners:
+                if corner[0] < min_x:
+                    min_x = corner[0]
+            return min_x
+        nuts.sort(key=most_left_point, reverse=False)
 
         # TODO: ROI?
 
