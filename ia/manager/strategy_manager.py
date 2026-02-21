@@ -14,7 +14,7 @@ class StrategyManager:
         year (int): The year of the strategy configuration.
         robot (Robot): The robot type.
         objectives (list): A list of objectives to be performed.
-        action_flags (list): A list of action flags.
+        action_flags (dict): A dictionary of action flags.
         action_finished (dict): A dictionary to track the completion status of actions.
     """
 
@@ -29,7 +29,7 @@ class StrategyManager:
         self.year = year
         self.robot = robot
         self.objectives = []
-        self.action_flags = []
+        self.action_flags = {}
         self.action_finished = {}
 
     def prepare_objectives(self, is_color0: bool) -> None:

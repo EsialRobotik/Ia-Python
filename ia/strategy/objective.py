@@ -68,7 +68,7 @@ class Objective:
         """
         return self.step_index < len(self.step_list) - 1
 
-    def get_next_step(self, flags: List[str]) -> Optional[Step]:
+    def get_next_step(self, flags: dict[str, bool]) -> Optional[Step]:
         """
         Get the next strategy in the strategy list, considering skip and needed flags and increment cursor.
 
@@ -81,6 +81,8 @@ class Objective:
         if step.skip_flag is None and step.needed_flag is None:
             return step
 
+        # TODO: flags is now a dict, we should check for the presence of the flag in the dict
+        # and its value instead of just checking for presence in a list
         while ((step.skip_flag is not None and step.skip_flag in flags)
             or (step.needed_flag is not None and step.needed_flag not in flags)):
             self.logger.info(f'Skip strategy {step.step_id}')

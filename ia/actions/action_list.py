@@ -13,7 +13,7 @@ class ActionList(AbstractAction):
     Class to manage and execute a list of actions sequentially.
     """
 
-    def __init__(self, action_repository: ActionRepository, action_list: List[str], flags: Optional[str]) -> None:
+    def __init__(self, action_repository: ActionRepository, action_list: List[str], flags: dict[str, bool]) -> None:
         """
         Initialize the ActionList with a repository of actions, a list of action IDs, and optional flags.
 
@@ -82,11 +82,11 @@ class ActionList(AbstractAction):
                 logger.error(f"no action with id {actionId} found in action list")
         self.thread = None
 
-    def get_flag(self) -> Optional[str]:
+    def get_flags(self) -> dict[str, bool]:
         """
-        Return potential existing flag of the action list to help AI in its decision process.
+        Return potential existing flags of the action list to help AI in its decision process.
 
-        :return: The flag associated with the action list, or None if no flag is set.
+        :return: The flags associated with the action list, or None if no flags are set.
         """
         return self.flags
 
