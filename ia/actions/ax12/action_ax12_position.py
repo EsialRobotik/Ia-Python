@@ -60,7 +60,7 @@ class ActionAX12Position(AbstractAction):
         self.executed = False
         self.command_sent = False
 
-    def get_flag(self) -> Optional[str]:
+    def get_flag(self) -> set[str]:
         """
         Retrieve the flag associated with the position action.
 

@@ -28,8 +28,8 @@ class ActionManager:
         The camera object for camera-related actions.
     actions_config : Dict
         The configuration dictionary for actions.
-    action_flags : Dict[str, bool]
-        List of flags for the current action.
+    action_flags : set[str]
+        Set of flags for the current action.
     current_action : abstract_action
         The current action being executed.
     logger : logging.Logger
@@ -49,7 +49,7 @@ class ActionManager:
         actions_config : Dict
             The configuration dictionary for actions.
         """
-        self.action_flags = {}
+        self.action_flags = set()
         self.current_action = None
         self.actions_config = actions_config
         self.action_repository = action_repository
@@ -78,7 +78,7 @@ class ActionManager:
             The ID of the action to execute.
         """
         self.logger.info(f"Execute action {action_id}")
-        self.action_flags = {}
+        self.action_flags = set()
         self.current_action = self.action_repository.get_action(action_id)
         self.current_action.reset()
         thread = threading.Thread(target=self.current_action.execute())

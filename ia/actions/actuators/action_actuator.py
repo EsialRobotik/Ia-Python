@@ -12,7 +12,7 @@ class ActionActuator(AbstractAction):
     Class to represent a wait action that pauses execution for a specified duration.
     """
 
-    def __init__(self, actuator_link: AbstractActuatorLink, actuator_commands: list[ActuatorCommand], flags: dict[str, bool]) -> None:
+    def __init__(self, actuator_link: AbstractActuatorLink, actuator_commands: list[ActuatorCommand], flags: set[str]) -> None:
         """
         Initialize the ActionWait with a duration and optional flags.
 
@@ -62,7 +62,7 @@ class ActionActuator(AbstractAction):
             self.thread.join()
         self.thread = None
 
-    def get_flags(self) -> dict[str, bool]:
+    def get_flags(self) -> set[str]:
         """
         Return potential existing flags of the actuator action to help AI in its decision process.
 

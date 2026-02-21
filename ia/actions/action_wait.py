@@ -10,7 +10,7 @@ class ActionWait(AbstractAction):
     Class to represent a wait action that pauses execution for a specified duration.
     """
 
-    def __init__(self, duration_seconds: float, flags: dict[str, bool]) -> None:
+    def __init__(self, duration_seconds: float, flags: set[str]) -> None:
         """
         Initialize the ActionWait with a duration and optional flags.
 
@@ -58,7 +58,7 @@ class ActionWait(AbstractAction):
             self.timer_thread.cancel()
         self.timer_thread = None
 
-    def get_flags(self) -> dict[str, bool]:
+    def get_flags(self) -> set[str]:
         """
         Retrieve the flags associated with the wait action.
 

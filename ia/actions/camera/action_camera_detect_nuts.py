@@ -18,7 +18,7 @@ class ActionCameraDetectNuts(AbstractAction):
     IMPORTANT: This action requires the camera to be initialized beforehand.
     """
 
-    def __init__(self, camera: Camera, flags: dict[str, bool] = {}, color: str = "any") -> None:
+    def __init__(self, camera: Camera, flags: set[str] = set(), color: str = "any") -> None:
         """
         Initialize the ActionCameraDetectNuts with optional flags and color.
 
@@ -65,7 +65,7 @@ class ActionCameraDetectNuts(AbstractAction):
         """
         self.is_finished = False
 
-    def get_flags(self) -> dict[str, bool]:
+    def get_flags(self) -> set[str]:
         """
         Retrieve the flags associated with this action.
 
@@ -82,12 +82,15 @@ class ActionCameraDetectNuts(AbstractAction):
             return self.flags
         else:
             rotate1, rotate2, rotate3, rotate4 = self.rotations
-            return {
-                "rotateNut1": rotate1,
-                "rotateNut2": rotate2,
-                "rotateNut3": rotate3,
-                "rotateNut4": rotate4
-            }
+            if rotate1:
+                self.flags.add("rotateNut1")
+            if rotate2:
+                self.flags.add("rotateNut2")
+            if rotate3:
+                self.flags.add("rotateNut3")
+            if rotate4:
+                self.flags.add("rotateNut4")
+            return self.flags
         
     def __detect_nuts(self, image) -> list[str]:
         """
@@ -184,7 +187,7 @@ class ActionYellowCameraDetectNuts(ActionCameraDetectNuts):
     IMPORTANT: This action requires the camera to be initialized beforehand.
     """
 
-    def __init__(self, camera: Camera, flags: dict[str, bool] = {}) -> None:
+    def __init__(self, camera: Camera, flags: set[str] = set()) -> None:
         """
         Initialize the ActionYellowCameraDetectNuts with optional flags.
 

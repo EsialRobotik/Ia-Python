@@ -51,7 +51,7 @@ class ActionAX12ComplianceMargin(AbstractAction):
         """
         self.executed = False
 
-    def get_flag(self) -> Optional[str]:
+    def get_flags(self) -> set[str]:
         """
         Retrieve the flag associated with the torque disable action.
 

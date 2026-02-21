@@ -68,7 +68,7 @@ class Objective:
         """
         return self.step_index < len(self.step_list) - 1
 
-    def get_next_step(self, flags: dict[str, bool]) -> Optional[Step]:
+    def get_next_step(self, flags: set[str]) -> Optional[Step]:
         """
         Get the next strategy in the strategy list, considering skip and needed flags and increment cursor.
 

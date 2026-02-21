@@ -14,7 +14,7 @@ class StrategyManager:
         year (int): The year of the strategy configuration.
         robot (Robot): The robot type.
         objectives (list): A list of objectives to be performed.
-        action_flags (dict): A dictionary of action flags.
+        action_flags (set): A set of action flags.
         action_finished (dict): A dictionary to track the completion status of actions.
     """
 
@@ -29,7 +29,7 @@ class StrategyManager:
         self.year = year
         self.robot = robot
         self.objectives = []
-        self.action_flags = {}
+        self.action_flags = set()
         self.action_finished = {}
 
     def prepare_objectives(self, is_color0: bool) -> None:
@@ -57,7 +57,7 @@ class StrategyManager:
         Args:
             flag (str): The action flag to be added.
         """
-        self.action_flags.append(flag)
+        self.action_flags.add(flag)
 
     def get_next_objective(self) -> Optional[Objective]:
         """
