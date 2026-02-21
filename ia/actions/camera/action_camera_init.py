@@ -13,7 +13,7 @@ class ActionCameraInit(AbstractAction):
     be executed before any other camera-related actions, otherwise you will wait indefinitely.
     """
 
-    def __init__(self, camera: Camera, flags: Optional[str] = None) -> None:
+    def __init__(self, camera: Camera, flags: dict[str, bool] = {}) -> None:
         """
         Initialize the ActionCameraInit with optional flags.
 
@@ -69,11 +69,13 @@ class ActionCameraInit(AbstractAction):
             self.camera_thread.cancel()
         self.camera_thread = None
 
-    def get_flag(self) -> Optional[str]:
+    def get_flag(self) -> dict[str, bool]:
         """
-        Retrieve the flag associated with the wait action.
+        Retrieve the flag associated with this action.
 
-        :return: The flag associated with the wait action, or None if no flag is set.
+        :return: The flag associated with this action, or an empty dict if no flag is set.
         """
+        # For this action, there are no specific flags to return, so we return the initial 
+        # flags provided at initialization.
         return self.flags
     
