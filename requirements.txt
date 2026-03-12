@@ -6,3 +6,4 @@ shapely
 networkx
 lupa
 textual
+PySide6

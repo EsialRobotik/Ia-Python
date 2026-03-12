@@ -1,0 +1,20 @@
+[
+  {
+    "id": "princess",
+    "src": "princess.png",
+    "x": 1775,
+    "y": 2800,
+    "theta": 0,
+    "regX": 150,
+    "regY": 145
+  },
+  {
+    "id": "pmi",
+    "src": "pmi.png",
+    "x": 1300,
+    "y": 220,
+    "theta": 3.14159265359,
+    "regX": 150,
+    "regY": 75
+  }
+]
