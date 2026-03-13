@@ -3,8 +3,8 @@
     "id": "princess",
     "src": "princess.png",
     "y": 1225,
-    "x": 1850,
-    "theta": 3.141592654,
+    "x": 1750,
+    "theta": 0,
     "regY": 163,
     "regX": 40
   },

@@ -7,15 +7,17 @@ import sys
 import os
 import json
 import math
+import time
+import html as html_module
 from datetime import datetime
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout,
     QWidget, QComboBox, QLabel, QPushButton,
-    QGridLayout, QDoubleSpinBox,
+    QGridLayout, QDoubleSpinBox, QCheckBox, QTextEdit,
 )
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtCore import QRectF, QPointF, QTimer, QElapsedTimer, Qt, QLocale
-from PySide6.QtGui import QPainter, QColor, QPen, QBrush, QPolygonF, QPixmap
+from PySide6.QtGui import QPainter, QColor, QPen, QBrush, QPolygonF, QPixmap, QFont
 
 # Chemin du dossier simulation, relatif à ce fichier
 SIMULATION_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "simulation")
@@ -136,6 +138,7 @@ class TableWidget(QWidget):
         self._show_forbidden = False
         self._show_dynamic = False
         self._robots: list[dict] = []
+        self._speed_factor: float = 1.0  # multiplicateur de vitesse d'animation
 
         # Zoom et panoramique
         self._zoom = 1.0
@@ -170,6 +173,7 @@ class TableWidget(QWidget):
         self._zoom = 1.0
         self._pan = QPointF(0.0, 0.0)
         self._bg_cache = None
+        self._speed_factor = 1.0
         self._trails.clear()
         self._active_trail = None
         self._anim_queue.clear()
@@ -199,6 +203,10 @@ class TableWidget(QWidget):
         self._robots = robots
         for i, robot in enumerate(robots):
             robot["trail_color"] = ROBOT_TRAIL_COLORS[i % len(ROBOT_TRAIL_COLORS)]
+            # Mémoriser la position de départ pour le reset
+            robot["init_x"] = robot["x"]
+            robot["init_y"] = robot["y"]
+            robot["init_theta"] = robot["theta"]
         self.update()
 
     def _get_svg_size(self) -> tuple[int, int]:
@@ -395,7 +403,7 @@ class TableWidget(QWidget):
                 "robot_idx": step["robot_idx"],
                 "from_x": from_x, "from_y": from_y,
                 "to_x": to_x, "to_y": to_y,
-                "duration": max(dist / ANIM_MOVE_SPEED, 0.05),
+                "duration": max(dist / (ANIM_MOVE_SPEED * self._speed_factor), 0.05),
                 "start_time": self._global_clock.elapsed(),
                 "trail_color": step.get("trail_color"),
             }
@@ -440,6 +448,44 @@ class TableWidget(QWidget):
                 ))
                 self._active_trail = None
             self._start_next_anim()
+
+    def reset(self):
+        """Remet les robots à leur position initiale et efface les traces."""
+        self._anim_timer.stop()
+        self._anim_queue.clear()
+        self._anim_current = None
+        self._active_trail = None
+        self._trails.clear()
+        self._speed_factor = 1.0
+        for robot in self._robots:
+            robot["x"] = robot.get("init_x", robot["x"])
+            robot["y"] = robot.get("init_y", robot["y"])
+            robot["theta"] = robot.get("init_theta", robot["theta"])
+        self.update()
+
+    # --- Zones dynamiques -------------------------------------------------------
+
+    def set_zone_active(self, zone_id: str, active: bool):
+        """Active ou désactive une zone dynamique par son id."""
+        for zone in self._dynamic_zones:
+            if zone.get("id") == zone_id:
+                zone["active"] = active
+                self._bg_cache = None
+                self.update()
+                return
+
+    # --- Animation helpers ------------------------------------------------------
+
+    def is_robot_animating(self, robot_idx: int) -> bool:
+        """Retourne True si le robot a des animations en cours ou en attente."""
+        if (self._anim_current is not None and
+                self._anim_current.get("robot_idx") == robot_idx):
+            return True
+        return any(s.get("robot_idx") == robot_idx for s in self._anim_queue)
+
+    def set_anim_speed(self, factor: float):
+        """Modifie le multiplicateur de vitesse d'animation (1.0 = normal)."""
+        self._speed_factor = max(0.05, float(factor))
 
     # --- Zoom & Panoramique ---------------------------------------------------
 
@@ -631,6 +677,264 @@ class ManualControlWindow(QWidget):
         )
 
 
+class StrategyWindow(QWidget):
+    """Fenêtre de chargement et lecture des stratégies."""
+
+    def __init__(self, table_widget: TableWidget, year: str, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Stratégies")
+        self.setWindowFlag(Qt.WindowType.Window)
+        self.setMinimumSize(640, 420)
+
+        self._table_widget = table_widget
+        self._year = year
+        self._strategies: dict[str, list[dict]] = {}
+        self._cursors: dict[str, int] = {}
+        self._wait_until: dict[str, float] = {}  # robot_id → time.monotonic()
+
+        # Lire les couleurs depuis table.json
+        json_path = os.path.join(SIMULATION_DIR, year, "table.json")
+        self._color_options: list[tuple[str, str]] = []  # (label, "0"|"3000")
+        if os.path.isfile(json_path):
+            with open(json_path, "r", encoding="utf-8") as f:
+                tdata = json.load(f)
+            self._color_options = [
+                (tdata.get("color0", "couleur 0"), "0"),
+                (tdata.get("color3000", "couleur 3000"), "3000"),
+            ]
+
+        layout = QVBoxLayout(self)
+
+        # --- Ligne 1 : couleur + robots ---
+        row1 = QHBoxLayout()
+        row1.addWidget(QLabel("Couleur :"))
+        self.color_combo = QComboBox()
+        for label, key in self._color_options:
+            self.color_combo.addItem(label, key)
+        row1.addWidget(self.color_combo)
+        row1.addSpacing(16)
+
+        self._robot_checks: dict[str, QCheckBox] = {}
+        for robot in table_widget._robots:
+            cb = QCheckBox(robot["id"])
+            c = robot.get("trail_color", ROBOT_TRAIL_COLORS[0])
+            cb.setStyleSheet(f"color: {c.name()}; font-weight: bold;")
+            cb.setChecked(True)
+            self._robot_checks[robot["id"]] = cb
+            row1.addWidget(cb)
+
+        btn_all = QPushButton("Tous")
+        btn_all.clicked.connect(self._select_all)
+        row1.addWidget(btn_all)
+        row1.addStretch()
+        layout.addLayout(row1)
+
+        # --- Ligne 2 : boutons d'action ---
+        row2 = QHBoxLayout()
+        self.btn_load = QPushButton("Charger")
+        self.btn_load.clicked.connect(self._on_load)
+        row2.addWidget(self.btn_load)
+
+        self.btn_next = QPushButton("Suivant")
+        self.btn_next.clicked.connect(self._on_next)
+        self.btn_next.setEnabled(False)
+        row2.addWidget(self.btn_next)
+
+        self.btn_play = QPushButton("Lecture")
+        self.btn_play.clicked.connect(self._on_play)
+        self.btn_play.setEnabled(False)
+        row2.addWidget(self.btn_play)
+
+        self.btn_pause = QPushButton("Pause")
+        self.btn_pause.clicked.connect(self._on_pause)
+        self.btn_pause.setEnabled(False)
+        row2.addWidget(self.btn_pause)
+
+        row2.addStretch()
+        layout.addLayout(row2)
+
+        # --- Zone de log scrollable ---
+        self._log = QTextEdit()
+        self._log.setReadOnly(True)
+        font = QFont("Courier New", 9)
+        self._log.setFont(font)
+        layout.addWidget(self._log, stretch=1)
+
+        # Timer de lecture automatique
+        self._play_timer = QTimer(self)
+        self._play_timer.setInterval(30)  # vérifie toutes les 30 ms
+        self._play_timer.timeout.connect(self._play_tick)
+
+    # --- Sélection robots -------------------------------------------------------
+
+    def _select_all(self):
+        all_checked = all(cb.isChecked() for cb in self._robot_checks.values())
+        for cb in self._robot_checks.values():
+            cb.setChecked(not all_checked)
+
+    # --- Chargement stratégie ---------------------------------------------------
+
+    def _on_load(self):
+        self._play_timer.stop()
+        self._strategies.clear()
+        self._cursors.clear()
+        self._wait_until.clear()
+        self._log.clear()
+
+        color_key = self.color_combo.currentData() or "0"
+
+        for robot_id, cb in self._robot_checks.items():
+            if not cb.isChecked():
+                continue
+            filename = f"strategy-{robot_id}-{color_key}.json"
+            path = os.path.join(SIMULATION_DIR, self._year, filename)
+            if os.path.isfile(path):
+                with open(path, "r", encoding="utf-8") as f:
+                    instructions = json.load(f)
+                self._strategies[robot_id] = instructions
+                self._cursors[robot_id] = 0
+                self._log_text(
+                    f"✓ {filename}  ({len(instructions)} instructions)",
+                    QColor(100, 210, 100)
+                )
+            else:
+                self._log_text(f"✗ Introuvable : {filename}", QColor(220, 80, 80))
+
+        has = bool(self._strategies)
+        self.btn_next.setEnabled(has)
+        self.btn_play.setEnabled(has)
+        self.btn_pause.setEnabled(False)
+
+    # --- Exécution --------------------------------------------------------------
+
+    def _on_next(self):
+        """Exécute la prochaine instruction pour chaque robot coché."""
+        for robot_id in list(self._strategies.keys()):
+            if self._robot_checks.get(robot_id, QCheckBox()).isChecked():
+                self._dispatch_next(robot_id)
+
+    def _dispatch_next(self, robot_id: str):
+        """Envoie la prochaine instruction au robot et avance son curseur."""
+        instructions = self._strategies.get(robot_id, [])
+        cursor = self._cursors.get(robot_id, 0)
+        if cursor >= len(instructions):
+            return
+        instr = instructions[cursor]
+        self._cursors[robot_id] = cursor + 1
+        self._execute(robot_id, instr)
+
+    def _execute(self, robot_id: str, instr: dict):
+        """Analyse et exécute une instruction pour un robot donné."""
+        task = instr.get("task", "")
+        command = instr.get("command", "")
+        position = instr.get("position", {})
+
+        robot = next(
+            (r for r in self._table_widget._robots if r["id"] == robot_id), None
+        )
+        color = robot.get("trail_color", QColor(200, 200, 200)) if robot else QColor(200, 200, 200)
+
+        # Log dans la couleur du robot
+        self._log_text(f"[{robot_id}]  {task}  :  {command}", color)
+
+        # --- Commandes spéciales ---
+        if command.startswith("delete-zone#"):
+            zone_id = command.split("#", 1)[1]
+            self._table_widget.set_zone_active(zone_id, False)
+
+        elif command.startswith("add-zone#"):
+            zone_id = command.split("#", 1)[1]
+            self._table_widget.set_zone_active(zone_id, True)
+
+        elif command.startswith("speed#"):
+            try:
+                pct = float(command.split("#", 1)[1])
+                self._table_widget.set_anim_speed(pct / 100.0)
+            except ValueError:
+                pass
+
+        elif command.startswith("wait#"):
+            try:
+                ms = float(command.split("#", 1)[1])
+                self._wait_until[robot_id] = time.monotonic() + ms / 1000.0
+            except ValueError:
+                pass
+
+        elif command.startswith("wait-chrono#"):
+            try:
+                xx = float(command.split("#", 1)[1])
+                ms = max(0.0, 100_000.0 - xx)  # match de 100s = 100 000 ms
+                self._wait_until[robot_id] = time.monotonic() + ms / 1000.0
+            except ValueError:
+                pass
+
+        # --- Déplacement du robot (toujours, vers la position de l'instruction) ---
+        if robot is not None and position:
+            px = position.get("x", robot["x"])
+            py = position.get("y", robot["y"])
+            pt = position.get("theta", robot["theta"])
+            self._table_widget.animate_robot_move(robot_id, px, py, pt, color)
+
+    # --- Lecture automatique ----------------------------------------------------
+
+    def _on_play(self):
+        self.btn_play.setEnabled(False)
+        self.btn_next.setEnabled(False)
+        self.btn_pause.setEnabled(True)
+        self._play_timer.start()
+
+    def _on_pause(self):
+        self._play_timer.stop()
+        self.btn_play.setEnabled(True)
+        self.btn_next.setEnabled(True)
+        self.btn_pause.setEnabled(False)
+
+    def _play_tick(self):
+        """
+        Timer de lecture : dispatche la prochaine instruction d'un robot
+        dès qu'il a fini d'animer et que son éventuel délai d'attente est écoulé.
+        """
+        now = time.monotonic()
+        all_done = True
+
+        for robot_id, instructions in self._strategies.items():
+            if not self._robot_checks.get(robot_id, QCheckBox()).isChecked():
+                continue
+
+            cursor = self._cursors.get(robot_id, 0)
+            if cursor >= len(instructions):
+                continue  # ce robot a terminé sa stratégie
+            all_done = False
+
+            # Encore en attente temporelle (wait / wait-chrono) ?
+            if now < self._wait_until.get(robot_id, 0.0):
+                continue
+
+            # Encore en cours d'animation ?
+            robot_idx = next(
+                (i for i, r in enumerate(self._table_widget._robots) if r["id"] == robot_id),
+                None
+            )
+            if robot_idx is not None and self._table_widget.is_robot_animating(robot_idx):
+                continue
+
+            # Prêt : dispatcherl'instruction suivante
+            self._dispatch_next(robot_id)
+
+        if all_done:
+            self._on_pause()
+            self._log_text("■ Stratégie terminée.", QColor(100, 220, 100))
+
+    # --- Log --------------------------------------------------------------------
+
+    def _log_text(self, message: str, color: QColor):
+        """Ajoute un message coloré dans la zone de log et scroll vers le bas."""
+        escaped = html_module.escape(message)
+        self._log.append(f'<span style="color:{color.name()};">{escaped}</span>')
+        sb = self._log.verticalScrollBar()
+        sb.setValue(sb.maximum())
+
+
 class SimulatorWindow(QMainWindow):
     """Fenêtre principale du simulateur."""
 
@@ -688,6 +992,16 @@ class SimulatorWindow(QMainWindow):
         self.btn_manual.clicked.connect(self._on_manual_click)
         control_layout.addWidget(self.btn_manual)
 
+        # Bouton stratégies
+        self.btn_strategy = QPushButton("Stratégies")
+        self.btn_strategy.clicked.connect(self._on_strategy_click)
+        control_layout.addWidget(self.btn_strategy)
+
+        # Bouton reset
+        self.btn_reset = QPushButton("Reset")
+        self.btn_reset.clicked.connect(self._on_reset_click)
+        control_layout.addWidget(self.btn_reset)
+
         control_layout.addStretch()
 
         # --- Affichage de la table (SVG) ---
@@ -695,6 +1009,8 @@ class SimulatorWindow(QMainWindow):
         main_layout.addWidget(self.table_widget, stretch=1)
 
         self._manual_window: ManualControlWindow | None = None
+        self._strategy_window: StrategyWindow | None = None
+        self._current_year: str = ""
 
         # Charger l'année par défaut
         if self.available_years:
@@ -721,12 +1037,33 @@ class SimulatorWindow(QMainWindow):
         self._manual_window = ManualControlWindow(self.table_widget, self)
         self._manual_window.show()
 
-    def _load_table(self, year: str):
-        """Charge et affiche le SVG de la table pour l'année donnée."""
-        # Fermer la fenêtre manuelle si ouverte
+    def _on_strategy_click(self):
+        """Ouvre (ou recrée) la fenêtre de stratégies."""
+        if self._strategy_window is not None:
+            self._strategy_window.close()
+        self._strategy_window = StrategyWindow(self.table_widget, self._current_year, self)
+        self._strategy_window.show()
+
+    def _on_reset_click(self):
+        """Ferme les sous-fenêtres, efface les traces et remet les robots à l'origine."""
         if self._manual_window is not None:
             self._manual_window.close()
             self._manual_window = None
+        if self._strategy_window is not None:
+            self._strategy_window.close()
+            self._strategy_window = None
+        self.table_widget.reset()
+
+    def _load_table(self, year: str):
+        """Charge et affiche le SVG de la table pour l'année donnée."""
+        # Fermer les fenêtres annexes
+        if self._manual_window is not None:
+            self._manual_window.close()
+            self._manual_window = None
+        if self._strategy_window is not None:
+            self._strategy_window.close()
+            self._strategy_window = None
+        self._current_year = year
         svg_path = get_table_svg_path(year)
         if os.path.isfile(svg_path):
             table_size = get_table_size(year)
