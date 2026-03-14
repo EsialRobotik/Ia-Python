@@ -25,9 +25,10 @@ class AbstractMain:
         self.color0 = 'color0'
         self.color3000 = 'color3000'
 
-        self.configPath = "../../../config"
+        self.config_path = "../../../config"
+        self.simulator_path = "../../../simulator"
 
-    def generate_strategy(self):
+    def generate_strategy(self, robot : str):
         # Création de la stratégie complète
         strat = Strat(
             couleur0=self.objectifs_couleur_0,
@@ -38,8 +39,8 @@ class AbstractMain:
         print(strat)
         print("#########################")
 
-        os.makedirs(f"{self.configPath}/{self.year}", exist_ok=True)
-        with open(f"{self.configPath}/{self.year}/strategy.json", "w") as json_file:
+        os.makedirs(f"{self.config_path}/{self.year}", exist_ok=True)
+        with open(f"{self.config_path}/{self.year}/{robot}/strategy.json", "w") as json_file:
             json.dump(strat.to_dict(), json_file, indent=4)
 
         print("Test de la strat 0")
@@ -48,7 +49,8 @@ class AbstractMain:
             self.start_x_0,
             self.start_y_0,
             self.start_theta_0,
-            "strategyBig0.json",
+            robot,
+            '0',
             self.color0
         )
 
@@ -58,13 +60,14 @@ class AbstractMain:
             self.start_x_3000,
             self.start_y_3000,
             self.start_theta_3000,
-            "strategyBig3000.json",
+            robot,
+            '3000',
             self.color3000
         )
 
-    def test_strategy(self, objectives, start_x, start_y, start_theta, output_path, color):
+    def test_strategy(self, objectives, start_x, start_y, start_theta, robot : str, suffix, color):
         try:
-            with open(f'{self.configPath}/{self.year}/config.json') as config_file:
+            with open(f'{self.config_path}/{self.year}/{robot}/config.json') as config_file:
                 config_data = json.load(config_file)
                 config_file.close()
                 path_finding = AStar(table_config=config_data['table'], active_color=color)
@@ -82,7 +85,7 @@ class AbstractMain:
                             strat_simu.append(execution)
                         start_point = task.end_point
 
-                with open(output_path, "w") as strat_file:
+                with open(f'{self.simulator_path}/{self.year}/strategy-{robot}-{suffix}.json', "w") as strat_file:
                     json.dump(strat_simu, strat_file, indent=4)
         except Exception as e:
             print(f"Erreur lors du test de la stratégie : {e}")

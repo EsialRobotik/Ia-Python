@@ -34,7 +34,7 @@ class FreddyPrincess(AbstractMain):
         self.gradin_o_e()
         #self.gradin_backstage()
         self.backstage()
-        self.generate_strategy()
+        self.generate_strategy('princess')
 
     def banderole(self):
         score = 20

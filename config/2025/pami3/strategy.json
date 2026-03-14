@@ -1,0 +1,136 @@
+{
+    "color0": [
+        {
+            "desc": "Groupi Pami 3",
+            "id": 1,
+            "points": 20,
+            "priority": 1,
+            "tasks": [
+                {
+                    "desc": "On attends son tour",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 500,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On file dans la fosse",
+                    "position_x": 280,
+                    "position_y": 180,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On file dans la fosse",
+                    "position_x": 650,
+                    "position_y": 1000,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On file dans la fosse",
+                    "position_x": 650,
+                    "position_y": 1400,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                }
+            ],
+            "skip_flag": null
+        }
+    ],
+    "color3000": [
+        {
+            "desc": "Groupi Pami 3",
+            "id": 1,
+            "points": 20,
+            "priority": 1,
+            "tasks": [
+                {
+                    "desc": "On attends son tour",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 500,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On file dans la fosse",
+                    "position_x": 280,
+                    "position_y": 2820,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On file dans la fosse",
+                    "position_x": 650,
+                    "position_y": 2000,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On file dans la fosse",
+                    "position_x": 650,
+                    "position_y": 1600,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                }
+            ],
+            "skip_flag": null
+        }
+    ]
+}
