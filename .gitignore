@@ -129,6 +129,13 @@ celerybeat.pid
 
 # Environments
 .env
+.env.princess
+.env.pami0
+.env.pami1
+.env.pami2
+.env.pami3
+.env.pami4
+.env.pami5
 .env.local
 .venv
 env/
