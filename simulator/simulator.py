@@ -3,24 +3,25 @@ Simulateur 2D pour robot - Affichage de la table de jeu.
 Utilise PySide6 pour le rendu SVG natif.
 """
 
-import sys
-import os
+import html as html_module
 import json
 import math
+import os
+import sys
 import time
-import html as html_module
 from datetime import datetime
+
+from PySide6.QtCore import QRectF, QPointF, QTimer, QElapsedTimer, Qt, QLocale
+from PySide6.QtGui import QPainter, QColor, QPen, QBrush, QPolygonF, QPixmap, QFont
+from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout,
     QWidget, QComboBox, QLabel, QPushButton,
     QGridLayout, QDoubleSpinBox, QCheckBox, QTextEdit,
 )
-from PySide6.QtSvg import QSvgRenderer
-from PySide6.QtCore import QRectF, QPointF, QTimer, QElapsedTimer, Qt, QLocale
-from PySide6.QtGui import QPainter, QColor, QPen, QBrush, QPolygonF, QPixmap, QFont
 
 # Chemin du dossier simulation, relatif à ce fichier
-SIMULATION_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "simulation")
+SIMULATION_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "")
 
 # Plage d'années supportées
 YEAR_MIN = 2022

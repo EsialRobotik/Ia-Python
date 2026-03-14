@@ -1,0 +1,47 @@
+[
+    {
+        "task": "Position de d\u00e9part",
+        "command": "start",
+        "position": {
+            "x": 280,
+            "y": 80,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On attends son tour",
+        "command": "wait#500",
+        "position": {
+            "x": 280,
+            "y": 80,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On file dans la fosse",
+        "command": "goto#280;180",
+        "position": {
+            "x": 280,
+            "y": 180,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On file dans la fosse",
+        "command": "goto#650;1000",
+        "position": {
+            "x": 650,
+            "y": 1000,
+            "theta": 2.2162162162162162
+        }
+    },
+    {
+        "task": "On file dans la fosse",
+        "command": "goto#650;1400",
+        "position": {
+            "x": 650,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    }
+]
