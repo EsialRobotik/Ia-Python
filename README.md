@@ -23,7 +23,7 @@ Sous windows, vous devez créer ou modifier une variable d'environnement `PYTHON
 En local, il est recommandé d'utiliser un environnement virtuel pour installer les dépendances du projet.
 - Créer virtual env [VSCode Venv](https://code.visualstudio.com/docs/python/environments) ou en ligne de commande :
 ```
-python -m venv env  
+python3 -m venv --system-site-packages env
 ```
 - Activate the environment
 #### Windows

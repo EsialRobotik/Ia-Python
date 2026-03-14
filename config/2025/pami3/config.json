@@ -2,7 +2,9 @@
   "desc": "Pami 3 - 2025",
   "matchDuration": 100,
 
-  "gpioPullCord": 23,
+  "gpioColorSelector": 27,
+  "gpioPullCord": 22,
+
   "loggerSocket": {
     "active": true,
     "host": "192.168.42.107",
