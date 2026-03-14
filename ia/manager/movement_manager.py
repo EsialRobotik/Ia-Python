@@ -95,6 +95,8 @@ class MovementManager:
             self.asserv.go_to_chain(Position(step.position.x, step.position.y))
         elif step.sub_type == StepSubType.SET_SPEED:
             self.asserv.set_speed(step.distance)
+        elif step.sub_type == StepSubType.SET_POSITION:
+            self.asserv.set_odometrie(step.position.x, step.position.y, step.distance)
 
     def halt_asserv(self, temporary: bool) -> None:
         """

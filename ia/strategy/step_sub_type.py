@@ -23,6 +23,8 @@ class StepSubType(Enum):
         Represents a goto astar strategy.
     SET_SPEED : str
         Represents a set speed strategy.
+    SET_POSITION : str
+        Represents a set position strategy.
     DELETE_ZONE : str
         Represents a forbidden zone suppression strategy.
     ADD_ZONE : str
@@ -40,6 +42,7 @@ class StepSubType(Enum):
     GOTO_CHAIN = 'GOTO_CHAIN'
     GOTO_ASTAR = 'GOTO_ASTAR'
     SET_SPEED = 'SET_SPEED'
+    SET_POSITION = 'SET_POSITION'
     DELETE_ZONE = 'DELETE_ZONE'
     ADD_ZONE = 'ADD_ZONE'
     WAIT_CHRONO = 'WAIT_CHRONO'
