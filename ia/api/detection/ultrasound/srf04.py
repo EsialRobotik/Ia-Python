@@ -62,4 +62,6 @@ class Srf04(Srf):
         Returns:
             float: The average distance measured by the sensor in millimeters.
         """
+        if self.sensor.value == 0:
+            return 10000
         return int(self.sensor.value * 1000)

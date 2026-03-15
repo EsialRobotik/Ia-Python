@@ -87,6 +87,8 @@ class Srf08(Srf):
             tof_low = bus.read_byte_data(self.address, self.FIRST_ECHO_HIGH_REGISTER + 1, force=self._i2c_force)
             tof_us = (tof_high << 8) | tof_low
 
+        if tof_us == 0:
+            return 10000
+
         tof_ms = tof_us / 1000.0
-        logger.debug("SRF08 0x%02X - ToF: %d us -> %.3f ms - High = %d - Low = %d", self.address, tof_us, tof_ms, tof_high, tof_low)
         return int(round((tof_ms * 343.0) / 2.0))
