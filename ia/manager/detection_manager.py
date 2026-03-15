@@ -119,7 +119,13 @@ class DetectionManager:
         if not ignore_direction and self.asserv.direction != MovementDirection.FORWARD:
             return False
 
-        for sensor in self.sensors[:-1]:
+        if len(self.sensors) == 1:
+            # When we have only sensor, it is a front one
+            front_sensors = self.sensors
+        else:
+            front_sensors = self.sensors[:-1]
+
+        for sensor in front_sensors:
             if sensor.get_distance() <= sensor.threshold:
                 return self.must_stop(self.get_obstacle_position(sensor, sensor.get_distance()))
         return False
@@ -133,6 +139,10 @@ class DetectionManager:
         """
 
         if not ignore_direction and self.asserv.direction != MovementDirection.BACKWARD:
+            return False
+
+        if len(self.sensors) == 1:
+            # No back detection
             return False
 
         sensor = self.sensors[-1]
