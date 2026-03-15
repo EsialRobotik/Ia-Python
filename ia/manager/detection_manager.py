@@ -1,6 +1,6 @@
 import logging
 import math
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import numpy as np
 from shapely.geometry import Polygon
@@ -13,7 +13,7 @@ from ia.utils.position import Position
 
 
 class DetectionManager:
-    def __init__(self, sensors: list[Srf], lidar: LidarRpA2, asserv: Asserv, table_config: Dict) -> None:
+    def __init__(self, sensors: list[Srf], lidar: Optional[LidarRpA2], asserv: Asserv, table_config: Dict) -> None:
         """
         Initializes the DetectionManager with a list of SRF sensors, a Lidar, an Asserv and a Pathfinding.
 
@@ -181,6 +181,9 @@ class DetectionManager:
             True if the trajectory is blocked, False otherwise.
         """
         if not goto_queue:
+            return False
+
+        if self.lidar is None:
             return False
 
         current_position = self.asserv.position

@@ -8,6 +8,7 @@ from ia.actions.action_repository_factory import ActionRepositoryFactory
 from ia.actions.actuators.actuator_link_repository_factory import ActuatorLinkRepositoryFactory
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
 from ia.api.chrono import Chrono
+from ia.api.color_selector import ColorSelector
 from ia.api.detection.lidar.lidar_rpa2 import LidarRpA2
 from ia.api.detection.ultrasound.srf_factory import SrfFactory
 from ia.api.nextion_nx32224t024 import NextionNX32224T024
@@ -88,14 +89,16 @@ if __name__ == "__main__":
 
         # Init detection manager
         logger.info("Init detection manager")
-        lidar = LidarRpA2(
-            serial_port=config_data["detection"]["lidar"]["serialPort"],
-            baud_rate=config_data["detection"]["lidar"]["baudRate"],
-            quality=config_data["detection"]["lidar"]["quality"],
-            distance=config_data["detection"]["lidar"]["distance"],
-            period=config_data["detection"]["lidar"]["period"],
-            asserv=asserv
-        )
+        lidar = None
+        if config_data["detection"].get("lidar") is not None:
+            lidar = LidarRpA2(
+                serial_port=config_data["detection"]["lidar"]["serialPort"],
+                baud_rate=config_data["detection"]["lidar"]["baudRate"],
+                quality=config_data["detection"]["lidar"]["quality"],
+                distance=config_data["detection"]["lidar"]["distance"],
+                period=config_data["detection"]["lidar"]["period"],
+                asserv=asserv
+            )
         ultrasound_config = config_data["detection"]["ultrasound"]
         srf = []
         for srfConfig in ultrasound_config['gpioList']:
@@ -131,14 +134,21 @@ if __name__ == "__main__":
         pull_cord = PullCord(config_data['gpioPullCord'])
         logger.info("Init pull cord OK")
 
+        # Init color selector
+        color_selector = None
+        if config_data.get('gpioPullCord') is not None:
+            color_selector = ColorSelector(config_data.get('gpioColorSelector'))
+
         # Init nextion
-        logger.info("Init nextion")
-        nextion_display = NextionNX32224T024(
-            serial_port=config_data['nextion']['serialPort'],
-            baud_rate=config_data['nextion']['baudRate'],
-            color0=config_data['table']['color0']
-        )
-        logger.info("Init nextion OK")
+        nextion_display = None
+        if config_data.get('nextion') is not None:
+            logger.info("Init nextion")
+            nextion_display = NextionNX32224T024(
+                serial_port=config_data['nextion']['serialPort'],
+                baud_rate=config_data['nextion']['baudRate'],
+                color0=config_data['table']['color0']
+            )
+            logger.info("Init nextion OK")
 
         # Init master loop
         logger.info("Init master loop")
@@ -151,7 +161,8 @@ if __name__ == "__main__":
             table_config=table_config,
             chrono=chrono,
             pull_cord=pull_cord,
-            nextion_display=nextion_display
+            nextion_display=nextion_display,
+            color_selector=color_selector
         )
 
         # Start execution

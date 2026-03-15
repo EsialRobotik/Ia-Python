@@ -5,6 +5,7 @@ import time
 from typing import Optional, Dict
 
 from ia.api.chrono import Chrono
+from ia.api.color_selector import ColorSelector
 from ia.api.nextion_nx32224t024 import NextionNX32224T024
 from ia.api.pull_cord import PullCord
 from ia.asservissement.asserv_status import AsservStatus
@@ -36,7 +37,8 @@ class MasterLoop:
         table_config: Dict,
         chrono: Chrono,
         pull_cord: PullCord,
-        nextion_display: NextionNX32224T024
+        nextion_display: Optional[NextionNX32224T024],
+        color_selector: Optional[ColorSelector]
     ) -> None:
         self.comm_config = comm_config
         self.communication_manager = None
@@ -50,6 +52,7 @@ class MasterLoop:
         self.chrono = chrono
         self.pull_cord = pull_cord
         self.nextion_display = nextion_display
+        self.color_selector = color_selector
         self.interrupted = False
         self.score = 0
         self.astar_launch = False
@@ -64,34 +67,46 @@ class MasterLoop:
         Initialize the Nextion display and perform the necessary setup steps.
         """
         self.logger.info("Init mainLoop")
-        self.nextion_display.goto_page("init")
-        self.logger.info("Attente lancement calibration")
-        self.nextion_display.wait_for_calibration()
+        if self.nextion_display is not None:
+            self.nextion_display.goto_page("init")
+            self.logger.info("Attente lancement calibration")
+            self.nextion_display.wait_for_calibration()
 
-        self.logger.info("Initialisation des actionneurs")
-        self.nextion_display.display_calibration_status("Initialisation des actionneurs")
-        self.action_manager.init()
+            self.logger.info("Initialisation des actionneurs")
+            self.nextion_display.display_calibration_status("Initialisation des actionneurs")
+            self.action_manager.init()
 
-        self.logger.info("Calage bordure")
-        self.nextion_display.display_calibration_status("Calage bordure")
-        self.movement_manager.go_start(self.nextion_display.color)
+            self.logger.info("Calage bordure")
+            self.nextion_display.display_calibration_status("Calage bordure")
+            self.movement_manager.go_start(self.nextion_display.color)
 
-        self.logger.info("Calibration OK, attente tirette")
-        self.nextion_display.display_calibration_status("Attente tirette pour depart")
-        self.pull_cord.wait_for_state(True)
-        self.logger.info("Tirette insérée, fin de la calibration")
+            self.logger.info("Calibration OK, attente tirette")
+            self.nextion_display.display_calibration_status("Attente tirette pour depart")
+            self.pull_cord.wait_for_state(True)
+            self.logger.info("Tirette insérée, fin de la calibration")
 
-        self.logger.info("Initialisation du pathfinding")
-        self.nextion_display.display_calibration_status("Initialisation du pathfinding")
+            self.logger.info("Initialisation du pathfinding")
+            self.nextion_display.display_calibration_status("Initialisation du pathfinding")
+            color = self.nextion_display.color
+        else:
+            self.action_manager.init()
+            if self.color_selector.is_color_0():
+                color = self.table_config['color0']
+            else:
+                color = self.table_config['color3000']
+            self.movement_manager.go_start(color)
+            self.pull_cord.wait_for_state(True)
+
         self.pathfinding = AStar(
             table_config=self.table_config,
-            active_color=self.nextion_display.color
+            active_color=color
         )
         self.logger.info("Initialisation du pathfinding OK")
 
         if self.comm_config['active']:
             self.logger.info("Initialisation du communication manager")
-            self.nextion_display.display_calibration_status("Initialisation du communication manager")
+            if self.nextion_display is not None:
+                self.nextion_display.display_calibration_status("Initialisation du communication manager")
             self.communication_manager = CommunicationManager(
                 action_manager=self.action_manager,
                 pathfinding=self.pathfinding,
@@ -100,7 +115,10 @@ class MasterLoop:
             self.logger.info("Initialisation du communication manager OK")
 
         self.logger.info("Pré-chargement de la stratégie")
-        self.is_color0 = self.nextion_display.is_color0()
+        if self.nextion_display is not None:
+            self.is_color0 = self.nextion_display.is_color0()
+        else:
+            self.is_color0 = self.color_selector.is_color_0()
         self.strategy_manager.prepare_objectives(self.is_color0)
         self.logger.info(f"Stratégie chargée : {len(self.strategy_manager.objectives)} objectifs")
 
@@ -111,7 +129,8 @@ class MasterLoop:
         self.logger.info(f"Première Step : {self.current_step}")
 
         self.logger.info("Prêt pour départ")
-        self.nextion_display.goto_page("ready")
+        if self.nextion_display is not None:
+            self.nextion_display.goto_page("ready")
 
     def match_end(self) -> None:
         """
@@ -136,7 +155,8 @@ class MasterLoop:
         """
         Update the score displayed on the Nextion display.
         """
-        self.nextion_display.display_score(self.score)
+        if self.nextion_display is not None:
+            self.nextion_display.display_score(self.score)
 
     def compute_astar(self, goal: Position) -> None:
         """
@@ -290,7 +310,8 @@ class MasterLoop:
         # Lancement du match
         self.logger.info("Match lancé")
         self.chrono.start_match(self.match_end)
-        self.nextion_display.goto_page("score")
+        if self.nextion_display is not None:
+            self.nextion_display.goto_page("score")
         self.movement_manager.is_match_started = True
         self.execute_current_step()
         self.update_score()
