@@ -24,10 +24,10 @@
           "type": "srf08",
           "desc": "Avant",
           "address": 232,
-          "x": 100,
-          "y": 120,
-          "angle": 30,
-          "threshold": 400
+          "x": 60,
+          "y": 0,
+          "angle": 0,
+          "threshold": 250
         }
       ]
     }
