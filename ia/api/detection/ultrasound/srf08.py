@@ -25,11 +25,11 @@ class Srf08(Srf):
         self.address = address >> 1 if address > 0x7F else address
         # Les adresses SRF08 >= 0x78 (7 bits) sont hors plage standard I2C : force requis.
         self._i2c_force = self.address > 0x77
-        self.initalize()
         logger.info(
             f"Creating Srf08 object with address 0x{address:02X} -> 7-bit 0x{self.address:02X}, "
             f"x={x}, y={y}, angle={angle}, threshold={threshold}, force={self._i2c_force}."
         )
+        self.initalize()
 
     def initalize(self) -> None:
         """
@@ -43,7 +43,7 @@ class Srf08(Srf):
             logger.info(
                 "SRF08 initialise a l'adresse 0x%02X (gain=%d, range_reg=%d ~602mm)",
                 self.address,
-                0x1F,
+                13,
                 13,
             )
         except Exception as error:
@@ -69,7 +69,7 @@ class Srf08(Srf):
         """
         with SMBus(self.I2C_BUS) as bus:
             bus.write_byte_data(self.address, self.COMMAND_REGISTER, self.RANGING_US_COMMAND, force=self._i2c_force)
-            time.sleep(0.065)  # Délai initial pour que le capteur commence la mesure
+            time.sleep(self.READ_TIMEOUT_S)  # Délai initial pour que le capteur commence la mesure
 
             timeout_at = time.monotonic() + self.READ_TIMEOUT_S
             while True:
