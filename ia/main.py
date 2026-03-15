@@ -64,16 +64,20 @@ if __name__ == "__main__":
 
         # Init action manager
         logger.info("Init action manager")
-        ax12_link = AX12LinkSerial(
-            serial_port=config_data["actions"]["ax12"]["serialPort"],
-            baud_rate=config_data["actions"]["ax12"]["baudRate"]
-        )
+        ax12_link = actuators_link = None
+        if config_data['actions'].get('ax12') is not None:
+            ax12_link = AX12LinkSerial(
+                serial_port=config_data["actions"]["ax12"]["serialPort"],
+                baud_rate=config_data["actions"]["ax12"]["baudRate"]
+            )
+        if config_data['actions'].get('actuators') is not None:
+            actuators_link = ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(
+                config_data['actions']['actuators']
+            )
         action_repository = ActionRepositoryFactory.from_json_files(
             folder=config_data['actions']['dataDir'],
             ax12_link_serial=ax12_link,
-            actuator_link_repository=ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(
-                config_data['actions']['actuators']
-            )
+            actuator_link_repository=actuators_link
         )
         action_manager = ActionManager(
             action_repository=action_repository,

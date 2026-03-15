@@ -63,7 +63,8 @@
     }
   },
   "actions": {
-
+    "dataDir": "/home/pi/IAPYTHON/config/2025/pami3/actions",
+    "init": []
   },
 
   "table": {

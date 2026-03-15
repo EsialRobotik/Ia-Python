@@ -1,8 +1,10 @@
 import json
 import logging
 import os
+from typing import Optional
 
 from ia.actions.action_list import ActionList
+from ia.actions.action_pwm_servo import ActionPwmServo
 from ia.actions.action_repository import ActionRepository
 from ia.actions.action_wait import ActionWait
 from ia.actions.actuators.actuator_action_factory import ActuatorActionFactory
@@ -17,7 +19,7 @@ class ActionRepositoryFactory:
     """
 
     @staticmethod
-    def from_json_files(folder: str, ax12_link_serial: AX12LinkSerial, actuator_link_repository: ActuatorLinkRepository) -> ActionRepository:
+    def from_json_files(folder: str, ax12_link_serial: Optional[AX12LinkSerial], actuator_link_repository: Optional[ActuatorLinkRepository]) -> ActionRepository:
         """
         Read all actions json found into the given folder and put them into an ActionRepository object
         """
@@ -56,6 +58,8 @@ class ActionRepositoryFactory:
                                             raise Exception(f"'list' not found in list action config payload")
                                     case "actuator":
                                         actions[action_id_long] = ActuatorActionFactory.action_actuator_from_json(action_config["payload"], actuator_link_repository)
+                                    case "pwm_servo":
+                                        actions[action_id_long] = ActionPwmServo.from_json(action_config["payload"])
                                     case default:
                                         raise Exception(f"Unhandled action type : {action_type}")
                             if "alias" in action_config:
