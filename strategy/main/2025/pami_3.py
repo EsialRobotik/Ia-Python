@@ -4,6 +4,7 @@ import sys
 from strategy.core.task_list import TaskList
 from strategy.main.abstract_main import AbstractMain
 from strategy.task.goto import GoTo
+from strategy.task.manipulation import Manipulation
 from strategy.task.wait import Wait
 
 
@@ -23,6 +24,10 @@ class Pami3(AbstractMain):
     def generate(self):
         score = 20
         tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(Manipulation(
+            desc='On commence à remuer les oreilles',
+            action_id='oreilles'
+        ))
         tasks_list.add(Wait(
             desc='On attends son tour',
             ms_count=500#85000

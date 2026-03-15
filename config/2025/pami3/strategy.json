@@ -7,6 +7,20 @@
             "priority": 1,
             "tasks": [
                 {
+                    "desc": "On commence \u00e0 remuer les oreilles",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 0,
+                    "type": "MANIPULATION",
+                    "subtype": "NONE",
+                    "action_id": "oreilles",
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
                     "desc": "On attends son tour",
                     "position_x": 0,
                     "position_y": 0,
@@ -73,6 +87,20 @@
             "points": 20,
             "priority": 1,
             "tasks": [
+                {
+                    "desc": "On commence \u00e0 remuer les oreilles",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 0,
+                    "type": "MANIPULATION",
+                    "subtype": "NONE",
+                    "action_id": "oreilles",
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
                 {
                     "desc": "On attends son tour",
                     "position_x": 0,

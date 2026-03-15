@@ -9,6 +9,15 @@
         }
     },
     {
+        "task": "On commence \u00e0 remuer les oreilles",
+        "command": "action#oreilles",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
         "task": "On attends son tour",
         "command": "wait#500",
         "position": {
