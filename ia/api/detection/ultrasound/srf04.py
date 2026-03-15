@@ -1,10 +1,10 @@
 import logging
 
+from gpiozero import DistanceSensor
+
 from ia.api.detection.ultrasound.srf import Srf
 
 logger = logging.getLogger(__name__)
-
-from gpiozero import DistanceSensor
 
 class Srf04(Srf):
     """

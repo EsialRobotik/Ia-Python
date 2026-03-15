@@ -23,8 +23,7 @@
         {
           "type": "srf08",
           "desc": "Avant",
-          "trigger": 5,
-          "echo": 6,
+          "address": 232,
           "x": 100,
           "y": 120,
           "angle": 30,
