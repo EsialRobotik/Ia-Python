@@ -1,6 +1,6 @@
 import logging
 import math
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import numpy as np
 from shapely.geometry import Polygon
@@ -13,7 +13,7 @@ from ia.utils.position import Position
 
 
 class DetectionManager:
-    def __init__(self, sensors: list[Srf], lidar: LidarRpA2, asserv: Asserv, table_config: Dict) -> None:
+    def __init__(self, sensors: list[Srf], lidar: Optional[LidarRpA2], asserv: Asserv, table_config: Dict) -> None:
         """
         Initializes the DetectionManager with a list of SRF sensors, a Lidar, an Asserv and a Pathfinding.
 
@@ -119,7 +119,13 @@ class DetectionManager:
         if not ignore_direction and self.asserv.direction != MovementDirection.FORWARD:
             return False
 
-        for sensor in self.sensors[:-1]:
+        if len(self.sensors) == 1:
+            # When we have only sensor, it is a front one
+            front_sensors = self.sensors
+        else:
+            front_sensors = self.sensors[:-1]
+
+        for sensor in front_sensors:
             if sensor.get_distance() <= sensor.threshold:
                 return self.must_stop(self.get_obstacle_position(sensor, sensor.get_distance()))
         return False
@@ -133,6 +139,10 @@ class DetectionManager:
         """
 
         if not ignore_direction and self.asserv.direction != MovementDirection.BACKWARD:
+            return False
+
+        if len(self.sensors) == 1:
+            # No back detection
             return False
 
         sensor = self.sensors[-1]
@@ -171,6 +181,9 @@ class DetectionManager:
             True if the trajectory is blocked, False otherwise.
         """
         if not goto_queue:
+            return False
+
+        if self.lidar is None:
             return False
 
         current_position = self.asserv.position

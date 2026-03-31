@@ -1,0 +1,74 @@
+[
+    {
+        "task": "Position de d\u00e9part",
+        "command": "start",
+        "position": {
+            "x": 60,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On attends son tour",
+        "command": "wait#500",
+        "position": {
+            "x": 60,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On monte sur sc\u00e8ne",
+        "command": "goto#60;2820",
+        "position": {
+            "x": 60,
+            "y": 2820,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On monte sur sc\u00e8ne",
+        "command": "goto#150;1700",
+        "position": {
+            "x": 150,
+            "y": 1700,
+            "theta": -1.4906114794935803
+        }
+    },
+    {
+        "task": "On regarde la foule",
+        "command": "face#2000;1700",
+        "position": {
+            "x": 150,
+            "y": 1700,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se calle le dos bien droit",
+        "command": "go#-150",
+        "position": {
+            "x": 0,
+            "y": 1700,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On met \u00e0 jour la position",
+        "command": "position#80;1700;0",
+        "position": {
+            "x": 80,
+            "y": 1700,
+            "theta": 0
+        }
+    },
+    {
+        "task": "On fait la star",
+        "command": "goto#450;1700",
+        "position": {
+            "x": 450,
+            "y": 1700,
+            "theta": 0.0
+        }
+    }
+]

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class AbstractActuatorLink(ABC):
     """
-    Abstratc class to represent a proxy that can communicate with an actuator
+    Abstract class to represent a proxy that can communicate with an actuator
     """
 
     @abstractmethod

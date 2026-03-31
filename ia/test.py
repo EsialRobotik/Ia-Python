@@ -4,6 +4,7 @@ import logging.handlers
 import sys
 
 from ia.tests.test_pathfinding import TestPathfinding
+from ia.tests.test_srf08 import TestSrf08
 from ia.tests.test_strategy_manager import TestStrategyManager
 from ia.utils.robot import Robot
 from tests.test_actions import TestActions
@@ -66,6 +67,8 @@ if __name__ == "__main__":
                 TestAX12(config_data, args.year, robot).test()
             case 'srf04':
                 TestSrf04(config_data, args.year, robot).test()
+            case 'srf08':
+                TestSrf08(config_data, args.year, robot).test()
             case 'lidar':
                 TestLidar(config_data, args.year, robot).test()
             case 'asserv':

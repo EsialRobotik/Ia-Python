@@ -38,10 +38,13 @@ class TestActions(AbstractTest):
             Continuously blink the AX12 led every second.
         """
 
-        logger.info(f"Instanciation of ax12 serial link {self.config_data['actions']['ax12']['serialPort']}@{self.config_data['actions']['ax12']['baudRate']}...")
-        ax12_link_serial = AX12LinkSerial(self.config_data['actions']['ax12']['serialPort'], self.config_data['actions']['ax12']['baudRate'])
-        logger.info("Instanciation of actuators serial links...")
-        actuator_link_repository = ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(self.config_data['actions']['actuators'])
+        ax12_link_serial = actuator_link_repository = None
+        if self.config_data['actions'].get('ax12') is not None:
+            logger.info(f"Instanciation of ax12 serial link {self.config_data['actions']['ax12']['serialPort']}@{self.config_data['actions']['ax12']['baudRate']}...")
+            ax12_link_serial = AX12LinkSerial(self.config_data['actions']['ax12']['serialPort'], self.config_data['actions']['ax12']['baudRate'])
+        if self.config_data['actions'].get('actuators') is not None:
+            logger.info("Instanciation of actuators serial links...")
+            actuator_link_repository = ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(self.config_data['actions']['actuators'])
         logger.info("Instanciation action repository...")
         actionRepo = ActionRepositoryFactory.from_json_files(self.config_data['actions']['dataDir'], ax12_link_serial, actuator_link_repository)
 

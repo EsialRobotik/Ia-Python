@@ -1,0 +1,56 @@
+[
+    {
+        "task": "Position de d\u00e9part",
+        "command": "start",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On commence \u00e0 remuer les oreilles",
+        "command": "action#oreilles",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On attends son tour",
+        "command": "wait#500",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On file dans la fosse",
+        "command": "goto#280;2820",
+        "position": {
+            "x": 280,
+            "y": 2820,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On file dans la fosse",
+        "command": "goto#650;2000",
+        "position": {
+            "x": 650,
+            "y": 2000,
+            "theta": -1.1469287162651174
+        }
+    },
+    {
+        "task": "On file dans la fosse",
+        "command": "goto#650;1600",
+        "position": {
+            "x": 650,
+            "y": 1600,
+            "theta": -1.5707963267948966
+        }
+    }
+]
