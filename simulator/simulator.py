@@ -305,7 +305,7 @@ class TableWidget(QWidget):
 
             painter.save()
             painter.translate(screen_x, screen_y)
-            painter.rotate(math.degrees(robot["theta"]))  # sens inversé par le swap d'axes
+            painter.rotate(-math.degrees(robot["theta"]))
             painter.scale(scale, scale)
             painter.drawPixmap(int(-img_ref_px), int(-img_ref_py), robot["pixmap"])
             painter.restore()
