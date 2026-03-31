@@ -153,11 +153,11 @@ class TableWidget(QWidget):
 
         # Traces persistantes : liste de (x1, y1, x2, y2, QColor) en coords table
         self._trails: list[tuple[float, float, float, float, QColor]] = []
-        self._active_trail: tuple | None = None  # trace du déplacement en cours
+        self._active_trails: dict[int, tuple] = {}  # robot_idx → trace en cours
 
-        # Animation
-        self._anim_queue: list[dict] = []
-        self._anim_current: dict | None = None
+        # Animation — une file et une étape courante par robot
+        self._anim_queues: dict[int, list[dict]] = {}    # robot_idx → steps en attente
+        self._anim_currents: dict[int, dict] = {}        # robot_idx → étape en cours
         self._anim_timer = QTimer(self)
         self._anim_timer.timeout.connect(self._anim_tick)
         # Horloge globale démarrée une fois — jamais remise à zéro
@@ -179,9 +179,9 @@ class TableWidget(QWidget):
         self._bg_cache = None
         self._speed_factor = 1.0
         self._trails.clear()
-        self._active_trail = None
-        self._anim_queue.clear()
-        self._anim_current = None
+        self._active_trails.clear()
+        self._anim_queues.clear()
+        self._anim_currents.clear()
         self._anim_timer.stop()
         self.update()
 
@@ -323,9 +323,7 @@ class TableWidget(QWidget):
     def _draw_trails(self, painter: QPainter, scale: float,
                      offset_x: float, offset_y: float):
         """Dessine les traces de déplacement (lignes persistantes + trace en cours)."""
-        all_trails = list(self._trails)
-        if self._active_trail is not None:
-            all_trails.append(self._active_trail)
+        all_trails = list(self._trails) + list(self._active_trails.values())
         for x1, y1, x2, y2, color in all_trails:
             p1 = self._to_screen(x1, y1, scale, offset_x, offset_y)
             p2 = self._to_screen(x2, y2, scale, offset_x, offset_y)
@@ -337,8 +335,9 @@ class TableWidget(QWidget):
     def animate_robot_move(self, robot_id: str, target_x: float, target_y: float,
                            target_theta: float, trail_color: QColor):
         """
-        Lance l'animation d'un robot : rotation vers la cible, déplacement,
-        puis rotation vers l'angle final.
+        Enfile les étapes d'animation d'un robot : rotation vers la cible,
+        déplacement, puis rotation vers l'angle final.
+        Chaque robot a sa propre file — tous les robots s'animent en parallèle.
         """
         robot_idx = next(
             (i for i, r in enumerate(self._robots) if r["id"] == robot_id), None
@@ -351,47 +350,45 @@ class TableWidget(QWidget):
         dy = target_y - robot["y"]
         distance = math.sqrt(dx * dx + dy * dy)
 
-        # Rotation vers l'angle final
-        self._anim_queue.append({
-            "type": "rotate",
-            "robot_idx": robot_idx,
-            "to_theta": target_theta,
-        })
+        queue = self._anim_queues.setdefault(robot_idx, [])
 
         if distance > 1:
-            # Déplacement en ligne droite
-            self._anim_queue.append({
+            travel_angle = math.atan2(dy, dx)
+            queue.append({"type": "rotate", "to_theta": travel_angle})
+            queue.append({
                 "type": "move",
-                "robot_idx": robot_idx,
                 "to_x": target_x,
                 "to_y": target_y,
                 "trail_color": QColor(trail_color),
             })
 
-        # Démarrer si aucune animation en cours
-        if not self._anim_timer.isActive():
-            self._start_next_anim()
+        queue.append({"type": "rotate", "to_theta": target_theta})
 
-    def _start_next_anim(self):
-        """Démarre la prochaine étape d'animation de la file."""
-        if not self._anim_queue:
-            self._anim_current = None
-            self._anim_timer.stop()
+        # Démarrer l'étape suivante pour ce robot s'il est inactif
+        if robot_idx not in self._anim_currents:
+            self._start_next_anim(robot_idx)
+
+        if not self._anim_timer.isActive():
+            self._anim_timer.start(ANIM_INTERVAL_MS)
+
+    def _start_next_anim(self, robot_idx: int):
+        """Démarre la prochaine étape de la file du robot donné."""
+        queue = self._anim_queues.get(robot_idx, [])
+        if not queue:
+            self._anim_currents.pop(robot_idx, None)
             return
 
-        step = self._anim_queue.pop(0)
-        robot = self._robots[step["robot_idx"]]
+        step = queue.pop(0)
+        robot = self._robots[robot_idx]
 
         if step["type"] == "rotate":
             from_theta = robot["theta"]
             diff = normalize_angle(step["to_theta"] - from_theta)
             if abs(diff) < 0.01:
-                # Rotation négligeable, passer à l'étape suivante
-                self._start_next_anim()
+                self._start_next_anim(robot_idx)
                 return
-            self._anim_current = {
+            self._anim_currents[robot_idx] = {
                 "type": "rotate",
-                "robot_idx": step["robot_idx"],
                 "from_theta": from_theta,
                 "to_theta": from_theta + diff,
                 "duration": abs(diff) / ANIM_ROTATION_SPEED,
@@ -402,9 +399,8 @@ class TableWidget(QWidget):
             from_x, from_y = robot["x"], robot["y"]
             to_x, to_y = step["to_x"], step["to_y"]
             dist = math.sqrt((to_x - from_x) ** 2 + (to_y - from_y) ** 2)
-            self._anim_current = {
+            self._anim_currents[robot_idx] = {
                 "type": "move",
-                "robot_idx": step["robot_idx"],
                 "from_x": from_x, "from_y": from_y,
                 "to_x": to_x, "to_y": to_y,
                 "duration": max(dist / (ANIM_MOVE_SPEED * self._speed_factor), 0.05),
@@ -412,53 +408,48 @@ class TableWidget(QWidget):
                 "trail_color": step.get("trail_color"),
             }
 
-        self._anim_timer.start(ANIM_INTERVAL_MS)
-
     def _anim_tick(self):
-        """Appelé à chaque tick du timer d'animation."""
-        if self._anim_current is None:
+        """Fait avancer toutes les animations actives en parallèle."""
+        if not self._anim_currents:
             self._anim_timer.stop()
             return
 
-        anim = self._anim_current
-        # Temps absolu écoulé depuis le début de cette étape — pas d'accumulation d'erreur
-        elapsed = (self._global_clock.elapsed() - anim["start_time"]) / 1000.0
-        t = min(elapsed / anim["duration"], 1.0)
-        robot = self._robots[anim["robot_idx"]]
+        for robot_idx, anim in list(self._anim_currents.items()):
+            elapsed = (self._global_clock.elapsed() - anim["start_time"]) / 1000.0
+            t = min(elapsed / anim["duration"], 1.0)
+            robot = self._robots[robot_idx]
 
-        if anim["type"] == "rotate":
-            robot["theta"] = anim["from_theta"] + (anim["to_theta"] - anim["from_theta"]) * t
+            if anim["type"] == "rotate":
+                robot["theta"] = anim["from_theta"] + (anim["to_theta"] - anim["from_theta"]) * t
 
-        elif anim["type"] == "move":
-            robot["x"] = anim["from_x"] + (anim["to_x"] - anim["from_x"]) * t
-            robot["y"] = anim["from_y"] + (anim["to_y"] - anim["from_y"]) * t
-            # Trace en cours : un seul segment grandissant (pas de micro-segments)
-            if anim.get("trail_color"):
-                self._active_trail = (
-                    anim["from_x"], anim["from_y"],
-                    robot["x"], robot["y"],
-                    anim["trail_color"],
-                )
+            elif anim["type"] == "move":
+                robot["x"] = anim["from_x"] + (anim["to_x"] - anim["from_x"]) * t
+                robot["y"] = anim["from_y"] + (anim["to_y"] - anim["from_y"]) * t
+                if anim.get("trail_color"):
+                    self._active_trails[robot_idx] = (
+                        anim["from_x"], anim["from_y"],
+                        robot["x"], robot["y"],
+                        anim["trail_color"],
+                    )
+
+            if t >= 1.0:
+                if anim["type"] == "move" and anim.get("trail_color"):
+                    self._trails.append((
+                        anim["from_x"], anim["from_y"],
+                        anim["to_x"], anim["to_y"],
+                        anim["trail_color"],
+                    ))
+                    self._active_trails.pop(robot_idx, None)
+                self._start_next_anim(robot_idx)
 
         self.update()
-
-        if t >= 1.0:
-            # Finaliser la trace
-            if anim["type"] == "move" and anim.get("trail_color"):
-                self._trails.append((
-                    anim["from_x"], anim["from_y"],
-                    anim["to_x"], anim["to_y"],
-                    anim["trail_color"],
-                ))
-                self._active_trail = None
-            self._start_next_anim()
 
     def reset(self):
         """Remet les robots à leur position initiale et efface les traces."""
         self._anim_timer.stop()
-        self._anim_queue.clear()
-        self._anim_current = None
-        self._active_trail = None
+        self._anim_queues.clear()
+        self._anim_currents.clear()
+        self._active_trails.clear()
         self._trails.clear()
         self._speed_factor = 1.0
         for robot in self._robots:
@@ -482,10 +473,8 @@ class TableWidget(QWidget):
 
     def is_robot_animating(self, robot_idx: int) -> bool:
         """Retourne True si le robot a des animations en cours ou en attente."""
-        if (self._anim_current is not None and
-                self._anim_current.get("robot_idx") == robot_idx):
-            return True
-        return any(s.get("robot_idx") == robot_idx for s in self._anim_queue)
+        return (robot_idx in self._anim_currents or
+                bool(self._anim_queues.get(robot_idx)))
 
     def set_anim_speed(self, factor: float):
         """Modifie le multiplicateur de vitesse d'animation (1.0 = normal)."""
@@ -595,7 +584,7 @@ class TableWidget(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.drawPixmap(0, 0, self._bg_cache)
 
-        if self._trails or self._active_trail:
+        if self._trails or self._active_trails:
             self._draw_trails(painter, scale, offset_x, offset_y)
 
         if self._robots:
