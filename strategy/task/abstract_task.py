@@ -1,3 +1,5 @@
+import math
+
 from ia.utils.position import Position
 
 
@@ -22,17 +24,7 @@ class AbstractTask:
         return ""
 
     def calculate_theta(self, current_position, final_x, final_y):
-        if final_y == current_position.y:
-            return 0 if final_x > current_position.x else 3.141592653589793
-        elif final_x == current_position.x:
-            return 1.5707963267948966 if final_y > current_position.y else -1.5707963267948966
-        else:
-            adjust = 0
-            if final_y > current_position.y and final_x > current_position.x:
-                adjust = 0
-            elif final_y > current_position.y or final_x < current_position.x:
-                adjust = 3.141592653589793
-            return adjust + (final_y - current_position.y) / (final_x - current_position.x)
+            return math.atan2(final_y - current_position.y, final_x - current_position.x)
 
     def to_dict(self):
             return {

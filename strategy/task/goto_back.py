@@ -18,11 +18,19 @@ class GoToBack(AbstractTask):
             mirror=mirror
         )
 
+    def calculate_theta(self, current_position, final_x, final_y):
+        angle = math.atan2(final_y - current_position.y, final_x - current_position.x) + math.pi
+        while angle > math.pi:
+            angle -= 2 * math.pi
+        while angle <= -math.pi:
+            angle += 2 * math.pi
+        return angle
+
     def execute(self, start_point: Position):
         self.end_point = Position(
             self.position_x,
             self.position_y,
-            (self.calculate_theta(start_point, self.position_x, self.position_y) - math.pi) % (2 * math.pi)
+            self.calculate_theta(start_point, self.position_x, self.position_y)
         )
         return {
             "task": self.desc,
