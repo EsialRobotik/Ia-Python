@@ -1,5 +1,4 @@
 import logging
-import time
 
 from ia.asservissement.asserv import Asserv
 from ia.asservissement.asserv_status import AsservStatus
@@ -82,7 +81,6 @@ class MovementManager:
                 self.asserv.enable_low_speed(True)
             self.asserv.go(step.distance)
             if step.timeout > 0:
-                time.sleep(0.11)  # Wait a bit to ensure the asservissement has received the command
                 self.asserv.wait_for_halted_or_blocked(step.timeout)
                 self.asserv.emergency_stop()
                 self.asserv.emergency_reset()
@@ -155,7 +153,7 @@ class MovementManager:
         bool
             True if the last ordered movement has ended, False otherwise.
         """
-        is_finished: bool = self.asserv.queue_size == 0 and self.asserv.asserv_status == AsservStatus.STATUS_IDLE
+        is_finished: bool = self.asserv.is_last_command_finished()
         if is_finished:
             self.goto_queue.clear()
             self.current_step = None
@@ -191,3 +189,9 @@ class MovementManager:
         return (self.asserv.asserv_status == AsservStatus.STATUS_BLOCKED
             and self.current_step.sub_type != StepSubType.GO
             and self.current_step.timeout == 0)
+
+    def update_position(self) -> None:
+        """
+        Updates the position of the asservissement.
+        """
+        self.asserv.update_position()

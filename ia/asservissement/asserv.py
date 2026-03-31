@@ -1,5 +1,10 @@
 import logging
 
+import cbor2
+import crc
+
+from ia.asservissement.asser_message import AsservMessage
+from ia.asservissement.asserv_response_listener import AsservResponseListener
 from ia.asservissement.asserv_status import AsservStatus
 from ia.asservissement.movement_direction import MovementDirection
 from ia.utils.position import Position
@@ -79,7 +84,8 @@ class Asserv:
             port=serial_port,
             baudrate=baud_rate,
             parity=serial.PARITY_NONE,
-            stopbits=serial.STOPBITS_ONE
+            stopbits=serial.STOPBITS_ONE,
+            timeout=0.01
         )
         self.position = Position(0, 0)
         self.last_log = ''
@@ -87,34 +93,33 @@ class Asserv:
         self.status_countdown = 0
         self.asserv_status = AsservStatus.STATUS_IDLE
         self.queue_size = 0
+        self.last_sent_command_id = 0
+        self.last_received_command_id = 0
+        self.motor_left_speed = 0
+        self.motor_right_speed = 0
         self.gostart_config = gostart_config
         self.reading_buffer = []
         self.lock = threading.Lock()
+        self.response_listener = AsservResponseListener()
+        self.serial.read()
+        logger.info('Start asser reading thread')
         self.read_thread = threading.Thread(target=self.parse_asserv_position)
         self.read_thread.daemon = True
         self.read_thread.start()
 
-    def initialize(self) -> None:
+    def formatMsg(self, msg):
         """
-        Initializes the Asserv system by sending an initialization command
-        to the serial interface and logging the initialization process.
-        This method writes the byte "I" to the serial interface to signal
-        the start of the initialization process and logs the action using
-        the logger.
+        Format cbor message to send order
         """
-
-        logger.info("init")
-        self.serial.write(f"I\n".encode())
-
-    def stop(self) -> None:
-        """
-        Stops the robot by sending the stop command "M0" to the serial interface.
-        This method logs the stop action and writes the stop command to the serial port
-        to halt the robot's movement.
-        """
-
-        logger.info("stop")
-        self.serial.write(f"M0\n".encode())
+        syncword = 0xDEADBEEF
+        msg_cbor = cbor2.dumps(msg)
+        msg_cbor_len = len(msg_cbor)
+        calculator = crc.Calculator(crc.Crc32.CRC32)
+        crc_computed = calculator.checksum(msg_cbor)
+        return (syncword.to_bytes(length=4, byteorder='little', signed=False)
+            + crc_computed.to_bytes(length=4, byteorder='little', signed=False)
+            + msg_cbor_len.to_bytes(length=4, byteorder='little', signed=False)
+            + msg_cbor)
 
     def emergency_stop(self) -> None:
         """
@@ -129,7 +134,7 @@ class Asserv:
 
         logger.info("emergencyStop")
         self.asserv_status = AsservStatus.STATUS_HALTED
-        self.serial.write(f"h\n".encode())
+        self.serial.write(self.formatMsg({"cmd": AsservMessage.emergency_stop.value}))
         self.direction = MovementDirection.NONE
 
     def emergency_reset(self) -> None:
@@ -141,13 +146,13 @@ class Asserv:
 
         logger.info("emergencyReset")
         self.asserv_status = AsservStatus.STATUS_IDLE
-        self.serial.write(f"r\n".encode())
+        self.serial.write(self.formatMsg({"cmd": AsservMessage.emergency_stop_reset.value}))
 
     def go(self, dist: int) -> None:
         """
         Initiates movement of the robot for a specified distance.
         Args:
-            dist (float): The distance to move. Positive values indicate forward movement,
+            dist (int): The distance to move. Positive values indicate forward movement,
                           while negative values indicate backward movement.
         Raises:
             None
@@ -164,7 +169,12 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.FORWARD if dist > 0 else MovementDirection.BACKWARD
-        self.serial.write(f"v{dist}\n".encode())
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.straight.value,
+            "D" : float(dist),
+            "ID": self.last_sent_command_id
+        }))
+        self.last_sent_command_id += 1
 
     def turn(self, degree: int) -> None:
         """
@@ -186,7 +196,12 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.NONE
-        self.serial.write(f"t{degree}\n".encode())
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.turn.value,
+            "A": float(degree),
+            "ID": self.last_sent_command_id
+        }))
+        self.last_sent_command_id += 1
 
     def go_to(self, position: Position) -> None:
         """
@@ -207,7 +222,13 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.FORWARD
-        self.serial.write(f"g{position.x}#{position.y}\n".encode())
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.goto_front.value,
+            "X" : float(position.x),
+            "Y" : float(position.y),
+            "ID": self.last_sent_command_id
+        }))
+        self.last_sent_command_id += 1
 
     def go_to_chain(self, position: Position) -> None:
         """
@@ -228,7 +249,13 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.FORWARD
-        self.serial.write(f"e{position.x}#{position.y}\n".encode())
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.goto_nostop.value,
+            "X": float(position.x),
+            "Y": float(position.y),
+            "ID": self.last_sent_command_id
+        }))
+        self.last_sent_command_id += 1
 
     def go_to_reverse(self, position: Position) -> None:
         """
@@ -250,7 +277,13 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.BACKWARD
-        self.serial.write(f"b{position.x}#{position.y}\n".encode())
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.goto_back.value,
+            "X": float(position.x),
+            "Y": float(position.y),
+            "ID": self.last_sent_command_id
+        }))
+        self.last_sent_command_id += 1
 
     def face(self, position: Position) -> None:
         """
@@ -268,7 +301,28 @@ class Asserv:
         with self.lock:
             self.status_countdown = 2
         self.direction = MovementDirection.NONE
-        self.serial.write(f"f{position.x}#{position.y}\n".encode())
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.face.value,
+            "X": float(position.x),
+            "Y": float(position.y),
+            "ID": self.last_sent_command_id
+        }))
+        self.last_sent_command_id += 1
+
+    def orbital_turn(self, degrees : float, forward : bool, turn_right : bool):
+        logger.info(f"orbitalTurn : {degrees} - {forward} - {turn_right}")
+        self.asserv_status = AsservStatus.STATUS_RUNNING
+        with self.lock:
+            self.status_countdown = 2
+        self.direction = MovementDirection.FORWARD
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.orbital_turn.value,
+            "A" : float(degrees),
+            "F" : float(1.0) if forward else float(0),
+            "R" : float(1.0) if turn_right else float(0),
+            "ID": self.last_sent_command_id
+        }))
+        self.last_sent_command_id += 1
 
     def set_odometrie(self, x: int, y: int, theta: float) -> None:
         """
@@ -282,7 +336,12 @@ class Asserv:
         """
 
         logger.info(f"setOdometrie P{x}#{y}#{theta}")
-        self.serial.write(f"P{x}#{y}#{theta}\n".encode())
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.set_position.value,
+            "X" : float(x),
+            "Y" : float(y),
+            "T" : float(theta)
+        }))
 
     def enable_low_speed(self, enable: bool) -> None:
         """
@@ -294,7 +353,10 @@ class Asserv:
         """
 
         logger.info(f"enableLowSpeed : {enable}")
-        self.serial.write(f"n\n".encode() if enable else f"N\n".encode())
+        if enable:
+            self.serial.write(self.formatMsg({"cmd": AsservMessage.slow_speed_acc_mode.value}))
+        else:
+            self.serial.write(self.formatMsg({"cmd": AsservMessage.normal_speed_acc_mode.value}))
 
     def set_speed(self, pct: int) -> None:
         """
@@ -321,127 +383,42 @@ class Asserv:
         """
 
         logger.info(f"setSpeed {pct}%")
-        self.serial.write(f"S{pct}\n".encode())
-
-    def enable_regulator_angle(self, enable: bool) -> None:
-        """
-        Enables or disables the angle regulator.
-        This method sends a command to the serial interface to enable or disable
-        the angle regulator based on the provided boolean value.
-        Args:
-            enable (bool): If True, enables the angle regulator. If False, disables it.
-        Returns:
-            None
-        """
-
-        logger.info(f"enableRegulatorAngle : {enable}")
-        self.serial.write(f"Rae\n".encode() if enable else f"Rad\n".encode())
-
-    def reset_regulator_angle(self) -> None:
-        """
-        Resets the regulator angle by sending a specific command to the serial interface.
-        This method logs the action and writes the command "Rar" to the serial interface
-        to reset the regulator angle.
-        Raises:
-            SerialException: If there is an error writing to the serial interface.
-        """
-
-        logger.info("resetRegulatorAngle")
-        self.serial.write(f"Rar\n".encode())
-
-    def enable_regulator_distance(self, enable: bool) -> None:
-        """
-        Enable or disable the distance regulator.
-        This method sends a command to the serial interface to enable or disable
-        the distance regulator based on the provided boolean value.
-        Args:
-            enable (bool): If True, the distance regulator is enabled. If False, it is disabled.
-        Returns:
-            None
-        """
-
-        logger.info(f"enableRegulatorDistance : {enable}")
-        self.serial.write(f"Rde\n".encode() if enable else f"Rdd\n".encode())
-
-    def reset_regulator_distance(self) -> None:
-        """
-        Resets the distance regulator by sending a reset command to the serial interface.
-        This method logs the reset action and writes the reset command "Rdr" to the serial port.
-        """
-
-        logger.info("resetRegulatorDistance")
-        self.serial.write(f"Rdr\n".encode())
-
-    def enable_motors(self, enable: bool) -> None:
-        """
-        Enable or disable the motors.
-        This method sends a command to the motor controller to enable or disable the motors.
-        It logs the action and writes the appropriate command to the serial interface.
-        Args:
-            enable (bool): If True, the motors will be enabled. If False, the motors will be disabled.
-        """
-
-        logger.info(f"enable motors {enable}")
-        self.serial.write(f"M{1 if enable else 0}\n".encode())
+        self.serial.write(self.formatMsg({
+            "cmd": AsservMessage.max_motor_speed.value,
+            "P" : float(pct),
+            "ID": int(4242)
+        }))
 
     def parse_asserv_position(self) -> None:
-        """
-        Parses a string containing asservissement position data and updates the object's attributes accordingly.
-        The input string is expected to have the following format:
-        "#x;y;theta;asserv_status;queue_size"
-        where:
-        - x: integer representing the x-coordinate of the position.
-        - y: integer representing the y-coordinate of the position.
-        - theta: float representing the orientation angle.
-        - asserv_status: integer representing the status of the asservissement system.
-        - queue_size: integer representing the size of the queue.
-        The method updates the following attributes of the object:
-        - self.position.x
-        - self.position.y
-        - self.position.theta
-        - self.asserv_status
-        - self.queue_size
-        The asserv_status is mapped to the following states:
-        - 0: STATUS_IDLE
-        - 1: STATUS_RUNNING
-        - 2: STATUS_HALTED
-        - 3: STATUS_BLOCKED
-        If the asserv_status is 0, the status_countdown is decremented and if it reaches 0, the asserv_status is set to STATUS_IDLE.
-        Args:
-            str (str): The input string containing the asservissement position data.
-        Raises:
-            Exception: If the input string is not parsable, an exception is caught and a log message is generated.
-        """
-
         while True:
-            try:
-                str = self.serial.readline().decode().strip()
-                self.last_log = str
-                logger.debug(f"Position : {str}")
-                if str.startswith("#"):
-                    str = str[1:]
-                    if "#" in str:
-                        continue
-                    data = str.split(";")
+            x = self.serial.read(50)
+            for val in x:
+                self.response_listener.push_byte(val)
 
-                    self.position.x = int(data[0])
-                    self.position.y = int(data[1])
-                    self.position.theta = float(data[2])
-                    asserv_status_int = int(data[3])
-                    if asserv_status_int == 0:
-                        with self.lock:
-                            self.status_countdown -= 1
-                            if self.status_countdown <= 0:
-                                self.asserv_status = AsservStatus.STATUS_IDLE
-                    elif asserv_status_int == 1:
-                        self.asserv_status = AsservStatus.STATUS_RUNNING
-                    elif asserv_status_int == 2:
-                        self.asserv_status = AsservStatus.STATUS_HALTED
-                    elif asserv_status_int == 3:
-                        self.asserv_status = AsservStatus.STATUS_BLOCKED
-                    self.queue_size = int(data[4])
-            except Exception as e:
-                logger.error("Trace asservissement non parsable")
+    def update_position(self) -> None:
+        while self.response_listener.get_nb_payload() > 0 :
+            payload = self.response_listener.pop_payload()
+            self.last_log = payload
+            logger.debug(f"Position : {self.last_log}")
+            self.position.x = int(payload['x'])
+            self.position.y = int(payload['y'])
+            self.position.theta = float(payload['theta'])
+            asserv_status_int = int(payload['status'])
+            if asserv_status_int == 0:
+                with self.lock:
+                    self.status_countdown -= 1
+                    if self.status_countdown <= 0:
+                        self.asserv_status = AsservStatus.STATUS_IDLE
+            elif asserv_status_int == 1:
+                self.asserv_status = AsservStatus.STATUS_RUNNING
+            elif asserv_status_int == 2:
+                self.asserv_status = AsservStatus.STATUS_HALTED
+            elif asserv_status_int == 3:
+                self.asserv_status = AsservStatus.STATUS_BLOCKED
+            self.queue_size = int(payload['pending'])
+            self.last_received_command_id = int(payload['cmd_id'])
+            self.motor_left_speed = int(payload['motor_left'])
+            self.motor_right_speed = int(payload['motor_right'])
 
     def wait_for_asserv(self) -> None:
         """
@@ -453,7 +430,7 @@ class Asserv:
             None
         """
 
-        while not (self.queue_size == 0 and self.asserv_status == AsservStatus.STATUS_IDLE):
+        while not (self.is_last_command_finished()):
             time.sleep(0.005)
 
     def wait_for_halted_or_blocked(self, timeout_ms: int) -> None:
@@ -468,6 +445,10 @@ class Asserv:
         start_time = time.time_ns()
         while self.asserv_status == AsservStatus.STATUS_RUNNING and ((time.time_ns() - start_time)  / 1000000) < timeout_ms:
             time.sleep(0.01)
+
+    def is_last_command_finished(self) -> bool:
+        return (self.last_received_command_id >= self.last_sent_command_id
+            and self.asserv_status == AsservStatus.STATUS_IDLE)
 
     def go_start(self, color: str) -> None:
         """
@@ -504,7 +485,6 @@ class Asserv:
             elif temp["type"] == "go_timed":
                 logger.info(f"Go timed {temp['dist']}")
                 self.go(temp["dist"])
-                time.sleep(0.11)  # Wait a bit to ensure the asservissement has received the command
                 self.wait_for_halted_or_blocked(500)
                 self.emergency_stop()
                 time.sleep(2)
@@ -525,12 +505,6 @@ class Asserv:
                 alignement = Position(temp["x"], temp["y"])
                 logger.info(f"Goto {alignement}")
                 self.face(alignement)
-            elif temp["type"] == "angle":
-                logger.info(f"Enable regulator angle {temp['enable']}")
-                self.enable_regulator_angle(temp["enable"])
-            elif temp["type"] == "distance":
-                logger.info(f"Enable regulator distance {temp['enable']}")
-                self.enable_regulator_distance(temp["enable"])
             elif temp["type"] == "set_x":
                 logger.info(f"Set odometrie X : {temp['value']}")
                 self.set_odometrie(temp["value"], self.position.y, temp["theta"])
