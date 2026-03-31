@@ -352,17 +352,15 @@ class TableWidget(QWidget):
 
         queue = self._anim_queues.setdefault(robot_idx, [])
 
+        queue.append({"type": "rotate", "to_theta": target_theta})
+
         if distance > 1:
-            travel_angle = math.atan2(dy, dx)
-            queue.append({"type": "rotate", "to_theta": travel_angle})
             queue.append({
                 "type": "move",
                 "to_x": target_x,
                 "to_y": target_y,
                 "trail_color": QColor(trail_color),
             })
-
-        queue.append({"type": "rotate", "to_theta": target_theta})
 
         # Démarrer l'étape suivante pour ce robot s'il est inactif
         if robot_idx not in self._anim_currents:
