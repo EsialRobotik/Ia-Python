@@ -13,7 +13,7 @@ class Pami4(AbstractMain):
         self.year: int = 2025
         self.start_x_0: int = 390
         self.start_y_0: int = 80
-        self.start_theta_0: float = -1.57079632679
+        self.start_theta_0: float = 1.57079632679
         self.start_x_3000: int = 390
         self.start_y_3000: int = 2920
         self.start_theta_3000: float = 1.57079632679
