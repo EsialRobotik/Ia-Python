@@ -133,6 +133,7 @@ class TableWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._renderer = QSvgRenderer(self)
+        self._grid_renderer = QSvgRenderer(self)
         self._table_size = None
         self._forbidden_zones: list = []
         self._dynamic_zones: list = []
@@ -170,6 +171,8 @@ class TableWidget(QWidget):
                      utiliser les dimensions par défaut du SVG.
         """
         self._renderer.load(path)
+        grid_path = os.path.join(SIMULATION_DIR, "grid.svg")
+        self._grid_renderer.load(grid_path)
         self._table_size = table_size
         self._zoom = 1.0
         self._pan = QPointF(0.0, 0.0)
@@ -348,6 +351,13 @@ class TableWidget(QWidget):
         dy = target_y - robot["y"]
         distance = math.sqrt(dx * dx + dy * dy)
 
+        # Rotation vers l'angle final
+        self._anim_queue.append({
+            "type": "rotate",
+            "robot_idx": robot_idx,
+            "to_theta": target_theta,
+        })
+
         if distance > 1:
             # Déplacement en ligne droite
             self._anim_queue.append({
@@ -357,13 +367,6 @@ class TableWidget(QWidget):
                 "to_y": target_y,
                 "trail_color": QColor(trail_color),
             })
-
-        # Rotation vers l'angle final
-        self._anim_queue.append({
-            "type": "rotate",
-            "robot_idx": robot_idx,
-            "to_theta": target_theta,
-        })
 
         # Démarrer si aucune animation en cours
         if not self._anim_timer.isActive():
@@ -574,6 +577,11 @@ class TableWidget(QWidget):
                 bg_painter,
                 QRectF(offset_x, offset_y, svg_w * scale, svg_h * scale)
             )
+            if self._grid_renderer.isValid():
+                self._grid_renderer.render(
+                    bg_painter,
+                    QRectF(offset_x, offset_y, svg_w * scale, svg_h * scale)
+                )
             if self._show_forbidden and self._forbidden_zones:
                 self._draw_zones(bg_painter, self._forbidden_zones,
                                  QColor(255, 0, 0), scale, offset_x, offset_y)
