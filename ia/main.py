@@ -11,6 +11,7 @@ from ia.api.chrono import Chrono
 from ia.api.color_selector import ColorSelector
 from ia.api.detection.lidar.lidar_rpa2 import LidarRpA2
 from ia.api.detection.ultrasound.srf_factory import SrfFactory
+from ia.api.log_socket import LogSocket
 from ia.api.nextion_nx32224t024 import NextionNX32224T024
 from ia.api.pull_cord import PullCord
 from ia.asservissement.asserv import Asserv
@@ -31,10 +32,14 @@ if __name__ == "__main__":
 
     # set logger level
     logging.getLogger('').setLevel(logging.getLevelNamesMapping()[args.log_level.upper()])
+
     # create file handler which logs even debug messages
     file_handler = logging.handlers.RotatingFileHandler(filename='logs/log.log', backupCount=50)
     file_handler.doRollover()
+
+    # create stdout handler
     stdout_handler = logging.StreamHandler(sys.stdout)
+
     # create formatter and add it to the handlers
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
@@ -42,6 +47,7 @@ if __name__ == "__main__":
     # add the handlers to the logger
     logging.getLogger().addHandler(file_handler)
     logging.getLogger().addHandler(stdout_handler)
+
     logger = logging.getLogger(__name__)
     logger.info("Init logger")
 
@@ -51,6 +57,14 @@ if __name__ == "__main__":
     with open(f'config/{args.year}/{robot.value}/config.json') as config_file:
         config_data = json.load(config_file)
         config_file.close()
+
+        # Init socket logger handler
+        if config_data['loggerSocket']['active']:
+            socket_handler = LogSocket(
+                host=config_data['loggerSocket']['host']
+            ).get()
+            socket_handler.setFormatter(formatter)
+            logging.getLogger().addHandler(socket_handler)
 
         # Init divers
         comm_config=config_data["comSocket"]

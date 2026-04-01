@@ -37,7 +37,7 @@ class TestLogSocket(AbstractTest):
         logger = logging.getLogger(__name__)
         # create a socket handler
         socket_handler = LogSocket(
-            host=self.config_data['comSocket']['host']
+            host=self.config_data['loggerSocket']['host']
         ).get()
         logging.getLogger('').addHandler(socket_handler)
         logger.info("log socket Test 1")
