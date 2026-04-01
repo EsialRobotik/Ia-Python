@@ -13,7 +13,6 @@ class AsservResponseListener:
 
     def push_byte(self, byte: bytes):
         (new_state, payload) = self.state.push_byte(byte)
-        logger.debug(f"Received byte: {byte}, new_state: {new_state}, payload: {payload}")
         if new_state == "state_decode":
             self.state = _CborState_decode()
         elif new_state == "state_synchroLookup":
