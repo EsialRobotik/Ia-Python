@@ -21,6 +21,7 @@ from ia.manager.movement_manager import MovementManager
 from ia.manager.strategy_manager import StrategyManager
 from ia.master_loop import MasterLoop
 from ia.utils.robot import Robot
+from ia.utils.robot_filter import RobotFilter
 
 if __name__ == "__main__":
     # manage arguments
@@ -63,7 +64,7 @@ if __name__ == "__main__":
             socket_handler = LogSocket(
                 host=config_data['loggerSocket']['host']
             ).get()
-            socket_handler.setFormatter(formatter)
+            socket_handler.addFilter(RobotFilter(config_data['loggerSocket']['who']))
             logging.getLogger().addHandler(socket_handler)
 
         # Init divers

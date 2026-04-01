@@ -1,5 +1,6 @@
 import logging
 import logging.handlers
+import os
 import pickle
 import socket
 import socketserver
@@ -9,6 +10,18 @@ import threading
 import time
 
 log_listener = None
+_log_formatter = logging.Formatter('%(asctime)s - %(who)s - %(levelname)s - %(message)s')
+
+
+def setup_logging():
+    os.makedirs('logs', exist_ok=True)
+    file_handler = logging.handlers.RotatingFileHandler(filename='logs/server-log.log', backupCount=50)
+    file_handler.setFormatter(_log_formatter)
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setFormatter(_log_formatter)
+    root = logging.getLogger()
+    root.addHandler(file_handler)
+    root.addHandler(stdout_handler)
 
 class Server:
     """
@@ -99,14 +112,6 @@ class LogRecordStreamHandler(socketserver.StreamRequestHandler):
         """
 
         global log_listener
-        file_handler = logging.handlers.RotatingFileHandler(filename='logs/server-log.log', backupCount=50)
-        file_handler.doRollover()
-        stdout_handler = logging.StreamHandler(sys.stdout)
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        stdout_handler.setFormatter(formatter)
-        file_handler.setFormatter(formatter)
-        logging.getLogger().addHandler(stdout_handler)
-        logging.getLogger().addHandler(file_handler)
         while True:
             chunk = self.connection.recv(4)
             if len(chunk) < 4:
@@ -119,8 +124,8 @@ class LogRecordStreamHandler(socketserver.StreamRequestHandler):
 
             record = logging.makeLogRecord(obj)
             logging.getLogger('').handle(record)
-            if log_listener != None:
-                log_listener.send(formatter.format(record).encode())
+            if log_listener is not None:
+                log_listener.send(_log_formatter.format(record).encode())
 
     def unPickle(self, data):
         """
@@ -173,6 +178,7 @@ class LogRecordSocketReceiver(socketserver.ThreadingTCPServer):
             abort = self.abort
 
 if __name__ == '__main__':
+    setup_logging()
     server = Server()
     while True:
         time.sleep(1)
