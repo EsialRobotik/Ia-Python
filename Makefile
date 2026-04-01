@@ -8,6 +8,10 @@ deploy-princess: ## Déploie le code sur le robot
 	bash .build/check_load_env.sh princess
 	bash .build/deploy-princess.sh
 
+deploy-server: ## Déploie le code sur le server
+	bash .build/check_load_env.sh server
+	bash .build/deploy-server.sh
+
 deploy-pami0: ## Déploie le code sur la pami0
 	bash .build/check_load_env.sh pami0
 	bash .build/deploy-pami0.sh

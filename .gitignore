@@ -130,6 +130,7 @@ celerybeat.pid
 # Environments
 .env
 .env.princess
+.env.server
 .env.pami0
 .env.pami1
 .env.pami2
