@@ -106,6 +106,10 @@ class Asserv:
         self.read_thread = threading.Thread(target=self.parse_asserv_position)
         self.read_thread.daemon = True
         self.read_thread.start()
+        logger.info('Start asserv update_position thread')
+        self.update_position_thread = threading.Thread(target=self._update_position_loop)
+        self.update_position_thread.daemon = True
+        self.update_position_thread.start()
 
     def formatMsg(self, msg):
         """
@@ -394,6 +398,11 @@ class Asserv:
             x = self.serial.read(50)
             for val in x:
                 self.response_listener.push_byte(val)
+
+    def _update_position_loop(self) -> None:
+        while True:
+            self.update_position()
+            time.sleep(0.001)
 
     def update_position(self) -> None:
         while self.response_listener.get_nb_payload() > 0 :

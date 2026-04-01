@@ -189,9 +189,3 @@ class MovementManager:
         return (self.asserv.asserv_status == AsservStatus.STATUS_BLOCKED
             and self.current_step.sub_type != StepSubType.GO
             and self.current_step.timeout == 0)
-
-    def update_position(self) -> None:
-        """
-        Updates the position of the asservissement.
-        """
-        self.asserv.update_position()

@@ -189,7 +189,6 @@ class AsservUi(App):
 
     def update_position(self) -> None:
         log = self.query_one("#logs")
-        self.asserv.update_position()
         log.write_line(
             f"X:{self.asserv.position.x} Y:{self.asserv.position.y} \u03B8:{self.asserv.position.theta:.3f} / cmd Id:{self.asserv.last_received_command_id} status:{self.asserv.asserv_status} nb pending:{self.asserv.queue_size} / Motor left:{self.asserv.motor_left_speed} Motor right:{self.asserv.motor_right_speed}")
 

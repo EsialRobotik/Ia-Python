@@ -359,9 +359,6 @@ class MasterLoop:
                 # On check les communications serveurs
                 self.communication_manager.read_from_server()
 
-            # On update l'asserv
-            self.movement_manager.update_position()
-
             # On laisse souffler le CPU mais pas trop
             time.sleep(0.001)
 
