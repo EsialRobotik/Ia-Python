@@ -1,7 +1,6 @@
 {
   "desc": "Configuration du robot 2025 - ?? Princess",
   "matchDuration": 89,
-
   "gpioPullCord": 23,
   "nextion": {
     "baudRate": 115200,
@@ -9,13 +8,13 @@
   },
   "loggerSocket": {
     "active": true,
-    "host": "192.168.42.107",
+    "host": "192.168.42.102",
     "port": 1664,
-    "who": "princess"
+    "who": "pami2"
   },
   "comSocket": {
-    "active": false,
-    "host": "192.168.42.107",
+    "active": true,
+    "host": "192.168.42.102",
     "port": 4269
   },
   "detection": {
@@ -79,7 +78,7 @@
       "jaune": [
         {
           "type": "speed",
-            "value": 20
+          "value": 20
         },
         {
           "type": "go_timed",
@@ -113,7 +112,7 @@
         },
         {
           "type": "speed",
-            "value": 100
+          "value": 100
         },
         {
           "type": "goto",
@@ -139,7 +138,7 @@
       "bleu": [
         {
           "type": "speed",
-            "value": 20
+          "value": 20
         },
         {
           "type": "go_timed",
@@ -173,7 +172,7 @@
         },
         {
           "type": "speed",
-            "value": 100
+          "value": 100
         },
         {
           "type": "goto",
@@ -219,7 +218,6 @@
       "ascenseur_init"
     ]
   },
-
   "table": {
     "sizeX": 2000,
     "sizeY": 3000,
@@ -395,7 +393,6 @@
           }
         ]
       },
-
       {
         "id": "start_jaune_front",
         "forme": "polygone",

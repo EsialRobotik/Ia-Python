@@ -1,19 +1,17 @@
 {
   "desc": "Pami 3 - 2025",
   "matchDuration": 100,
-
   "gpioColorSelector": 27,
   "gpioPullCord": 22,
-
   "loggerSocket": {
     "active": true,
-    "host": "192.168.42.107",
+    "host": "192.168.42.102",
     "port": 1664,
-    "who": "princess"
+    "who": "pami3"
   },
   "comSocket": {
-    "active": false,
-    "host": "192.168.42.107",
+    "active": true,
+    "host": "192.168.42.102",
     "port": 4269
   },
   "detection": {
@@ -66,7 +64,6 @@
     "dataDir": "/home/pi/IAPYTHON/config/2025/pami3/actions",
     "init": []
   },
-
   "table": {
     "sizeX": 2000,
     "sizeY": 3000,
@@ -242,7 +239,6 @@
           }
         ]
       },
-
       {
         "id": "start_jaune_front",
         "forme": "polygone",
