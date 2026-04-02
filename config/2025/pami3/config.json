@@ -16,7 +16,7 @@
   },
   "detection": {
     "ultrasound": {
-      "windowSize": 3,
+      "windowSize": 2,
       "gpioList": [
         {
           "type": "srf08",
@@ -25,7 +25,7 @@
           "x": 60,
           "y": 0,
           "angle": 0,
-          "threshold": 250
+          "threshold": 180
         }
       ]
     }

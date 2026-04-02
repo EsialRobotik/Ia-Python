@@ -1,5 +1,7 @@
 import logging
+import threading
 import time
+from collections import deque
 
 from smbus2 import SMBus
 
@@ -29,7 +31,14 @@ class Srf08(Srf):
             f"Creating Srf08 object with address 0x{address:02X} -> 7-bit 0x{self.address:02X}, "
             f"x={x}, y={y}, angle={angle}, threshold={threshold}, force={self._i2c_force}."
         )
+        self._window: deque[int] = deque(maxlen=window_size)
         self.initalize()
+        self._measure_thread = threading.Thread(target=self._measurement_loop, daemon=True)
+        self._measure_thread.start()
+
+    def _measurement_loop(self) -> None:
+        while True:
+            self._window.append(self._raw_measure())
 
     def initalize(self) -> None:
         """
@@ -63,6 +72,15 @@ class Srf08(Srf):
         return version
 
     def get_distance(self) -> int:
+        """
+        Retourne la moyenne des mesures de la fenêtre glissante en mm.
+        Renvoie 10000 si la fenêtre est vide.
+        """
+        if not self._window:
+            return 10000
+        return int(round(sum(self._window) / len(self._window)))
+
+    def _raw_measure(self) -> int:
         """
         Lance une mesure SRF08 et renvoie la distance du 1er echo en mm.
         Utilise la mesure temporelle pour une conversion plus precise.
