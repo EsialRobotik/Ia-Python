@@ -111,6 +111,10 @@ class Asserv:
         self.update_position_thread.daemon = True
         self.update_position_thread.start()
 
+    def get_next_command_id(self) -> int:
+        self.last_sent_command_id += 1
+        return self.last_sent_command_id
+
     def formatMsg(self, msg):
         """
         Format cbor message to send order
@@ -120,6 +124,7 @@ class Asserv:
         msg_cbor_len = len(msg_cbor)
         calculator = crc.Calculator(crc.Crc32.CRC32)
         crc_computed = calculator.checksum(msg_cbor)
+        logger.info(f'Forge message {msg}')
         return (syncword.to_bytes(length=4, byteorder='little', signed=False)
             + crc_computed.to_bytes(length=4, byteorder='little', signed=False)
             + msg_cbor_len.to_bytes(length=4, byteorder='little', signed=False)
@@ -176,9 +181,8 @@ class Asserv:
         self.serial.write(self.formatMsg({
             "cmd": AsservMessage.straight.value,
             "D" : float(dist),
-            "ID": self.last_sent_command_id
+            "ID": self.get_next_command_id()
         }))
-        self.last_sent_command_id += 1
 
     def turn(self, degree: int) -> None:
         """
@@ -203,9 +207,8 @@ class Asserv:
         self.serial.write(self.formatMsg({
             "cmd": AsservMessage.turn.value,
             "A": float(degree),
-            "ID": self.last_sent_command_id
+            "ID": self.get_next_command_id()
         }))
-        self.last_sent_command_id += 1
 
     def go_to(self, position: Position) -> None:
         """
@@ -230,9 +233,8 @@ class Asserv:
             "cmd": AsservMessage.goto_front.value,
             "X" : float(position.x),
             "Y" : float(position.y),
-            "ID": self.last_sent_command_id
+            "ID": self.get_next_command_id()
         }))
-        self.last_sent_command_id += 1
 
     def go_to_chain(self, position: Position) -> None:
         """
@@ -257,9 +259,8 @@ class Asserv:
             "cmd": AsservMessage.goto_nostop.value,
             "X": float(position.x),
             "Y": float(position.y),
-            "ID": self.last_sent_command_id
+            "ID": self.get_next_command_id()
         }))
-        self.last_sent_command_id += 1
 
     def go_to_reverse(self, position: Position) -> None:
         """
@@ -285,9 +286,8 @@ class Asserv:
             "cmd": AsservMessage.goto_back.value,
             "X": float(position.x),
             "Y": float(position.y),
-            "ID": self.last_sent_command_id
+            "ID": self.get_next_command_id()
         }))
-        self.last_sent_command_id += 1
 
     def face(self, position: Position) -> None:
         """
@@ -309,9 +309,8 @@ class Asserv:
             "cmd": AsservMessage.face.value,
             "X": float(position.x),
             "Y": float(position.y),
-            "ID": self.last_sent_command_id
+            "ID": self.get_next_command_id()
         }))
-        self.last_sent_command_id += 1
 
     def orbital_turn(self, degrees : float, forward : bool, turn_right : bool):
         logger.info(f"orbitalTurn : {degrees} - {forward} - {turn_right}")
@@ -324,9 +323,8 @@ class Asserv:
             "A" : float(degrees),
             "F" : float(1.0) if forward else float(0),
             "R" : float(1.0) if turn_right else float(0),
-            "ID": self.last_sent_command_id
+            "ID": self.get_next_command_id()
         }))
-        self.last_sent_command_id += 1
 
     def set_odometrie(self, x: int, y: int, theta: float) -> None:
         """
@@ -456,8 +454,9 @@ class Asserv:
             time.sleep(0.01)
 
     def is_last_command_finished(self) -> bool:
-        return (self.last_received_command_id >= self.last_sent_command_id
-            and self.asserv_status == AsservStatus.STATUS_IDLE)
+        return (self.last_received_command_id > self.last_sent_command_id or
+                (self.last_received_command_id == self.last_sent_command_id
+                 and self.asserv_status == AsservStatus.STATUS_IDLE))
 
     def go_start(self, color: str) -> None:
         """
