@@ -4,7 +4,6 @@ smbus2
 numpy
 shapely
 networkx
-lupa
 textual
 PySide6
 cbor2

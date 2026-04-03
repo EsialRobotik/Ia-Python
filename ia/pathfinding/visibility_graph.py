@@ -49,7 +49,7 @@ class VisibilityGraph:
         Les adversaires optionnels filtrent les edges bloqués et ajoutent
         leurs propres sommets, sans modifier le cache.
 
-    Interface publique identique à AStar
+    Interface publique
         compute_path(start, goal, adversaries=None)
         update_dynamic_zone(zone_id, active)
         path  (List[Position])

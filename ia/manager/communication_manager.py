@@ -3,7 +3,7 @@ from typing import Dict
 
 from ia.api.communication_socket import CommunicationSocket
 from ia.manager.action_manager import ActionManager
-from ia.pathfinding.astar import AStar
+from ia.pathfinding.visibility_graph import VisibilityGraph
 
 
 class CommunicationManager:
@@ -14,14 +14,14 @@ class CommunicationManager:
     managing pathfinding operations, and executing actions based on the received data.
     """
 
-    def __init__(self, pathfinding: AStar, action_manager: ActionManager, comm_config: Dict) -> None:
+    def __init__(self, pathfinding: VisibilityGraph, action_manager: ActionManager, comm_config: Dict) -> None:
         """
         Initializes the CommunicationManager with pathfinding, action manager, and communication configuration.
 
         Parameters
         ----------
-        pathfinding : astar
-            An instance of the Pathfinding class used for pathfinding operations.
+        pathfinding : VisibilityGraph
+            An instance of the VisibilityGraph class used for pathfinding operations.
         action_manager : action_manager
             An instance of the ActionManager class used for managing actions.
         comm_config : Dict

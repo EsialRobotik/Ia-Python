@@ -15,14 +15,13 @@ sys.path.insert(0, '/')
 os.environ['PYTHONPATH'] = '/home/gag/Bureau/EsialRobotik/Ia-Python'
 
 from shapely.geometry import Point, Polygon
-from ia.pathfinding.astar import AStar
 from ia.pathfinding.visibility_graph import VisibilityGraph
 from ia.utils.position import Position
 
 # ─── Config ───────────────────────────────────────────────────────────────────
-CONFIG_PATH = '/config/2025/princess/config.json'
-TABLE_SVG_PATH = '/simulator/2025/table.svg'
-OUTPUT_DIR = '/utils/'
+CONFIG_PATH = 'config/2025/princess/config.json'
+TABLE_SVG_PATH = 'simulator/2025/table.svg'
+OUTPUT_DIR = 'utils/'
 
 ACTIVE_COLOR = 'color0'
 DISABLED_ZONES = ['gradin_o', 'gradin_e']
@@ -54,7 +53,7 @@ with open(CONFIG_PATH) as f:
 table_config = full_config['table']
 marge = table_config['marge']
 
-ADVERSARY_RADIUS = AStar.ADVERSARY_RADIUS  # 200
+ADVERSARY_RADIUS = VisibilityGraph.ADVERSARY_RADIUS  # 200
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -89,7 +88,7 @@ def make_polygon_from_zone(zone):
     return None
 
 
-def build_overlay(table_cfg, active_color, disabled_zones, adversaries, astar_path, vg_path):
+def build_overlay(table_cfg, active_color, disabled_zones, adversaries, vg_path):
     """Builds the SVG overlay group string."""
     parts = ['<g id="overlay">']
 
@@ -145,11 +144,7 @@ def build_overlay(table_cfg, active_color, disabled_zones, adversaries, astar_pa
             f'stroke="#cc4400" stroke-width="3"/>'
         )
 
-    # 5. AStar path
-    if astar_path:
-        parts.append(path_to_svg_polyline(astar_path, '#2255ff', width=12))
-
-    # 6. VG path
+    # 5. VG path
     if vg_path:
         parts.append(path_to_svg_polyline(vg_path, '#00aa44', width=12))
 
@@ -175,8 +170,6 @@ def build_overlay(table_cfg, active_color, disabled_zones, adversaries, astar_pa
     ]
     if adversaries:
         legend_items.append(('#ff6600', 0.4, '#cc4400', 3, None, 'Adversaires'))
-    if astar_path:
-        legend_items.append(('#2255ff', 1.0, '#2255ff', 2, None, 'Chemin A*'))
     if vg_path:
         legend_items.append(('#00aa44', 1.0, '#00aa44', 2, None, 'Chemin VG'))
     legend_items.append(('#ffffff', 1.0, '#000000', 3, None, 'Départ (cercle) / Arrivée (carré)'))
@@ -215,19 +208,12 @@ for scenario in SCENARIOS:
     print(f"\n=== Scénario: {scenario['label']} ===")
     adversaries = scenario['adversaries']
 
-    # Init pathfinding objects fresh for each scenario
-    astar = AStar(table_config, ACTIVE_COLOR)
+    # Init pathfinding object fresh for each scenario
     vg = VisibilityGraph(table_config, ACTIVE_COLOR)
 
     # Disable zones
     for zone_id in DISABLED_ZONES:
-        astar.update_dynamic_zone(zone_id, active=False)
         vg.update_dynamic_zone(zone_id, active=False)
-
-    # Compute A* path
-    astar.a_star(START, GOAL, adversaries=adversaries if adversaries else None)
-    astar_path = astar.path
-    print(f"  A* path: {len(astar_path)} waypoints")
 
     # Compute VG path
     vg.compute_path(START, GOAL, adversaries=adversaries if adversaries else None)
@@ -240,7 +226,6 @@ for scenario in SCENARIOS:
         ACTIVE_COLOR,
         DISABLED_ZONES,
         adversaries,
-        astar_path,
         vg_path,
     )
 

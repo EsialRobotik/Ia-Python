@@ -3,7 +3,7 @@ import os
 import traceback
 from typing import List
 
-from ia.pathfinding.astar import AStar
+from ia.pathfinding.visibility_graph import VisibilityGraph
 from ia.utils.position import Position
 from strategy.core.objective import Objective
 from strategy.core.strat import Strat
@@ -70,7 +70,7 @@ class AbstractMain:
             with open(f'{self.config_path}/{self.year}/{robot}/config.json') as config_file:
                 config_data = json.load(config_file)
                 config_file.close()
-                path_finding = AStar(table_config=config_data['table'], active_color=color)
+                path_finding = VisibilityGraph(table_config=config_data['table'], active_color=color)
                 start_point = Position(start_x, start_y, start_theta)
                 strat_simu = [{"task": "Position de départ", "command": "start", "position": start_point.to_dict()}]
 

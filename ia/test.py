@@ -3,7 +3,7 @@ import json
 import logging.handlers
 import sys
 
-from ia.tests.test_compare_pathfinding import TestComparePathfinding
+from ia.tests.test_pathfinding import TestPathfinding
 from ia.tests.test_srf08 import TestSrf08
 from ia.tests.test_strategy_manager import TestStrategyManager
 from ia.utils.robot import Robot
@@ -76,7 +76,7 @@ if __name__ == "__main__":
             case 'actions':
                 TestActions(config_data, args.year, robot).test()
             case 'pathfinding':
-                TestComparePathfinding(config_data, args.year, robot).test()
+                TestPathfinding(config_data, args.year, robot).test()
             case 'strategy':
                 TestStrategyManager(config_data, args.year, robot).test()
             case default:

@@ -1,6 +1,5 @@
 import logging
 import logging.handlers
-import threading
 import time
 from typing import Optional, Dict
 
@@ -14,7 +13,7 @@ from ia.manager.communication_manager import CommunicationManager
 from ia.manager.detection_manager import DetectionManager
 from ia.manager.movement_manager import MovementManager
 from ia.manager.strategy_manager import StrategyManager
-from ia.pathfinding.astar import AStar
+from ia.pathfinding.visibility_graph import VisibilityGraph
 from ia.strategy.objective import Objective
 from ia.strategy.step import Step
 from ia.strategy.step_sub_type import StepSubType
@@ -97,7 +96,7 @@ class MasterLoop:
             self.movement_manager.go_start(color)
             self.pull_cord.wait_for_state(True)
 
-        self.pathfinding = AStar(
+        self.pathfinding = VisibilityGraph(
             table_config=self.table_config,
             active_color=color
         )
@@ -160,14 +159,12 @@ class MasterLoop:
 
     def compute_astar(self, goal: Position) -> None:
         """
-        Compute the astar path.
+        Compute the pathfinding path (synchronous).
         """
-        pathfinding_thread = threading.Thread(target=self.pathfinding.a_star(
+        self.pathfinding.compute_path(
             start=self.movement_manager.current_position(),
             goal=goal
-        ))
-        pathfinding_thread.daemon = True
-        pathfinding_thread.start()
+        )
         self.astar_launch = True
 
     def execute_current_step(self) -> None:
