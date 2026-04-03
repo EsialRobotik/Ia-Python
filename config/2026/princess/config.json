@@ -183,501 +183,529 @@
         "baudRate": 115200
       }
     ],
-    "dataDir": "/home/pi/IAPYTHON/config/princess/2025/actions",
+    "dataDir": "/home/pi/IAPYTHON/config/princess/2026/actions",
     "init": [
       "ascenseur_init"
     ]
   },
   "table": {
-    "sizeX": 2000,
-    "sizeY": 3000,
-    "color0": "jaune",
-    "color3000": "bleu",
-    "marge": 180,
-    "forbiddenZones": [
-      {
-        "id": "rampe_jaune",
-        "forme": "polygone",
-        "desc": "Rampe jaune",
-        "type": "all",
-        "points": [
-          {
-            "x": 0,
-            "y": 650
-          },
-          {
-            "x": 0,
-            "y": 1050
-          },
-          {
-            "x": 200,
-            "y": 1050
-          },
-          {
-            "x": 200,
-            "y": 650
-          }
-        ]
-      },
-      {
-        "id": "scene",
-        "forme": "polygone",
-        "desc": "Scéne",
-        "type": "all",
-        "points": [
-          {
-            "x": 0,
-            "y": 1050
-          },
-          {
-            "x": 0,
-            "y": 1950
-          },
-          {
-            "x": 450,
-            "y": 1950
-          },
-          {
-            "x": 450,
-            "y": 1050
-          }
-        ]
-      },
-      {
-        "id": "rampe_bleu",
-        "forme": "polygone",
-        "desc": "Rampe bleu",
-        "type": "all",
-        "points": [
-          {
-            "x": 0,
-            "y": 1950
-          },
-          {
-            "x": 0,
-            "y": 2350
-          },
-          {
-            "x": 200,
-            "y": 2350
-          },
-          {
-            "x": 200,
-            "y": 1950
-          }
-        ]
-      },
-      {
-        "id": "start_jaune_back",
-        "forme": "polygone",
-        "desc": "Départ jaune backstage",
-        "type": "jaune",
-        "points": [
-          {
-            "x": 0,
-            "y": 150
-          },
-          {
-            "x": 0,
-            "y": 600
-          },
-          {
-            "x": 450,
-            "y": 600
-          },
-          {
-            "x": 450,
-            "y": 150
-          }
-        ]
-      },
-      {
-        "id": "start_bleu_back",
-        "forme": "polygone",
-        "desc": "Départ bleu backstage",
-        "type": "bleu",
-        "points": [
-          {
-            "x": 0,
-            "y": 2850
-          },
-          {
-            "x": 0,
-            "y": 2400
-          },
-          {
-            "x": 450,
-            "y": 2400
-          },
-          {
-            "x": 450,
-            "y": 2850
-          }
-        ]
-      },
-      {
-        "id": "start_bleu_side",
-        "forme": "polygone",
-        "desc": "Départ bleu side",
-        "type": "bleu",
-        "points": [
-          {
-            "x": 900,
-            "y": 0
-          },
-          {
-            "x": 900,
-            "y": 450
-          },
-          {
-            "x": 1350,
-            "y": 450
-          },
-          {
-            "x": 1350,
-            "y": 0
-          }
-        ]
-      },
-      {
-        "id": "start_jaune_side",
-        "forme": "polygone",
-        "desc": "Départ jaune side",
-        "type": "jaune",
-        "points": [
-          {
-            "x": 900,
-            "y": 3000
-          },
-          {
-            "x": 900,
-            "y": 2550
-          },
-          {
-            "x": 1350,
-            "y": 2550
-          },
-          {
-            "x": 1350,
-            "y": 3000
-          }
-        ]
-      },
-      {
-        "id": "start_jaune_front",
-        "forme": "polygone",
-        "desc": "Départ jaune front",
-        "type": "jaune",
-        "points": [
-          {
-            "x": 2000,
-            "y": 1000
-          },
-          {
-            "x": 2000,
-            "y": 1450
-          },
-          {
-            "x": 1550,
-            "y": 1450
-          },
-          {
-            "x": 1550,
-            "y": 1000
-          }
-        ]
-      },
-      {
-        "id": "start_bleu_front",
-        "forme": "polygone",
-        "desc": "Départ bleu front",
-        "type": "bleu",
-        "points": [
-          {
-            "x": 2000,
-            "y": 2000
-          },
-          {
-            "x": 2000,
-            "y": 1550
-          },
-          {
-            "x": 1550,
-            "y": 1550
-          },
-          {
-            "x": 1550,
-            "y": 2000
-          }
-        ]
-      }
-    ],
-    "dynamicZones": [
-      {
-        "id": "gradin_nno",
-        "forme": "polygone",
-        "desc": "Gradin NNO",
-        "active": true,
-        "points": [
-          {
-            "x": 225,
-            "y": 625
-          },
-          {
-            "x": 225,
-            "y": 1025
-          },
-          {
-            "x": 325,
-            "y": 1025
-          },
-          {
-            "x": 325,
-            "y": 625
-          }
-        ]
-      },
-      {
-        "id": "gradin_nne",
-        "forme": "polygone",
-        "desc": "Gradin NNE",
-        "active": true,
-        "points": [
-          {
-            "x": 225,
-            "y": 1975
-          },
-          {
-            "x": 225,
-            "y": 2375
-          },
-          {
-            "x": 325,
-            "y": 2375
-          },
-          {
-            "x": 325,
-            "y": 1975
-          }
-        ]
-      },
-      {
-        "id": "gradin_ono",
-        "forme": "polygone",
-        "desc": "Gradin ONO",
-        "active": true,
-        "points": [
-          {
-            "x": 475,
-            "y": 25
-          },
-          {
-            "x": 475,
-            "y": 125
-          },
-          {
-            "x": 875,
-            "y": 125
-          },
-          {
-            "x": 875,
-            "y": 25
-          }
-        ]
-      },
-      {
-        "id": "gradin_ene",
-        "forme": "polygone",
-        "desc": "Gradin EN",
-        "active": true,
-        "points": [
-          {
-            "x": 475,
-            "y": 2975
-          },
-          {
-            "x": 475,
-            "y": 2875
-          },
-          {
-            "x": 875,
-            "y": 2875
-          },
-          {
-            "x": 875,
-            "y": 2975
-          }
-        ]
-      },
-      {
-        "id": "gradin_oso",
-        "forme": "polygone",
-        "desc": "Gradin OSO",
-        "active": true,
-        "points": [
-          {
-            "x": 1400,
-            "y": 25
-          },
-          {
-            "x": 1400,
-            "y": 125
-          },
-          {
-            "x": 1800,
-            "y": 125
-          },
-          {
-            "x": 1800,
-            "y": 25
-          }
-        ]
-      },
-      {
-        "id": "gradin_ese",
-        "forme": "polygone",
-        "desc": "Gradin ESE",
-        "active": true,
-        "points": [
-          {
-            "x": 1400,
-            "y": 2975
-          },
-          {
-            "x": 1400,
-            "y": 2875
-          },
-          {
-            "x": 1800,
-            "y": 2875
-          },
-          {
-            "x": 1800,
-            "y": 2975
-          }
-        ]
-      },
-      {
-        "id": "gradin_o",
-        "forme": "polygone",
-        "desc": "Gradin O",
-        "active": true,
-        "points": [
-          {
-            "x": 1000,
-            "y": 900
-          },
-          {
-            "x": 1000,
-            "y": 1300
-          },
-          {
-            "x": 1100,
-            "y": 1300
-          },
-          {
-            "x": 1100,
-            "y": 900
-          }
-        ]
-      },
-      {
-        "id": "gradin_e",
-        "forme": "polygone",
-        "desc": "Gradin E",
-        "active": true,
-        "points": [
-          {
-            "x": 1000,
-            "y": 2100
-          },
-          {
-            "x": 1000,
-            "y": 1700
-          },
-          {
-            "x": 1100,
-            "y": 1700
-          },
-          {
-            "x": 1100,
-            "y": 2100
-          }
-        ]
-      },
-      {
-        "id": "gradin_so",
-        "forme": "polygone",
-        "desc": "Gradin SO",
-        "active": true,
-        "points": [
-          {
-            "x": 1700,
-            "y": 575
-          },
-          {
-            "x": 1700,
-            "y": 975
-          },
-          {
-            "x": 1800,
-            "y": 975
-          },
-          {
-            "x": 1800,
-            "y": 575
-          }
-        ]
-      },
-      {
-        "id": "gradin_se",
-        "forme": "polygone",
-        "desc": "Gradin SE",
-        "active": true,
-        "points": [
-          {
-            "x": 1700,
-            "y": 2425
-          },
-          {
-            "x": 1700,
-            "y": 2025
-          },
-          {
-            "x": 1800,
-            "y": 2025
-          },
-          {
-            "x": 1800,
-            "y": 2425
-          }
-        ]
-      }
-    ],
-    "detectionIgnoreZone": [
-      {
-        "id": "detection_scene",
-        "forme": "polygone",
-        "desc": "Détection scène",
-        "points": [
-          {
-            "x": 0,
-            "y": 650
-          },
-          {
-            "x": 0,
-            "y": 2350
-          },
-          {
-            "x": 450,
-            "y": 2350
-          },
-          {
-            "x": 450,
-            "y": 650
-          }
-        ]
-      }
-    ]
-  }
+  "sizeX": 2000,
+  "sizeY": 3000,
+  "color0": "jaune",
+  "color3000": "bleu",
+  "marge": 180,
+  "forbiddenZones": [
+    {
+      "id": "depart_jaune",
+      "forme": "polygone",
+      "desc": "Depart jaune",
+      "type": "jaune",
+      "points": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 600
+        },
+        {
+          "x": 450,
+          "y": 600
+        },
+        {
+          "x": 450,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "id": "depart_bleu",
+      "forme": "polygone",
+      "desc": "Depart bleu",
+      "type": "bleu",
+      "points": [
+        {
+          "x": 0,
+          "y": 3000
+        },
+        {
+          "x": 0,
+          "y": 2400
+        },
+        {
+          "x": 450,
+          "y": 2400
+        },
+        {
+          "x": 450,
+          "y": 3000
+        }
+      ]
+    },
+    {
+      "id": "grenier",
+      "forme": "polygone",
+      "desc": "Grenier",
+      "type": "all",
+      "points": [
+        {
+          "x": 0,
+          "y": 600
+        },
+        {
+          "x": 0,
+          "y": 2400
+        },
+        {
+          "x": 450,
+          "y": 2400
+        },
+        {
+          "x": 450,
+          "y": 600
+        }
+      ]
+    }
+  ],
+  "dynamicZones": [
+    {
+      "id": "caisse_jaune_1",
+      "forme": "polygone",
+      "desc": "Caisse Jaune 1",
+      "active": true,
+      "points": [
+        {
+          "x": 700,
+          "y": 100
+        },
+        {
+          "x": 700,
+          "y": 250
+        },
+        {
+          "x": 900,
+          "y": 250
+        },
+        {
+          "x": 900,
+          "y": 100
+        }
+      ]
+    },
+    {
+      "id": "caisse_jaune_2",
+      "forme": "polygone",
+      "desc": "Caisse Jaune 2",
+      "active": true,
+      "points": [
+        {
+          "x": 1500,
+          "y": 100
+        },
+        {
+          "x": 1500,
+          "y": 250
+        },
+        {
+          "x": 1700,
+          "y": 250
+        },
+        {
+          "x": 1700,
+          "y": 100
+        }
+      ]
+    },
+    {
+      "id": "caisse_jaune_3",
+      "forme": "polygone",
+      "desc": "Caisse Jaune 3",
+      "active": true,
+      "points": [
+        {
+          "x": 1125,
+          "y": 1050
+        },
+        {
+          "x": 1125,
+          "y": 1250
+        },
+        {
+          "x": 1275,
+          "y": 1250
+        },
+        {
+          "x": 1275,
+          "y": 1050
+        }
+      ]
+    },
+    {
+      "id": "caisse_jaune_4",
+      "forme": "polygone",
+      "desc": "Caisse Jaune 4",
+      "active": true,
+      "points": [
+        {
+          "x": 1750,
+          "y": 1000
+        },
+        {
+          "x": 1750,
+          "y": 1200
+        },
+        {
+          "x": 1900,
+          "y": 1200
+        },
+        {
+          "x": 1900,
+          "y": 1000
+        }
+      ]
+    },
+    {
+      "id": "caisse_bleu_1",
+      "forme": "polygone",
+      "desc": "Caisse Bleu 1",
+      "active": true,
+      "points": [
+        {
+          "x": 700,
+          "y": 2900
+        },
+        {
+          "x": 700,
+          "y": 2750
+        },
+        {
+          "x": 900,
+          "y": 2750
+        },
+        {
+          "x": 900,
+          "y": 2900
+        }
+      ]
+    },
+    {
+      "id": "caisse_bleu_2",
+      "forme": "polygone",
+      "desc": "Caisse Bleu 2",
+      "active": true,
+      "points": [
+        {
+          "x": 1500,
+          "y": 2900
+        },
+        {
+          "x": 1500,
+          "y": 2750
+        },
+        {
+          "x": 1700,
+          "y": 2750
+        },
+        {
+          "x": 1700,
+          "y": 2900
+        }
+      ]
+    },
+    {
+      "id": "caisse_bleu_3",
+      "forme": "polygone",
+      "desc": "Caisse Bleu 3",
+      "active": true,
+      "points": [
+        {
+          "x": 1125,
+          "y": 1950
+        },
+        {
+          "x": 1125,
+          "y": 1750
+        },
+        {
+          "x": 1275,
+          "y": 1750
+        },
+        {
+          "x": 1275,
+          "y": 1950
+        }
+      ]
+    },
+    {
+      "id": "caisse_bleu_4",
+      "forme": "polygone",
+      "desc": "Caisse Bleu 4",
+      "active": true,
+      "points": [
+        {
+          "x": 1750,
+          "y": 2000
+        },
+        {
+          "x": 1750,
+          "y": 1800
+        },
+        {
+          "x": 1900,
+          "y": 1800
+        },
+        {
+          "x": 1900,
+          "y": 2000
+        }
+      ]
+    },
+
+    {
+      "id": "garde_manger_jaune_1",
+      "forme": "polygone",
+      "desc": "Garde manger Jaune 1",
+      "active": true,
+      "points": [
+        {
+          "x": 1100,
+          "y": 0
+        },
+        {
+          "x": 1100,
+          "y": 200
+        },
+        {
+          "x": 1300,
+          "y": 200
+        },
+        {
+          "x": 1300,
+          "y": 0
+        }
+      ]
+    },
+    {
+      "id": "garde_manger_jaune_2",
+      "forme": "polygone",
+      "desc": "Garde manger Jaune 2",
+      "active": true,
+      "points": [
+        {
+          "x": 1800,
+          "y": 600
+        },
+        {
+          "x": 1800,
+          "y": 800
+        },
+        {
+          "x": 2000,
+          "y": 800
+        },
+        {
+          "x": 2000,
+          "y": 600
+        }
+      ]
+    },
+    {
+      "id": "garde_manger_jaune_3",
+      "forme": "polygone",
+      "desc": "Garde manger Jaune 3",
+      "active": true,
+      "points": [
+        {
+          "x": 1100,
+          "y": 700
+        },
+        {
+          "x": 1100,
+          "y": 900
+        },
+        {
+          "x": 1300,
+          "y": 900
+        },
+        {
+          "x": 1300,
+          "y": 700
+        }
+      ]
+    },
+    {
+      "id": "garde_manger_jaune_4",
+      "forme": "polygone",
+      "desc": "Garde manger Jaune 4",
+      "active": true,
+      "points": [
+        {
+          "x": 450,
+          "y": 1150
+        },
+        {
+          "x": 450,
+          "y": 1350
+        },
+        {
+          "x": 650,
+          "y": 1350
+        },
+        {
+          "x": 650,
+          "y": 1150
+        }
+      ]
+    },
+
+    {
+      "id": "garde_manger_bleu_1",
+      "forme": "polygone",
+      "desc": "Garde manger Bleu 1",
+      "active": true,
+      "points": [
+        {
+          "x": 1100,
+          "y": 3000
+        },
+        {
+          "x": 1100,
+          "y": 2800
+        },
+        {
+          "x": 1300,
+          "y": 2800
+        },
+        {
+          "x": 1300,
+          "y": 3000
+        }
+      ]
+    },
+    {
+      "id": "garde_manger_bleu_2",
+      "forme": "polygone",
+      "desc": "Garde manger Bleu 2",
+      "active": true,
+      "points": [
+        {
+          "x": 1800,
+          "y": 2400
+        },
+        {
+          "x": 1800,
+          "y": 2200
+        },
+        {
+          "x": 2000,
+          "y": 2200
+        },
+        {
+          "x": 2000,
+          "y": 2400
+        }
+      ]
+    },
+    {
+      "id": "garde_manger_bleu_3",
+      "forme": "polygone",
+      "desc": "Garde manger Bleu 3",
+      "active": true,
+      "points": [
+        {
+          "x": 1100,
+          "y": 2300
+        },
+        {
+          "x": 1100,
+          "y": 2100
+        },
+        {
+          "x": 1300,
+          "y": 2100
+        },
+        {
+          "x": 1300,
+          "y": 2300
+        }
+      ]
+    },
+    {
+      "id": "garde_manger_bleu_4",
+      "forme": "polygone",
+      "desc": "Garde manger Bleu 4",
+      "active": true,
+      "points": [
+        {
+          "x": 450,
+          "y": 1850
+        },
+        {
+          "x": 450,
+          "y": 1650
+        },
+        {
+          "x": 650,
+          "y": 1650
+        },
+        {
+          "x": 650,
+          "y": 1850
+        }
+      ]
+    },
+
+    {
+      "id": "garde_manger_centre_1",
+      "forme": "polygone",
+      "desc": "Garde manger Centre 1",
+      "active": true,
+      "points": [
+        {
+          "x": 1100,
+          "y": 1400
+        },
+        {
+          "x": 1100,
+          "y": 1600
+        },
+        {
+          "x": 1300,
+          "y": 1600
+        },
+        {
+          "x": 1300,
+          "y": 1400
+        }
+      ]
+    },
+    {
+      "id": "garde_manger_centre_2",
+      "forme": "polygone",
+      "desc": "Garde manger Centre 2",
+      "active": true,
+      "points": [
+        {
+          "x": 1800,
+          "y": 1400
+        },
+        {
+          "x": 1800,
+          "y": 1600
+        },
+        {
+          "x": 2000,
+          "y": 1600
+        },
+        {
+          "x": 2000,
+          "y": 1400
+        }
+      ]
+    }
+  ],
+  "detectionIgnoreZone": [
+  ]
+}
 }
