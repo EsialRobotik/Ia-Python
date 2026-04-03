@@ -194,7 +194,7 @@ class DetectionManager:
             start = goto_queue[i]
             end = goto_queue[i + 1]
             for center in self.lidar.detected_points:
-                if self.is_segment_intersecting_circle(start, end, center, 150):
+                if self.is_segment_intersecting_circle(start, end, center, 200):
                     self.logger.info(f"Trajectory blocked by {center}")
                     return True
         return False
@@ -241,3 +241,14 @@ class DetectionManager:
         t2 = (-b + discriminant) / (2 * a)
 
         return 0 <= t1 <= 1 or 0 <= t2 <= 1
+
+    def get_lidar_detected_points(self) -> List[Position]:
+        """
+        Returns the list of detected points by the Lidar.
+
+        Returns:
+            list[Position]: The list of detected points by the Lidar.
+        """
+        if self.lidar is None:
+            return []
+        return self.lidar.detected_points

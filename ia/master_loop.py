@@ -163,7 +163,8 @@ class MasterLoop:
         """
         self.pathfinding.compute_path(
             start=self.movement_manager.current_position(),
-            goal=goal
+            goal=goal,
+            adversaries=self.detection_manager.get_lidar_detected_points()
         )
         self.astar_launch = True
 
@@ -341,11 +342,11 @@ class MasterLoop:
                         if (self.movement_manager.asserv.asserv_status == AsservStatus.STATUS_BLOCKED
                                 and (self.current_step.sub_type != StepSubType.GO or self.current_step.timeout == 0)):
                             self.logger.info("Asserv bloquée")
-                            # todo faut faire un truc intelligent maintenant
                         elif (self.current_step.sub_type == StepSubType.GOTO_ASTAR
                               and self.detection_manager.is_trajectory_blocked(self.movement_manager.goto_queue)):
                             self.logger.info("Trajectoire bloquée, lancement nouveau calcul de trajectoire")
                             self.movement_manager.halt_asserv(False)
+                            self.movement_manager.resume_asserv()
                             self.execute_current_step()
 
             # Si obstacle détecté par les SRF
