@@ -1,7 +1,7 @@
 import logging
 import os
 import time
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 from lupa import LuaRuntime
@@ -11,6 +11,8 @@ from ia.utils.position import Position
 
 
 class AStar:
+
+    ADVERSARY_RADIUS = 200  # mm — demi-diagonale maximale d'un adversaire rectangulaire
     """
     A class to represent the pathfinding logic for a robot on a table.
 
@@ -75,7 +77,7 @@ class AStar:
         self.size_x = self.config["sizeX"] // self.resolution
         self.size_y = self.config["sizeY"] // self.resolution
         self.marge = self.config["marge"]
-        self.active_color = active_color  # Color0 ou Color3000
+        self.active_color = table_config.get(active_color, active_color)  # e.g. 'jaune'
         self.position_open_check = {
             x: {y: True for y in range(self.size_y)} for x in range(self.size_x)
         }
@@ -226,7 +228,42 @@ class AStar:
                     else:
                         self.position_open_check[x][y] = True
 
-    def a_star(self, start: Position, goal: Position) -> None:
+    def _mark_adversaries(self, adversaries: List[Dict]) -> List[Tuple[int, int]]:
+        """
+        Marque les adversaires sur la grille et retourne la liste des cellules
+        modifiées (True → False) pour permettre leur restauration après le calcul.
+
+        Parameters
+        ----------
+        adversaries : list of dict
+            Chaque dict doit contenir ``"x"`` et ``"y"`` en mm.
+
+        Returns
+        -------
+        list of (int, int)
+            Coordonnées grille des cellules passées de True à False.
+        """
+        radius_cells = (self.ADVERSARY_RADIUS + self.marge) // self.resolution
+        r_sq = radius_cells * radius_cells
+        changed: List[Tuple[int, int]] = []
+
+        for adv in adversaries:
+            cx = adv["x"] // self.resolution
+            cy = adv["y"] // self.resolution
+            for x in range(max(0, cx - radius_cells), min(cx + radius_cells + 1, self.size_x)):
+                for y in range(max(0, cy - radius_cells), min(cy + radius_cells + 1, self.size_y)):
+                    if (x - cx) ** 2 + (y - cy) ** 2 <= r_sq:
+                        if self.position_open_check[x][y]:
+                            self.position_open_check[x][y] = False
+                            changed.append((x, y))
+        return changed
+
+    def _restore_cells(self, cells: List[Tuple[int, int]]) -> None:
+        """Restaure les cellules modifiées par _mark_adversaries."""
+        for x, y in cells:
+            self.position_open_check[x][y] = True
+
+    def a_star(self, start: Position, goal: Position, adversaries: Optional[List[Dict]] = None) -> None:
         """
         Optimized implementation of the A* algorithm.
 
@@ -253,6 +290,11 @@ class AStar:
         self.computation_finished = False
         self.path = []
         self.logger.info(f"A* Compute path from {start} to {goal}")
+
+        changed_cells: List[Tuple[int, int]] = []
+        if adversaries:
+            changed_cells = self._mark_adversaries(adversaries)
+            self.logger.info(f"A* marked {len(changed_cells)} cells for {len(adversaries)} adversaries")
 
         try:
             # Créer une instance de l'environnement Lua
@@ -303,7 +345,10 @@ class AStar:
         except Exception as e:
             self.logger.error("Aucun chemin trouvé avec les obstacles placés.")
             self.logger.error(str(e))
-
+        finally:
+            if changed_cells:
+                self._restore_cells(changed_cells)
+                self.logger.info(f"A* restored {len(changed_cells)} adversary cells")
 
         self.computation_finished = True
         return
