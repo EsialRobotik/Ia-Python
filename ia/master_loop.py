@@ -54,7 +54,6 @@ class MasterLoop:
         self.color_selector = color_selector
         self.interrupted = False
         self.score = 0
-        self.astar_launch = False
         self.logger = logging.getLogger(__name__)
 
         self.something_detected = False
@@ -159,14 +158,15 @@ class MasterLoop:
 
     def compute_astar(self, goal: Position) -> None:
         """
-        Compute the pathfinding path (synchronous).
+        Compute the pathfinding path (synchronous) and execute the resulting movement.
         """
         self.pathfinding.compute_path(
             start=self.movement_manager.current_position(),
             goal=goal,
             adversaries=self.detection_manager.get_lidar_detected_points()
         )
-        self.astar_launch = True
+        self.logger.info("Pathfinding terminé")
+        self.movement_manager.execute_movement(self.pathfinding.path)
 
     def execute_current_step(self) -> None:
         """
@@ -187,9 +187,7 @@ class MasterLoop:
         elif self.current_step.action_type == StepType.MOVEMENT:
             self.logger.info(f"Déplacement {self.current_step.sub_type}")
             if self.current_step.sub_type == StepSubType.GOTO_ASTAR:
-                # We need to launch the astar
                 self.compute_astar(self.current_step.position)
-                self.astar_launch = True
             elif self.current_step.sub_type == StepSubType.GOTO_CHAIN:
                 self.logger.info("Goto chain")
                 path: list[Position] = []
@@ -324,30 +322,19 @@ class MasterLoop:
                 if self.must_stop_from_emergency_detection():
                     continue
 
-                # Si le pathfinding est en cours, on l'attends
-                if self.astar_launch:
-                    if self.pathfinding.computation_finished:
-                        # Une fois le path trouvé, on l'exécute
-                        self.logger.info("Astar terminé")
-                        self.astar_launch = False
-                        self.movement_manager.execute_movement(self.pathfinding.path)
-                    else:
-                        # On attend un peu avant de refaire un tour de boucle pour ne pas surcharger le CPU
-                        time.sleep(0.01)
+                if self.current_step_ended():
+                    # On passe à la strategy ou l'objectif suivant
+                    self.update_step()
                 else:
-                    if self.current_step_ended():
-                        # On passe à la strategy ou l'objectif suivant
-                        self.update_step()
-                    else:
-                        if (self.movement_manager.asserv.asserv_status == AsservStatus.STATUS_BLOCKED
-                                and (self.current_step.sub_type != StepSubType.GO or self.current_step.timeout == 0)):
-                            self.logger.info("Asserv bloquée")
-                        elif (self.current_step.sub_type == StepSubType.GOTO_ASTAR
-                              and self.detection_manager.is_trajectory_blocked(self.movement_manager.goto_queue)):
-                            self.logger.info("Trajectoire bloquée, lancement nouveau calcul de trajectoire")
-                            self.movement_manager.halt_asserv(False)
-                            self.movement_manager.resume_asserv()
-                            self.execute_current_step()
+                    if (self.movement_manager.asserv.asserv_status == AsservStatus.STATUS_BLOCKED
+                            and (self.current_step.sub_type != StepSubType.GO or self.current_step.timeout == 0)):
+                        self.logger.info("Asserv bloquée")
+                    elif (self.current_step.sub_type == StepSubType.GOTO_ASTAR
+                          and self.detection_manager.is_trajectory_blocked(self.movement_manager.goto_queue)):
+                        self.logger.info("Trajectoire bloquée, lancement nouveau calcul de trajectoire")
+                        self.movement_manager.halt_asserv(False)
+                        self.movement_manager.resume_asserv()
+                        self.execute_current_step()
 
             # Si obstacle détecté par les SRF
             else:

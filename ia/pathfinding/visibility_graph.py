@@ -53,13 +53,11 @@ class VisibilityGraph:
         compute_path(start, goal, adversaries=None)
         update_dynamic_zone(zone_id, active)
         path  (List[Position])
-        computation_finished  (bool)
     """
 
     ADVERSARY_RADIUS = 200  # mm
 
     def __init__(self, table_config: Dict, active_color: str) -> None:
-        self.computation_finished = True
         self.config = table_config
         self.size_x: int = table_config["sizeX"]
         self.size_y: int = table_config["sizeY"]
@@ -306,7 +304,6 @@ class VisibilityGraph:
             Obstacles circulaires temporaires de rayon ADVERSARY_RADIUS + marge.
             N'affectent pas le cache.
         """
-        self.computation_finished = False
         self.path = []
         t0 = time.time_ns()
         self.logger.info(f"[VG] Compute path {start} → {goal}")
@@ -407,7 +404,6 @@ class VisibilityGraph:
         except Exception as exc:
             self.logger.error(f"[VG] Error: {exc}", exc_info=True)
         finally:
-            self.computation_finished = True
             self.logger.info(f"[VG] Total in {(time.time_ns() - t0) / 1e6:.2f} ms")
 
     # ──────────────────────────────────────────────────────────────────
