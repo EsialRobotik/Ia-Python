@@ -1,0 +1,56 @@
+[
+  {
+    "id": "princess",
+    "src": "princess.png",
+    "y": 350,
+    "x": 150,
+    "theta": 0,
+    "regY": 163,
+    "regX": 40
+  },
+  {
+    "id": "pami1",
+    "src": "pami.png",
+    "x": 60,
+    "y": 80,
+    "theta": 1.57079632679,
+    "regX": 70,
+    "regY": 50
+  },
+  {
+    "id": "pami2",
+    "src": "pami.png",
+    "x": 170,
+    "y": 80,
+    "theta": 1.57079632679,
+    "regX": 70,
+    "regY": 50
+  },
+  {
+    "id": "pami3",
+    "src": "pami.png",
+    "x": 280,
+    "y": 80,
+    "theta": 1.57079632679,
+    "regX": 70,
+    "regY": 50
+  },
+  {
+    "id": "pami4",
+    "src": "pami.png",
+    "x": 390,
+    "y": 80,
+    "theta": 1.57079632679,
+    "regX": 70,
+    "regY": 50
+  },
+  {
+    "id": "pami1",
+    "src": "pami.png",
+    "x": 100,
+    "y": 720,
+    "theta": 1.57079632679,
+    "regX": 70,
+    "regY": 50
+  }
+]
