@@ -36,26 +36,18 @@
     "goStart": {
       "jaune": [
         {
-          "type": "set_x",
-          "value": 280,
-          "theta": -1.570796327
-        },
-        {
-          "type": "set_y",
-          "value": 80,
-          "theta": -1.570796327
+          "type": "set_pos",
+          "x": 280,
+          "y": 80,
+          "theta": 1.570796327
         }
       ],
       "bleu": [
         {
-          "type": "set_x",
-          "value": 280,
-          "theta": 1.570796327
-        },
-        {
-          "type": "set_y",
-          "value": 2920,
-          "theta": 1.570796327
+          "type": "set_pos",
+          "x": 280,
+          "y": 2920,
+          "theta": -1.570796327
         }
       ]
     }
