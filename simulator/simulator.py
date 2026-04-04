@@ -3,15 +3,18 @@ Simulateur 2D pour robot - Affichage de la table de jeu.
 Utilise PySide6 pour le rendu SVG natif.
 """
 
+import ast
 import html as html_module
 import json
 import math
 import os
+import re
+import socket
 import sys
 import time
 from datetime import datetime
 
-from PySide6.QtCore import QRectF, QPointF, QTimer, QElapsedTimer, Qt, QLocale
+from PySide6.QtCore import QRectF, QPointF, QTimer, QElapsedTimer, Qt, QLocale, QObject, QThread, Signal
 from PySide6.QtGui import QPainter, QColor, QPen, QBrush, QPolygonF, QPixmap, QFont
 from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import (
@@ -34,6 +37,7 @@ ROBOT_TRAIL_COLORS = [
     QColor(255, 222, 33),   # jaune
     QColor(0, 200, 200),    # cyan
     QColor(255, 100, 100),  # rouge clair
+    QColor(200, 100, 255),  # violet
 ]
 
 # Paramètres d'animation
@@ -164,6 +168,12 @@ class TableWidget(QWidget):
         self._global_clock = QElapsedTimer()
         self._global_clock.start()
 
+        # Détections temps réel : liste de {x, y, color, expire} en coords table
+        self._detections: list[dict] = []
+        self._detection_cleanup_timer = QTimer(self)
+        self._detection_cleanup_timer.setInterval(100)
+        self._detection_cleanup_timer.timeout.connect(self._cleanup_detections)
+
     def load(self, path: str, table_size: tuple[int, int] | None = None):
         """
         Charge un fichier SVG.
@@ -284,6 +294,59 @@ class TableWidget(QWidget):
                 )
                 r_scaled = rayon * scale
                 painter.drawEllipse(center_pt, r_scaled, r_scaled)
+
+    # --- Détections temps réel ------------------------------------------------
+
+    _DETECTION_DISPLAY_RADIUS = 200   # mm — rayon du cercle affiché
+    _DETECTION_DEDUP_RADIUS_SQ = 150 * 150  # mm² — seuil de déduplication spatiale
+    _DETECTION_LIFETIME = 1.0         # secondes
+
+    def add_detection(self, x: float, y: float, color: QColor):
+        """
+        Ajoute une détection d'obstacle à afficher pendant 1 s.
+        Si une détection de même couleur existe déjà à moins de 150 mm,
+        son timer est simplement rafraîchi (évite de surcharger l'affichage).
+        """
+        now = time.monotonic()
+        expire = now + self._DETECTION_LIFETIME
+        for det in self._detections:
+            if det["color"].name() == color.name():
+                dx = det["x"] - x
+                dy = det["y"] - y
+                if dx * dx + dy * dy <= self._DETECTION_DEDUP_RADIUS_SQ:
+                    det["expire"] = expire
+                    return
+        self._detections.append({"x": x, "y": y, "color": QColor(color), "expire": expire})
+        if not self._detection_cleanup_timer.isActive():
+            self._detection_cleanup_timer.start()
+        self.update()
+
+    def _cleanup_detections(self):
+        """Retire les détections expirées et arrête le timer si la liste est vide."""
+        now = time.monotonic()
+        before = len(self._detections)
+        self._detections = [d for d in self._detections if d["expire"] > now]
+        if not self._detections:
+            self._detection_cleanup_timer.stop()
+        if len(self._detections) != before:
+            self.update()
+
+    def _draw_detections(self, painter: QPainter, scale: float,
+                         offset_x: float, offset_y: float):
+        """Dessine les cercles de détection semi-transparents."""
+        now = time.monotonic()
+        painter.save()
+        painter.setPen(Qt.PenStyle.NoPen)
+        for det in self._detections:
+            if det["expire"] <= now:
+                continue
+            color = QColor(det["color"])
+            color.setAlpha(160)
+            painter.setBrush(QBrush(color))
+            center = self._to_screen(det["x"], det["y"], scale, offset_x, offset_y)
+            r = self._DETECTION_DISPLAY_RADIUS * scale
+            painter.drawEllipse(center, r, r)
+        painter.restore()
 
     def _draw_robots(self, painter: QPainter, scale: float,
                      offset_x: float, offset_y: float):
@@ -587,6 +650,9 @@ class TableWidget(QWidget):
 
         if self._robots:
             self._draw_robots(painter, scale, offset_x, offset_y)
+
+        if self._detections:
+            self._draw_detections(painter, scale, offset_x, offset_y)
 
         painter.end()
 
@@ -931,12 +997,218 @@ class StrategyWindow(QWidget):
         sb.setValue(sb.maximum())
 
 
+class LogSocketWorker(QObject):
+    """
+    Worker tournant dans un QThread séparé.
+    Se connecte au serveur de logs, envoie "logListener" et lit en continu.
+    """
+    message_received = Signal(str)
+    connection_status = Signal(str, bool)  # message, is_error
+
+    def __init__(self, host: str, port: int):
+        super().__init__()
+        self._host = host
+        self._port = port
+        self._running = False
+        self._sock = None
+
+    def start_connection(self):
+        self._running = True
+        try:
+            self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self._sock.settimeout(5.0)
+            self._sock.connect((self._host, self._port))
+            self._sock.sendall(b"logListener")
+            # Lire la réponse initiale du serveur
+            self._sock.settimeout(2.0)
+            try:
+                resp = self._sock.recv(1024).decode(errors='replace').strip()
+                if resp:
+                    self.connection_status.emit(resp, False)
+            except socket.timeout:
+                pass
+            self._sock.settimeout(1.0)
+            buffer = ""
+            while self._running:
+                try:
+                    data = self._sock.recv(4096).decode(errors='replace')
+                    if not data:
+                        break
+                    buffer += data
+                    while '\n' in buffer:
+                        line, buffer = buffer.split('\n', 1)
+                        line = line.strip()
+                        if line:
+                            self.message_received.emit(line)
+                except socket.timeout:
+                    continue
+                except OSError:
+                    break
+        except Exception as e:
+            self.connection_status.emit(str(e), True)
+        finally:
+            if self._sock:
+                try:
+                    self._sock.close()
+                except OSError:
+                    pass
+            if self._running:
+                self.connection_status.emit("Déconnecté du serveur", True)
+
+    def stop(self):
+        self._running = False
+        if self._sock:
+            try:
+                self._sock.close()
+            except OSError:
+                pass
+
+
+class RealtimeLogWindow(QWidget):
+    """Fenêtre d'affichage des logs en temps réel depuis le serveur."""
+
+    def __init__(self, host: str, port: int, robots: list[dict], table_widget: "TableWidget", parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Logs temps réel")
+        self.setWindowFlag(Qt.WindowType.Window)
+        self.setMinimumSize(900, 500)
+
+        # Mapping robot_id → QColor
+        self._robot_colors: dict[str, QColor] = {}
+        for robot in robots:
+            self._robot_colors[robot["id"]] = robot.get("trail_color", ROBOT_TRAIL_COLORS[0])
+
+        self._table_widget = table_widget
+        self._worker: LogSocketWorker | None = None
+        self._thread: QThread | None = None
+
+        layout = QVBoxLayout(self)
+
+        # --- En-têtes robots colorés ---
+        header = QHBoxLayout()
+        for robot_id, color in self._robot_colors.items():
+            lbl = QLabel(f"● {robot_id}")
+            lbl.setStyleSheet(f"color: {color.name()}; font-weight: bold;")
+            header.addWidget(lbl)
+        header.addStretch()
+        layout.addLayout(header)
+
+        # --- Zone de log ---
+        self._log = QTextEdit()
+        self._log.setReadOnly(True)
+        self._log.setFont(QFont("Courier New", 9))
+        layout.addWidget(self._log, stretch=1)
+
+        self._start_connection(host, port)
+
+    def _start_connection(self, host: str, port: int):
+        self._thread = QThread()
+        self._worker = LogSocketWorker(host, port)
+        self._worker.moveToThread(self._thread)
+        self._thread.started.connect(self._worker.start_connection)
+        self._worker.message_received.connect(self._on_message)
+        self._worker.connection_status.connect(self._on_status)
+        self._thread.start()
+
+    def _parse_line(self, line: str) -> tuple[str, str, str, str] | None:
+        """
+        Parse une ligne de log au format "timestamp - who - level - message".
+        Retourne (timestamp, who, level, message) ou None si le format ne correspond pas.
+        """
+        parts = line.split(' - ', 3)
+        if len(parts) == 4:
+            return parts[0].strip(), parts[1].strip(), parts[2].strip(), parts[3].strip()
+        return None
+
+    def _color_for_robot(self, robot_id: str) -> QColor:
+        if robot_id in self._robot_colors:
+            return self._robot_colors[robot_id]
+        for rid, color in self._robot_colors.items():
+            if rid in robot_id:
+                return color
+        return QColor(200, 200, 200)
+
+    def _on_message(self, line: str):
+        parsed = self._parse_line(line)
+        if parsed is None:
+            self._log_text(line, QColor(200, 200, 200))
+            return
+
+        _timestamp, who, level, message = parsed
+
+        # Filtrer les DEBUG (mais traiter quand même les positions et détections)
+        if level == "DEBUG":
+            if message.startswith("Position :"):
+                self._handle_position(who, message)
+            elif "detected an obstacle at position" in message or message.startswith("Lidar detection:"):
+                self._handle_detection(who, message)
+            return
+
+        # Déplacement du robot si c'est une ligne de position
+        if message.startswith("Position :"):
+            self._handle_position(who, message)
+            return
+
+        self._log_text(line, self._color_for_robot(who))
+
+    def _handle_position(self, robot_id: str, message: str):
+        """Parse la position et anime le robot correspondant sur la table."""
+        try:
+            dict_str = message[len("Position :"):].strip()
+            pos = ast.literal_eval(dict_str)
+            x = float(pos["x"])
+            y = float(pos["y"])
+            theta = float(pos["theta"])
+            color = self._color_for_robot(robot_id)
+            self._table_widget.animate_robot_move(robot_id, x, y, theta, color)
+        except (ValueError, KeyError, SyntaxError):
+            pass
+
+    def _handle_detection(self, robot_id: str, message: str):
+        """Parse une détection d'obstacle et l'affiche sur la table."""
+        color = self._color_for_robot(robot_id)
+        # Format 1 (detection_manager) : "Sensor X detected an obstacle at position (x,y)"
+        m = re.search(r'at position \((-?\d+),(-?\d+)\)', message)
+        if m:
+            self._table_widget.add_detection(float(m.group(1)), float(m.group(2)), color)
+            return
+        # Format 2 (lidar) : "Lidar detection: Position(x=X, y=Y, theta=...)"
+        m = re.search(r'Lidar detection: Position\(x=(-?\d+), y=(-?\d+)', message)
+        if m:
+            self._table_widget.add_detection(float(m.group(1)), float(m.group(2)), color)
+
+    def _on_status(self, message: str, is_error: bool):
+        color = QColor(220, 80, 80) if is_error else QColor(100, 210, 100)
+        self._log_text(f"[{message}]", color)
+
+    def _log_text(self, message: str, color: QColor):
+        escaped = html_module.escape(message)
+        self._log.append(f'<span style="color:{color.name()};">{escaped}</span>')
+        sb = self._log.verticalScrollBar()
+        sb.setValue(sb.maximum())
+
+    def closeEvent(self, event):
+        if self._worker:
+            self._worker.stop()
+        if self._thread:
+            self._thread.quit()
+            self._thread.wait(2000)
+        super().closeEvent(event)
+
+
 class SimulatorWindow(QMainWindow):
     """Fenêtre principale du simulateur."""
 
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Simulateur Robot 2D")
+
+        # --- Config simulateur ---
+        config_path = os.path.join(SIMULATION_DIR, "config.json")
+        self._sim_config: dict = {}
+        if os.path.isfile(config_path):
+            with open(config_path, "r", encoding="utf-8") as f:
+                self._sim_config = json.load(f)
 
         # --- Widget central ---
         central_widget = QWidget()
@@ -993,6 +1265,11 @@ class SimulatorWindow(QMainWindow):
         self.btn_strategy.clicked.connect(self._on_strategy_click)
         control_layout.addWidget(self.btn_strategy)
 
+        # Bouton temps réel
+        self.btn_realtime = QPushButton("Temps réel")
+        self.btn_realtime.clicked.connect(self._on_realtime_click)
+        control_layout.addWidget(self.btn_realtime)
+
         # Bouton reset
         self.btn_reset = QPushButton("Reset")
         self.btn_reset.clicked.connect(self._on_reset_click)
@@ -1006,6 +1283,7 @@ class SimulatorWindow(QMainWindow):
 
         self._manual_window: ManualControlWindow | None = None
         self._strategy_window: StrategyWindow | None = None
+        self._realtime_window: RealtimeLogWindow | None = None
         self._current_year: str = ""
 
         # Charger l'année par défaut
@@ -1040,6 +1318,16 @@ class SimulatorWindow(QMainWindow):
         self._strategy_window = StrategyWindow(self.table_widget, self._current_year, self)
         self._strategy_window.show()
 
+    def _on_realtime_click(self):
+        """Ouvre (ou recrée) la fenêtre de logs temps réel."""
+        if self._realtime_window is not None:
+            self._realtime_window.close()
+        com = self._sim_config.get("comSocket", {})
+        host = com.get("host", "localhost")
+        port = com.get("port", 4269)
+        self._realtime_window = RealtimeLogWindow(host, port, self.table_widget._robots, self.table_widget, self)
+        self._realtime_window.show()
+
     def _on_reset_click(self):
         """Ferme les sous-fenêtres, efface les traces et remet les robots à l'origine."""
         if self._manual_window is not None:
@@ -1048,6 +1336,9 @@ class SimulatorWindow(QMainWindow):
         if self._strategy_window is not None:
             self._strategy_window.close()
             self._strategy_window = None
+        if self._realtime_window is not None:
+            self._realtime_window.close()
+            self._realtime_window = None
         self.table_widget.reset()
 
     def _load_table(self, year: str):
@@ -1059,6 +1350,9 @@ class SimulatorWindow(QMainWindow):
         if self._strategy_window is not None:
             self._strategy_window.close()
             self._strategy_window = None
+        if self._realtime_window is not None:
+            self._realtime_window.close()
+            self._realtime_window = None
         self._current_year = year
         svg_path = get_table_svg_path(year)
         if os.path.isfile(svg_path):

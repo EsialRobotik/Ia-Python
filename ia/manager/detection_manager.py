@@ -106,6 +106,8 @@ class DetectionManager:
             y_obstacle_relative_to_robot * math.cos(robot_position.theta)
         )
 
+        self.logger.debug(f"Sensor {sensor.desc} detected an obstacle at position ({x_obstacle_relative_to_table},{y_obstacle_relative_to_table})")
+
         return Position(x_obstacle_relative_to_table, y_obstacle_relative_to_table)
 
     def is_emergency_detection_front(self, ignore_direction: bool = False) -> bool:
