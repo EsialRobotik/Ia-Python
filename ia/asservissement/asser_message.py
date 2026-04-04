@@ -15,6 +15,6 @@ class AsservMessage(Enum):
     goto_front=23
     goto_back=24
     goto_nostop=25
-    set_position=26
+    set_position=31
     # Four param messages
     orbital_turn=30

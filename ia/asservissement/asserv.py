@@ -342,7 +342,8 @@ class Asserv:
             "cmd": AsservMessage.set_position.value,
             "X" : float(x),
             "Y" : float(y),
-            "T" : float(theta)
+            "T" : float(theta),
+            "ID": 0
         }))
 
     def enable_low_speed(self, enable: bool) -> None:
@@ -388,7 +389,7 @@ class Asserv:
         self.serial.write(self.formatMsg({
             "cmd": AsservMessage.max_motor_speed.value,
             "P" : float(pct),
-            "ID": int(4242)
+            "ID": 0
         }))
 
     def parse_asserv_position(self) -> None:
