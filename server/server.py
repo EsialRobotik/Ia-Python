@@ -125,7 +125,7 @@ class LogRecordStreamHandler(socketserver.StreamRequestHandler):
             record = logging.makeLogRecord(obj)
             logging.getLogger('').handle(record)
             if log_listener is not None:
-                log_listener.send(_log_formatter.format(record).encode())
+                log_listener.send((_log_formatter.format(record) + '\n').encode())
 
     def unPickle(self, data):
         """
