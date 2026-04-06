@@ -24,6 +24,7 @@ class Srf08(Srf):
         super().__init__(desc, x, y, angle, threshold, window_size)
         # La datasheet SRF08 donne des adresses 8 bits (bit R/W inclus, ex: 0xE0).
         # smbus2 / Linux attendent une adresse 7 bits : on divise par 2.
+        # 226 / 2 = 113 = 0x71 par exemple
         self.address = address >> 1 if address > 0x7F else address
         # Les adresses SRF08 >= 0x78 (7 bits) sont hors plage standard I2C : force requis.
         self._i2c_force = self.address > 0x77
