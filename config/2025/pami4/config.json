@@ -1,11 +1,8 @@
 {
-  "desc": "Configuration du robot 2025 - ?? Princess",
-  "matchDuration": 89,
-  "gpioPullCord": 23,
-  "nextion": {
-    "baudRate": 115200,
-    "serialPort": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A5XK3RJT-if00-port0"
-  },
+  "desc": "Pami 4 - 2025",
+  "matchDuration": 100,
+  "gpioColorSelector": 27,
+  "gpioPullCord": 22,
   "loggerSocket": {
     "active": true,
     "host": "192.168.42.102",
@@ -19,56 +16,18 @@
   },
   "detection": {
     "ultrasound": {
-      "windowSize": 3,
+      "windowSize": 2,
       "gpioList": [
         {
-          "type": "srf04",
-          "desc": "Avant gauche",
-          "trigger": 5,
-          "echo": 6,
-          "x": 100,
-          "y": 120,
-          "angle": 30,
-          "threshold": 400
-        },
-        {
-          "type": "srf04",
-          "desc": "Milieu",
-          "trigger": 10,
-          "echo": 9,
-          "x": 100,
+          "type": "srf08",
+          "desc": "Avant",
+          "address": 232,
+          "x": 60,
           "y": 0,
           "angle": 0,
-          "threshold": 400
-        },
-        {
-          "type": "srf04",
-          "desc": "Avant droit",
-          "trigger": 17,
-          "echo": 27,
-          "x": 100,
-          "y": -120,
-          "angle": -30,
-          "threshold": 400
-        },
-        {
-          "type": "srf04",
-          "desc": "Arrière",
-          "trigger": 19,
-          "echo": 26,
-          "x": -100,
-          "y": 0,
-          "angle": 180,
-          "threshold": 300
+          "threshold": 180
         }
       ]
-    },
-    "lidar": {
-      "serialPort": "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0",
-      "baudRate": 115200,
-      "quality": 10,
-      "distance": 2000,
-      "period": 500
     }
   },
   "asserv": {
@@ -77,146 +36,25 @@
     "goStart": {
       "jaune": [
         {
-          "type": "speed",
-          "value": 20
-        },
-        {
-          "type": "go_timed",
-          "dist": -400
-        },
-        {
-          "type": "set_x",
-          "value": 1940,
-          "theta": 3.141592654
-        },
-        {
-          "type": "go",
-          "dist": 500
-        },
-        {
-          "type": "turn",
-          "dist": -90
-        },
-        {
-          "type": "go_timed",
-          "dist": -400
-        },
-        {
-          "type": "set_y",
-          "value": 60,
+          "type": "set_pos",
+          "x": 390,
+          "y": 80,
           "theta": 1.570796327
-        },
-        {
-          "type": "go",
-          "dist": 300
-        },
-        {
-          "type": "speed",
-          "value": 100
-        },
-        {
-          "type": "goto",
-          "x": 1600,
-          "y": 1225
-        },
-        {
-          "type": "face",
-          "x": 2000,
-          "y": 1225
-        },
-        {
-          "type": "goto",
-          "x": 1700,
-          "y": 1225
-        },
-        {
-          "type": "face",
-          "x": 2000,
-          "y": 1225
         }
       ],
       "bleu": [
         {
-          "type": "speed",
-          "value": 20
-        },
-        {
-          "type": "go_timed",
-          "dist": -400
-        },
-        {
-          "type": "set_x",
-          "value": 1940,
-          "theta": 3.141592654
-        },
-        {
-          "type": "go",
-          "dist": 500
-        },
-        {
-          "type": "turn",
-          "dist": 90
-        },
-        {
-          "type": "go_timed",
-          "dist": -400
-        },
-        {
-          "type": "set_y",
-          "value": 2940,
-          "theta": 4.71238898
-        },
-        {
-          "type": "go",
-          "dist": 300
-        },
-        {
-          "type": "speed",
-          "value": 100
-        },
-        {
-          "type": "goto",
-          "x": 1600,
-          "y": 1775
-        },
-        {
-          "type": "face",
-          "x": 2000,
-          "y": 1775
-        },
-        {
-          "type": "goto",
-          "x": 1700,
-          "y": 1775
-        },
-        {
-          "type": "face",
-          "x": 2000,
-          "y": 1775
+          "type": "set_pos",
+          "x": 390,
+          "y": 2920,
+          "theta": -1.570796327
         }
       ]
     }
   },
   "actions": {
-    "ax12": {
-      "comment": "FTDI AX12",
-      "serialPort": "/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_00000000-if00-port0",
-      "baudRate": 115200,
-      "test-id": 12
-    },
-    "actuators": [
-      {
-        "type": "serial",
-        "id": "pompes",
-        "comment": "Arduino Pompes",
-        "serialPort": "/dev/serial/by-id/usb-1a86_USB2.0-Ser_-if00-port0",
-        "baudRate": 115200
-      }
-    ],
-    "dataDir": "/home/pi/IAPYTHON/config/princess/2025/actions",
-    "init": [
-      "ascenseur_init"
-    ]
+    "dataDir": "/home/pi/IAPYTHON/config/2025/pami4/actions",
+    "init": []
   },
   "table": {
     "sizeX": 2000,

@@ -1,0 +1,10 @@
+{
+    "type": "pwm_servo",
+    "alias": "O",
+    "description": "On remue les oreilles",
+    "payload": {
+        "gpio": 18,
+        "loop": true,
+        "angles": [-60, 15]
+    }
+}
