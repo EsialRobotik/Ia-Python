@@ -1,5 +1,4 @@
 import argparse
-import json
 import logging.handlers
 import sys
 import time
@@ -20,6 +19,7 @@ from ia.manager.detection_manager import DetectionManager
 from ia.manager.movement_manager import MovementManager
 from ia.manager.strategy_manager import StrategyManager
 from ia.master_loop import MasterLoop
+from ia.utils.config_loader import load_config
 from ia.utils.robot import Robot
 from ia.utils.robot_filter import RobotFilter
 
@@ -55,143 +55,141 @@ if __name__ == "__main__":
     # run
     robot = Robot(args.robot)
     logger.info(f"Lancement IA {args.year} pour {robot.value}")
-    with open(f'config/{args.year}/{robot.value}/config.json') as config_file:
-        config_data = json.load(config_file)
-        config_file.close()
+    config_data = load_config(args.year, robot.value)
 
-        # Init socket logger handler
-        if config_data['loggerSocket']['active']:
-            socket_handler = LogSocket(
-                host=config_data['loggerSocket']['host']
-            ).get()
-            socket_handler.addFilter(RobotFilter(config_data['loggerSocket']['who']))
-            logging.getLogger().addHandler(socket_handler)
+    # Init socket logger handler
+    if config_data['loggerSocket']['active']:
+        socket_handler = LogSocket(
+            host=config_data['loggerSocket']['host']
+        ).get()
+        socket_handler.addFilter(RobotFilter(config_data['loggerSocket']['who']))
+        logging.getLogger().addHandler(socket_handler)
 
-        # Init divers
-        comm_config=config_data["comSocket"]
-        table_config=config_data["table"]
-        logger.info("Init asservissement")
-        asserv = Asserv(
-            serial_port=config_data["asserv"]["serialPort"],
-            baud_rate=config_data["asserv"]["baudRate"],
-            gostart_config=config_data["asserv"]["goStart"],
+    # Init divers
+    comm_config=config_data["comSocket"]
+    table_config=config_data["table"]
+    logger.info("Init asservissement")
+    asserv = Asserv(
+        serial_port=config_data["asserv"]["serialPort"],
+        baud_rate=config_data["asserv"]["baudRate"],
+        gostart_config=config_data["asserv"]["goStart"],
+    )
+    logger.info("Init asservissement OK")
+
+    # Init action manager
+    logger.info("Init action manager")
+    ax12_link = actuators_link = None
+    if config_data['actions'].get('ax12') is not None:
+        ax12_link = AX12LinkSerial(
+            serial_port=config_data["actions"]["ax12"]["serialPort"],
+            baud_rate=config_data["actions"]["ax12"]["baudRate"]
         )
-        logger.info("Init asservissement OK")
-
-        # Init action manager
-        logger.info("Init action manager")
-        ax12_link = actuators_link = None
-        if config_data['actions'].get('ax12') is not None:
-            ax12_link = AX12LinkSerial(
-                serial_port=config_data["actions"]["ax12"]["serialPort"],
-                baud_rate=config_data["actions"]["ax12"]["baudRate"]
-            )
-        if config_data['actions'].get('actuators') is not None:
-            actuators_link = ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(
-                config_data['actions']['actuators']
-            )
-        action_repository = ActionRepositoryFactory.from_json_files(
-            folder=config_data['actions']['dataDir'],
-            ax12_link_serial=ax12_link,
-            actuator_link_repository=actuators_link
+    if config_data['actions'].get('actuators') is not None:
+        actuators_link = ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(
+            config_data['actions']['actuators']
         )
-        action_manager = ActionManager(
-            action_repository=action_repository,
-            ax12_link=ax12_link,
-            actions_config=config_data["actions"],
+    action_repository = ActionRepositoryFactory.from_json_files(
+        folder=config_data['actions']['dataDir'],
+        ax12_link_serial=ax12_link,
+        actuator_link_repository=actuators_link
+    )
+    action_manager = ActionManager(
+        action_repository=action_repository,
+        ax12_link=ax12_link,
+        actions_config=config_data["actions"],
+    )
+    logger.info("Init action manager OK")
+
+    # Init detection manager
+    logger.info("Init detection manager")
+    lidar = None
+    if config_data["detection"].get("lidar") is not None:
+        lidar = LidarRpA2(
+            serial_port=config_data["detection"]["lidar"]["serialPort"],
+            baud_rate=config_data["detection"]["lidar"]["baudRate"],
+            quality=config_data["detection"]["lidar"]["quality"],
+            distance=config_data["detection"]["lidar"]["distance"],
+            period=config_data["detection"]["lidar"]["period"],
+            asserv=asserv
         )
-        logger.info("Init action manager OK")
+    ultrasound_config = config_data["detection"]["ultrasound"]
+    srf = []
+    for srfConfig in ultrasound_config['gpioList']:
+        srf.append(SrfFactory.build_srf(
+            srf_config=srfConfig,
+            window_size=ultrasound_config["windowSize"]
+        ))
+    detection_manager = DetectionManager(
+        sensors=srf,
+        lidar=lidar,
+        asserv=asserv,
+        table_config=table_config,
+    )
+    logger.info("Init detection manager OK")
 
-        # Init detection manager
-        logger.info("Init detection manager")
-        lidar = None
-        if config_data["detection"].get("lidar") is not None:
-            lidar = LidarRpA2(
-                serial_port=config_data["detection"]["lidar"]["serialPort"],
-                baud_rate=config_data["detection"]["lidar"]["baudRate"],
-                quality=config_data["detection"]["lidar"]["quality"],
-                distance=config_data["detection"]["lidar"]["distance"],
-                period=config_data["detection"]["lidar"]["period"],
-                asserv=asserv
-            )
-        ultrasound_config = config_data["detection"]["ultrasound"]
-        srf = []
-        for srfConfig in ultrasound_config['gpioList']:
-            srf.append(SrfFactory.build_srf(
-                srf_config=srfConfig,
-                window_size=ultrasound_config["windowSize"]
-            ))
-        detection_manager = DetectionManager(
-            sensors=srf,
-            lidar=lidar,
-            asserv=asserv,
-            table_config=table_config,
+    # Init movement manager
+    logger.info("Init movement manager")
+    movement_manager = MovementManager(asserv=asserv)
+    logger.info("Init movement manager OK")
+
+    # Init strategy manager
+    logger.info("Init strategy manager")
+    strategy_manager = StrategyManager(year=args.year, robot=robot)
+    logger.info("Init strategy manager OK")
+
+    # Init chrono
+    logger.info("Init chrono")
+    chrono = Chrono(config_data['matchDuration'])
+    logger.info("Init chrono OK")
+
+    # Init pull cord
+    logger.info("Init pull cord")
+    pull_cord = PullCord(config_data['gpioPullCord'])
+    logger.info("Init pull cord OK")
+
+    # Init color selector
+    color_selector = None
+    if config_data.get('gpioPullCord') is not None:
+        color_selector = ColorSelector(config_data.get('gpioColorSelector'))
+
+    # Init nextion
+    nextion_display = None
+    if config_data.get('nextion') is not None:
+        logger.info("Init nextion")
+        nextion_display = NextionNX32224T024(
+            serial_port=config_data['nextion']['serialPort'],
+            baud_rate=config_data['nextion']['baudRate'],
+            color0=config_data['table']['color0']
         )
-        logger.info("Init detection manager OK")
+        logger.info("Init nextion OK")
 
-        # Init movement manager
-        logger.info("Init movement manager")
-        movement_manager = MovementManager(asserv=asserv)
-        logger.info("Init movement manager OK")
+    # Init master loop
+    logger.info("Init master loop")
+    master_loop = MasterLoop(
+        action_manager=action_manager,
+        comm_config=comm_config,
+        detection_manager=detection_manager,
+        movement_manager=movement_manager,
+        strategy_manager=strategy_manager,
+        table_config=table_config,
+        chrono=chrono,
+        pull_cord=pull_cord,
+        nextion_display=nextion_display,
+        color_selector=color_selector
+    )
 
-        # Init strategy manager
-        logger.info("Init strategy manager")
-        strategy_manager = StrategyManager(year=args.year, robot=robot)
-        logger.info("Init strategy manager OK")
+    # Start execution
+    logger.info("Init the MasterLoop")
+    master_loop.init()
+    logger.info("Start the MasterLoop")
+    master_loop.main_loop()
 
-        # Init chrono
-        logger.info("Init chrono")
-        chrono = Chrono(config_data['matchDuration'])
-        logger.info("Init chrono OK")
+    # When master loop is finished, we wait for the end of the match
+    while True:
+        time.sleep(1)
+        if master_loop.interrupted:
+            break
 
-        # Init pull cord
-        logger.info("Init pull cord")
-        pull_cord = PullCord(config_data['gpioPullCord'])
-        logger.info("Init pull cord OK")
-
-        # Init color selector
-        color_selector = None
-        if config_data.get('gpioPullCord') is not None:
-            color_selector = ColorSelector(config_data.get('gpioColorSelector'))
-
-        # Init nextion
-        nextion_display = None
-        if config_data.get('nextion') is not None:
-            logger.info("Init nextion")
-            nextion_display = NextionNX32224T024(
-                serial_port=config_data['nextion']['serialPort'],
-                baud_rate=config_data['nextion']['baudRate'],
-                color0=config_data['table']['color0']
-            )
-            logger.info("Init nextion OK")
-
-        # Init master loop
-        logger.info("Init master loop")
-        master_loop = MasterLoop(
-            action_manager=action_manager,
-            comm_config=comm_config,
-            detection_manager=detection_manager,
-            movement_manager=movement_manager,
-            strategy_manager=strategy_manager,
-            table_config=table_config,
-            chrono=chrono,
-            pull_cord=pull_cord,
-            nextion_display=nextion_display,
-            color_selector=color_selector
-        )
-
-        # Start execution
-        logger.info("Init the MasterLoop")
-        master_loop.init()
-        logger.info("Start the MasterLoop")
-        master_loop.main_loop()
-
-        # When master loop is finished, we wait for the end of the match
-        while True:
-            time.sleep(1)
-            if master_loop.interrupted:
-                break
-
-        # wait a little more, just in case
-        time.sleep(5)
-        logger.info("End of the MasterLoop")
+    # wait a little more, just in case
+    time.sleep(5)
+    logger.info("End of the MasterLoop")

@@ -4,6 +4,7 @@ import traceback
 from typing import List
 
 from ia.pathfinding.visibility_graph import VisibilityGraph
+from ia.utils.config_loader import load_config
 from ia.utils.position import Position
 from strategy.core.objective import Objective
 from strategy.core.strat import Strat
@@ -67,26 +68,24 @@ class AbstractMain:
 
     def test_strategy(self, objectives, start_x, start_y, start_theta, robot : str, suffix, color):
         try:
-            with open(f'{self.config_path}/{self.year}/{robot}/config.json') as config_file:
-                config_data = json.load(config_file)
-                config_file.close()
-                path_finding = VisibilityGraph(table_config=config_data['table'], active_color=color)
-                start_point = Position(start_x, start_y, start_theta)
-                strat_simu = [{"task": "Position de départ", "command": "start", "position": start_point.to_dict()}]
+            config_data = load_config(self.year, robot, config_base_path=self.config_path)
+            path_finding = VisibilityGraph(table_config=config_data['table'], active_color=color)
+            start_point = Position(start_x, start_y, start_theta)
+            strat_simu = [{"task": "Position de départ", "command": "start", "position": start_point.to_dict()}]
 
-                for objective in objectives:
-                    for task in objective.tasks:
-                        task.path_finding = path_finding
-                        execution = task.execute(start_point)
-                        print(execution)
-                        if isinstance(execution, list):
-                            strat_simu.extend(execution)
-                        else:
-                            strat_simu.append(execution)
-                        start_point = task.end_point
+            for objective in objectives:
+                for task in objective.tasks:
+                    task.path_finding = path_finding
+                    execution = task.execute(start_point)
+                    print(execution)
+                    if isinstance(execution, list):
+                        strat_simu.extend(execution)
+                    else:
+                        strat_simu.append(execution)
+                    start_point = task.end_point
 
-                with open(f'{self.simulator_path}/{self.year}/strategy-{robot}-{suffix}.json', "w") as strat_file:
-                    json.dump(strat_simu, strat_file, indent=4)
+            with open(f'{self.simulator_path}/{self.year}/strategy-{robot}-{suffix}.json', "w") as strat_file:
+                json.dump(strat_simu, strat_file, indent=4)
         except Exception as e:
             print(f"Erreur lors du test de la stratégie : {e}")
             traceback.print_exc()

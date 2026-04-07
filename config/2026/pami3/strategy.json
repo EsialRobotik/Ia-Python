@@ -29,7 +29,7 @@
                     "subtype": "WAIT",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 86000,
+                    "timeout": 85000,
                     "item_id": null,
                     "skip_flag": null,
                     "needed_flag": null
@@ -110,7 +110,7 @@
                     "subtype": "WAIT",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 86000,
+                    "timeout": 85000,
                     "item_id": null,
                     "skip_flag": null,
                     "needed_flag": null

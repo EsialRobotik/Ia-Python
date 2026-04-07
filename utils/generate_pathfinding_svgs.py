@@ -3,7 +3,6 @@
 Génère 3 SVGs annotés à partir de table.svg pour les 3 scénarios de pathfinding.
 """
 
-import json
 import logging
 import os
 import sys
@@ -16,6 +15,7 @@ os.environ['PYTHONPATH'] = '/home/gag/Bureau/EsialRobotik/Ia-Python'
 
 from shapely.geometry import Point, Polygon
 from ia.pathfinding.visibility_graph import VisibilityGraph
+from ia.utils.config_loader import load_config
 from ia.utils.position import Position
 
 # ─── Config ───────────────────────────────────────────────────────────────────
@@ -48,8 +48,7 @@ SCENARIOS = [
 ]
 
 # ─── Load config ──────────────────────────────────────────────────────────────
-with open(CONFIG_PATH) as f:
-    full_config = json.load(f)
+full_config = load_config(2025, 'princess')
 table_config = full_config['table']
 marge = table_config['marge']
 

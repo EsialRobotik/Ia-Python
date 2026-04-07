@@ -1,11 +1,11 @@
 import argparse
-import json
 import logging.handlers
 import sys
 
 from ia.tests.test_pathfinding import TestPathfinding
 from ia.tests.test_srf08 import TestSrf08
 from ia.tests.test_strategy_manager import TestStrategyManager
+from ia.utils.config_loader import load_config
 from ia.utils.robot import Robot
 from tests.test_actions import TestActions
 from tests.test_asserv import TestAsserv
@@ -47,37 +47,35 @@ if __name__ == "__main__":
     # run the test
     robot = Robot(args.robot)
     logger.info(f"Run {args.mode} for year {args.year} for {robot.value}")
-    with open(f'config/{args.year}/{robot.value}/config.json') as config_file:
-        config_data = json.load(config_file)
-        config_file.close()
-        match args.mode:
-            case 'chrono':
-                TestChrono(config_data, args.year, robot).test()
-            case 'pullcord':
-                TestPullCord(config_data, args.year, robot).test()
-            case 'color':
-                TestColorSelector(config_data, args.year, robot).test()
-            case 'nextion':
-                TestNextion(config_data, args.year, robot).test()
-            case 'log_socket':
-                TestLogSocket(config_data, args.year, robot).test()
-            case 'com_socket':
-                TestCommunicationSocket(config_data, args.year, robot).test()
-            case 'ax12':
-                TestAX12(config_data, args.year, robot).test()
-            case 'srf04':
-                TestSrf04(config_data, args.year, robot).test()
-            case 'srf08':
-                TestSrf08(config_data, args.year, robot).test()
-            case 'lidar':
-                TestLidar(config_data, args.year, robot).test()
-            case 'asserv':
-                TestAsserv(config_data, args.year, robot).test()
-            case 'actions':
-                TestActions(config_data, args.year, robot).test()
-            case 'pathfinding':
-                TestPathfinding(config_data, args.year, robot).test()
-            case 'strategy':
-                TestStrategyManager(config_data, args.year, robot).test()
-            case default:
-                raise logger.error(f"Mode {args.mode} does not exist")
+    config_data = load_config(args.year, robot.value)
+    match args.mode:
+        case 'chrono':
+            TestChrono(config_data, args.year, robot).test()
+        case 'pullcord':
+            TestPullCord(config_data, args.year, robot).test()
+        case 'color':
+            TestColorSelector(config_data, args.year, robot).test()
+        case 'nextion':
+            TestNextion(config_data, args.year, robot).test()
+        case 'log_socket':
+            TestLogSocket(config_data, args.year, robot).test()
+        case 'com_socket':
+            TestCommunicationSocket(config_data, args.year, robot).test()
+        case 'ax12':
+            TestAX12(config_data, args.year, robot).test()
+        case 'srf04':
+            TestSrf04(config_data, args.year, robot).test()
+        case 'srf08':
+            TestSrf08(config_data, args.year, robot).test()
+        case 'lidar':
+            TestLidar(config_data, args.year, robot).test()
+        case 'asserv':
+            TestAsserv(config_data, args.year, robot).test()
+        case 'actions':
+            TestActions(config_data, args.year, robot).test()
+        case 'pathfinding':
+            TestPathfinding(config_data, args.year, robot).test()
+        case 'strategy':
+            TestStrategyManager(config_data, args.year, robot).test()
+        case default:
+            raise logger.error(f"Mode {args.mode} does not exist")
