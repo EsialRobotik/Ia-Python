@@ -67,8 +67,10 @@ class VisibilityGraph:
         self.logger = logging.getLogger(__name__)
 
         self._table_poly = Polygon([
-            (0, 0), (self.size_x, 0),
-            (self.size_x, self.size_y), (0, self.size_y),
+            (self.marge, self.marge),
+            (self.size_x - self.marge, self.marge),
+            (self.size_x - self.marge, self.size_y - self.marge),
+            (self.marge, self.size_y - self.marge),
         ])
 
         # ── État persistant ────────────────────────────────────────────
