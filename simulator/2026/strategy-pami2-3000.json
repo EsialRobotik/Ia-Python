@@ -1,0 +1,74 @@
+[
+    {
+        "task": "Position de d\u00e9part",
+        "command": "start",
+        "position": {
+            "x": 170,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On commence \u00e0 remuer les oreilles",
+        "command": "action#oreilles",
+        "position": {
+            "x": 170,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On attends son tour",
+        "command": "wait#87000",
+        "position": {
+            "x": 170,
+            "y": 2920,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On avance pour pouvoir se lancer",
+        "command": "goto#170;2750",
+        "position": {
+            "x": 170,
+            "y": 2750,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#170;2750",
+        "position": {
+            "x": 170,
+            "y": 2750,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#1380;2380",
+        "position": {
+            "x": 1380,
+            "y": 2380,
+            "theta": -0.29675576077772203
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#1700;1600",
+        "position": {
+            "x": 1700,
+            "y": 1600,
+            "theta": -1.1814796049617557
+        }
+    },
+    {
+        "task": "On entre dans le garde manger",
+        "command": "goto#1770;1600",
+        "position": {
+            "x": 1770,
+            "y": 1600,
+            "theta": 0.0
+        }
+    }
+]

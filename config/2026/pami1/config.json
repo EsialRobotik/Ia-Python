@@ -1,5 +1,5 @@
 {
-  "desc": "Pami 2 - 2025",
+  "desc": "Pami 1 - 2025",
   "matchDuration": 100,
   "gpioColorSelector": 27,
   "gpioPullCord": 22,
@@ -7,7 +7,7 @@
     "active": true,
     "host": "192.168.42.102",
     "port": 1664,
-    "who": "pami2"
+    "who": "pami1"
   },
   "comSocket": {
     "active": true,
@@ -37,7 +37,7 @@
       "jaune": [
         {
           "type": "set_pos",
-          "x": 170,
+          "x": 60,
           "y": 80,
           "theta": 1.570796327
         }
@@ -45,7 +45,7 @@
       "bleu": [
         {
           "type": "set_pos",
-          "x": 170,
+          "x": 60,
           "y": 2920,
           "theta": -1.570796327
         }
@@ -53,7 +53,7 @@
     }
   },
   "actions": {
-    "dataDir": "/home/pi/IAPYTHON/config/2025/pami2/actions",
+    "dataDir": "/home/pi/IAPYTHON/config/2025/pami1/actions",
     "init": []
   },
   "table": {

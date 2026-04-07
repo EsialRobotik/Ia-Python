@@ -3,7 +3,7 @@
         "task": "Position de d\u00e9part",
         "command": "start",
         "position": {
-            "x": 280,
+            "x": 60,
             "y": 80,
             "theta": 1.57079632679
         }
@@ -12,37 +12,54 @@
         "task": "On commence \u00e0 remuer les oreilles",
         "command": "action#oreilles",
         "position": {
-            "x": 280,
+            "x": 60,
             "y": 80,
             "theta": 1.57079632679
         }
     },
     {
         "task": "On attends son tour",
-        "command": "wait#85000",
+        "command": "wait#88000",
         "position": {
-            "x": 280,
+            "x": 60,
             "y": 80,
             "theta": 1.57079632679
         }
     },
     {
         "task": "On avance pour pouvoir se lancer",
-        "command": "goto#280;250",
+        "command": "goto#60;250",
         "position": {
-            "x": 280,
+            "x": 60,
             "y": 250,
             "theta": 1.5707963267948966
         }
     },
-    "",
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#60;250",
+        "position": {
+            "x": 60,
+            "y": 250,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#1000;750",
+        "position": {
+            "x": 1000,
+            "y": 750,
+            "theta": 0.4888523543277479
+        }
+    },
     {
         "task": "On entre dans le garde manger",
-        "command": "goto#1770;700",
+        "command": "goto#1070;750",
         "position": {
-            "x": 1770,
-            "y": 700,
-            "theta": 0.2933029462266197
+            "x": 1070,
+            "y": 750,
+            "theta": 0.0
         }
     }
 ]

@@ -1,0 +1,164 @@
+{
+    "color0": [
+        {
+            "desc": "Pami 3",
+            "id": 1,
+            "points": 5,
+            "priority": 1,
+            "tasks": [
+                {
+                    "desc": "On commence \u00e0 remuer les oreilles",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 0,
+                    "type": "MANIPULATION",
+                    "subtype": "NONE",
+                    "action_id": "oreilles",
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On attends son tour",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 86000,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On avance pour pouvoir se lancer",
+                    "position_x": 280,
+                    "position_y": 250,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On file dans le garde manger",
+                    "position_x": 1700,
+                    "position_y": 700,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO_ASTAR",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On entre dans le garde manger",
+                    "position_x": 1770,
+                    "position_y": 700,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                }
+            ],
+            "skip_flag": null
+        }
+    ],
+    "color3000": [
+        {
+            "desc": "Pami 3",
+            "id": 1,
+            "points": 5,
+            "priority": 1,
+            "tasks": [
+                {
+                    "desc": "On commence \u00e0 remuer les oreilles",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 0,
+                    "type": "MANIPULATION",
+                    "subtype": "NONE",
+                    "action_id": "oreilles",
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On attends son tour",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 86000,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On avance pour pouvoir se lancer",
+                    "position_x": 280,
+                    "position_y": 2750,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On file dans le garde manger",
+                    "position_x": 1700,
+                    "position_y": 2300,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO_ASTAR",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On entre dans le garde manger",
+                    "position_x": 1770,
+                    "position_y": 2300,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "skip_flag": null,
+                    "needed_flag": null
+                }
+            ],
+            "skip_flag": null
+        }
+    ]
+}
