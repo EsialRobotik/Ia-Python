@@ -4,8 +4,10 @@ import sys
 import time
 
 from ia.actions.action_repository_factory import ActionRepositoryFactory
-from ia.actions.actuators.actuator_link_repository_factory import ActuatorLinkRepositoryFactory
+from ia.actions.serial_port import SerialPort
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
+from ia.api.ax12.ax12_servo import AX12Servo
+from ia.api.ax12.enums.ax12_address import AX12Address
 from ia.api.chrono import Chrono
 from ia.api.color_selector import ColorSelector
 from ia.api.detection.lidar.lidar_rpa2 import LidarRpA2
@@ -78,25 +80,37 @@ if __name__ == "__main__":
 
     # Init action manager
     logger.info("Init action manager")
-    ax12_link = actuators_link = None
+    ax12_link = None
+    serial_ports = {}
+    stop_hooks = []
     if config_data['actions'].get('ax12') is not None:
         ax12_link = AX12LinkSerial(
             serial_port=config_data["actions"]["ax12"]["serialPort"],
             baud_rate=config_data["actions"]["ax12"]["baudRate"]
         )
+        def make_ax12_stop_hook(link):
+            def hook():
+                link.enable_dtr(False)
+                link.enable_rts(False)
+                ax = AX12Servo(AX12Address.AX12_ADDRESS_BROADCAST.value, link)
+                ax.disable_torque()
+                link.serial.close()
+            return hook
+        stop_hooks.append(make_ax12_stop_hook(ax12_link))
     if config_data['actions'].get('actuators') is not None:
-        actuators_link = ActuatorLinkRepositoryFactory.actuator_link_repository_from_json(
-            config_data['actions']['actuators']
-        )
+        for actuator_config in config_data['actions']['actuators']:
+            if actuator_config['type'] == 'serial':
+                port_id = actuator_config.get('id', str(len(serial_ports)))
+                serial_ports[port_id] = SerialPort(actuator_config['serialPort'], actuator_config['baudRate'])
     action_repository = ActionRepositoryFactory.from_json_files(
         folder=config_data['actions']['dataDir'],
         ax12_link_serial=ax12_link,
-        actuator_link_repository=actuators_link
+        serial_ports=serial_ports
     )
     action_manager = ActionManager(
         action_repository=action_repository,
-        ax12_link=ax12_link,
         actions_config=config_data["actions"],
+        stop_hooks=stop_hooks,
     )
     logger.info("Init action manager OK")
 

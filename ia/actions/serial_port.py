@@ -1,23 +1,17 @@
 import logging
-from ia.actions.actuators.abstract_actuator_link import AbstractActuatorLink
-
 import time
 
 import serial
 
-from ia.actions.actuators.abstract_actuator_link import AbstractActuatorLink
 
+class SerialPort:
+    """Wrapper minimal autour de pyserial pour communiquer avec un actionneur."""
 
-class SerialActuatorLink(AbstractActuatorLink):
-    """
-    Class to represent a Serial communication link to an actuator
-    """
-
-    def __init__(self, serial_port: str, baud_rate: int) -> None:
+    def __init__(self, port: str, baud_rate: int) -> None:
         self.logger = logging.getLogger(__name__)
         try:
             self.serial = serial.Serial(
-                port=serial_port,
+                port=port,
                 baudrate=baud_rate,
                 bytesize=serial.EIGHTBITS,
                 stopbits=serial.STOPBITS_ONE,
@@ -32,22 +26,22 @@ class SerialActuatorLink(AbstractActuatorLink):
                 self.serial.close()
                 self.serial.open()
             else:
-                raise Exception("Error initializing serial port: " + str(e))
+                raise Exception(f"Error initializing serial port: {e}")
 
-    def send_command(self, cmd: bytes, wait_response: bool, timeout: float) -> bytearray:
+    def send(self, command: str, wait_response: bool = False, timeout: float = None) -> str:
+        """Envoie une commande texte sur le port serie, retourne la reponse si demandee."""
         response = bytearray()
         try:
-            self.serial.write(cmd)
-            self.serial.write(f"\n".encode())
+            self.serial.write(command.encode())
+            self.serial.write(b"\n")
             self.serial.flush()
 
-            writetime = time.time()
+            write_time = time.time()
             while wait_response:
-                # Read data from the serial port
                 data = self.serial.read()
-                if not data and (len(response) > 0 or time.time() - writetime > timeout):
+                if not data and (len(response) > 0 or time.time() - write_time > (timeout or 1.0)):
                     break
                 response.extend(data)
         except serial.SerialException as e:
-            raise Exception("Error sending command: " + str(e))
-        return response
+            raise Exception(f"Error sending command: {e}")
+        return response.decode(errors='replace').strip() if response else ""
