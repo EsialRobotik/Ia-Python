@@ -1,5 +1,5 @@
 {
-  "desc": "Pami 1 - 2025",
+  "desc": "Pami 1 - 2026",
   "matchDuration": 100,
   "marge": 80,
   "gpioColorSelector": 27,
@@ -54,7 +54,7 @@
     }
   },
   "actions": {
-    "dataDir": "/home/pi/IAPYTHON/config/2025/pami1/actions",
+    "dataDir": "/home/pi/IAPYTHON/config/2026/pami1/actions",
     "init": []
   }
 }
