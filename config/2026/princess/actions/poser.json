@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "p",
+    "description": "Poser les caisses de noisettes",
+    "payload": {
+        "type": "position",
+        "id": 13,
+        "angleDegree": 38
+    }
+}

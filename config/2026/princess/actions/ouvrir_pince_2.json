@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "o2",
+    "description": "Ouvre la pince 2",
+    "payload": {
+        "type": "position",
+        "id": 3,
+        "angleDegree": 130
+    }
+}

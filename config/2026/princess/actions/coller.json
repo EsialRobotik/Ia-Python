@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "c",
+    "description": "Rapproche (colle) toutes les pinces",
+    "payload": {
+        "type": "position",
+        "id": 5,
+        "angleDegree": 271
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "l",
+    "description": "Lèce les caisses de noisettes",
+    "payload": {
+        "type": "position",
+        "id": 13,
+        "angleDegree": 235
+    }
+}

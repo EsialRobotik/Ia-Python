@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "t40",
+    "description": "Tourne la pince 4 à 0°",
+    "payload": {
+        "type": "position",
+        "id": 23,
+        "angleDegree": 0
+    }
+}

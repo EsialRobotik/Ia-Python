@@ -1,0 +1,13 @@
+{
+    "type": "list",
+    "alias": "o",
+    "dscription": "Ouvre toutes les pinces",
+    "payload": {
+        "list": [
+            "ouvrir_pince_1",
+            "ouvrir_pince_2",
+            "ouvrir_pince_3",
+            "ouvrir_pince_4"
+        ]
+    }
+}

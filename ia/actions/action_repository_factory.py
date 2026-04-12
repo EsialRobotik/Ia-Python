@@ -28,6 +28,10 @@ class ActionRepositoryFactory:
         actions_count = 0
         actions_alias_count = 0
         action_repository = ActionRepository(dict())
+        if os.path.isdir(folder):
+            logger.info(f"data dir : {folder}")
+        else:
+            logger.error(f"data dir does not exist : {folder}")
         for root, dirs, files in os.walk(folder):
             for file in files:
                 if file.endswith(".json"):

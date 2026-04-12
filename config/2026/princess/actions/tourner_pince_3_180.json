@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "t3180",
+    "description": "Tourne la pince 3 à 180°",
+    "payload": {
+        "type": "position",
+        "id": 22,
+        "angleDegree": 180
+    }
+}
