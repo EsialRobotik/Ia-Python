@@ -2,6 +2,7 @@ import argparse
 import logging.handlers
 import sys
 
+from ia.tests.test_calage import TestCalage
 from ia.tests.test_pathfinding import TestPathfinding
 from ia.tests.test_srf08 import TestSrf08
 from ia.tests.test_strategy_manager import TestStrategyManager
@@ -71,6 +72,8 @@ if __name__ == "__main__":
             TestLidar(config_data, args.year, robot).test()
         case 'asserv':
             TestAsserv(config_data, args.year, robot).test()
+        case 'callage':
+            TestCalage(config_data, args.year, robot).test()
         case 'actions':
             TestActions(config_data, args.year, robot).test()
         case 'pathfinding':
