@@ -121,3 +121,13 @@ class AX12LinkSerial:
             bool: True if RTS is enabled, False otherwise.
         """
         return self.rts_enabled
+
+    def shutdown(self) -> None:
+        """Desactive le couple de tous les AX12 et ferme le port serie."""
+        from ia.api.ax12.ax12_servo import AX12Servo
+        from ia.api.ax12.enums.ax12_address import AX12Address
+        self.enable_dtr(False)
+        self.enable_rts(False)
+        ax = AX12Servo(AX12Address.AX12_ADDRESS_BROADCAST.value, self)
+        ax.disable_torque()
+        self.serial.close()

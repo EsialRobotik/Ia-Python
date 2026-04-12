@@ -6,8 +6,6 @@ import time
 from ia.actions.action_repository_factory import ActionRepositoryFactory
 from ia.actions.serial_port import SerialPort
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
-from ia.api.ax12.ax12_servo import AX12Servo
-from ia.api.ax12.enums.ax12_address import AX12Address
 from ia.api.chrono import Chrono
 from ia.api.color_selector import ColorSelector
 from ia.api.detection.lidar.lidar_rpa2 import LidarRpA2
@@ -88,15 +86,7 @@ if __name__ == "__main__":
             serial_port=config_data["actions"]["ax12"]["serialPort"],
             baud_rate=config_data["actions"]["ax12"]["baudRate"]
         )
-        def make_ax12_stop_hook(link):
-            def hook():
-                link.enable_dtr(False)
-                link.enable_rts(False)
-                ax = AX12Servo(AX12Address.AX12_ADDRESS_BROADCAST.value, link)
-                ax.disable_torque()
-                link.serial.close()
-            return hook
-        stop_hooks.append(make_ax12_stop_hook(ax12_link))
+        stop_hooks.append(ax12_link.shutdown)
     if config_data['actions'].get('actuators') is not None:
         for actuator_config in config_data['actions']['actuators']:
             if actuator_config['type'] == 'serial':
