@@ -28,8 +28,9 @@ class ActionManager:
         self.logger.info(f"Execute action {action_id}")
         self.action_flag = None
         self.current_action = self.action_repository.get_action(action_id)
-        self.current_action.reset()
-        self.current_action.execute()
+        if self.current_action is not None:
+            self.current_action.reset()
+            self.current_action.execute()
 
     def stop_actions(self) -> None:
         if self.current_action is not None:
@@ -41,6 +42,8 @@ class ActionManager:
                 self.logger.error(f"Error in stop hook: {e}")
 
     def is_last_execution_finished(self) -> bool:
+        if self.current_action is None:
+            return True
         if self.current_action.finished():
             self.action_flag = self.current_action.get_flag()
             self.logger.info("Action finished")
