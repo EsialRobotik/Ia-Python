@@ -1,0 +1,13 @@
+{
+    "type": "list",
+    "alias": "f",
+    "dscription": "Ferme toutes les pinces",
+    "payload": {
+        "list": [
+            "fermer_pince_1",
+            "fermer_pince_2",
+            "fermer_pince_3",
+            "fermer_pince_4"
+        ]
+    }
+}

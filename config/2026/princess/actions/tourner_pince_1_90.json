@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "t190",
+    "description": "Tourne la pince 1 à 90°",
+    "payload": {
+        "type": "position",
+        "id": 20,
+        "angleDegree": 90
+    }
+}

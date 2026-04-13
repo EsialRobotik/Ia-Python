@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "f1",
+    "description": "Fermeuvre la pince 1",
+    "payload": {
+        "type": "position",
+        "id": 10,
+        "angleDegree": 202
+    }
+}

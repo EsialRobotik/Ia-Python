@@ -176,15 +176,8 @@
       "test-id": 12
     },
     "actuators": [
-      {
-        "type": "serial",
-        "id": "pompes",
-        "comment": "Arduino Pompes",
-        "serialPort": "/dev/serial/by-id/usb-1a86_USB2.0-Ser_-if00-port0",
-        "baudRate": 115200
-      }
     ],
-    "dataDir": "/home/pi/IAPYTHON/config/princess/2026/actions",
+    "dataDir": "/home/pi/IAPYTHON/config/2026/princess/actions",
     "init": [
       "ascenseur_init"
     ]

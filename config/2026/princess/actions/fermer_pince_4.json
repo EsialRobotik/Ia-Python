@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "f4",
+    "description": "Ferme la pince 4",
+    "payload": {
+        "type": "position",
+        "id": 9,
+        "angleDegree": 185
+    }
+}
