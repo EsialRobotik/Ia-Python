@@ -273,8 +273,8 @@ class MasterLoop:
             self.score += self.current_objective.points
             self.update_score()
 
-            if self.current_objective.action_flag is not None:
-                self.logger.info(f"Lever de l'action flage : {self.current_objective.action_flag}")
+            if self.current_objective is not None and self.current_objective.action_flag is not None:
+                self.logger.info(f"Lever de l'action flag : {self.current_objective.action_flag}")
                 self.strategy_manager.add_action_flag(self.current_objective.action_flag)
 
             self.current_objective = self.strategy_manager.get_next_objective()
