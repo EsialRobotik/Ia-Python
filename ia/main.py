@@ -6,6 +6,7 @@ import time
 from ia.actions.action_repository_factory import ActionRepositoryFactory
 from ia.actions.serial_port import SerialPort
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
+from ia.api.camera import Camera
 from ia.api.chrono import Chrono
 from ia.api.color_selector import ColorSelector
 from ia.api.detection.lidar.lidar_rpa2 import LidarRpA2
@@ -81,6 +82,7 @@ if __name__ == "__main__":
     ax12_link = None
     serial_ports = {}
     stop_hooks = []
+    camera = None
     if config_data['actions'].get('ax12') is not None:
         ax12_link = AX12LinkSerial(
             serial_port=config_data["actions"]["ax12"]["serialPort"],
@@ -92,10 +94,14 @@ if __name__ == "__main__":
             if actuator_config['type'] == 'serial':
                 port_id = actuator_config.get('id', str(len(serial_ports)))
                 serial_ports[port_id] = SerialPort(actuator_config['serialPort'], actuator_config['baudRate'])
+    if config_data['actions'].get('camera') is not None:
+        camera = Camera()
+        stop_hooks.append(camera.release)
     action_repository = ActionRepositoryFactory.from_json_files(
         folder=config_data['actions']['dataDir'],
         ax12_link_serial=ax12_link,
-        serial_ports=serial_ports
+        serial_ports=serial_ports,
+        camera=camera,
     )
     action_manager = ActionManager(
         action_repository=action_repository,

@@ -14,11 +14,14 @@ ia/actions/
 ├── action_repository.py        # Stockage cle/valeur des actions instanciees
 ├── action_repository_factory.py  # Charge les JSON et instancie les actions
 └── types/                      # Un fichier par type d'action
-    ├── action_wait.py          # type: "wait"
-    ├── action_list.py          # type: "list"
-    ├── action_ax12.py          # type: "AX12"
-    ├── action_actuator.py      # type: "actuator"
-    └── action_pwm_servo.py     # type: "pwm_servo"
+    ├── action_wait.py                  # type: "wait"
+    ├── action_list.py                  # type: "list"
+    ├── action_list_join.py             # type: "list_join"
+    ├── action_ax12.py                  # type: "AX12"
+    ├── action_actuator.py              # type: "actuator"
+    ├── action_pwm_servo.py             # type: "pwm_servo"
+    ├── action_camera_init.py           # type: "camera_init"
+    └── action_camera_detect_aruco.py   # type: "camera_detect_aruco"
 ```
 
 ## Fonctionnement
@@ -139,6 +142,27 @@ Sous-types disponibles dans `payload.type` :
 Execute les actions referencees une par une dans l'ordre.
 Les identifiants doivent correspondre a des actions presentes dans le repository.
 
+#### list_join - Execution parallele
+
+```json
+{
+    "type": "list_join",
+    "alias": "o",
+    "payload": {
+        "list": [
+            "ouvrir_pince_1",
+            "ouvrir_pince_2",
+            "ouvrir_pince_3",
+            "ouvrir_pince_4"
+        ]
+    }
+}
+```
+
+Meme payload que `list`, mais lance toutes les actions simultanement (appel non-bloquant
+en rafale) puis attend que toutes soient terminees avant de se marquer comme finie.
+Utile pour declencher des mouvements de servos en parallele.
+
 #### actuator - Commandes serie
 
 ```json
@@ -174,6 +198,102 @@ Les identifiants doivent correspondre a des actions presentes dans le repository
 
 - `loop: true` : repete la sequence indefiniment (l'action est consideree terminee immediatement)
 - `loop: false` : execute la sequence une fois
+
+#### camera_init - Initialisation de la camera
+
+```json
+{
+    "type": "camera_init",
+    "description": "Initialise la camera Raspberry Pi",
+    "payload": {}
+}
+```
+
+Initialise le hardware Picamera2. **Doit etre executee une seule fois au demarrage**,
+sinon les actions camera suivantes resteront bloquees. Typiquement placee dans
+`actions.init` de `config.json`.
+
+Cette action necessite que la camera soit declaree dans `config.json` :
+
+```json
+"actions": {
+    "camera": { "active": true },
+    ...
+}
+```
+
+Si la section `camera` est absente, l'instanciation de l'action echoue au demarrage.
+
+#### camera_detect_aruco - Detection de marqueurs ArUco
+
+Prend une photo, detecte les marqueurs ArUco presents et leve des flags selon
+des regles configurables. Suppose que `camera_init` a deja ete executee.
+
+```json
+{
+    "type": "camera_detect_aruco",
+    "alias": "detect_nj",
+    "payload": {
+        "dictionary": "DICT_4X4_100",
+        "markers": {
+            "47": "yellow",
+            "36": "blue"
+        },
+        "sort": "left_to_right",
+        "expected_count": 4,
+        "rules": [
+            {
+                "type": "positional_label_mismatch",
+                "expected_label": "yellow",
+                "flag_template": "rotateNut{index}",
+                "index_start": 1
+            }
+        ]
+    }
+}
+```
+
+**Payload :**
+- `dictionary` (requis) : nom du dictionnaire ArUco OpenCV. Dictionnaires supportes :
+  `DICT_4X4_50`, `DICT_4X4_100`, `DICT_4X4_250`, `DICT_4X4_1000`,
+  `DICT_5X5_50`, `DICT_5X5_100`, `DICT_5X5_250`, `DICT_5X5_1000`,
+  `DICT_6X6_50`, `DICT_6X6_100`, `DICT_6X6_250`, `DICT_6X6_1000`.
+- `markers` (requis) : table `{ "id_aruco": "label" }` associant un id de marqueur
+  a un label logique. Les marqueurs detectes dont l'id n'est pas dans cette table
+  sont ignores.
+- `sort` (optionnel) : ordre de tri des detections. Valeurs possibles :
+  `left_to_right`, `right_to_left`, `top_to_bottom`, `bottom_to_top`. Sans tri,
+  l'ordre retourne par OpenCV est conserve.
+- `expected_count` (optionnel) : si le nombre de marqueurs detectes ne correspond
+  pas, les regles ne sont pas appliquees (un warning est logge). Utile pour
+  garantir la fiabilite d'une detection.
+- `rules` (optionnel) : liste de regles qui produisent des flags a partir des
+  detections. Les flags leves sont exposes via `get_flags()` et aggreges par
+  le `StrategyManager` a la fin de l'action.
+
+**Regles disponibles :**
+
+1. `positional_label_mismatch` : pour chaque detection a la position i, si
+   son label n'est pas `expected_label`, leve le flag `flag_template.format(index=i + index_start)`.
+   Sert a demander une correction position par position.
+   - `expected_label` (requis) : label attendu a chaque position
+   - `flag_template` (requis) : gabarit du flag, avec `{index}` remplace par l'index
+   - `index_start` (optionnel, defaut 0) : decalage ajoute a l'index
+
+2. `label_present` : si au moins un marqueur avec ce label est detecte, leve le flag.
+   - `label` (requis) : label a chercher
+   - `flag` (requis) : flag a lever
+
+3. `label_absent` : si aucun marqueur avec ce label n'est detecte, leve le flag.
+   - `label` (requis) : label a chercher
+   - `flag` (requis) : flag a lever
+
+**Exemple concret** (cas noisettes 2026) : detecter les 4 caisses, identifier
+leur couleur via les marqueurs 47 (jaune) et 36 (bleu), trier gauche-a-droite,
+puis lever `rotateNut1`..`rotateNut4` pour chaque caisse qui n'est pas jaune.
+
+Le JSON ci-dessus produit exactement ce comportement. Pour la variante bleue,
+changer `expected_label` en `"blue"`.
 
 ## Tester les actions
 

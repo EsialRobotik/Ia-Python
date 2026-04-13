@@ -177,9 +177,13 @@
     },
     "actuators": [
     ],
+    "camera": {
+      "active": true
+    },
     "dataDir": "/home/pi/IAPYTHON/config/2026/princess/actions",
     "init": [
-      "ascenseur_init"
+      "ascenseur_init",
+      "camera_init"
     ]
   }
 }

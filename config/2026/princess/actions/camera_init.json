@@ -1,0 +1,5 @@
+{
+    "type": "camera_init",
+    "description": "Initialise la caméra Raspberry Pi",
+    "payload": {}
+}
