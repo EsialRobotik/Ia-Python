@@ -10,7 +10,7 @@ from ia.actions.threaded_action import ThreadedAction
 class ActionListJoin(ThreadedAction):
     """Lance toutes les actions de la liste en parallèle et attend qu'elles soient toutes terminées."""
 
-    def __init__(self, action_repository, action_list: List[str], flags: Optional[str] = None) -> None:
+    def __init__(self, action_repository, action_list: List[str], flags: Optional[list[str]] = None) -> None:
         super().__init__(flags)
         self.action_list = action_list
         self.action_repository = action_repository

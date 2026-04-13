@@ -10,7 +10,7 @@ from ia.actions.serial_port import SerialPort
 class ActionActuator(ThreadedAction):
     """Envoie une sequence de commandes texte a un actionneur via port serie."""
 
-    def __init__(self, port: SerialPort, commands: list[dict], flags: Optional[str] = None) -> None:
+    def __init__(self, port: SerialPort, commands: list[dict], flags: Optional[list[str]] = None) -> None:
         super().__init__(flags)
         self.logger = logging.getLogger(__name__)
         self.port = port

@@ -36,8 +36,8 @@ class AbstractAction(ABC):
         pass
 
     @abstractmethod
-    def get_flag(self) -> Optional[str]:
+    def get_flags(self) -> Optional[list[str]]:
         """
-        Return potential existing flag of the action to help AI in its decision process
+        Return potential existing flags of the action to help AI in its decision process
         """
         pass

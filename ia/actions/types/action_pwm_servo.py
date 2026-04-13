@@ -11,7 +11,7 @@ from ia.actions.threaded_action import ThreadedAction
 class ActionPwmServo(ThreadedAction):
     """Controle un servo PWM via GPIO."""
 
-    def __init__(self, gpio: int, loop: bool, angles: list[int], flags: Optional[str] = None) -> None:
+    def __init__(self, gpio: int, loop: bool, angles: list[int], flags: Optional[list[str]] = None) -> None:
         super().__init__(flags)
         self.servo = AngularServo(
             pin=gpio,

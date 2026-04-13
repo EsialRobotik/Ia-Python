@@ -14,7 +14,7 @@ class ActionManager:
         actions_config: Dict,
         stop_hooks: Optional[List[Callable]] = None
     ) -> None:
-        self.action_flag = None
+        self.action_flags: Optional[list[str]] = None
         self.current_action: Optional[AbstractAction] = None
         self.actions_config = actions_config
         self.action_repository = action_repository
@@ -26,7 +26,7 @@ class ActionManager:
 
     def execute_command(self, action_id: str) -> None:
         self.logger.info(f"Execute action {action_id}")
-        self.action_flag = None
+        self.action_flags = None
         self.current_action = self.action_repository.get_action(action_id)
         if self.current_action is not None:
             self.current_action.reset()
@@ -45,7 +45,7 @@ class ActionManager:
         if self.current_action is None:
             return True
         if self.current_action.finished():
-            self.action_flag = self.current_action.get_flag()
+            self.action_flags = self.current_action.get_flags()
             self.logger.info("Action finished")
             return True
         return False

@@ -10,7 +10,7 @@ from ia.actions.threaded_action import ThreadedAction
 class ActionList(ThreadedAction):
     """Execute une liste d'actions sequentiellement."""
 
-    def __init__(self, action_repository, action_list: List[str], flags: Optional[str] = None) -> None:
+    def __init__(self, action_repository, action_list: List[str], flags: Optional[list[str]] = None) -> None:
         super().__init__(flags)
         self.action_list = action_list
         self.action_repository = action_repository

@@ -31,7 +31,7 @@ Chaque action implemente 5 methodes definies dans `AbstractAction` :
 2. **`finished()`** - Retourne `True` quand l'action est terminee.
 3. **`stop()`** - Arrete immediatement l'action.
 4. **`reset()`** - Reinitialise l'action pour pouvoir la relancer.
-5. **`get_flag()`** - Retourne un flag optionnel qui influence les decisions de la strategie.
+5. **`get_flags()`** - Retourne une liste optionnelle de flags qui influencent les decisions de la strategie.
 
 ### Auto-enregistrement
 
@@ -63,7 +63,7 @@ class MonAction(ThreadedAction):
         self._finished = True
 ```
 
-Les methodes `execute()`, `finished()`, `stop()`, `reset()` et `get_flag()`
+Les methodes `execute()`, `finished()`, `stop()`, `reset()` et `get_flags()`
 sont deja implementees par `ThreadedAction`.
 
 Pour les actions synchrones (ex: AX12 qui ne necessite pas de thread), heriter
@@ -210,7 +210,7 @@ from ia.actions.threaded_action import ThreadedAction
 @action_type("mon_type")
 class ActionMonType(ThreadedAction):
 
-    def __init__(self, param1, param2, flags: Optional[str] = None) -> None:
+    def __init__(self, param1, param2, flags: Optional[list[str]] = None) -> None:
         super().__init__(flags)
         self.param1 = param1
         self.param2 = param2
@@ -284,6 +284,6 @@ class ActionInstant(AbstractAction):
     def reset(self):
         self._executed = False
 
-    def get_flag(self):
+    def get_flags(self):
         return None
 ```

@@ -82,7 +82,7 @@ puis les exécuter pour régénérer le strategy.json.
 ### Framework d'actions
 
 Les actions héritent de `ia/actions/abstract_action.py` et implémentent `execute()`, `finished()`, `stop()`, `reset()`,
-`get_flag()`. L'`ActionRepositoryFactory` instancie les actions depuis la config JSON. Types d'actions : servo PWM, 
+`get_flags()`. L'`ActionRepositoryFactory` instancie les actions depuis la config JSON. Types d'actions : servo PWM, 
 séquences AX-12, actionneurs GPIO, attentes.
 
 ### Déroulement d'un match

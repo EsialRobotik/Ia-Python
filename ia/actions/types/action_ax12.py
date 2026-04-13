@@ -10,7 +10,7 @@ from ia.api.ax12.ax12_servo import AX12Servo
 class ActionAX12(AbstractAction):
     """Pilote un servo AX12 : position, disableTorque, complianceSlope, complianceMargin."""
 
-    def __init__(self, servo: AX12Servo, command: str, params: dict, flags: Optional[str] = None) -> None:
+    def __init__(self, servo: AX12Servo, command: str, params: dict, flags: Optional[list[str]] = None) -> None:
         self.servo = servo
         self.command = command
         self.params = params
@@ -69,7 +69,7 @@ class ActionAX12(AbstractAction):
         self._executed = False
         self._command_sent = False
 
-    def get_flag(self) -> Optional[str]:
+    def get_flags(self) -> Optional[list[str]]:
         return self.flags
 
     def _parse_angle(self) -> AX12Position:

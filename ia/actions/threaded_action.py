@@ -8,7 +8,7 @@ from ia.actions.abstract_action import AbstractAction
 class ThreadedAction(AbstractAction):
     """Base pour toute action qui s'execute dans un thread daemon."""
 
-    def __init__(self, flags: Optional[str] = None) -> None:
+    def __init__(self, flags: Optional[list[str]] = None) -> None:
         self.flags = flags
         self._thread: Optional[threading.Thread] = None
         self._finished = False
@@ -36,7 +36,7 @@ class ThreadedAction(AbstractAction):
         self._finished = False
         self._stop_requested = False
 
-    def get_flag(self) -> Optional[str]:
+    def get_flags(self) -> Optional[list[str]]:
         return self.flags
 
     @abstractmethod
