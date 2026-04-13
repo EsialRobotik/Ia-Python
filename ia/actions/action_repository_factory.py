@@ -25,6 +25,9 @@ class ActionRepositoryFactory:
         actions_count = 0
         actions_alias_count = 0
 
+        if not os.path.isdir(folder):
+            raise FileNotFoundError(f"Actions folder not found: {folder}")
+
         deps = {
             "ax12_link": ax12_link_serial,
             "serial_ports": serial_ports or {},
