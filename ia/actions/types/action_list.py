@@ -44,6 +44,7 @@ class ActionList(ThreadedAction):
                 logger.error(f"no action with id {action_id} found in action list")
                 continue
             action = self.action_repository.get_action(action_id)
+            action.reset()
             action.execute()
             while not action.finished() and not self._stop_requested:
                 time.sleep(0.01)
