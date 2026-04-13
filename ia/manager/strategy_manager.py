@@ -57,21 +57,33 @@ class StrategyManager:
         Args:
             flag (str): The action flag to be added.
         """
-        self.action_flags.append(flag)
+        if flag not in self.action_flags:
+            self.action_flags.append(flag)
+
+    def remove_action_flag(self, flag: str) -> None:
+        """
+        Remove an action flag from the action_flags list if present.
+
+        Args:
+            flag (str): The action flag to be removed.
+        """
+        if flag in self.action_flags:
+            self.action_flags.remove(flag)
 
     def get_next_objective(self) -> Optional[Objective]:
         """
-        Get the next objective to perform.
+        Get the next objective to perform, skipping those whose needed_flag is missing.
 
         Returns:
             objective | None: The next objective to perform or None if all objectives are finished.
         """
-        # TODO: Devenir intelligent avec gestion des flags, des priorités, etc.
+        # TODO: Devenir intelligent avec gestion des priorités, etc.
 
-        if self.current_index >= len(self.objectives):
-            return None
+        while self.current_index < len(self.objectives):
+            next_objective = self.objectives[self.current_index]
+            self.current_index += 1
+            if next_objective.needed_flag is not None and next_objective.needed_flag not in self.action_flags:
+                continue
+            return next_objective
 
-        next_objective = self.objectives[self.current_index]
-        self.current_index += 1
-
-        return next_objective
+        return None

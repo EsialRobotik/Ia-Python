@@ -15,7 +15,6 @@ class AbstractTask:
         self.mirror = mirror
         self.timeout = timeout
         self.item_id = item_id
-        self.skip_flag = None
         self.needed_flag = None
         self.path_finding = None
         self.end_point = None
@@ -38,8 +37,7 @@ class AbstractTask:
                 "mirror": self.mirror.value,
                 "timeout": self.timeout,
                 "item_id": self.item_id,
-                "skip_flag": self.skip_flag,
-                "needed_flag": self.needed_flag
+                "needed_flag": self.needed_flag,
             }
 
     def __str__(self):
@@ -53,14 +51,9 @@ class AbstractTask:
             f"subtype={self.subtype}, "
             f"action_id={self.action_id}, "
             f"item_id={self.item_id}, "
-            f"skip_flag={self.skip_flag}, "
             f"needed_flag={self.needed_flag}"
             f"}}"
         )
-
-    def set_skip_flag(self, skip_flag):
-        self.skip_flag = skip_flag
-        return self
 
     def set_needed_flag(self, needed_flag):
         self.needed_flag = needed_flag

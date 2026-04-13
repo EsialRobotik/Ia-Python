@@ -277,6 +277,11 @@ class MasterLoop:
                 self.logger.info(f"Lever de l'action flag : {self.current_objective.action_flag}")
                 self.strategy_manager.add_action_flag(self.current_objective.action_flag)
 
+            if self.current_objective is not None and self.current_objective.clear_flags is not None:
+                for flag in self.current_objective.clear_flags:
+                    self.logger.info(f"Retrait de l'action flag : {flag}")
+                    self.strategy_manager.remove_action_flag(flag)
+
             self.current_objective = self.strategy_manager.get_next_objective()
             if self.current_objective is None:
                 self.logger.info("Plus d'objectif, fin du match")

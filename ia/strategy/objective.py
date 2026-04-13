@@ -22,12 +22,12 @@ class Objective:
         Priority of the objective.
     step_list : list
         List of steps associated with the objective.
-    skip_flag : str, optional
-        Flag indicating if the objective should be skipped, default is None.
     needed_flag : str, optional
         Flag needed to execute the objective, default is None.
     action_flag : str, optional
-        Flag raised when strategy is finished, default is None.
+        Flag raised when objective is finished, default is None.
+    clear_flags : list[str], optional
+        Flags removed from the active flags when objective is finished, default is None.
     logger : logging.Logger
         Logger for the objective.
     """
@@ -49,15 +49,15 @@ class Objective:
         self.step_list = []
         for step_config in objective_config.get('tasks'):
             self.step_list.append(Step(step_config))
-        self.skip_flag = objective_config.get('skipFlag', None)
-        self.needed_flag = objective_config.get('neededFlag', None)
-        self.action_flag = objective_config.get('actionFlag', None)
+        self.needed_flag = objective_config.get('needed_flag', None)
+        self.action_flag = objective_config.get('action_flag', None)
+        self.clear_flags = objective_config.get('clear_flags', None)
         self.logger = logging.getLogger(__name__)
 
     def __str__(self):
         return (f"Objective(description={self.description}, objective_id={self.id}, "
-            f"points={self.points}, priority={self.priority}, skip_flag={self.skip_flag}, "
-            f"needed_flag={self.needed_flag})")
+            f"points={self.points}, priority={self.priority}, needed_flag={self.needed_flag}, "
+            f"action_flag={self.action_flag}, clear_flags={self.clear_flags})")
 
     def has_next_step(self) -> bool:
         """
@@ -70,23 +70,19 @@ class Objective:
 
     def get_next_step(self, flags: List[str]) -> Optional[Step]:
         """
-        Get the next strategy in the strategy list, considering skip and needed flags and increment cursor.
+        Get the next step in the step list, skipping those whose needed_flag is missing from the active flags.
 
         Returns:
-            step: The next strategy if available, otherwise None.
+            step: The next step if available, otherwise None.
         """
         self.step_index += 1
         step = self.step_list[self.step_index]
 
-        if step.skip_flag is None and step.needed_flag is None:
-            return step
-
-        while ((step.skip_flag is not None and step.skip_flag in flags)
-            or (step.needed_flag is not None and step.needed_flag not in flags)):
-            self.logger.info(f'Skip strategy {step.step_id}')
-            self.step_index += 1
+        while step.needed_flag is not None and step.needed_flag not in flags:
+            self.logger.info(f'Skip step {step.description} (missing flag {step.needed_flag})')
             if not self.has_next_step():
                 return None
+            self.step_index += 1
             step = self.step_list[self.step_index]
 
         return step

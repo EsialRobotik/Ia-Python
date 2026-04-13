@@ -20,11 +20,29 @@ class TaskList:
             self.mirror_tasks.append(None)
         return True
 
-    def generate_objective(self, name: str, id: int, score: int, priority: int, skip_flag: Optional[str] = None) -> Objective:
-        return Objective(name, id, score, priority, self.tasks, skip_flag)
+    def generate_objective(
+        self,
+        name: str,
+        id: int,
+        score: int,
+        priority: int,
+        needed_flag: Optional[str] = None,
+        action_flag: Optional[str] = None,
+        clear_flags: Optional[List[str]] = None,
+    ) -> Objective:
+        return Objective(name, id, score, priority, self.tasks, needed_flag, action_flag, clear_flags)
 
-    def generate_mirror_objective(self, name: str, id: int, score: int, priority: int, skip_flag: Optional[str] = None) -> Objective:
-        objective = Objective(name, id, score, priority, None, skip_flag)
+    def generate_mirror_objective(
+        self,
+        name: str,
+        id: int,
+        score: int,
+        priority: int,
+        needed_flag: Optional[str] = None,
+        action_flag: Optional[str] = None,
+        clear_flags: Optional[List[str]] = None,
+    ) -> Objective:
+        objective = Objective(name, id, score, priority, None, needed_flag, action_flag, clear_flags)
         try:
             mirror_size = self.mirror_size if self.mirror_size > 0 else 3000
             objective.generate_mirror(self.tasks, self.mirror_tasks, mirror_size)
