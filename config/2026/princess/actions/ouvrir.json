@@ -1,5 +1,5 @@
 {
-    "type": "list",
+    "type": "list_join",
     "alias": "o",
     "dscription": "Ouvre toutes les pinces",
     "payload": {
