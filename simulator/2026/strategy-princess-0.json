@@ -1,0 +1,353 @@
+[
+    {
+        "task": "Position de d\u00e9part",
+        "command": "start",
+        "position": {
+            "x": 150,
+            "y": 350,
+            "theta": 0
+        }
+    },
+    {
+        "task": "On quitte la zone de d\u00e9part",
+        "command": "goto#350;350",
+        "position": {
+            "x": 350,
+            "y": 350,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Position caisse 3",
+        "command": "goto-astar#350;350",
+        "position": {
+            "x": 350,
+            "y": 350,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Position caisse 3",
+        "command": "goto-astar#610;440",
+        "position": {
+            "x": 610,
+            "y": 440,
+            "theta": 0.3332443011116727
+        }
+    },
+    {
+        "task": "Position caisse 3",
+        "command": "goto-astar#810;990",
+        "position": {
+            "x": 810,
+            "y": 990,
+            "theta": 1.2220253232109897
+        }
+    },
+    {
+        "task": "Position caisse 3",
+        "command": "goto-astar#820;1150",
+        "position": {
+            "x": 820,
+            "y": 1150,
+            "theta": 1.5083775167989393
+        }
+    },
+    {
+        "task": "On s'aligne",
+        "command": "face#2000;1150",
+        "position": {
+            "x": 820,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Photo caisse 3",
+        "command": "action#detect_noisettes_jaunes",
+        "position": {
+            "x": 820,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On l\u00e8ve l'ascenseur",
+        "command": "action#lever",
+        "position": {
+            "x": 820,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On ouvre les doigts",
+        "command": "action#ouvrir",
+        "position": {
+            "x": 820,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Piano piano",
+        "command": "speed#50",
+        "position": {
+            "x": 820,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se colle aux caisse",
+        "command": "go#260",
+        "position": {
+            "x": 1080,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se d\u00e9colle des caisse",
+        "command": "go#-35",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On pose l'ascenseur",
+        "command": "action#poser",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On ferme les doigts",
+        "command": "action#fermer",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On l\u00e8ve l'ascenseur",
+        "command": "action#lever",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Bien \u00e9carter les caisses",
+        "command": "action#separer",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "SIT AND ROTATE 1",
+        "command": "action#tourner_pince_1_180",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "SIT AND ROTATE 2",
+        "command": "action#tourner_pince_2_180",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "SIT AND ROTATE 3",
+        "command": "action#tourner_pince_3_180",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "SIT AND ROTATE 4",
+        "command": "action#tourner_pince_4_180",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Les caisses qui collent",
+        "command": "action#coller",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Distorsion maximum",
+        "command": "speed#100",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 3",
+        "command": "delete-zone#caisse_jaune_3",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Position garde manger centre 1",
+        "command": "goto-astar#1045;1150",
+        "position": {
+            "x": 1045,
+            "y": 1150,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Position garde manger centre 1",
+        "command": "goto-astar#1200;1200",
+        "position": {
+            "x": 1200,
+            "y": 1200,
+            "theta": 0.3120421215625333
+        }
+    },
+    {
+        "task": "Position de largage",
+        "command": "goto#1200;1300",
+        "position": {
+            "x": 1200,
+            "y": 1300,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On se met en place",
+        "command": "go#100",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On pose les caisses",
+        "command": "action#poser",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On ouvre les doigts",
+        "command": "action#ouvrir",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On l\u00e8ve l'ascenseur",
+        "command": "action#lever",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On ferme les doigts",
+        "command": "action#fermer",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On reset 1",
+        "command": "action#tourner_pince_1_0",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On reset 2",
+        "command": "action#tourner_pince_2_0",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On reset 3",
+        "command": "action#tourner_pince_3_0",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On reset 4",
+        "command": "action#tourner_pince_4_0",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On reset les flags de rotations",
+        "command": "reset-flag#rotateNut1,rotateNut2,rotateNut3,rotateNut4",
+        "position": {
+            "x": 1200,
+            "y": 1400,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On recule",
+        "command": "go#-150",
+        "position": {
+            "x": 1200,
+            "y": 1250,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On se d\u00e9gage pour la suite",
+        "command": "goto-back#1200;1200",
+        "position": {
+            "x": 1200,
+            "y": 1200,
+            "theta": 1.5707963267948966
+        }
+    }
+]
