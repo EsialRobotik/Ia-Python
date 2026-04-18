@@ -8,3 +8,5 @@ textual
 PySide6
 cbor2
 crc
+picamera2
+opencv-python

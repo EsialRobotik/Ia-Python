@@ -1,0 +1,22 @@
+{
+    "type": "camera_detect_aruco",
+    "description": "Détecte les 4 caisses de noisettes et lève rotateNut1-4 pour chaque caisse qui n'est pas bleue",
+    "alias": "detect_nb",
+    "payload": {
+        "dictionary": "DICT_4X4_100",
+        "markers": {
+            "47": "yellow",
+            "36": "blue"
+        },
+        "sort": "left_to_right",
+        "expected_count": 4,
+        "rules": [
+            {
+                "type": "positional_label_mismatch",
+                "expected_label": "blue",
+                "flag_template": "rotateNut{index}",
+                "index_start": 1
+            }
+        ]
+    }
+}

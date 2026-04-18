@@ -3,84 +3,73 @@ import logging
 import os
 from typing import Optional
 
-from ia.actions.action_list import ActionList
-from ia.actions.action_pwm_servo import ActionPwmServo
 from ia.actions.action_repository import ActionRepository
-from ia.actions.action_wait import ActionWait
-from ia.actions.actuators.actuator_action_factory import ActuatorActionFactory
-from ia.actions.actuators.actuator_link_repository import ActuatorLinkRepository
-from ia.actions.ax12.action_ax12_factory import ActionAX12Factory
+from ia.actions.registry import ACTION_TYPES
+from ia.actions.serial_port import SerialPort
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
+from ia.api.camera import Camera
+
+# Importer le package types pour declencher l'enregistrement via @action_type
+import ia.actions.types  # noqa: F401
 
 
 class ActionRepositoryFactory:
-    """
-    Factory class to create an ActionRepository from various sources.
-    """
 
     @staticmethod
-    def from_json_files(folder: str, ax12_link_serial: Optional[AX12LinkSerial], actuator_link_repository: Optional[ActuatorLinkRepository]) -> ActionRepository:
-        """
-        Read all actions json found into the given folder and put them into an ActionRepository object
-        """
+    def from_json_files(
+        folder: str,
+        ax12_link_serial: Optional[AX12LinkSerial],
+        serial_ports: Optional[dict[str, SerialPort]],
+        camera: Optional[Camera] = None,
+    ) -> ActionRepository:
         logger = logging.getLogger(__name__)
-        actions = dict()
+        action_repository = ActionRepository()
         actions_count = 0
         actions_alias_count = 0
-        action_repository = ActionRepository(dict())
-        if os.path.isdir(folder):
-            logger.info(f"data dir : {folder}")
-        else:
-            logger.error(f"data dir does not exist : {folder}")
+
+        if not os.path.isdir(folder):
+            raise FileNotFoundError(f"Actions folder not found: {folder}")
+
+        deps = {
+            "ax12_link": ax12_link_serial,
+            "serial_ports": serial_ports or {},
+            "action_repository": action_repository,
+            "camera": camera,
+        }
+
         for root, dirs, files in os.walk(folder):
             for file in files:
-                if file.endswith(".json"):
-                    full_path = os.path.join(root, file)
-                    logger.info(f"loading {full_path}...")
-                    with open(full_path) as action_file:
-                        try:
-                            action_id_long = file[:-5]
-                            action_config = json.load(action_file)
-                            action_file.close()
+                if not file.endswith(".json"):
+                    continue
+                full_path = os.path.join(root, file)
+                logger.info(f"loading {full_path}...")
+                try:
+                    with open(full_path) as f:
+                        action_config = json.load(f)
 
-                            if "type" in action_config:
-                                action_type = action_config["type"]
-                                match action_type:
-                                    case "AX12":
-                                        ax12_action = ActionAX12Factory.action_ax12_from_json(action_config["payload"], ax12_link_serial)
-                                        actions[action_id_long] = ax12_action
-                                    case "wait":
-                                        if "duration" in action_config["payload"]:
-                                            actions[action_id_long] = ActionWait(action_config["payload"]["duration"], None)
-                                        else:
-                                            raise Exception(f"'duration' not found in wait action config payload")
-                                    case "list":
-                                        if "list" in action_config["payload"]:
-                                            action_list = ActionList(action_repository, action_config["payload"]["list"], None)
-                                            actions[action_id_long] = action_list
-                                        else:
-                                            raise Exception(f"'list' not found in list action config payload")
-                                    case "actuator":
-                                        actions[action_id_long] = ActuatorActionFactory.action_actuator_from_json(action_config["payload"], actuator_link_repository)
-                                    case "pwm_servo":
-                                        actions[action_id_long] = ActionPwmServo.from_json(action_config["payload"])
-                                    case default:
-                                        raise Exception(f"Unhandled action type : {action_type}")
-                            if "alias" in action_config:
-                                action_alias = action_config["alias"]
-                                if action_alias in actions:
-                                    logger.warning(f"Action alias '{action_alias}' already exists in action pool and will be ovveriden by action file {full_path}")
-                                else:
-                                    actions_alias_count += 1
-                                actions[action_alias] = actions[action_id_long]
-                            actions_count += 1
-                        except Exception as e:
-                            logger.error(f"loading error : {e}")
+                    action_id = file[:-5]
+                    action_type_name = action_config.get("type")
+                    if not action_type_name:
+                        raise ValueError(f"Missing 'type' in {full_path}")
 
-        logger.info(f"Count of actions loaded from json files : {actions_count} ({actions_alias_count} alias))")
-        for action_id in actions.keys():
-            action_repository.register_action(action_id, actions[action_id])
+                    cls = ACTION_TYPES.get(action_type_name)
+                    if cls is None:
+                        raise ValueError(f"Unhandled action type: {action_type_name}")
 
-        # TODO déclencher la vérification des ActionList
+                    action = cls.from_json(action_config.get("payload", {}), **deps)
+                    action_repository.register_action(action_id, action)
 
+                    if "alias" in action_config:
+                        alias = action_config["alias"]
+                        if action_repository.has_action(alias):
+                            logger.warning(f"Action alias '{alias}' already exists and will be overridden by {full_path}")
+                        else:
+                            actions_alias_count += 1
+                        action_repository.register_action(alias, action)
+
+                    actions_count += 1
+                except Exception as e:
+                    logger.error(f"loading error for {full_path}: {e}")
+
+        logger.info(f"Count of actions loaded from json files: {actions_count} ({actions_alias_count} alias)")
         return action_repository

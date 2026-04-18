@@ -27,8 +27,6 @@ class Step:
         Position associated with the strategy, default is (0, 0).
     item_id : int, optional
         Identifier of the item, if applicable.
-    skip_flag : str, optional
-            Flag indicating if the strategy should be skipped, default is None.
     needed_flag : str, optional
         Flag needed to execute the strategy, default is None.
     """
@@ -64,11 +62,10 @@ class Step:
         self.distance = config_node.get("dist", 0)
         self.item_id = config_node.get("item_id", None)
 
-        self.skip_flag = config_node.get("skip_flag", None)
         self.needed_flag = config_node.get("needed_flag", None)
 
     def __str__(self):
         return (f"Step{{desc='{self.description}', id_action={self.id_action}, "
                 f"position={self.position}, action_type={self.action_type}, sub_type={self.sub_type}, "
                 f"distance={self.distance}, timeout={self.timeout}, item_id={self.item_id}, "
-                f"skip_flag={self.skip_flag}, needed_flag={self.needed_flag}}}")
+                f"needed_flag={self.needed_flag}}}")

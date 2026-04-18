@@ -6,13 +6,25 @@ from strategy.task.abstract_task import AbstractTask
 
 
 class Objective:
-    def __init__(self, desc: str = "", id: int = 0, points: int = 0, priority: int = 0, tasks: Optional[List[AbstractTask]] = None, skip_flag: Optional[str] = None):
+    def __init__(
+        self,
+        desc: str = "",
+        id: int = 0,
+        points: int = 0,
+        priority: int = 0,
+        tasks: Optional[List[AbstractTask]] = None,
+        needed_flag: Optional[str] = None,
+        action_flag: Optional[str] = None,
+        clear_flags: Optional[List[str]] = None,
+    ):
         self.desc = desc
         self.id = id
         self.points = points
         self.priority = priority
         self.tasks = tasks if tasks is not None else []
-        self.skip_flag = skip_flag
+        self.needed_flag = needed_flag
+        self.action_flag = action_flag
+        self.clear_flags = clear_flags
 
     def generate_mirror(self, mirror_tasks: List[AbstractTask], specific_tasks: List[Optional[AbstractTask]], mirror_size: int = 3000) -> None:
         self.tasks = []
@@ -43,7 +55,9 @@ class Objective:
                 "points": self.points,
                 "priority": self.priority,
                 "tasks": [task.to_dict() for task in self.tasks],
-                "skip_flag": self.skip_flag
+                "needed_flag": self.needed_flag,
+                "action_flag": self.action_flag,
+                "clear_flags": self.clear_flags,
             }
 
     def __str__(self) -> str:
@@ -55,6 +69,8 @@ class Objective:
             f"\n\t\t\tpoints={self.points},"
             f"\n\t\t\tpriority={self.priority},"
             f"\n\t\t\ttasks=[{tasks}\n\t\t\t],"
-            f"\n\t\t\tskip_flag={self.skip_flag}"
+            f"\n\t\t\tneeded_flag={self.needed_flag},"
+            f"\n\t\t\taction_flag={self.action_flag},"
+            f"\n\t\t\tclear_flags={self.clear_flags}"
             f"\n\t\t}}"
         )

@@ -1,0 +1,16 @@
+{
+  "type": "list",
+  "alias": "t",
+  "dscription": "Test de list avec des list join",
+  "payload": {
+    "list": [
+      "lever",
+      "wait_1s",
+      "fermer",
+      "wait_1s",
+      "poser",
+      "wait_1s",
+      "ouvrir"
+    ]
+  }
+}

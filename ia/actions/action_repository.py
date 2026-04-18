@@ -1,45 +1,19 @@
 from ia.actions.abstract_action import AbstractAction
 
+
 class ActionRepository:
-    """
-    Class to manage a repository of actions.
-    """
 
-    def __init__(self, action_list: dict[str, AbstractAction]):
-        """
-        Initialize the ActionRepository with a dictionary of actions.
+    def __init__(self) -> None:
+        self._actions: dict[str, AbstractAction] = {}
 
-        :param action_list: A dictionary where the keys are action IDs and the values are AbstractAction instances.
-        """
-        self.actions_list = action_list
-    
     def has_action(self, action_id: str) -> bool:
-        """
-        Check if the action repository contains an action with the given ID.
-
-        :param action_id: The ID of the action to check.
-        :return: True if the action exists in the repository, False otherwise.
-        """
-        return action_id.upper() in self.actions_list
+        return action_id.upper() in self._actions
 
     def get_action(self, action_id: str) -> AbstractAction:
-        """
-        Retrieve an action from the repository by its ID.
-
-        :param action_id: The ID of the action to retrieve.
-        :return: The AbstractAction instance associated with the given ID.
-        :raises KeyError: If the action ID is not found in the repository.
-        """
-        if action_id.upper() in self.actions_list:
-            return self.actions_list[action_id.upper()]
-        else:
-            raise f'Action id {action_id} not found in action collection'
+        key = action_id.upper()
+        if key not in self._actions:
+            raise KeyError(f"Action id '{action_id}' not found in action collection")
+        return self._actions[key]
 
     def register_action(self, action_id: str, action: AbstractAction) -> None:
-        """
-        Register a new action in the repository.
-
-        :param action_id: The ID of the action to register.
-        :param action: The AbstractAction instance to register.
-        """
-        self.actions_list[action_id.upper()] = action
+        self._actions[action_id.upper()] = action
