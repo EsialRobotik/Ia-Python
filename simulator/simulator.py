@@ -270,11 +270,16 @@ class TableWidget(QWidget):
         painter.setPen(QPen(border_color, 2))
         painter.setBrush(QBrush(fill_color))
 
+        label_font = QFont("Sans", 8)
+        label_color = QColor(0, 0, 0)
+
         for zone in zones:
             if not zone.get("active", True):
                 continue
 
             forme = zone.get("forme", "")
+            center_pt = None
+
             if forme == "polygone":
                 points = zone.get("points", [])
                 if len(points) < 3:
@@ -284,6 +289,9 @@ class TableWidget(QWidget):
                     for p in points
                 ])
                 painter.drawPolygon(polygon)
+                cx = sum(p["x"] for p in points) / len(points)
+                cy = sum(p["y"] for p in points) / len(points)
+                center_pt = self._to_screen(cx, cy, scale, offset_x, offset_y)
 
             elif forme == "cercle":
                 centre = zone.get("centre", {})
@@ -294,6 +302,28 @@ class TableWidget(QWidget):
                 )
                 r_scaled = rayon * scale
                 painter.drawEllipse(center_pt, r_scaled, r_scaled)
+
+            label = zone.get("desc") or zone.get("id", "")
+            if label and center_pt is not None:
+                painter.save()
+                painter.setFont(label_font)
+                fm = painter.fontMetrics()
+                text_width = fm.horizontalAdvance(label)
+                text_height = fm.height()
+                padding = 4
+                bg_rect = QRectF(
+                    center_pt.x() - text_width / 2 - padding,
+                    center_pt.y() - text_height / 2 - padding,
+                    text_width + 2 * padding,
+                    text_height + 2 * padding,
+                )
+                painter.setPen(Qt.NoPen)
+                painter.setBrush(QColor(255, 255, 255, 200))
+                painter.drawRoundedRect(bg_rect, 3, 3)
+                painter.setPen(label_color)
+                painter.setBrush(Qt.NoBrush)
+                painter.drawText(bg_rect, Qt.AlignCenter, label)
+                painter.restore()
 
     # --- Détections temps réel ------------------------------------------------
 
