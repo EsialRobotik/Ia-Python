@@ -1,0 +1,21 @@
+{
+    "type": "list",
+    "alias": "rr",
+    "description": "Ressere et ouvre les pinces, les baisse, ferme les pinces, les relève, les écarte",
+    "payload": {
+        "list": [
+            "coller",
+            "tourner_pince_1_0",
+            "tourner_pince_2_0",
+            "tourner_pince_3_0",
+            "tourner_pince_4_0",
+            "ouvrir",
+            "poser",
+            "wait_250ms",
+            "fermer",
+            "wait_500ms",
+            "lever",
+            "separer"
+        ]
+    }
+}

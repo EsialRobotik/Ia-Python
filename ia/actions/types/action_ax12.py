@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from ia.actions.abstract_action import AbstractAction
@@ -17,6 +18,7 @@ class ActionAX12(AbstractAction):
         self.flags = flags
         self._executed = False
         self._command_sent = False
+        self.logger = logging.getLogger(__name__)
 
     @classmethod
     def from_json(cls, payload: dict, **deps) -> 'ActionAX12':
@@ -57,8 +59,13 @@ class ActionAX12(AbstractAction):
         if self._executed:
             return True
         if self.command == "position" and self._command_sent:
-            self._executed = not self.servo.is_moving()
-            return self._executed
+            try:
+                self._executed = not self.servo.is_moving()
+            except Exception as e:
+                self.logger.warning(f"Error asking AX12 moving status : {e}")
+                self._executed = True
+            finally:
+                return self._executed
         return False
 
     def stop(self) -> None:

@@ -3,6 +3,6 @@
     "alias": "W",
     "description": "Attend 1 seconde",
     "payload": {
-        "duration": 1
+        "durationMs": 1000
     }
 }

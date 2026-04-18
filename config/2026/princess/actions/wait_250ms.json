@@ -1,0 +1,8 @@
+{
+    "type": "wait",
+    "alias": "w0250",
+    "description": "Attend 0.25 seconde",
+    "payload": {
+        "durationMs": 250
+    }
+}

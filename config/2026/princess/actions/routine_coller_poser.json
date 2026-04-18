@@ -1,0 +1,18 @@
+{
+    "type": "list",
+    "alias": "rp",
+    "description": "Ressere les pinces, les baisse, ouvre les pinces, les relève",
+    "payload": {
+        "list": [
+            "coller",
+            "wait_250ms",
+            "poser",
+            "wait_250ms",
+            "ouvrir",
+            "wait_250ms",
+            "lever",
+            "wait_250ms",
+            "fermer"
+        ]
+    }
+}

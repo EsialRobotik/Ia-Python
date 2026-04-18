@@ -1,0 +1,17 @@
+{
+    "type": "list",
+    "alias": "dc",
+    "description": "Ramasse les caisses, les retourne toutes et les repose",
+    "payload": {
+        "list": [
+            "routine_ramasser_ecarter",
+            "wait_500ms",
+            "tourner_pince_1_180",
+            "tourner_pince_2_180",
+            "tourner_pince_3_180",
+            "tourner_pince_4_180",
+            "wait_500ms",
+            "routine_coller_poser"
+        ]
+    }
+}
