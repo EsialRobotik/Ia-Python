@@ -1,0 +1,17 @@
+{
+    "type": "list",
+    "alias": "i",
+    "description": "Initialise les actionneurs du robot en début de match",
+    "payload": {
+        "list": [
+            "ouvrir",
+            "lever",
+            "coller",
+            "fermer",
+            "tourner_pince_1_0",
+            "tourner_pince_2_0",
+            "tourner_pince_3_0",
+            "tourner_pince_4_0"
+        ]
+    }
+}
