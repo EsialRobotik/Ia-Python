@@ -47,3 +47,4 @@ class StepSubType(Enum):
     ADD_ZONE = 'ADD_ZONE'
     WAIT_CHRONO = 'WAIT_CHRONO'
     WAIT = 'WAIT'
+    RESET_FLAG = 'RESET_FLAG'

@@ -214,6 +214,10 @@ class MasterLoop:
                 self.pathfinding.update_dynamic_zone(self.current_step.item_id, True)
                 if self.communication_manager is not None:
                     self.communication_manager.send_add_zone(self.current_step.item_id)
+            elif self.current_step.sub_type == StepSubType.RESET_FLAG:
+                for flag in self.current_step.reset_flags:
+                    self.logger.info(f"Retrait de l'action flag : {flag}")
+                    self.strategy_manager.remove_action_flag(flag)
 
     def current_step_ended(self) -> bool:
         """

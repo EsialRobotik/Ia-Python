@@ -61,6 +61,7 @@ class Step:
         self.position = Position(config_node.get("position_x", 0), config_node.get("position_y", 0))
         self.distance = config_node.get("dist", 0)
         self.item_id = config_node.get("item_id", None)
+        self.reset_flags = config_node.get("reset_flags", None)
 
         self.needed_flag = config_node.get("needed_flag", None)
 
