@@ -5,6 +5,6 @@
     "payload": {
         "type": "position",
         "id": 20,
-        "angleDegree": 180
+        "angleDegree": 300
     }
 }
