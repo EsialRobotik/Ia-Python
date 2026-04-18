@@ -7,7 +7,6 @@ from ia.actions.registry import action_type
 from ia.actions.threaded_action import ThreadedAction
 from ia.api.camera import Camera
 
-
 ARUCO_DICTIONARIES = {
     "DICT_4X4_50": cv2.aruco.DICT_4X4_50,
     "DICT_4X4_100": cv2.aruco.DICT_4X4_100,
@@ -44,6 +43,7 @@ class ActionCameraDetectAruco(ThreadedAction):
         self.dictionary_name = dictionary
         self.aruco_dict = cv2.aruco.getPredefinedDictionary(ARUCO_DICTIONARIES[dictionary])
         self.aruco_params = cv2.aruco.DetectorParameters()
+        self.aruco_detector = cv2.aruco.ArucoDetector(self.aruco_dict, self.aruco_params)
         self.markers = markers  # {marker_id: label}
         self.rules = rules
         self.sort_mode = sort_mode
@@ -98,7 +98,7 @@ class ActionCameraDetectAruco(ThreadedAction):
 
     def _detect(self, image) -> list[dict]:
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        corners, ids, _ = cv2.aruco.detectMarkers(gray, self.aruco_dict, parameters=self.aruco_params)
+        corners, ids, _ = self.aruco_detector.detectMarkers(gray)
         if ids is None:
             return []
         detections = []
