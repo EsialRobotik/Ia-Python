@@ -48,10 +48,12 @@ class ActionList(ThreadedAction):
             try:
                 action.reset()
                 action.execute()
+                logger.info(f"action with id {action_id} started")
                 while not action.finished() and not self._stop_requested:
                     time.sleep(0.01)
                 if self._stop_requested:
                     action.stop()
             except Exception as e:
                 logger.error(f"Exception error {e}")
+            logger.info(f"action with id {action_id} finished")
         self._finished = True
