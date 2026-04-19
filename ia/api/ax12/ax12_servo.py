@@ -279,7 +279,7 @@ class AX12Servo:
         """
         Indicates if the AX12 is currently moving
         """
-        return self.read(AX12Register.AX12_RAM_MOVING_SPEED) > 0
+        return self.read(AX12Register.AX12_RAM_IS_MOVING) > 0
 
     @staticmethod
     def validate_packet(packet: bytearray, ax12_addr: int) -> (str | None):

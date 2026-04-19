@@ -15,6 +15,7 @@ class AX12Register(Enum):
     AX12_RAM_GOAL_POSITION = (0x1E, 2, True)
     AX12_RAM_MOVING_SPEED = (0x20, 2, True)
     AX12_RAM_PRESENT_POSITION = (0x24, 2, False)
+    AX12_RAM_IS_MOVING = (0x2E, 1, False)
 
     def __init__(self, regi: int, size: int, writable: bool) -> None:
         self.regi = regi

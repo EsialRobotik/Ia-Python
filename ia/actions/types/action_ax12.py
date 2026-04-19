@@ -1,4 +1,5 @@
 import logging
+import time
 from typing import Optional
 
 from ia.actions.abstract_action import AbstractAction
@@ -60,6 +61,7 @@ class ActionAX12(AbstractAction):
             return True
         if self.command == "position" and self._command_sent:
             try:
+                time.sleep(0.05)
                 self._executed = not self.servo.is_moving()
             except Exception as e:
                 self.logger.warning(f"Error asking AX12 moving status : {e}")
