@@ -45,6 +45,7 @@ class ActionListJoin(ThreadedAction):
             actions.append(self.action_repository.get_action(action_id))
 
         for action in actions:
+            action.reset()
             action.execute()
 
         while not all(action.finished() for action in actions):
