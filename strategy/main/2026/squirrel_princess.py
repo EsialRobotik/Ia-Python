@@ -119,10 +119,6 @@ class SquirrelPrincess(AbstractMain):
     def depose_garde_manger_centre_1(self):
         score = 17
         tasks_list = TaskList(mirror_size=3000)
-        tasks_list.add(SetSpeed(
-            desc="Piano piano",
-            speed=50
-        ))
         tasks_list.add(GoToAstar(
             desc="Position garde manger centre 1",
             position_x=1200,
