@@ -113,7 +113,7 @@ if __name__ == "__main__":
     # Init detection manager
     logger.info("Init detection manager")
     lidar = None
-    if config_data["detection"].get("lidar") is not None:
+    if config_data["detection"].get("lidar") is not None and config_data["detection"]["lidar"]["active"]:
         lidar = LidarRpA2(
             serial_port=config_data["detection"]["lidar"]["serialPort"],
             baud_rate=config_data["detection"]["lidar"]["baudRate"],
