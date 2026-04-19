@@ -1,4 +1,6 @@
 import logging
+import os
+from datetime import datetime
 from typing import Optional
 
 import cv2
@@ -81,8 +83,18 @@ class ActionCameraDetectAruco(ThreadedAction):
         combined = base + self._raised_flags
         return combined if combined else None
 
+    def _save_image(self, image) -> None:
+        try:
+            os.makedirs("logs", exist_ok=True)
+            filename = f"logs/{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}.jpg"
+            cv2.imwrite(filename, image)
+            self.logger.info(f"Image saved: {filename}")
+        except Exception as e:
+            self.logger.warning(f"Failed to save image: {e}")
+
     def _run(self) -> None:
         image = self.camera.capture_image()
+        self._save_image(image)
         detections = self._detect(image)
         self.logger.info(f"Detected markers: {[(d['label'], d['id']) for d in detections]}")
         if self.expected_count is not None and len(detections) != self.expected_count:
