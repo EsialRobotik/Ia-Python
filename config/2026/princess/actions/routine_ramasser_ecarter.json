@@ -11,9 +11,7 @@
             "tourner_pince_4_0",
             "ouvrir",
             "poser",
-            "wait_250ms",
             "fermer",
-            "wait_500ms",
             "lever",
             "separer"
         ]
