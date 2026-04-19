@@ -199,6 +199,8 @@ class TableWidget(QWidget):
         """Définit les zones interdites et dynamiques à dessiner."""
         self._forbidden_zones = forbidden
         self._dynamic_zones = dynamic
+        for zone in self._dynamic_zones:
+            zone["_init_active"] = zone.get("active", True)
         self._bg_cache = None
         self.update()
 
@@ -547,6 +549,9 @@ class TableWidget(QWidget):
             robot["x"] = robot.get("init_x", robot["x"])
             robot["y"] = robot.get("init_y", robot["y"])
             robot["theta"] = robot.get("init_theta", robot["theta"])
+        for zone in self._dynamic_zones:
+            zone["active"] = zone.get("_init_active", True)
+        self._bg_cache = None
         self.update()
 
     # --- Zones dynamiques -------------------------------------------------------
