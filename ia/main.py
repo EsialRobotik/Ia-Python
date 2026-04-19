@@ -159,7 +159,7 @@ if __name__ == "__main__":
 
     # Init color selector
     color_selector = None
-    if config_data.get('gpioPullCord') is not None:
+    if config_data.get('gpioColorSelector') is not None:
         color_selector = ColorSelector(config_data.get('gpioColorSelector'))
 
     # Init nextion
