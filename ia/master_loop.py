@@ -37,7 +37,8 @@ class MasterLoop:
         chrono: Chrono,
         pull_cord: PullCord,
         nextion_display: Optional[NextionNX32224T024],
-        color_selector: Optional[ColorSelector]
+        color_selector: Optional[ColorSelector],
+        step_by_step: bool = False
     ) -> None:
         self.comm_config = comm_config
         self.communication_manager = None
@@ -56,6 +57,7 @@ class MasterLoop:
         self.score = 0
         self.logger = logging.getLogger(__name__)
 
+        self.step_by_step = step_by_step
         self.something_detected = False
         self.moving_forward = False
         self.is_color0 = True
@@ -264,8 +266,14 @@ class MasterLoop:
             return True
         return False
 
+    def _wait_for_keypress(self) -> None:
+        self.logger.info("[STEP-BY-STEP] Appuyez sur une touche pour continuer...")
+        input()
+
     def update_step(self) -> None:
         self.logger.info(f"Step terminée : {self.current_step.description}")
+        if self.step_by_step:
+            self._wait_for_keypress()
 
         self.current_step = None
         if self.current_objective.has_next_step():

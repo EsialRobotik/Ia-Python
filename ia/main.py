@@ -30,6 +30,7 @@ if __name__ == "__main__":
     parser.add_argument("year", type=int, help="Year in integer format")
     parser.add_argument("robot", type=str, help="Robot type from Robot enum")
     parser.add_argument("log_level", type=str, help="Set log level among : CRITICAL, FATAL, ERROR, WARN, INFO, DEBUG")
+    parser.add_argument("--step-by-step", action="store_true", help="Mode pas à pas : attend une touche entre chaque step")
     args = parser.parse_args()
 
     # set logger level
@@ -185,7 +186,8 @@ if __name__ == "__main__":
         chrono=chrono,
         pull_cord=pull_cord,
         nextion_display=nextion_display,
-        color_selector=color_selector
+        color_selector=color_selector,
+        step_by_step=args.step_by_step
     )
 
     # Start execution
