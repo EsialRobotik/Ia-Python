@@ -117,35 +117,8 @@
         }
     },
     {
-        "task": "On pose l'ascenseur",
-        "command": "action#poser",
-        "position": {
-            "x": 1045,
-            "y": 1150,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On ferme les doigts",
-        "command": "action#fermer",
-        "position": {
-            "x": 1045,
-            "y": 1150,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On l\u00e8ve l'ascenseur",
-        "command": "action#lever",
-        "position": {
-            "x": 1045,
-            "y": 1150,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "Bien \u00e9carter les caisses",
-        "command": "action#separer",
+        "task": "On ramasse",
+        "command": "action#routine_ramasser_ecarter",
         "position": {
             "x": 1045,
             "y": 1150,
@@ -253,70 +226,7 @@
     },
     {
         "task": "On pose les caisses",
-        "command": "action#poser",
-        "position": {
-            "x": 1200,
-            "y": 1400,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "On ouvre les doigts",
-        "command": "action#ouvrir",
-        "position": {
-            "x": 1200,
-            "y": 1400,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "On l\u00e8ve l'ascenseur",
-        "command": "action#lever",
-        "position": {
-            "x": 1200,
-            "y": 1400,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "On ferme les doigts",
-        "command": "action#fermer",
-        "position": {
-            "x": 1200,
-            "y": 1400,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "On reset 1",
-        "command": "action#tourner_pince_1_0",
-        "position": {
-            "x": 1200,
-            "y": 1400,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "On reset 2",
-        "command": "action#tourner_pince_2_0",
-        "position": {
-            "x": 1200,
-            "y": 1400,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "On reset 3",
-        "command": "action#tourner_pince_3_0",
-        "position": {
-            "x": 1200,
-            "y": 1400,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "On reset 4",
-        "command": "action#tourner_pince_4_0",
+        "command": "action#routine_coller_poser",
         "position": {
             "x": 1200,
             "y": 1400,

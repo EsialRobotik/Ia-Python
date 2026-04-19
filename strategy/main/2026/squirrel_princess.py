@@ -162,20 +162,8 @@ class SquirrelPrincess(AbstractMain):
             dist=-35
         ))
         task_list.add(Manipulation(
-            desc="On pose l'ascenseur",
-            action_id="poser"
-        ))
-        task_list.add(Manipulation(
-            desc="On ferme les doigts",
-            action_id="fermer"
-        ))
-        task_list.add(Manipulation(
-            desc="On lève l'ascenseur",
-            action_id="lever"
-        ))
-        task_list.add(Manipulation(
-            desc="Bien écarter les caisses",
-            action_id="separer"
+            desc="On ramasse",
+            action_id="routine_ramasser_ecarter"
         ))
         task_list.add(Manipulation(
             desc="SIT AND ROTATE 1",
@@ -209,35 +197,7 @@ class SquirrelPrincess(AbstractMain):
         ))
         task_list.add(Manipulation(
             desc="On pose les caisses",
-            action_id="poser"
-        ))
-        task_list.add(Manipulation(
-            desc="On ouvre les doigts",
-            action_id="ouvrir"
-        ))
-        task_list.add(Manipulation(
-            desc="On lève l'ascenseur",
-            action_id="lever"
-        ))
-        task_list.add(Manipulation(
-            desc="On ferme les doigts",
-            action_id="fermer"
-        ))
-        task_list.add(Manipulation(
-            desc="On reset 1",
-            action_id="tourner_pince_1_0"
-        ))
-        task_list.add(Manipulation(
-            desc="On reset 2",
-            action_id="tourner_pince_2_0"
-        ))
-        task_list.add(Manipulation(
-            desc="On reset 3",
-            action_id="tourner_pince_3_0"
-        ))
-        task_list.add(Manipulation(
-            desc="On reset 4",
-            action_id="tourner_pince_4_0"
+            action_id="routine_coller_poser"
         ))
         task_list.add(ResetFlag(
             desc="On reset les flags de rotations",

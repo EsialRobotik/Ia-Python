@@ -89,7 +89,7 @@
         {
           "type": "set_y",
           "value": 60,
-          "theta": 4.71238898
+          "theta": 1.570796327
         },
         {
           "type": "go",
@@ -134,7 +134,7 @@
         {
           "type": "set_y",
           "value": 2960,
-          "theta": 1.570796327
+          "theta": -1.570796327
         },
         {
           "type": "go",
@@ -183,7 +183,7 @@
     },
     "dataDir": "/home/pi/IAPYTHON/config/2026/princess/actions",
     "init": [
-      "ascenseur_init",
+      "init",
       "camera_init"
     ]
   }
