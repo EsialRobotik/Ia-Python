@@ -494,7 +494,7 @@ class Asserv:
             elif temp["type"] == "go_timed":
                 logger.info(f"Go timed {temp['dist']}")
                 self.go(temp["dist"])
-                self.wait_for_halted_or_blocked(500)
+                self.wait_for_halted_or_blocked(1000)
                 self.emergency_stop()
                 time.sleep(2)
                 self.emergency_reset()
