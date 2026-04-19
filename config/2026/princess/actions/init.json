@@ -4,8 +4,8 @@
     "description": "Initialise les actionneurs du robot en début de match",
     "payload": {
         "list": [
-            "ouvrir",
             "lever",
+            "ouvrir",
             "coller",
             "fermer",
             "tourner_pince_1_0",

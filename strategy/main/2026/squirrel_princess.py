@@ -70,18 +70,26 @@ class SquirrelPrincess(AbstractMain):
             position_x=2000,
             position_y=1150,
         ))
+        tasks_list.add(Manipulation(
+            desc="Petite pause",
+            action_id="wait_500ms"
+        ))
         tasks_list.add(
-            Manipulation(
-                desc="Photo caisse 3",
-                action_id="detect_noisettes_jaunes",
-                mirror=Mirror.SPECIFIC
-            ),
             Manipulation(
                 desc="Photo caisse 3",
                 action_id="detect_noisettes_bleues",
                 mirror=Mirror.SPECIFIC
+            ),
+            Manipulation(
+                desc="Photo caisse 3",
+                action_id="detect_noisettes_jaunes",
+                mirror=Mirror.SPECIFIC
             )
         )
+        tasks_list.add(Manipulation(
+            desc="Petite pause",
+            action_id="wait_500ms"
+        ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
             DeleteZone(
@@ -111,6 +119,10 @@ class SquirrelPrincess(AbstractMain):
     def depose_garde_manger_centre_1(self):
         score = 17
         tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(SetSpeed(
+            desc="Piano piano",
+            speed=50
+        ))
         tasks_list.add(GoToAstar(
             desc="Position garde manger centre 1",
             position_x=1200,

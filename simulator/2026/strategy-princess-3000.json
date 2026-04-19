@@ -63,8 +63,26 @@
         }
     },
     {
+        "task": "Petite pause",
+        "command": "action#wait_500ms",
+        "position": {
+            "x": 820,
+            "y": 1850,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "Photo caisse 3",
-        "command": "action#detect_noisettes_bleues",
+        "command": "action#detect_noisettes_jaunes",
+        "position": {
+            "x": 820,
+            "y": 1850,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Petite pause",
+        "command": "action#wait_500ms",
         "position": {
             "x": 820,
             "y": 1850,
@@ -182,6 +200,15 @@
     {
         "task": "On lib\u00e8re la zone caisses 3",
         "command": "delete-zone#caisse_bleu_3",
+        "position": {
+            "x": 1045,
+            "y": 1850,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Piano piano",
+        "command": "speed#50",
         "position": {
             "x": 1045,
             "y": 1850,
