@@ -21,6 +21,7 @@ from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout,
     QWidget, QComboBox, QLabel, QPushButton,
     QGridLayout, QDoubleSpinBox, QCheckBox, QTextEdit,
+    QFileDialog, QSlider,
 )
 
 # Chemin du dossier simulation, relatif à ce fichier
@@ -1234,6 +1235,289 @@ class RealtimeLogWindow(QWidget):
         super().closeEvent(event)
 
 
+class LogFileWorker(QObject):
+    """Worker qui lit un fichier de log et émet les lignes en respectant les timestamps."""
+    message_received = Signal(str)
+    playback_finished = Signal()
+
+    def __init__(self, filepath: str, speed: float = 1.0):
+        super().__init__()
+        self._filepath = filepath
+        self._speed = speed
+        self._running = False
+        self._paused = False
+
+    def set_speed(self, speed: float):
+        self._speed = max(0.1, speed)
+
+    def pause(self):
+        self._paused = True
+
+    def resume(self):
+        self._paused = False
+
+    def stop(self):
+        self._running = False
+        self._paused = False
+
+    def start_playback(self):
+        self._running = True
+        self._paused = False
+        prev_ts = None
+        skip_until_match = False
+
+        try:
+            with open(self._filepath, "r", encoding="utf-8", errors="replace") as f:
+                for line in f:
+                    if not self._running:
+                        break
+                    line = line.strip()
+                    if not line:
+                        continue
+
+                    # Skip entre "Attente lancement match" et "Match lancé"
+                    if "Attente lancement match" in line:
+                        skip_until_match = True
+                    if skip_until_match:
+                        if "Match lancé" in line:
+                            skip_until_match = False
+                            prev_ts = self._parse_timestamp(line)
+                        self.message_received.emit(line)
+                        continue
+
+                    # Respecter les timestamps (plafonné à 0.5s réel pour skip les temps morts)
+                    ts = self._parse_timestamp(line)
+                    if ts is not None and prev_ts is not None:
+                        delay = min((ts - prev_ts) / self._speed, 0.5)
+                        if delay > 0:
+                            deadline = time.monotonic() + delay
+                            while time.monotonic() < deadline and self._running:
+                                time.sleep(0.005)
+                    if ts is not None:
+                        prev_ts = ts
+
+                    # Attente si en pause
+                    while self._paused and self._running:
+                        time.sleep(0.05)
+
+                    if self._running:
+                        self.message_received.emit(line)
+        except Exception:
+            pass
+        finally:
+            self.playback_finished.emit()
+
+    @staticmethod
+    def _parse_timestamp(line: str) -> float | None:
+        parts = line.split(' - ', 1)
+        if len(parts) < 2:
+            return None
+        try:
+            return datetime.strptime(parts[0].strip(), "%Y-%m-%d %H:%M:%S,%f").timestamp()
+        except ValueError:
+            return None
+
+
+class LogReplayWindow(QWidget):
+    """Fenêtre de relecture de logs depuis un fichier."""
+
+    def __init__(self, robots: list[dict], table_widget: "TableWidget", parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Relecture de logs")
+        self.setWindowFlag(Qt.WindowType.Window)
+        self.setMinimumSize(900, 500)
+
+        self._robot_colors: dict[str, QColor] = {}
+        for robot in robots:
+            self._robot_colors[robot["id"]] = robot.get("trail_color", ROBOT_TRAIL_COLORS[0])
+
+        self._table_widget = table_widget
+        self._worker: LogFileWorker | None = None
+        self._thread: QThread | None = None
+
+        layout = QVBoxLayout(self)
+
+        # En-têtes robots colorés
+        header = QHBoxLayout()
+        for robot_id, color in self._robot_colors.items():
+            lbl = QLabel(f"● {robot_id}")
+            lbl.setStyleSheet(f"color: {color.name()}; font-weight: bold;")
+            header.addWidget(lbl)
+        header.addStretch()
+        layout.addLayout(header)
+
+        # Contrôles
+        controls = QHBoxLayout()
+        self._btn_open = QPushButton("Ouvrir un log")
+        self._btn_open.clicked.connect(self._on_open)
+        controls.addWidget(self._btn_open)
+
+        self._btn_play = QPushButton("Play")
+        self._btn_play.clicked.connect(self._on_play)
+        self._btn_play.setEnabled(False)
+        controls.addWidget(self._btn_play)
+
+        self._btn_pause = QPushButton("Pause")
+        self._btn_pause.clicked.connect(self._on_pause)
+        self._btn_pause.setEnabled(False)
+        controls.addWidget(self._btn_pause)
+
+        self._btn_stop = QPushButton("Stop")
+        self._btn_stop.clicked.connect(self._on_stop)
+        self._btn_stop.setEnabled(False)
+        controls.addWidget(self._btn_stop)
+
+        controls.addWidget(QLabel("Vitesse:"))
+        self._speed_slider = QSlider(Qt.Orientation.Horizontal)
+        self._speed_slider.setMinimum(1)
+        self._speed_slider.setMaximum(100)
+        self._speed_slider.setValue(10)
+        self._speed_slider.setFixedWidth(120)
+        self._speed_slider.valueChanged.connect(self._on_speed_changed)
+        controls.addWidget(self._speed_slider)
+        self._speed_label = QLabel("x1.0")
+        controls.addWidget(self._speed_label)
+
+        controls.addStretch()
+        layout.addLayout(controls)
+
+        # Zone de log
+        self._log = QTextEdit()
+        self._log.setReadOnly(True)
+        self._log.setFont(QFont("Courier New", 9))
+        layout.addWidget(self._log, stretch=1)
+
+        self._filepath: str | None = None
+
+    def _on_open(self):
+        path, _ = QFileDialog.getOpenFileName(self, "Ouvrir un fichier de log", "", "Log files (*.log);;All files (*)")
+        if path:
+            self._on_stop()
+            self._filepath = path
+            self._log.clear()
+            self._log_text(f"Fichier chargé : {path}", QColor(100, 210, 100))
+            self._btn_play.setEnabled(True)
+
+    def _on_play(self):
+        if self._worker is not None and self._thread is not None and self._thread.isRunning():
+            # Resume from pause
+            self._worker.resume()
+        else:
+            if self._filepath is None:
+                return
+            self._log.clear()
+            self._thread = QThread()
+            self._worker = LogFileWorker(self._filepath, self._current_speed())
+            self._worker.moveToThread(self._thread)
+            self._thread.started.connect(self._worker.start_playback)
+            self._worker.message_received.connect(self._on_message)
+            self._worker.playback_finished.connect(self._on_finished)
+            self._thread.start()
+        self._btn_play.setEnabled(False)
+        self._btn_pause.setEnabled(True)
+        self._btn_stop.setEnabled(True)
+
+    def _on_pause(self):
+        if self._worker:
+            self._worker.pause()
+        self._btn_play.setEnabled(True)
+        self._btn_pause.setEnabled(False)
+
+    def _on_stop(self):
+        if self._worker:
+            self._worker.stop()
+        if self._thread:
+            self._thread.quit()
+            self._thread.wait(2000)
+            self._thread = None
+            self._worker = None
+        self._btn_play.setEnabled(self._filepath is not None)
+        self._btn_pause.setEnabled(False)
+        self._btn_stop.setEnabled(False)
+
+    def _on_finished(self):
+        self._log_text("Relecture terminée.", QColor(100, 210, 100))
+        self._btn_play.setEnabled(self._filepath is not None)
+        self._btn_pause.setEnabled(False)
+        self._btn_stop.setEnabled(False)
+
+    def _current_speed(self) -> float:
+        return self._speed_slider.value() / 10.0
+
+    def _on_speed_changed(self, value: int):
+        speed = value / 10.0
+        self._speed_label.setText(f"x{speed:.1f}")
+        if self._worker:
+            self._worker.set_speed(speed)
+
+    def _parse_line(self, line: str) -> tuple[str, str, str, str] | None:
+        parts = line.split(' - ', 3)
+        if len(parts) == 4:
+            return parts[0].strip(), parts[1].strip(), parts[2].strip(), parts[3].strip()
+        return None
+
+    def _color_for_robot(self, robot_id: str) -> QColor:
+        if robot_id in self._robot_colors:
+            return self._robot_colors[robot_id]
+        for rid, color in self._robot_colors.items():
+            if rid in robot_id:
+                return color
+        return QColor(200, 200, 200)
+
+    def _on_message(self, line: str):
+        parsed = self._parse_line(line)
+        if parsed is None:
+            self._log_text(line, QColor(200, 200, 200))
+            return
+
+        _timestamp, who, level, message = parsed
+
+        if level == "DEBUG":
+            if message.startswith("Position :"):
+                self._handle_position(who, message)
+            elif "detected an obstacle at position" in message or message.startswith("Lidar detection:"):
+                self._handle_detection(who, message)
+            return
+
+        if message.startswith("Position :"):
+            self._handle_position(who, message)
+            return
+
+        self._log_text(line, self._color_for_robot(who))
+
+    def _handle_position(self, robot_id: str, message: str):
+        try:
+            dict_str = message[len("Position :"):].strip()
+            pos = ast.literal_eval(dict_str)
+            x = float(pos["x"])
+            y = float(pos["y"])
+            theta = float(pos["theta"])
+            color = self._color_for_robot(robot_id)
+            self._table_widget.animate_robot_move(robot_id, x, y, theta, color)
+        except (ValueError, KeyError, SyntaxError):
+            pass
+
+    def _handle_detection(self, robot_id: str, message: str):
+        color = self._color_for_robot(robot_id)
+        m = re.search(r'at position \((-?\d+),(-?\d+)\)', message)
+        if m:
+            self._table_widget.add_detection(float(m.group(1)), float(m.group(2)), color)
+            return
+        m = re.search(r'Lidar detection: Position\(x=(-?\d+), y=(-?\d+)', message)
+        if m:
+            self._table_widget.add_detection(float(m.group(1)), float(m.group(2)), color)
+
+    def _log_text(self, message: str, color: QColor):
+        escaped = html_module.escape(message)
+        self._log.append(f'<span style="color:{color.name()};">{escaped}</span>')
+        sb = self._log.verticalScrollBar()
+        sb.setValue(sb.maximum())
+
+    def closeEvent(self, event):
+        self._on_stop()
+        super().closeEvent(event)
+
+
 class SimulatorWindow(QMainWindow):
     """Fenêtre principale du simulateur."""
 
@@ -1308,6 +1592,11 @@ class SimulatorWindow(QMainWindow):
         self.btn_realtime.clicked.connect(self._on_realtime_click)
         control_layout.addWidget(self.btn_realtime)
 
+        # Bouton relecture logs
+        self.btn_replay = QPushButton("Relecture logs")
+        self.btn_replay.clicked.connect(self._on_replay_click)
+        control_layout.addWidget(self.btn_replay)
+
         # Bouton reset
         self.btn_reset = QPushButton("Reset")
         self.btn_reset.clicked.connect(self._on_reset_click)
@@ -1322,6 +1611,7 @@ class SimulatorWindow(QMainWindow):
         self._manual_window: ManualControlWindow | None = None
         self._strategy_window: StrategyWindow | None = None
         self._realtime_window: RealtimeLogWindow | None = None
+        self._replay_window: LogReplayWindow | None = None
         self._current_year: str = ""
 
         # Charger l'année par défaut
@@ -1366,6 +1656,13 @@ class SimulatorWindow(QMainWindow):
         self._realtime_window = RealtimeLogWindow(host, port, self.table_widget._robots, self.table_widget, self)
         self._realtime_window.show()
 
+    def _on_replay_click(self):
+        """Ouvre (ou recrée) la fenêtre de relecture de logs."""
+        if self._replay_window is not None:
+            self._replay_window.close()
+        self._replay_window = LogReplayWindow(self.table_widget._robots, self.table_widget, self)
+        self._replay_window.show()
+
     def _on_reset_click(self):
         """Ferme les sous-fenêtres, efface les traces et remet les robots à l'origine."""
         if self._manual_window is not None:
@@ -1377,6 +1674,9 @@ class SimulatorWindow(QMainWindow):
         if self._realtime_window is not None:
             self._realtime_window.close()
             self._realtime_window = None
+        if self._replay_window is not None:
+            self._replay_window.close()
+            self._replay_window = None
         self.table_widget.reset()
 
     def _load_table(self, year: str):
