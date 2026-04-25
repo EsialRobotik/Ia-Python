@@ -1024,5 +1024,50 @@
             "y": 2600,
             "theta": 1.5707963267948966
         }
+    },
+    {
+        "task": "On va se ranger pour finir dans le nid",
+        "command": "goto-astar#1200;2600",
+        "position": {
+            "x": 1200,
+            "y": 2600,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On va se ranger pour finir dans le nid",
+        "command": "goto-astar#800;2100",
+        "position": {
+            "x": 800,
+            "y": 2100,
+            "theta": -2.2455372690184494
+        }
+    },
+    {
+        "task": "On attends",
+        "command": "wait-chrono#87",
+        "position": {
+            "x": 800,
+            "y": 2100,
+            "theta": -2.2455372690184494
+        }
+    },
+    {
+        "task": "Direction le nid",
+        "command": "goto#800;2570",
+        "position": {
+            "x": 800,
+            "y": 2570,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "Direction le nid",
+        "command": "goto#350;2570",
+        "position": {
+            "x": 350,
+            "y": 2570,
+            "theta": 3.141592653589793
+        }
     }
 ]

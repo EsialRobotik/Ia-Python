@@ -1571,6 +1571,73 @@
             "needed_flag": null,
             "action_flag": null,
             "clear_flags": null
+        },
+        {
+            "desc": "R\u00e9glage de la temp\u00e9rature",
+            "id": 5,
+            "points": 10,
+            "priority": 1,
+            "tasks": [
+                {
+                    "desc": "On va se ranger pour finir dans le nid",
+                    "position_x": 800,
+                    "position_y": 900,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO_ASTAR",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On attends",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT_CHRONO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 87,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "Direction le nid",
+                    "position_x": 800,
+                    "position_y": 430,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "Direction le nid",
+                    "position_x": 350,
+                    "position_y": 430,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "needed_flag": null
+                }
+            ],
+            "needed_flag": null,
+            "action_flag": null,
+            "clear_flags": null
         }
     ],
     "color3000": [
@@ -3138,6 +3205,73 @@
                     "mirror": "specific",
                     "timeout": -1,
                     "item_id": "garde_manger_bleu_1",
+                    "reset_flags": null,
+                    "needed_flag": null
+                }
+            ],
+            "needed_flag": null,
+            "action_flag": null,
+            "clear_flags": null
+        },
+        {
+            "desc": "R\u00e9glage de la temp\u00e9rature",
+            "id": 5,
+            "points": 10,
+            "priority": 1,
+            "tasks": [
+                {
+                    "desc": "On va se ranger pour finir dans le nid",
+                    "position_x": 800,
+                    "position_y": 2100,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO_ASTAR",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "On attends",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT_CHRONO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 87,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "Direction le nid",
+                    "position_x": 800,
+                    "position_y": 2570,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "Direction le nid",
+                    "position_x": 350,
+                    "position_y": 2570,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "GOTO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
                     "reset_flags": null,
                     "needed_flag": null
                 }

@@ -14,6 +14,7 @@ from strategy.task.goto_back import GoToBack
 from strategy.task.manipulation import Manipulation
 from strategy.task.reset_flag import ResetFlag
 from strategy.task.set_speed import SetSpeed
+from strategy.task.wait_chrono import WaitChrono
 
 
 class HypposPrincess(AbstractMain):
@@ -42,6 +43,7 @@ class HypposPrincess(AbstractMain):
         self.depose_garde_manger_couleur_2()
         self.get_caisse_1()
         self.depose_garde_manger_couleur_1()
+        self.retour_au_nid()
         self.generate_strategy('princess')
 
     def quitter_depart(self):
@@ -493,6 +495,41 @@ class HypposPrincess(AbstractMain):
         tasks_list.add(SetSpeed(
             desc="Full speed",
             speed=100
+        ))
+        self.objectifs_couleur_0.append(tasks_list.generate_objective(
+            name='Réglage de la température',
+            id=5,
+            score=score,
+            priority=1
+        ))
+        self.objectifs_couleur_3000.append(tasks_list.generate_mirror_objective(
+            name='Réglage de la température',
+            id=5,
+            score=score,
+            priority=1
+        ))
+
+    def retour_au_nid(self):
+        score = 10
+        tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(GoToAstar(
+            desc="On va se ranger pour finir dans le nid",
+            position_x=800,
+            position_y=900
+        ))
+        tasks_list.add(WaitChrono(
+            desc="On attends",
+            chrono=87
+        ))
+        tasks_list.add(GoTo(
+            desc="Direction le nid",
+            position_x=800,
+            position_y=430
+        ))
+        tasks_list.add(GoTo(
+            desc="Direction le nid",
+            position_x=350,
+            position_y=430
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Réglage de la température',
