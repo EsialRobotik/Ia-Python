@@ -93,7 +93,7 @@
         },
         {
           "type": "go",
-          "dist": 290
+          "dist": 200
         },
         {
           "type": "turn",
@@ -110,11 +110,21 @@
         },
         {
           "type": "go",
-          "dist": 90
+          "dist": 200
         },
         {
           "type": "speed",
           "value": 100
+        },
+        {
+          "type": "goto",
+          "x": 600,
+          "y": 350
+        },
+        {
+          "type": "goto_back",
+          "x": 150,
+          "y": 350
         },
         {
           "type": "face",
@@ -138,7 +148,7 @@
         },
         {
           "type": "go",
-          "dist": 290
+          "dist": 200
         },
         {
           "type": "turn",
@@ -155,11 +165,21 @@
         },
         {
           "type": "go",
-          "dist": 90
+          "dist": 400
         },
         {
           "type": "speed",
           "value": 100
+        },
+        {
+          "type": "goto",
+          "x": 600,
+          "y": 2650
+        },
+        {
+          "type": "goto_back",
+          "x": 150,
+          "y": 2650
         },
         {
           "type": "face",
