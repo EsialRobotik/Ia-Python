@@ -1,7 +1,7 @@
 {
   "desc": "Configuration du robot 2026 - Squirrel Princess",
   "matchDuration": 89,
-  "marge": 160,
+  "marge": 170,
   "gpioPullCord": 23,
   "nextion": {
     "baudRate": 115200,

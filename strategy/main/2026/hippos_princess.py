@@ -36,14 +36,14 @@ class HypposPrincess(AbstractMain):
         self.quitter_depart()
         self.get_caisse_3()
         self.depose_garde_manger_centre_1()
-        self.get_caisse_4()
-        self.regler_temperature()
-        self.depose_garde_manger_centre_2()
-        self.get_caisse_2()
-        self.depose_garde_manger_couleur_2()
-        self.get_caisse_1()
-        self.depose_garde_manger_couleur_1()
-        self.retour_au_nid()
+        #self.get_caisse_4()
+        #self.regler_temperature()
+        #self.depose_garde_manger_centre_2()
+        #self.get_caisse_2()
+        #self.depose_garde_manger_couleur_2()
+        #self.get_caisse_1()
+        #self.depose_garde_manger_couleur_1()
+        #self.retour_au_nid()
         self.generate_strategy('princess')
 
     def quitter_depart(self):
@@ -51,8 +51,13 @@ class HypposPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoTo(
             desc="On quitte la zone de départ",
-            position_x=350,
+            position_x=600,
             position_y=350
+        ))
+        tasks_list.add(GoTo(
+            desc="On quitte la zone de départ",
+            position_x=650,
+            position_y=600
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='On quitte la zone de départ',
