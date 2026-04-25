@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# S'assurer que /home/pi/logs/ existe
+# Mettre @reboot /home/pi/boot_robot.sh >> /home/pi/logs/app.log 2>&1 dans la crontab
+
+# Attendre d'avoir une IP sur l'interface wifi
+while ! ip a show wlan0 | grep -q "inet "; do
+    sleep 1
+done
+
+# Activer l'environnement virtuel et lancer le script
+echo "Go dans IAPYTHON"
+cd IAPYTHON/
+echo "On active l'env python"
+source env/bin/activate
+export PYTHONPATH=$PYTHONPATH:.
+
+# Adapter selon le robot et l'année
+echo "On lance l'IA'"
+python ia/main.py 2026 princess DEBUG
