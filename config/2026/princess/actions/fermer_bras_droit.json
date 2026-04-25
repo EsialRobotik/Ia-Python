@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "fbd",
+    "description": "Fermer le bras droit",
+    "payload": {
+        "type": "position",
+        "id": 12,
+        "angleDegree": 76
+    }
+}

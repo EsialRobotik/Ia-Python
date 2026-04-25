@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "obg",
+    "description": "Ouvrir le bras gauhe",
+    "payload": {
+        "type": "position",
+        "id": 2,
+        "angleDegree": 150
+    }
+}

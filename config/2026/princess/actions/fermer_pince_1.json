@@ -1,7 +1,7 @@
 {
     "type": "AX12",
     "alias": "f1",
-    "description": "Fermeuvre la pince 1",
+    "description": "Ferme la pince 1",
     "payload": {
         "type": "position",
         "id": 10,

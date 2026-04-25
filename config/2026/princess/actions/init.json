@@ -8,6 +8,8 @@
             "ouvrir",
             "coller",
             "fermer",
+            "fermer_bras_gauche",
+            "fermer_bras_droit",
             "tourner_pince_1_0",
             "tourner_pince_2_0",
             "tourner_pince_3_0",

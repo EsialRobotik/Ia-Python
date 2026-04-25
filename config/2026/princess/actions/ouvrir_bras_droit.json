@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "obd",
+    "description": "Ouvrir le bras droit",
+    "payload": {
+        "type": "position",
+        "id": 12,
+        "angleDegree": 150
+    }
+}

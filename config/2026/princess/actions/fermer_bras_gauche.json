@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "fbg",
+    "description": "Fermer le bras gauhe",
+    "payload": {
+        "type": "position",
+        "id": 2,
+        "angleDegree": 222
+    }
+}
