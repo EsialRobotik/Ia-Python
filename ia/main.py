@@ -78,6 +78,11 @@ if __name__ == "__main__":
     )
     logger.info("Init asservissement OK")
 
+    # Init chrono
+    logger.info("Init chrono")
+    chrono = Chrono(config_data['matchDuration'])
+    logger.info("Init chrono OK")
+
     # Init action manager
     logger.info("Init action manager")
     ax12_link = None
@@ -103,6 +108,7 @@ if __name__ == "__main__":
         ax12_link_serial=ax12_link,
         serial_ports=serial_ports,
         camera=camera,
+        chrono=chrono,
     )
     action_manager = ActionManager(
         action_repository=action_repository,
@@ -147,11 +153,6 @@ if __name__ == "__main__":
     logger.info("Init strategy manager")
     strategy_manager = StrategyManager(year=args.year, robot=robot)
     logger.info("Init strategy manager OK")
-
-    # Init chrono
-    logger.info("Init chrono")
-    chrono = Chrono(config_data['matchDuration'])
-    logger.info("Init chrono OK")
 
     # Init pull cord
     logger.info("Init pull cord")

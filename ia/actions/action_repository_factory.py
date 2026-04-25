@@ -3,14 +3,14 @@ import logging
 import os
 from typing import Optional
 
+# Importer le package types pour declencher l'enregistrement via @action_type
+import ia.actions.types  # noqa: F401
 from ia.actions.action_repository import ActionRepository
 from ia.actions.registry import ACTION_TYPES
 from ia.actions.serial_port import SerialPort
 from ia.api.ax12.ax12_link_serial import AX12LinkSerial
 from ia.api.camera import Camera
-
-# Importer le package types pour declencher l'enregistrement via @action_type
-import ia.actions.types  # noqa: F401
+from ia.api.chrono import Chrono
 
 
 class ActionRepositoryFactory:
@@ -21,6 +21,7 @@ class ActionRepositoryFactory:
         ax12_link_serial: Optional[AX12LinkSerial],
         serial_ports: Optional[dict[str, SerialPort]],
         camera: Optional[Camera] = None,
+        chrono: Optional[Chrono] = None,
     ) -> ActionRepository:
         logger = logging.getLogger(__name__)
         action_repository = ActionRepository()
@@ -35,6 +36,7 @@ class ActionRepositoryFactory:
             "serial_ports": serial_ports or {},
             "action_repository": action_repository,
             "camera": camera,
+            "chrono": chrono,
         }
 
         for root, dirs, files in os.walk(folder):

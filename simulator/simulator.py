@@ -876,6 +876,7 @@ class StrategyWindow(QWidget):
         self._strategies.clear()
         self._cursors.clear()
         self._wait_until.clear()
+        self._match_start_time = None
         self._log.clear()
 
         color_key = self.color_combo.currentData() or "0"
@@ -959,9 +960,9 @@ class StrategyWindow(QWidget):
 
         elif command.startswith("wait-chrono#"):
             try:
-                xx = float(command.split("#", 1)[1])
-                ms = max(0.0, 100_000.0 - xx)  # match de 100s = 100 000 ms
-                self._wait_until[robot_id] = time.monotonic() + ms / 1000.0
+                target_seconds = float(command.split("#", 1)[1])
+                start = getattr(self, '_match_start_time', None) or time.monotonic()
+                self._wait_until[robot_id] = start + target_seconds
             except ValueError:
                 pass
 
@@ -978,6 +979,8 @@ class StrategyWindow(QWidget):
         self.btn_play.setEnabled(False)
         self.btn_next.setEnabled(False)
         self.btn_pause.setEnabled(True)
+        if not hasattr(self, '_match_start_time') or self._match_start_time is None:
+            self._match_start_time = time.monotonic()
         self._play_timer.start()
 
     def _on_pause(self):
