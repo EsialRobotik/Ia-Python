@@ -529,5 +529,5 @@ class Asserv:
             else:
                 raise Exception(f"Unknown instruction {temp}")
             self.wait_for_asserv()
-        time.sleep(0.25)
+            time.sleep(0.25)
         logger.info("goStart finished")
