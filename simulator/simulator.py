@@ -466,7 +466,7 @@ class TableWidget(QWidget):
             self._anim_timer.start(ANIM_INTERVAL_MS)
 
     def animate_robot_orbital(self, robot_id: str, degrees: float, forward: bool,
-                              turn_right: bool, trail_color: QColor):
+                              on_right_wheel: bool, trail_color: QColor):
         """Enfile une animation de rotation orbitale autour d'une roue codeuse."""
         robot_idx = next(
             (i for i, r in enumerate(self._robots) if r["id"] == robot_id), None
@@ -479,7 +479,7 @@ class TableWidget(QWidget):
             "type": "orbital",
             "degrees": degrees,
             "forward": forward,
-            "turn_right": turn_right,
+            "on_right_wheel": on_right_wheel,
             "trail_color": QColor(trail_color),
         })
 
@@ -530,16 +530,16 @@ class TableWidget(QWidget):
             theta = robot["theta"]
             degrees = step["degrees"]
             forward = step["forward"]
-            turn_right = step["turn_right"]
+            on_right_wheel = step["on_right_wheel"]
             angle_rad = math.radians(degrees)
 
-            if turn_right:
-                cx = robot["x"] - pivot_offset * math.sin(theta)
-                cy = robot["y"] + pivot_offset * math.cos(theta)
-                rot = -angle_rad if forward else angle_rad
-            else:
+            if on_right_wheel:
                 cx = robot["x"] + pivot_offset * math.sin(theta)
                 cy = robot["y"] - pivot_offset * math.cos(theta)
+                rot = -angle_rad if forward else angle_rad
+            else:
+                cx = robot["x"] - pivot_offset * math.sin(theta)
+                cy = robot["y"] + pivot_offset * math.cos(theta)
                 rot = angle_rad if forward else -angle_rad
 
             # Angle polaire de départ (robot par rapport au pivot)
@@ -1043,8 +1043,8 @@ class StrategyWindow(QWidget):
                 parts = command.split("#", 1)[1].split(";")
                 degrees = float(parts[0])
                 forward = int(parts[1]) == 1
-                turn_right = int(parts[2]) == 1
-                self._table_widget.animate_robot_orbital(robot_id, degrees, forward, turn_right, color)
+                on_right_wheel = int(parts[2]) == 1
+                self._table_widget.animate_robot_orbital(robot_id, degrees, forward, on_right_wheel, color)
             except (ValueError, IndexError):
                 pass
             return

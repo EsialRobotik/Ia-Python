@@ -98,6 +98,20 @@ class VisibilityGraph:
     # Géométrie
     # ──────────────────────────────────────────────────────────────────
 
+    def _find_blocking_zones(self, pt) -> list[str]:
+        """Identifie les zones (forbidden + dynamic) qui contiennent le point donné."""
+        blocking = []
+        shapely_pt = Point(pt)
+        for zone in self.config["forbiddenZones"]:
+            if zone["type"] != self.active_color or zone["type"] == "all":
+                poly = self._make_polygon(zone)
+                if poly.contains(shapely_pt):
+                    blocking.append(zone["id"])
+        for zone_id, zdata in self._dynamic_zones.items():
+            if zdata["active"] and zdata["polygon"].contains(shapely_pt):
+                blocking.append(zone_id)
+        return blocking
+
     def _make_polygon(self, zone: Dict) -> Polygon:
         if zone["forme"] == "polygone":
             pts = [(p["x"], p["y"]) for p in zone["points"]]
@@ -346,7 +360,9 @@ class VisibilityGraph:
                     and adv_union.contains(Point(pt))
                 )
                 if blocked:
-                    self.logger.error(f"[VG] {label} is blocked.")
+                    blocking = self._find_blocking_zones(pt)
+                    zones_str = ", ".join(blocking) if blocking else "union de zones"
+                    self.logger.error(f"[VG] {label} ({pt[0]}, {pt[1]}) is blocked by: {zones_str}")
                     return
 
             # ── Graphe temporaire : copie légère du cache ─────────────

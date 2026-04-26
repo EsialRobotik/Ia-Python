@@ -6,9 +6,10 @@ from ia.utils.position import Position
 from strategy.enum.mirror import Mirror
 from strategy.task.abstract_task import AbstractTask
 
+
 class OrbitalTurn(AbstractTask):
 
-    def __init__(self, desc: str, degrees: float, pivot_offset: float, forward: bool = True, turn_right: bool = True, mirror: Mirror = Mirror.MIRRORY):
+    def __init__(self, desc: str, degrees: float, pivot_offset: float, forward: bool = True, on_right_wheel: bool = True, mirror: Mirror = Mirror.MIRRORY):
         super().__init__(
             desc=desc,
             dist=degrees,
@@ -16,7 +17,7 @@ class OrbitalTurn(AbstractTask):
             subtype=StepSubType.ORBITAL_TURN,
             mirror=mirror,
             forward=forward,
-            turn_right=turn_right
+            on_right_wheel=on_right_wheel
         )
         self.pivot_offset = pivot_offset
 
@@ -24,17 +25,14 @@ class OrbitalTurn(AbstractTask):
         theta = start_point.theta
         angle_rad = math.radians(self.dist)
 
-        # Le pivot est sur l'axe Y local du robot, à ±pivot_offset
-        # Axe Y local : direction perpendiculaire à theta (rotation +90°)
-        if self.turn_right:
-            pivot_x = start_point.x - self.pivot_offset * math.sin(theta)
-            pivot_y = start_point.y + self.pivot_offset * math.cos(theta)
-            # Rotation horaire = angle négatif autour du pivot
-            rot = -angle_rad if self.forward else angle_rad
-        else:
+        # Le pivot est sur la roue codeuse droite ou gauche (axe Y local du robot)
+        if self.on_right_wheel:
             pivot_x = start_point.x + self.pivot_offset * math.sin(theta)
             pivot_y = start_point.y - self.pivot_offset * math.cos(theta)
-            # Rotation anti-horaire = angle positif autour du pivot
+            rot = -angle_rad if self.forward else angle_rad
+        else:
+            pivot_x = start_point.x - self.pivot_offset * math.sin(theta)
+            pivot_y = start_point.y + self.pivot_offset * math.cos(theta)
             rot = angle_rad if self.forward else -angle_rad
 
         # Position relative du robot par rapport au pivot
@@ -49,6 +47,6 @@ class OrbitalTurn(AbstractTask):
         self.end_point = Position(int(new_x), int(new_y), new_theta)
         return {
             "task": self.desc,
-            "command": f"orbital-turn#{self.dist};{1 if self.forward else 0};{1 if self.turn_right else 0}",
+            "command": f"orbital-turn#{self.dist};{1 if self.forward else 0};{1 if self.on_right_wheel else 0}",
             "position": self.end_point.to_dict()
         }

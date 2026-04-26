@@ -41,8 +41,8 @@ class HypposPrincess(AbstractMain):
         self.get_caisse_4()
         self.regler_temperature()
         self.depose_garde_manger_couleur_2()
-        self.get_caisse_2()
-        self.depose_garde_manger_couleur_1()
+        #self.get_caisse_2()
+        #self.depose_garde_manger_couleur_1()
         self.get_caisse_1()
         self.depose_garde_manger_centre_3()
         self.retour_au_nid()
@@ -53,13 +53,13 @@ class HypposPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoTo(
             desc="On quitte la zone de départ",
-            position_x=600,
+            position_x=480,
             position_y=350
         ))
         tasks_list.add(GoTo(
             desc="On quitte la zone de départ",
             position_x=650,
-            position_y=600
+            position_y=550
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='On quitte la zone de départ',
@@ -197,7 +197,7 @@ class HypposPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoToAstar(
             desc="Position caisse 3",
-            position_x=1200 - self.distance_photo,
+            position_x=1230 - self.distance_photo,
             position_y=1150,
         ))
         tasks_list.add(Face(
@@ -256,7 +256,7 @@ class HypposPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoToAstar(
             desc="Position caisse 4",
-            position_x=1750 - self.distance_photo,
+            position_x=1855 - self.distance_photo,
             position_y=1100,
         ))
         tasks_list.add(Face(
@@ -323,12 +323,12 @@ class HypposPrincess(AbstractMain):
             position_x = 1200,
             position_y = 1300,
         ))
-        self.larguer_caisses(tasks_list)
-        tasks_list.add(GoToBack(
-            desc="On se dégage pour la suite",
-            position_x = 1200,
-            position_y = 1200,
+        tasks_list.add(Face(
+            desc="Position de largage",
+            position_x=1200,
+            position_y=3000,
         ))
+        self.larguer_caisses(tasks_list)
         tasks_list.add(AddZone(
             desc="On verrouille la zone",
             item_id="garde_manger_centre_1"
@@ -359,12 +359,12 @@ class HypposPrincess(AbstractMain):
             position_x = 1700,
             position_y = 1500,
         ))
-        self.larguer_caisses(tasks_list)
-        tasks_list.add(GoToBack(
-            desc="On se dégage pour la suite",
-            position_x=1600,
+        tasks_list.add(Face(
+            desc="Position de largage",
+            position_x=2000,
             position_y=1500,
         ))
+        self.larguer_caisses(tasks_list)
         tasks_list.add(AddZone(
             desc="On verrouille la zone",
             item_id="garde_manger_centre_2"
@@ -395,12 +395,12 @@ class HypposPrincess(AbstractMain):
             position_x = 1200,
             position_y = 300,
         ))
-        self.larguer_caisses(tasks_list)
-        tasks_list.add(GoToBack(
-            desc="On se dégage pour la suite",
+        tasks_list.add(Face(
+            desc="Position de largage",
             position_x=1200,
-            position_y=400,
+            position_y=0,
         ))
+        self.larguer_caisses(tasks_list)
         tasks_list.add(
             AddZone(
                 desc="On verrouille la zone",
@@ -439,12 +439,12 @@ class HypposPrincess(AbstractMain):
             position_x = 1700,
             position_y = 700,
         ))
-        self.larguer_caisses(tasks_list)
-        tasks_list.add(GoToBack(
-            desc="On se dégage pour la suite",
-            position_x=1600,
+        tasks_list.add(Face(
+            desc="Position de largage",
+            position_x=2000,
             position_y=700,
         ))
+        self.larguer_caisses(tasks_list)
         tasks_list.add(
             AddZone(
                 desc="On verrouille la zone",
@@ -483,12 +483,12 @@ class HypposPrincess(AbstractMain):
             position_x = 1000,
             position_y = 800,
         ))
-        self.larguer_caisses(tasks_list)
-        tasks_list.add(GoToBack(
-            desc="On se dégage pour la suite",
-            position_x=900,
+        tasks_list.add(Face(
+            desc="Position de largage",
+            position_x=2000,
             position_y=800,
         ))
+        self.larguer_caisses(tasks_list)
         tasks_list.add(
             AddZone(
                 desc="On verrouille la zone",
@@ -519,12 +519,12 @@ class HypposPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoToAstar(
             desc="Position temperature garde-manger centre 2",
-            position_x=1600,
+            position_x=1500,
             position_y=1500,
         ))
         tasks_list.add(GoToBack(
             desc="On se met proche du bord",
-            position_x=1710,
+            position_x=1690,
             position_y=1500,
         ))
         tasks_list.add(Face(
@@ -541,16 +541,16 @@ class HypposPrincess(AbstractMain):
                 desc="Rotation orbitale droite",
                 degrees=90,
                 pivot_offset=self.pivot_offset,
-                forward=True,
-                turn_right=False,
+                forward=False,
+                on_right_wheel=True,
                 mirror=Mirror.SPECIFIC
             ),
             OrbitalTurn(
                 desc="Rotation orbitale gauche",
                 degrees=90,
                 pivot_offset=self.pivot_offset,
-                forward=True,
-                turn_right=True,
+                forward=False,
+                on_right_wheel=False,
                 mirror=Mirror.SPECIFIC
             )
         )
@@ -569,7 +569,7 @@ class HypposPrincess(AbstractMain):
         tasks_list.add(GoTo(
             desc="On règle la température",
             position_x=1842,
-            position_y=700,
+            position_y=750,
         ))
         tasks_list.add(Go(
             desc="On se dégage",
@@ -592,22 +592,22 @@ class HypposPrincess(AbstractMain):
                 desc="Rotation orbitale droite",
                 degrees=90,
                 pivot_offset=self.pivot_offset,
-                forward=False,
-                turn_right=False,
+                forward=True,
+                on_right_wheel=True,
                 mirror=Mirror.SPECIFIC
             ),
             OrbitalTurn(
                 desc="Rotation orbitale gauche",
                 degrees=90,
                 pivot_offset=self.pivot_offset,
-                forward=False,
-                turn_right=True,
+                forward=True,
+                on_right_wheel=False,
                 mirror=Mirror.SPECIFIC
             )
         )
         tasks_list.add(SetSpeed(
             desc="Full speed",
-            speed=100
+            speed=150
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Réglage de la température',
@@ -711,6 +711,10 @@ class HypposPrincess(AbstractMain):
         task_list.add(Manipulation(
             desc="On pose les caisses",
             action_id="routine_coller_poser"
+        ))
+        task_list.add(Go(
+            desc="On recule",
+            dist=-200
         ))
         task_list.add(ResetFlag(
             desc="On reset les flags de rotations",

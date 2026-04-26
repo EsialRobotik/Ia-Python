@@ -33,8 +33,9 @@ class GoToAstar(AbstractTask):
         self.end_point = start_point
         path = self.path_finding.path
         if not path:
-            print("Erreur de pathfinding")
-            return ""
+            raise RuntimeError(
+                f"Pathfinding impossible de {start_point} vers ({self.position_x},{self.position_y})"
+            )
 
         for p in path:
             if self.end_point.x != p.x or self.end_point.y != p.y:
