@@ -887,7 +887,7 @@ class StrategyWindow(QWidget):
             cb = QCheckBox(robot["id"])
             c = robot.get("trail_color", ROBOT_TRAIL_COLORS[0])
             cb.setStyleSheet(f"color: {c.name()}; font-weight: bold;")
-            cb.setChecked(True)
+            cb.setChecked(False)
             self._robot_checks[robot["id"]] = cb
             row1.addWidget(cb)
 
@@ -902,6 +902,11 @@ class StrategyWindow(QWidget):
         self.btn_load = QPushButton("Charger")
         self.btn_load.clicked.connect(self._on_load)
         row2.addWidget(self.btn_load)
+
+        self.btn_prev = QPushButton("Précédent")
+        self.btn_prev.clicked.connect(self._on_prev)
+        self.btn_prev.setEnabled(False)
+        row2.addWidget(self.btn_prev)
 
         self.btn_next = QPushButton("Suivant")
         self.btn_next.clicked.connect(self._on_next)
@@ -970,11 +975,24 @@ class StrategyWindow(QWidget):
                 self._log_text(f"✗ Introuvable : {filename}", QColor(220, 80, 80))
 
         has = bool(self._strategies)
+        self.btn_prev.setEnabled(has)
         self.btn_next.setEnabled(has)
         self.btn_play.setEnabled(has)
         self.btn_pause.setEnabled(False)
 
     # --- Exécution --------------------------------------------------------------
+
+    def _on_prev(self):
+        """Recule d'une instruction et la rejoue pour chaque robot coché."""
+        for robot_id in list(self._strategies.keys()):
+            if self._robot_checks.get(robot_id, QCheckBox()).isChecked():
+                cursor = self._cursors.get(robot_id, 0)
+                if cursor >= 2:
+                    self._cursors[robot_id] = cursor - 2
+                    self._dispatch_next(robot_id)
+                elif cursor == 1:
+                    self._cursors[robot_id] = 0
+                    self._dispatch_next(robot_id)
 
     def _on_next(self):
         """Exécute la prochaine instruction pour chaque robot coché."""
@@ -1060,6 +1078,7 @@ class StrategyWindow(QWidget):
 
     def _on_play(self):
         self.btn_play.setEnabled(False)
+        self.btn_prev.setEnabled(False)
         self.btn_next.setEnabled(False)
         self.btn_pause.setEnabled(True)
         if not hasattr(self, '_match_start_time') or self._match_start_time is None:
@@ -1069,6 +1088,7 @@ class StrategyWindow(QWidget):
     def _on_pause(self):
         self._play_timer.stop()
         self.btn_play.setEnabled(True)
+        self.btn_prev.setEnabled(True)
         self.btn_next.setEnabled(True)
         self.btn_pause.setEnabled(False)
 
