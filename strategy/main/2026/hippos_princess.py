@@ -40,11 +40,9 @@ class HypposPrincess(AbstractMain):
         self.depose_garde_manger_centre_1()
         self.get_caisse_4()
         self.regler_temperature()
-        self.depose_garde_manger_couleur_2()
-        #self.get_caisse_2()
-        #self.depose_garde_manger_couleur_1()
+        self.depose_garde_manger_couleur_3()
         self.get_caisse_1()
-        self.depose_garde_manger_centre_3()
+        self.depose_garde_manger_couleur_4()
         self.retour_au_nid()
         self.generate_strategy('princess')
 
@@ -80,7 +78,7 @@ class HypposPrincess(AbstractMain):
         tasks_list.add(GoToAstar(
             desc="Position caisse 1",
             position_x=800,
-            position_y=250 + self.distance_photo,
+            position_y=145 + self.distance_photo,
         ))
         tasks_list.add(Face(
             desc="On s'aligne",
@@ -89,7 +87,7 @@ class HypposPrincess(AbstractMain):
         ))
         tasks_list.add(Manipulation(
             desc="Petite pause",
-            action_id="wait_500ms"
+            action_id="wait_250ms"
         ))
         tasks_list.add(
             Manipulation(
@@ -105,7 +103,7 @@ class HypposPrincess(AbstractMain):
         )
         tasks_list.add(Manipulation(
             desc="Petite pause",
-            action_id="wait_500ms"
+            action_id="wait_250ms"
         ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
@@ -148,7 +146,7 @@ class HypposPrincess(AbstractMain):
         ))
         tasks_list.add(Manipulation(
             desc="Petite pause",
-            action_id="wait_500ms"
+            action_id="wait_250ms"
         ))
         tasks_list.add(
             Manipulation(
@@ -164,7 +162,7 @@ class HypposPrincess(AbstractMain):
         )
         tasks_list.add(Manipulation(
             desc="Petite pause",
-            action_id="wait_500ms"
+            action_id="wait_250ms"
         ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
@@ -207,7 +205,7 @@ class HypposPrincess(AbstractMain):
         ))
         tasks_list.add(Manipulation(
             desc="Petite pause",
-            action_id="wait_500ms"
+            action_id="wait_250ms"
         ))
         tasks_list.add(
             Manipulation(
@@ -223,7 +221,7 @@ class HypposPrincess(AbstractMain):
         )
         tasks_list.add(Manipulation(
             desc="Petite pause",
-            action_id="wait_500ms"
+            action_id="wait_250ms"
         ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
@@ -266,7 +264,7 @@ class HypposPrincess(AbstractMain):
         ))
         tasks_list.add(Manipulation(
             desc="Petite pause",
-            action_id="wait_500ms"
+            action_id="wait_250ms"
         ))
         tasks_list.add(
             Manipulation(
@@ -282,7 +280,7 @@ class HypposPrincess(AbstractMain):
         )
         tasks_list.add(Manipulation(
             desc="Petite pause",
-            action_id="wait_500ms"
+            action_id="wait_250ms"
         ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
@@ -470,11 +468,11 @@ class HypposPrincess(AbstractMain):
             priority=1
         ))
 
-    def depose_garde_manger_centre_3(self):
+    def depose_garde_manger_couleur_3(self):
         score = 17
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoToAstar(
-            desc="Position garde manger couleur 2",
+            desc="Position garde manger couleur 3",
             position_x=900,
             position_y=800,
         ))
@@ -509,6 +507,50 @@ class HypposPrincess(AbstractMain):
         ))
         self.objectifs_couleur_3000.append(tasks_list.generate_mirror_objective(
             name='Largage garde manger bleu 3',
+            id=5,
+            score=score,
+            priority=1
+        ))
+
+    def depose_garde_manger_couleur_4(self):
+        score = 17
+        tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(GoToAstar(
+            desc="Position garde manger couleur 4",
+            position_x=850,
+            position_y=1250,
+        ))
+        tasks_list.add(GoTo(
+            desc="Position de largage",
+            position_x = 750,
+            position_y = 1250,
+        ))
+        tasks_list.add(Face(
+            desc="Position de largage",
+            position_x=0,
+            position_y=1250,
+        ))
+        self.larguer_caisses(tasks_list)
+        tasks_list.add(
+            AddZone(
+                desc="On verrouille la zone",
+                item_id="garde_manger_jaune_4",
+                mirror=Mirror.SPECIFIC
+            ),
+            AddZone(
+                desc="On verrouille la zone",
+                item_id="garde_manger_bleu_4",
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        self.objectifs_couleur_0.append(tasks_list.generate_objective(
+            name='Largage garde manger jaune 4',
+            id=5,
+            score=score,
+            priority=1
+        ))
+        self.objectifs_couleur_3000.append(tasks_list.generate_mirror_objective(
+            name='Largage garde manger bleu 4',
             id=5,
             score=score,
             priority=1
@@ -568,7 +610,7 @@ class HypposPrincess(AbstractMain):
         )
         tasks_list.add(GoTo(
             desc="On règle la température",
-            position_x=1842,
+            position_x=1822,
             position_y=750,
         ))
         tasks_list.add(Go(
@@ -607,7 +649,7 @@ class HypposPrincess(AbstractMain):
         )
         tasks_list.add(SetSpeed(
             desc="Full speed",
-            speed=150
+            speed=100
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Réglage de la température',
@@ -625,11 +667,6 @@ class HypposPrincess(AbstractMain):
     def retour_au_nid(self):
         score = 10
         tasks_list = TaskList(mirror_size=3000)
-        tasks_list.add(GoToAstar(
-            desc="On va se ranger pour finir dans le nid",
-            position_x=800,
-            position_y=900
-        ))
         tasks_list.add(WaitChrono(
             desc="On attends",
             chrono=87

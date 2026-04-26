@@ -55,7 +55,7 @@
     },
     {
         "task": "Petite pause",
-        "command": "action#wait_500ms",
+        "command": "action#wait_250ms",
         "position": {
             "x": 850,
             "y": 1150,
@@ -73,7 +73,7 @@
     },
     {
         "task": "Petite pause",
-        "command": "action#wait_500ms",
+        "command": "action#wait_250ms",
         "position": {
             "x": 850,
             "y": 1150,
@@ -307,7 +307,7 @@
     },
     {
         "task": "Petite pause",
-        "command": "action#wait_500ms",
+        "command": "action#wait_250ms",
         "position": {
             "x": 1475,
             "y": 1100,
@@ -325,7 +325,7 @@
     },
     {
         "task": "Petite pause",
-        "command": "action#wait_500ms",
+        "command": "action#wait_250ms",
         "position": {
             "x": 1475,
             "y": 1100,
@@ -514,317 +514,65 @@
     },
     {
         "task": "On r\u00e8gle la temp\u00e9rature",
-        "command": "goto#1842;750",
+        "command": "goto#1822;750",
         "position": {
-            "x": 1842,
+            "x": 1822,
             "y": 750,
-            "theta": -1.5481244751733605
+            "theta": -1.5707963267948966
         }
     },
     {
         "task": "On se d\u00e9gage",
         "command": "go#-150",
         "position": {
-            "x": 1839,
-            "y": 899,
-            "theta": -1.5481244751733605
+            "x": 1822,
+            "y": 900,
+            "theta": -1.5707963267948966
         }
     },
     {
         "task": "On rentre le bras gauche",
         "command": "action#fermer_bras_gauche",
         "position": {
-            "x": 1839,
-            "y": 899,
-            "theta": -1.5481244751733605
+            "x": 1822,
+            "y": 900,
+            "theta": -1.5707963267948966
         }
     },
     {
         "task": "Rotation orbitale droite",
         "command": "orbital-turn#90;1;1",
         "position": {
-            "x": 1709,
-            "y": 763,
-            "theta": -3.1189208019682573
+            "x": 1689,
+            "y": 767,
+            "theta": -3.141592653589793
         }
     },
     {
         "task": "Full speed",
-        "command": "speed#150",
-        "position": {
-            "x": 1709,
-            "y": 763,
-            "theta": -3.1189208019682573
-        }
-    },
-    {
-        "task": "Position garde manger couleur 2",
-        "command": "goto-astar#1709;763",
-        "position": {
-            "x": 1709,
-            "y": 763,
-            "theta": -3.1189208019682573
-        }
-    },
-    {
-        "task": "Position garde manger couleur 2",
-        "command": "goto-astar#1600;700",
-        "position": {
-            "x": 1600,
-            "y": 700,
-            "theta": -2.6175204708148474
-        }
-    },
-    {
-        "task": "Position de largage",
-        "command": "goto#1700;700",
-        "position": {
-            "x": 1700,
-            "y": 700,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "Position de largage",
-        "command": "face#2000;700",
-        "position": {
-            "x": 1700,
-            "y": 700,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On pose les caisses",
-        "command": "action#routine_coller_poser",
-        "position": {
-            "x": 1700,
-            "y": 700,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On recule",
-        "command": "go#-200",
-        "position": {
-            "x": 1500,
-            "y": 700,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On reset les flags de rotations",
-        "command": "reset-flag#rotateNut1,rotateNut2,rotateNut3,rotateNut4",
-        "position": {
-            "x": 1500,
-            "y": 700,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On remet les pinces \u00e0 0",
-        "command": "action#tourner_pinces_0",
-        "position": {
-            "x": 1500,
-            "y": 700,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_jaune_2",
-        "position": {
-            "x": 1500,
-            "y": 700,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "Position caisse 1",
-        "command": "goto-astar#1500;700",
-        "position": {
-            "x": 1500,
-            "y": 700,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "Position caisse 1",
-        "command": "goto-astar#800;630",
-        "position": {
-            "x": 800,
-            "y": 630,
-            "theta": -3.0419240010986313
-        }
-    },
-    {
-        "task": "On s'aligne",
-        "command": "face#800;0",
-        "position": {
-            "x": 800,
-            "y": 630,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "Petite pause",
-        "command": "action#wait_500ms",
-        "position": {
-            "x": 800,
-            "y": 630,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "Photo caisse",
-        "command": "action#detect_noisettes_bleues",
-        "position": {
-            "x": 800,
-            "y": 630,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "Petite pause",
-        "command": "action#wait_500ms",
-        "position": {
-            "x": 800,
-            "y": 630,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "On l\u00e8ve l'ascenseur",
-        "command": "action#lever",
-        "position": {
-            "x": 800,
-            "y": 630,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "On ouvre les doigts",
-        "command": "action#ouvrir",
-        "position": {
-            "x": 800,
-            "y": 630,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "Piano piano",
-        "command": "speed#50",
-        "position": {
-            "x": 800,
-            "y": 630,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "On se colle aux caisse",
-        "command": "go#260",
-        "position": {
-            "x": 800,
-            "y": 370,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "On se d\u00e9colle des caisse",
-        "command": "go#-35",
-        "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "On ramasse",
-        "command": "action#routine_ramasser_ecarter",
-        "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 1",
-        "command": "action#tourner_pince_1_180",
-        "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 2",
-        "command": "action#tourner_pince_2_180",
-        "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 3",
-        "command": "action#tourner_pince_3_180",
-        "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 4",
-        "command": "action#tourner_pince_4_180",
-        "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "Les caisses qui collent",
-        "command": "action#coller",
-        "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "Distorsion maximum",
         "command": "speed#100",
         "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
+            "x": 1689,
+            "y": 767,
+            "theta": -3.141592653589793
         }
     },
     {
-        "task": "On lib\u00e8re la zone caisses 1",
-        "command": "delete-zone#caisse_jaune_1",
+        "task": "Position garde manger couleur 3",
+        "command": "goto-astar#1689;767",
         "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
+            "x": 1689,
+            "y": 767,
+            "theta": -3.141592653589793
         }
     },
     {
-        "task": "Position garde manger couleur 2",
-        "command": "goto-astar#800;405",
-        "position": {
-            "x": 800,
-            "y": 405,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "Position garde manger couleur 2",
+        "task": "Position garde manger couleur 3",
         "command": "goto-astar#900;800",
         "position": {
             "x": 900,
             "y": 800,
-            "theta": 1.3228414819792058
+            "theta": 3.099791921716942
         }
     },
     {
@@ -891,7 +639,7 @@
         }
     },
     {
-        "task": "On va se ranger pour finir dans le nid",
+        "task": "Position caisse 1",
         "command": "goto-astar#800;800",
         "position": {
             "x": 800,
@@ -900,21 +648,255 @@
         }
     },
     {
-        "task": "On va se ranger pour finir dans le nid",
-        "command": "goto-astar#800;900",
+        "task": "Position caisse 1",
+        "command": "goto-astar#800;525",
         "position": {
             "x": 800,
-            "y": 900,
-            "theta": 1.5707963267948966
+            "y": 525,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On s'aligne",
+        "command": "face#800;0",
+        "position": {
+            "x": 800,
+            "y": 525,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "Petite pause",
+        "command": "action#wait_250ms",
+        "position": {
+            "x": 800,
+            "y": 525,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "Photo caisse",
+        "command": "action#detect_noisettes_bleues",
+        "position": {
+            "x": 800,
+            "y": 525,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "Petite pause",
+        "command": "action#wait_250ms",
+        "position": {
+            "x": 800,
+            "y": 525,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On l\u00e8ve l'ascenseur",
+        "command": "action#lever",
+        "position": {
+            "x": 800,
+            "y": 525,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On ouvre les doigts",
+        "command": "action#ouvrir",
+        "position": {
+            "x": 800,
+            "y": 525,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "Piano piano",
+        "command": "speed#50",
+        "position": {
+            "x": 800,
+            "y": 525,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On se colle aux caisse",
+        "command": "go#260",
+        "position": {
+            "x": 800,
+            "y": 265,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On se d\u00e9colle des caisse",
+        "command": "go#-35",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On ramasse",
+        "command": "action#routine_ramasser_ecarter",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "SIT AND ROTATE 1",
+        "command": "action#tourner_pince_1_180",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "SIT AND ROTATE 2",
+        "command": "action#tourner_pince_2_180",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "SIT AND ROTATE 3",
+        "command": "action#tourner_pince_3_180",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "SIT AND ROTATE 4",
+        "command": "action#tourner_pince_4_180",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "Les caisses qui collent",
+        "command": "action#coller",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "Distorsion maximum",
+        "command": "speed#100",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 1",
+        "command": "delete-zone#caisse_jaune_1",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "Position garde manger couleur 4",
+        "command": "goto-astar#800;300",
+        "position": {
+            "x": 800,
+            "y": 300,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "Position garde manger couleur 4",
+        "command": "goto-astar#850;1250",
+        "position": {
+            "x": 850,
+            "y": 1250,
+            "theta": 1.5182132651839548
+        }
+    },
+    {
+        "task": "Position de largage",
+        "command": "goto#750;1250",
+        "position": {
+            "x": 750,
+            "y": 1250,
+            "theta": 3.141592653589793
+        }
+    },
+    {
+        "task": "Position de largage",
+        "command": "face#0;1250",
+        "position": {
+            "x": 750,
+            "y": 1250,
+            "theta": 3.141592653589793
+        }
+    },
+    {
+        "task": "On pose les caisses",
+        "command": "action#routine_coller_poser",
+        "position": {
+            "x": 750,
+            "y": 1250,
+            "theta": 3.141592653589793
+        }
+    },
+    {
+        "task": "On recule",
+        "command": "go#-200",
+        "position": {
+            "x": 950,
+            "y": 1250,
+            "theta": 3.141592653589793
+        }
+    },
+    {
+        "task": "On reset les flags de rotations",
+        "command": "reset-flag#rotateNut1,rotateNut2,rotateNut3,rotateNut4",
+        "position": {
+            "x": 950,
+            "y": 1250,
+            "theta": 3.141592653589793
+        }
+    },
+    {
+        "task": "On remet les pinces \u00e0 0",
+        "command": "action#tourner_pinces_0",
+        "position": {
+            "x": 950,
+            "y": 1250,
+            "theta": 3.141592653589793
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_jaune_4",
+        "position": {
+            "x": 950,
+            "y": 1250,
+            "theta": 3.141592653589793
         }
     },
     {
         "task": "On attends",
         "command": "wait-chrono#87",
         "position": {
-            "x": 800,
-            "y": 900,
-            "theta": 1.5707963267948966
+            "x": 950,
+            "y": 1250,
+            "theta": 3.141592653589793
         }
     },
     {
@@ -923,7 +905,7 @@
         "position": {
             "x": 800,
             "y": 430,
-            "theta": -1.5707963267948966
+            "theta": -1.7517227875490182
         }
     },
     {
