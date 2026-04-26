@@ -5,13 +5,14 @@ from strategy.enum.mirror import Mirror
 from strategy.task.abstract_task import AbstractTask
 
 class Manipulation(AbstractTask):
-    def __init__(self, desc: str, action_id: str, mirror: Mirror = Mirror.MIRRORY):
+    def __init__(self, desc: str, action_id: str, mirror: Mirror = Mirror.MIRRORY, instant_return: bool = False):
         super().__init__(
             desc=desc,
             task_type=StepType.MANIPULATION,
             subtype=StepSubType.NONE,
             mirror=mirror,
-            action_id=action_id
+            action_id=action_id,
+            instant_return=instant_return if instant_return else None
         )
 
     def execute(self, start_point: Position):

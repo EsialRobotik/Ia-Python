@@ -241,11 +241,14 @@ class MasterLoop:
             return True
         elif step_type == StepType.MOVEMENT and self.movement_manager.is_last_ordered_movement_ended():
             return True
-        elif step_type == StepType.MANIPULATION and self.action_manager.is_last_execution_finished():
-            if self.action_manager.action_flags:
-                for flag in self.action_manager.action_flags:
-                    self.strategy_manager.add_action_flag(flag)
-            return True
+        elif step_type == StepType.MANIPULATION:
+            if self.current_step.instant_return:
+                return True
+            if self.action_manager.is_last_execution_finished():
+                if self.action_manager.action_flags:
+                    for flag in self.action_manager.action_flags:
+                        self.strategy_manager.add_action_flag(flag)
+                return True
         elif step_type == StepType.ELEMENT:
             return True
         return False

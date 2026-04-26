@@ -64,6 +64,7 @@ class Step:
         self.reset_flags = config_node.get("reset_flags", None)
         self.forward = config_node.get("forward", None)
         self.on_right_wheel = config_node.get("on_right_wheel", None)
+        self.instant_return = config_node.get("instant_return", False)
 
         self.needed_flag = config_node.get("needed_flag", None)
 

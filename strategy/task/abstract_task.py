@@ -4,7 +4,7 @@ from ia.utils.position import Position
 
 
 class AbstractTask:
-    def __init__(self, desc=None, position_x=0, position_y=0, dist=0, task_type=None, subtype=None, action_id=None, mirror=None, timeout=-1, item_id=None, reset_flags=None, forward=None, on_right_wheel=None):
+    def __init__(self, desc=None, position_x=0, position_y=0, dist=0, task_type=None, subtype=None, action_id=None, mirror=None, timeout=-1, item_id=None, reset_flags=None, forward=None, on_right_wheel=None, instant_return=None):
         self.desc = desc
         self.position_x = position_x
         self.position_y = position_y
@@ -18,6 +18,7 @@ class AbstractTask:
         self.reset_flags = reset_flags
         self.forward = forward
         self.on_right_wheel = on_right_wheel
+        self.instant_return = instant_return
         self.needed_flag = None
         self.path_finding = None
         self.end_point = None
@@ -43,6 +44,7 @@ class AbstractTask:
                 "reset_flags": self.reset_flags,
                 "forward": self.forward,
                 "on_right_wheel": self.on_right_wheel,
+                "instant_return": self.instant_return,
                 "needed_flag": self.needed_flag,
             }
 
