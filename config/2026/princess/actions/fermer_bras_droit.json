@@ -4,7 +4,7 @@
     "description": "Fermer le bras droit",
     "payload": {
         "type": "position",
-        "id": 12,
-        "angleDegree": 76
+        "id": 2,
+        "angleDegree": 240
     }
 }
