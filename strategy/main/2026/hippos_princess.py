@@ -720,6 +720,11 @@ class HypposPrincess(AbstractMain):
             desc="On reset les flags de rotations",
             flags=["rotateNut1", "rotateNut2", "rotateNut3", "rotateNut4"],
         ))
+        task_list.add(Manipulation(
+            desc="On remet les pinces à 0",
+            action_id="tourner_pinces_0",
+            instant_return=True
+        ))
 
 if __name__ == "__main__":
     logging.getLogger('').setLevel(logging.getLevelNamesMapping()['DEBUG'])

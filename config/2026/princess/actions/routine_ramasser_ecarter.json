@@ -5,10 +5,6 @@
     "payload": {
         "list": [
             "coller",
-            "tourner_pince_1_0",
-            "tourner_pince_2_0",
-            "tourner_pince_3_0",
-            "tourner_pince_4_0",
             "ouvrir",
             "poser",
             "fermer",

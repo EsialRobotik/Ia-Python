@@ -261,6 +261,15 @@
         }
     },
     {
+        "task": "On remet les pinces \u00e0 0",
+        "command": "action#tourner_pinces_0",
+        "position": {
+            "x": 1200,
+            "y": 1900,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
         "task": "On verrouille la zone",
         "command": "add-zone#garde_manger_centre_1",
         "position": {
@@ -612,6 +621,15 @@
         }
     },
     {
+        "task": "On remet les pinces \u00e0 0",
+        "command": "action#tourner_pinces_0",
+        "position": {
+            "x": 1500,
+            "y": 2300,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "On verrouille la zone",
         "command": "add-zone#garde_manger_bleu_2",
         "position": {
@@ -848,6 +866,15 @@
     {
         "task": "On reset les flags de rotations",
         "command": "reset-flag#rotateNut1,rotateNut2,rotateNut3,rotateNut4",
+        "position": {
+            "x": 800,
+            "y": 2200,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On remet les pinces \u00e0 0",
+        "command": "action#tourner_pinces_0",
         "position": {
             "x": 800,
             "y": 2200,

@@ -1,0 +1,13 @@
+{
+    "type": "list_join",
+    "alias": "ta0",
+    "description": "Remet toutes les pinces à 0",
+    "payload": {
+        "list": [
+            "tourner_pince_1_0",
+            "tourner_pince_2_0",
+            "tourner_pince_3_0",
+            "tourner_pince_4_0"
+        ]
+    }
+}
