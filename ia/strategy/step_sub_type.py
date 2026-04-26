@@ -48,3 +48,4 @@ class StepSubType(Enum):
     WAIT_CHRONO = 'WAIT_CHRONO'
     WAIT = 'WAIT'
     RESET_FLAG = 'RESET_FLAG'
+    ORBITAL_TURN = 'ORBITAL_TURN'

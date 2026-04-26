@@ -19,6 +19,7 @@ class Pami3(AbstractMain):
         self.start_x_3000: int = 280
         self.start_y_3000: int = 2920
         self.start_theta_3000: float = 1.57079632679
+        self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
 

@@ -87,9 +87,14 @@
           "dist": -400
         },
         {
-          "type": "set_y",
-          "value": 60,
+          "type": "set_pos",
+          "x": 100,
+          "y": 60,
           "theta": 1.570796327
+        },
+        {
+          "type": "speed",
+          "value": 60
         },
         {
           "type": "go",
@@ -100,6 +105,10 @@
           "dist": -90
         },
         {
+          "type": "speed",
+          "value": 20
+        },
+        {
           "type": "go_timed",
           "dist": -400
         },
@@ -107,6 +116,10 @@
           "type": "set_x",
           "value": 60,
           "theta": 0
+        },
+        {
+          "type": "speed",
+          "value": 60
         },
         {
           "type": "go",
@@ -142,9 +155,14 @@
           "dist": -400
         },
         {
-          "type": "set_y",
-          "value": 2960,
+          "type": "set_pos",
+          "x": 100,
+          "y": 2960,
           "theta": -1.570796327
+        },
+        {
+          "type": "speed",
+          "value": 60
         },
         {
           "type": "go",
@@ -155,6 +173,10 @@
           "dist": -90
         },
         {
+          "type": "speed",
+          "value": 20
+        },
+        {
           "type": "go_timed",
           "dist": -400
         },
@@ -162,6 +184,10 @@
           "type": "set_x",
           "value": 60,
           "theta": 0
+        },
+        {
+          "type": "speed",
+          "value": 60
         },
         {
           "type": "go",

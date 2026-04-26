@@ -12,6 +12,7 @@ from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.goto_back import GoToBack
 from strategy.task.manipulation import Manipulation
+from strategy.task.orbital_turn import OrbitalTurn
 from strategy.task.reset_flag import ResetFlag
 from strategy.task.set_speed import SetSpeed
 from strategy.task.wait_chrono import WaitChrono
@@ -27,6 +28,7 @@ class HypposPrincess(AbstractMain):
         self.start_x_3000: int = 150
         self.start_y_3000: int = 2650
         self.start_theta_3000: float = 0
+        self.pivot_offset: float = 132.45
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
 
@@ -36,14 +38,14 @@ class HypposPrincess(AbstractMain):
         self.quitter_depart()
         self.get_caisse_3()
         self.depose_garde_manger_centre_1()
-        #self.get_caisse_4()
-        #self.regler_temperature()
-        #self.depose_garde_manger_centre_2()
-        #self.get_caisse_2()
-        #self.depose_garde_manger_couleur_2()
-        #self.get_caisse_1()
-        #self.depose_garde_manger_couleur_1()
-        #self.retour_au_nid()
+        self.get_caisse_4()
+        self.regler_temperature()
+        self.depose_garde_manger_couleur_2()
+        self.get_caisse_2()
+        self.depose_garde_manger_couleur_1()
+        self.get_caisse_1()
+        self.depose_garde_manger_centre_3()
+        self.retour_au_nid()
         self.generate_strategy('princess')
 
     def quitter_depart(self):
@@ -468,6 +470,50 @@ class HypposPrincess(AbstractMain):
             priority=1
         ))
 
+    def depose_garde_manger_centre_3(self):
+        score = 17
+        tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(GoToAstar(
+            desc="Position garde manger couleur 2",
+            position_x=900,
+            position_y=800,
+        ))
+        tasks_list.add(GoTo(
+            desc="Position de largage",
+            position_x = 1000,
+            position_y = 800,
+        ))
+        self.larguer_caisses(tasks_list)
+        tasks_list.add(GoToBack(
+            desc="On se dégage pour la suite",
+            position_x=900,
+            position_y=800,
+        ))
+        tasks_list.add(
+            AddZone(
+                desc="On verrouille la zone",
+                item_id="garde_manger_jaune_3",
+                mirror=Mirror.SPECIFIC
+            ),
+            AddZone(
+                desc="On verrouille la zone",
+                item_id="garde_manger_bleu_3",
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        self.objectifs_couleur_0.append(tasks_list.generate_objective(
+            name='Largage garde manger jaune 3',
+            id=5,
+            score=score,
+            priority=1
+        ))
+        self.objectifs_couleur_3000.append(tasks_list.generate_mirror_objective(
+            name='Largage garde manger bleu 3',
+            id=5,
+            score=score,
+            priority=1
+        ))
+
     def regler_temperature(self):
         score = 10
         tasks_list = TaskList(mirror_size=3000)
@@ -476,27 +522,89 @@ class HypposPrincess(AbstractMain):
             position_x=1600,
             position_y=1500,
         ))
-        tasks_list.add(GoTo(
+        tasks_list.add(GoToBack(
             desc="On se met proche du bord",
-            position_x=1700,
+            position_x=1710,
             position_y=1500,
         ))
         tasks_list.add(Face(
             desc="Alignement",
-            position_x=1700,
-            position_y=0,
+            position_x=0,
+            position_y=1500,
         ))
         tasks_list.add(SetSpeed(
             desc="Piano piano",
             speed=50
         ))
-        # todo on sort le bras
+        tasks_list.add(
+            OrbitalTurn(
+                desc="Rotation orbitale droite",
+                degrees=90,
+                pivot_offset=self.pivot_offset,
+                forward=True,
+                turn_right=False,
+                mirror=Mirror.SPECIFIC
+            ),
+            OrbitalTurn(
+                desc="Rotation orbitale gauche",
+                degrees=90,
+                pivot_offset=self.pivot_offset,
+                forward=True,
+                turn_right=True,
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        tasks_list.add(
+            Manipulation(
+                desc="On sort le bras gauche",
+                action_id="ouvrir_bras_gauche",
+                mirror=Mirror.SPECIFIC
+            ),
+            Manipulation(
+                desc="On sort le bras droit",
+                action_id="ouvrir_bras_droit",
+                mirror=Mirror.SPECIFIC
+            ),
+        )
         tasks_list.add(GoTo(
             desc="On règle la température",
-            position_x=1700,
+            position_x=1842,
             position_y=700,
         ))
-        # todo on rentre le bras
+        tasks_list.add(Go(
+            desc="On se dégage",
+            dist=-150
+        ))
+        tasks_list.add(
+            Manipulation(
+                desc="On rentre le bras gauche",
+                action_id="fermer_bras_gauche",
+                mirror=Mirror.SPECIFIC
+            ),
+            Manipulation(
+                desc="On rentre le bras droit",
+                action_id="fermer_bras_droit",
+                mirror=Mirror.SPECIFIC
+            ),
+        )
+        tasks_list.add(
+            OrbitalTurn(
+                desc="Rotation orbitale droite",
+                degrees=90,
+                pivot_offset=self.pivot_offset,
+                forward=False,
+                turn_right=False,
+                mirror=Mirror.SPECIFIC
+            ),
+            OrbitalTurn(
+                desc="Rotation orbitale gauche",
+                degrees=90,
+                pivot_offset=self.pivot_offset,
+                forward=False,
+                turn_right=True,
+                mirror=Mirror.SPECIFIC
+            )
+        )
         tasks_list.add(SetSpeed(
             desc="Full speed",
             speed=100

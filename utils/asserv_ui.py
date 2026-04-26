@@ -145,6 +145,15 @@ class AsservUi(App):
                         Button("GoTo", id="goto", variant="primary", classes="button"),
                     ),
                     Horizontal(
+                        Static("GoToBack"),
+                        Input(placeholder="X", id="gotoback_x"),
+                        Input(placeholder="Y", id="gotoback_y"),
+                        Button("GoToBack", id="gotoback", variant="primary", classes="button"),
+                    ),
+                    classes="margin-top",
+                ),
+                Horizontal(
+                    Horizontal(
                         Static("Face"),
                         Input(placeholder="X", id="face_x"),
                         Input(placeholder="Y", id="face_y"),
@@ -220,6 +229,13 @@ class AsservUi(App):
             y = self.query_one("#goto_y").value
             if (is_float(x) and is_float(y)):
                 self.asserv.go_to(Position(int(x), int(y)))
+            else:
+                self.notify("Ton point de consigne c'est dla merde!", severity="error", timeout=5)
+        elif event.button.id == 'gotoback':
+            x = self.query_one("#gotoback_x").value
+            y = self.query_one("#gotoback_y").value
+            if (is_float(x) and is_float(y)):
+                self.asserv.go_to_reverse(Position(int(x), int(y)))
             else:
                 self.notify("Ton point de consigne c'est dla merde!", severity="error", timeout=5)
         elif event.button.id == 'face':

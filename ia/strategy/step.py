@@ -62,6 +62,8 @@ class Step:
         self.distance = config_node.get("dist", 0)
         self.item_id = config_node.get("item_id", None)
         self.reset_flags = config_node.get("reset_flags", None)
+        self.forward = config_node.get("forward", None)
+        self.turn_right = config_node.get("turn_right", None)
 
         self.needed_flag = config_node.get("needed_flag", None)
 

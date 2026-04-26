@@ -6,7 +6,8 @@
     "x": 150,
     "theta": 0,
     "regY": 150,
-    "regX": 40
+    "regX": 40,
+    "pivotOffset": 132.45
   },
   {
     "id": "pami1",
@@ -15,7 +16,8 @@
     "y": 80,
     "theta": 1.57079632679,
     "regX": 70,
-    "regY": 50
+    "regY": 50,
+    "pivotOffset": 43.70
   },
   {
     "id": "pami2",
@@ -24,7 +26,8 @@
     "y": 80,
     "theta": 1.57079632679,
     "regX": 70,
-    "regY": 50
+    "regY": 50,
+    "pivotOffset": 43.70
   },
   {
     "id": "pami3",
@@ -33,7 +36,8 @@
     "y": 80,
     "theta": 1.57079632679,
     "regX": 70,
-    "regY": 50
+    "regY": 50,
+    "pivotOffset": 43.70
   },
   {
     "id": "pami4",
@@ -42,7 +46,8 @@
     "y": 80,
     "theta": 1.57079632679,
     "regX": 70,
-    "regY": 50
+    "regY": 50,
+    "pivotOffset": 43.70
   },
   {
     "id": "pami5",
@@ -51,6 +56,7 @@
     "y": 720,
     "theta": 1.57079632679,
     "regX": 70,
-    "regY": 50
+    "regY": 50,
+    "pivotOffset": 43.70
   }
 ]

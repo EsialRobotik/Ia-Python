@@ -465,6 +465,29 @@ class TableWidget(QWidget):
         if not self._anim_timer.isActive():
             self._anim_timer.start(ANIM_INTERVAL_MS)
 
+    def animate_robot_orbital(self, robot_id: str, degrees: float, forward: bool,
+                              turn_right: bool, trail_color: QColor):
+        """Enfile une animation de rotation orbitale autour d'une roue codeuse."""
+        robot_idx = next(
+            (i for i, r in enumerate(self._robots) if r["id"] == robot_id), None
+        )
+        if robot_idx is None:
+            return
+
+        queue = self._anim_queues.setdefault(robot_idx, [])
+        queue.append({
+            "type": "orbital",
+            "degrees": degrees,
+            "forward": forward,
+            "turn_right": turn_right,
+            "trail_color": QColor(trail_color),
+        })
+
+        if robot_idx not in self._anim_currents:
+            self._start_next_anim(robot_idx)
+        if not self._anim_timer.isActive():
+            self._anim_timer.start(ANIM_INTERVAL_MS)
+
     def _start_next_anim(self, robot_idx: int):
         """Démarre la prochaine étape de la file du robot donné."""
         queue = self._anim_queues.get(robot_idx, [])
@@ -502,6 +525,39 @@ class TableWidget(QWidget):
                 "trail_color": step.get("trail_color"),
             }
 
+        elif step["type"] == "orbital":
+            pivot_offset = robot.get("pivotOffset", 132.45)
+            theta = robot["theta"]
+            degrees = step["degrees"]
+            forward = step["forward"]
+            turn_right = step["turn_right"]
+            angle_rad = math.radians(degrees)
+
+            if turn_right:
+                cx = robot["x"] - pivot_offset * math.sin(theta)
+                cy = robot["y"] + pivot_offset * math.cos(theta)
+                rot = -angle_rad if forward else angle_rad
+            else:
+                cx = robot["x"] + pivot_offset * math.sin(theta)
+                cy = robot["y"] - pivot_offset * math.cos(theta)
+                rot = angle_rad if forward else -angle_rad
+
+            # Angle polaire de départ (robot par rapport au pivot)
+            start_angle = math.atan2(robot["y"] - cy, robot["x"] - cx)
+            arc_length = pivot_offset * abs(rot)
+            self._anim_currents[robot_idx] = {
+                "type": "orbital",
+                "center_x": cx, "center_y": cy,
+                "radius": pivot_offset,
+                "from_angle": start_angle,
+                "rot": rot,
+                "from_theta": theta,
+                "duration": max(arc_length / (ANIM_MOVE_SPEED * self._speed_factor), 0.05),
+                "start_time": self._global_clock.elapsed(),
+                "trail_color": step.get("trail_color"),
+                "prev_x": robot["x"], "prev_y": robot["y"],
+            }
+
     def _anim_tick(self):
         """Fait avancer toutes les animations actives en parallèle."""
         if not self._anim_currents:
@@ -525,6 +581,20 @@ class TableWidget(QWidget):
                         robot["x"], robot["y"],
                         anim["trail_color"],
                     )
+
+            elif anim["type"] == "orbital":
+                angle = anim["from_angle"] + anim["rot"] * t
+                prev_x, prev_y = robot["x"], robot["y"]
+                robot["x"] = anim["center_x"] + anim["radius"] * math.cos(angle)
+                robot["y"] = anim["center_y"] + anim["radius"] * math.sin(angle)
+                robot["theta"] = anim["from_theta"] + anim["rot"] * t
+                if anim.get("trail_color"):
+                    # Persister chaque petit segment pour dessiner l'arc
+                    self._trails.append((
+                        prev_x, prev_y,
+                        robot["x"], robot["y"],
+                        anim["trail_color"],
+                    ))
 
             if t >= 1.0:
                 if anim["type"] == "move" and anim.get("trail_color"):
@@ -966,6 +1036,18 @@ class StrategyWindow(QWidget):
                 self._wait_until[robot_id] = start + target_seconds
             except ValueError:
                 pass
+
+        # --- Orbital turn : animation en arc de cercle ---
+        if command.startswith("orbital-turn#") and robot is not None:
+            try:
+                parts = command.split("#", 1)[1].split(";")
+                degrees = float(parts[0])
+                forward = int(parts[1]) == 1
+                turn_right = int(parts[2]) == 1
+                self._table_widget.animate_robot_orbital(robot_id, degrees, forward, turn_right, color)
+            except (ValueError, IndexError):
+                pass
+            return
 
         # --- Déplacement du robot (toujours, vers la position de l'instruction) ---
         if robot is not None and position:
