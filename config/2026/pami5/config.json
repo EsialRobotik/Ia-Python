@@ -1,0 +1,170 @@
+{
+  "desc": "Pami 5 - 2026",
+  "matchDuration": 100,
+  "marge": 80,
+  "gpioColorSelector": 27,
+  "gpioPullCord": 22,
+  "loggerSocket": {
+    "active": true,
+    "host": "192.168.42.102",
+    "port": 1664,
+    "who": "pami5"
+  },
+  "comSocket": {
+    "active": true,
+    "host": "192.168.42.102",
+    "port": 4269
+  },
+  "detection": {
+    "ultrasound": {
+      "windowSize": 2,
+      "gpioList": [
+        {
+          "type": "srf08",
+          "desc": "Avant",
+          "address": 226,
+          "x": 60,
+          "y": 0,
+          "angle": 0,
+          "threshold": 180
+        }
+      ]
+    }
+  },
+  "asserv": {
+    "baudRate": 115200,
+    "serialPort": "/dev/ttyAMA0",
+    "goStart": {
+      "jaune": [
+        {
+          "type": "speed",
+          "value": 20
+        },
+        {
+          "type": "go_timed",
+          "dist": -400
+        },
+        {
+          "type": "set_pos",
+          "x": 100,
+          "y": 692,
+          "theta": 1.570796327
+        },
+        {
+          "type": "speed",
+          "value": 60
+        },
+        {
+          "type": "go",
+          "dist": 200
+        },
+        {
+          "type": "turn",
+          "dist": -90
+        },
+        {
+          "type": "speed",
+          "value": 20
+        },
+        {
+          "type": "go_timed",
+          "dist": -400
+        },
+        {
+          "type": "set_x",
+          "value": 70,
+          "theta": 0
+        },
+        {
+          "type": "speed",
+          "value": 60
+        },
+        {
+          "type": "go",
+          "dist": 100
+        },
+        {
+          "type": "speed",
+          "value": 100
+        },
+        {
+          "type": "goto_back",
+          "x": 100,
+          "y": 720
+        },
+        {
+          "type": "face",
+          "x": 2000,
+          "y": 720
+        }
+      ],
+      "bleu": [
+        {
+          "type": "speed",
+          "value": 20
+        },
+        {
+          "type": "go_timed",
+          "dist": -400
+        },
+        {
+          "type": "set_pos",
+          "x": 100,
+          "y": 2308,
+          "theta": 1.570796327
+        },
+        {
+          "type": "speed",
+          "value": 60
+        },
+        {
+          "type": "go",
+          "dist": 200
+        },
+        {
+          "type": "turn",
+          "dist": -90
+        },
+        {
+          "type": "speed",
+          "value": 20
+        },
+        {
+          "type": "go_timed",
+          "dist": -400
+        },
+        {
+          "type": "set_x",
+          "value": 70,
+          "theta": 0
+        },
+        {
+          "type": "speed",
+          "value": 60
+        },
+        {
+          "type": "go",
+          "dist": 100
+        },
+        {
+          "type": "speed",
+          "value": 100
+        },
+        {
+          "type": "goto_back",
+          "x": 100,
+          "y": 2280
+        },
+        {
+          "type": "face",
+          "x": 0,
+          "y": 2280
+        }
+      ]
+    }
+  },
+  "actions": {
+    "dataDir": "/home/pi/IAPYTHON/config/2026/pami4/actions",
+    "init": []
+  }
+}
