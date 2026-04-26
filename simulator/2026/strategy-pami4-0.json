@@ -18,6 +18,60 @@
         }
     },
     {
+        "task": "On lib\u00e8re la zone caisses 1",
+        "command": "delete-zone#caisse_jaune_1",
+        "position": {
+            "x": 390,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 3",
+        "command": "delete-zone#caisse_jaune_3",
+        "position": {
+            "x": 390,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 4",
+        "command": "delete-zone#caisse_jaune_4",
+        "position": {
+            "x": 390,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_centre_1",
+        "position": {
+            "x": 390,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_jaune_3",
+        "position": {
+            "x": 390,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_jaune_4",
+        "position": {
+            "x": 390,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
         "task": "On attends son tour",
         "command": "wait#87000",
         "position": {
@@ -37,29 +91,11 @@
     },
     {
         "task": "On file dans le garde manger",
-        "command": "goto-astar#620;330",
-        "position": {
-            "x": 620,
-            "y": 330,
-            "theta": 0.8270407424960368
-        }
-    },
-    {
-        "task": "On file dans le garde manger",
-        "command": "goto-astar#980;330",
-        "position": {
-            "x": 980,
-            "y": 330,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On file dans le garde manger",
         "command": "goto-astar#1000;100",
         "position": {
             "x": 1000,
             "y": 100,
-            "theta": -1.4840579881189115
+            "theta": 0.03277514440407577
         }
     },
     {

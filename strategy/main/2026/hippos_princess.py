@@ -18,7 +18,7 @@ from strategy.task.set_speed import SetSpeed
 from strategy.task.wait_chrono import WaitChrono
 
 
-class HypposPrincess(AbstractMain):
+class HipposPrincess(AbstractMain):
     def __init__(self):
         super().__init__()
         self.year: int = 2026
@@ -772,5 +772,5 @@ if __name__ == "__main__":
     logger = logging.getLogger(__name__)
     logger.info("init logger")
 
-    strategy = HypposPrincess()
+    strategy = HipposPrincess()
     strategy.generate()

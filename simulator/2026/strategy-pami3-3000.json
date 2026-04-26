@@ -5,7 +5,7 @@
         "position": {
             "x": 280,
             "y": 2920,
-            "theta": 1.57079632679
+            "theta": -1.57079632679
         }
     },
     {
@@ -14,7 +14,61 @@
         "position": {
             "x": 280,
             "y": 2920,
-            "theta": 1.57079632679
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 1",
+        "command": "delete-zone#caisse_bleu_1",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 3",
+        "command": "delete-zone#caisse_bleu_3",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 4",
+        "command": "delete-zone#caisse_bleu_4",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_centre_1",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_bleu_3",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_bleu_4",
+        "position": {
+            "x": 280,
+            "y": 2920,
+            "theta": -1.57079632679
         }
     },
     {
@@ -23,7 +77,7 @@
         "position": {
             "x": 280,
             "y": 2920,
-            "theta": 1.57079632679
+            "theta": -1.57079632679
         }
     },
     {

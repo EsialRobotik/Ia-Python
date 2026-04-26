@@ -2,10 +2,14 @@ import logging
 import sys
 
 from strategy.core.task_list import TaskList
+from strategy.enum.mirror import Mirror
 from strategy.main.abstract_main import AbstractMain
+from strategy.task.add_zone import AddZone
+from strategy.task.delete_zone import DeleteZone
 from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.manipulation import Manipulation
+from strategy.task.orbital_turn import OrbitalTurn
 from strategy.task.wait import Wait
 
 
@@ -18,7 +22,7 @@ class Pami1(AbstractMain):
         self.start_theta_0: float = 1.57079632679
         self.start_x_3000: int = 60
         self.start_y_3000: int = 2920
-        self.start_theta_3000: float = 1.57079632679
+        self.start_theta_3000: float = -1.57079632679
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
@@ -26,6 +30,72 @@ class Pami1(AbstractMain):
     def generate(self):
         score = 5
         tasks_list = TaskList(mirror_size=3000)
+
+        tasks_list.add(
+            DeleteZone(
+                desc="On libère la zone caisses 1",
+                item_id="caisse_jaune_1",
+                mirror=Mirror.SPECIFIC
+            ),
+            DeleteZone(
+                desc="On libère la zone caisses 1",
+                item_id="caisse_bleu_1",
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        tasks_list.add(
+            DeleteZone(
+                desc="On libère la zone caisses 3",
+                item_id="caisse_jaune_3",
+                mirror=Mirror.SPECIFIC
+            ),
+            DeleteZone(
+                desc="On libère la zone caisses 3",
+                item_id="caisse_bleu_3",
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        tasks_list.add(
+            DeleteZone(
+                desc="On libère la zone caisses 4",
+                item_id="caisse_jaune_4",
+                mirror=Mirror.SPECIFIC
+            ),
+            DeleteZone(
+                desc="On libère la zone caisses 4",
+                item_id="caisse_bleu_4",
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        tasks_list.add(AddZone(
+            desc="On verrouille la zone",
+            item_id="garde_manger_centre_1"
+        ))
+        tasks_list.add(
+            AddZone(
+                desc="On verrouille la zone",
+                item_id="garde_manger_jaune_3",
+                mirror=Mirror.SPECIFIC
+            ),
+            AddZone(
+                desc="On verrouille la zone",
+                item_id="garde_manger_bleu_3",
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        tasks_list.add(
+            AddZone(
+                desc="On verrouille la zone",
+                item_id="garde_manger_jaune_4",
+                mirror=Mirror.SPECIFIC
+            ),
+            AddZone(
+                desc="On verrouille la zone",
+                item_id="garde_manger_bleu_4",
+                mirror=Mirror.SPECIFIC
+            )
+        )
+
         tasks_list.add(Manipulation(
             desc='On commence à remuer les oreilles',
             action_id='oreilles'
@@ -38,6 +108,29 @@ class Pami1(AbstractMain):
             desc='On avance pour pouvoir se lancer',
             position_x=60,
             position_y=250,
+        ))
+        tasks_list.add(
+            OrbitalTurn(
+                desc="On pivote",
+                degrees=90,
+                pivot_offset=self.pivot_offset,
+                forward=True,
+                on_right_wheel=True,
+                mirror=Mirror.SPECIFIC
+            ),
+            OrbitalTurn(
+                desc="On pivote",
+                degrees=90,
+                pivot_offset=self.pivot_offset,
+                forward=True,
+                on_right_wheel=False,
+                mirror=Mirror.SPECIFIC
+            )
+        )
+        tasks_list.add(GoTo(
+            desc='On avance pour pouvoir se lancer',
+            position_x=200,
+            position_y=400,
         ))
         tasks_list.add(GoToAstar(
             desc='On file dans le garde manger',

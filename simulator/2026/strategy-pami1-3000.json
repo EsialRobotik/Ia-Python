@@ -5,7 +5,61 @@
         "position": {
             "x": 60,
             "y": 2920,
-            "theta": 1.57079632679
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 1",
+        "command": "delete-zone#caisse_bleu_1",
+        "position": {
+            "x": 60,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 3",
+        "command": "delete-zone#caisse_bleu_3",
+        "position": {
+            "x": 60,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 4",
+        "command": "delete-zone#caisse_bleu_4",
+        "position": {
+            "x": 60,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_centre_1",
+        "position": {
+            "x": 60,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_bleu_3",
+        "position": {
+            "x": 60,
+            "y": 2920,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_bleu_4",
+        "position": {
+            "x": 60,
+            "y": 2920,
+            "theta": -1.57079632679
         }
     },
     {
@@ -14,16 +68,16 @@
         "position": {
             "x": 60,
             "y": 2920,
-            "theta": 1.57079632679
+            "theta": -1.57079632679
         }
     },
     {
         "task": "On attends son tour",
-        "command": "wait#88000",
+        "command": "wait#87000",
         "position": {
             "x": 60,
             "y": 2920,
-            "theta": 1.57079632679
+            "theta": -1.57079632679
         }
     },
     {
@@ -36,12 +90,39 @@
         }
     },
     {
-        "task": "On file dans le garde manger",
-        "command": "goto-astar#60;2750",
+        "task": "On pivote",
+        "command": "orbital-turn#90;1;0",
         "position": {
-            "x": 60,
-            "y": 2750,
-            "theta": -1.5707963267948966
+            "x": 103,
+            "y": 2706,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On avance pour pouvoir se lancer",
+        "command": "goto#200;2600",
+        "position": {
+            "x": 200,
+            "y": 2600,
+            "theta": -0.8297041248482244
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#200;2600",
+        "position": {
+            "x": 200,
+            "y": 2600,
+            "theta": -0.8297041248482244
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#530;2480",
+        "position": {
+            "x": 530,
+            "y": 2480,
+            "theta": -0.348771003583907
         }
     },
     {
@@ -50,7 +131,7 @@
         "position": {
             "x": 1000,
             "y": 2250,
-            "theta": -0.4888523543277479
+            "theta": -0.4551008085681946
         }
     },
     {

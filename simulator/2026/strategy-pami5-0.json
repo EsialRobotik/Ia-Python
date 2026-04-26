@@ -1,0 +1,101 @@
+[
+    {
+        "task": "Position de d\u00e9part",
+        "command": "start",
+        "position": {
+            "x": 60,
+            "y": 692,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On commence \u00e0 remuer les oreilles",
+        "command": "action#oreilles",
+        "position": {
+            "x": 60,
+            "y": 692,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On trace au centre",
+        "command": "goto#60;1350",
+        "position": {
+            "x": 60,
+            "y": 1350,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On pivote",
+        "command": "orbital-turn#90;1;1",
+        "position": {
+            "x": 103,
+            "y": 1393,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se positionne",
+        "command": "goto#220;1482",
+        "position": {
+            "x": 220,
+            "y": 1482,
+            "theta": 0.6503037249480932
+        }
+    },
+    {
+        "task": "On s'aligne",
+        "command": "face#220;0",
+        "position": {
+            "x": 220,
+            "y": 1482,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On pousse tout",
+        "command": "goto#220;1100",
+        "position": {
+            "x": 220,
+            "y": 1100,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On recule",
+        "command": "goto-back#220;1250",
+        "position": {
+            "x": 220,
+            "y": 1250,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On s'aligne",
+        "command": "face#2000;1250",
+        "position": {
+            "x": 220,
+            "y": 1250,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On attends le bon moment",
+        "command": "wait-chrono#90",
+        "position": {
+            "x": 220,
+            "y": 1250,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se presque jette dans le vide",
+        "command": "goto#420;1250",
+        "position": {
+            "x": 420,
+            "y": 1250,
+            "theta": 0.0
+        }
+    }
+]

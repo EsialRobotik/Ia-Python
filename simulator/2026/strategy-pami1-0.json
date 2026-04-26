@@ -9,6 +9,60 @@
         }
     },
     {
+        "task": "On lib\u00e8re la zone caisses 1",
+        "command": "delete-zone#caisse_jaune_1",
+        "position": {
+            "x": 60,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 3",
+        "command": "delete-zone#caisse_jaune_3",
+        "position": {
+            "x": 60,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On lib\u00e8re la zone caisses 4",
+        "command": "delete-zone#caisse_jaune_4",
+        "position": {
+            "x": 60,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_centre_1",
+        "position": {
+            "x": 60,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_jaune_3",
+        "position": {
+            "x": 60,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On verrouille la zone",
+        "command": "add-zone#garde_manger_jaune_4",
+        "position": {
+            "x": 60,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
         "task": "On commence \u00e0 remuer les oreilles",
         "command": "action#oreilles",
         "position": {
@@ -19,7 +73,7 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#88000",
+        "command": "wait#87000",
         "position": {
             "x": 60,
             "y": 80,
@@ -36,12 +90,39 @@
         }
     },
     {
-        "task": "On file dans le garde manger",
-        "command": "goto-astar#60;250",
+        "task": "On pivote",
+        "command": "orbital-turn#90;1;1",
         "position": {
-            "x": 60,
-            "y": 250,
-            "theta": 1.5707963267948966
+            "x": 103,
+            "y": 293,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On avance pour pouvoir se lancer",
+        "command": "goto#200;400",
+        "position": {
+            "x": 200,
+            "y": 400,
+            "theta": 0.8343785643211755
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#200;400",
+        "position": {
+            "x": 200,
+            "y": 400,
+            "theta": 0.8343785643211755
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#530;520",
+        "position": {
+            "x": 530,
+            "y": 520,
+            "theta": 0.348771003583907
         }
     },
     {
@@ -50,7 +131,7 @@
         "position": {
             "x": 1000,
             "y": 750,
-            "theta": 0.4888523543277479
+            "theta": 0.4551008085681946
         }
     },
     {
