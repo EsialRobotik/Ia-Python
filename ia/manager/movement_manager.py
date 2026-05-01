@@ -118,8 +118,6 @@ class MovementManager:
             self.logger.info(f"new goto_queue size = {len(self.goto_queue)}")
             self.logger.info(str(self.goto_queue))
         self.asserv.emergency_stop()
-        if not temporary:
-            self.asserv.stop()
 
     def resume_asserv(self) -> bool:
         """
