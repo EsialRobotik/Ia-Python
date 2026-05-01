@@ -232,7 +232,7 @@ class MasterLoop:
         """
         step_type: StepType = self.current_step.action_type
         if step_type == StepType.MOVEMENT and self.current_step.sub_type == StepSubType.WAIT_CHRONO:
-            return (self.current_step.timeout * 1000) <= self.chrono.get_time_since_beginning()
+            return self.current_step.timeout <= self.chrono.get_time_since_beginning()
         elif step_type == StepType.MOVEMENT and self.current_step.sub_type == StepSubType.WAIT:
             try:
                 time.sleep(self.current_step.timeout // 1000)
