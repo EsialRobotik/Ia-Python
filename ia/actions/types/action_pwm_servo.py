@@ -32,10 +32,10 @@ class ActionPwmServo(ThreadedAction):
         )
 
     def execute(self) -> None:
+        super().execute()
         if self.loop:
             # une action en boucle est consideree comme terminee immediatement
             self._finished = True
-        super().execute()
 
     def stop(self) -> None:
         super().stop()
