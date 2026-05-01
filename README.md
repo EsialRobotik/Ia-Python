@@ -80,5 +80,8 @@ Les niveaux de log disponibles sont :
 python ia/main.py {annee} {robot} {log_level}
 ```
 
-## Divers
-Source du pathfinding LUA : https://github.com/GlorifiedPig/Luafinding/tree/master
+## Problème courants
+
+En cas de problème pour installer les dépendances :
+sudo apt-get update
+sudo apt install build-essential python3-dev libcap-dev python3-gpiozero python3-picamera2

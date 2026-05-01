@@ -27,3 +27,11 @@ deploy-pami2: ## Déploie le code sur la pami2
 deploy-pami3: ## Déploie le code sur la pami3
 	bash .build/check_load_env.sh pami3
 	bash .build/deploy-pami3.sh
+
+deploy-pami4: ## Déploie le code sur la pami4
+	bash .build/check_load_env.sh pami4
+	bash .build/deploy-pami4.sh
+
+deploy-pami5: ## Déploie le code sur la pami5
+	bash .build/check_load_env.sh pami5
+	bash .build/deploy-pami5.sh

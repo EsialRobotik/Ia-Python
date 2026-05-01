@@ -7,3 +7,4 @@ class Robot(Enum):
     pami2 = 'pami2'
     pami3 = 'pami3'
     pami4 = 'pami4'
+    pami5 = 'pami5'
