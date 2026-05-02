@@ -43,7 +43,7 @@ class MovementManager:
         trajectory : list[Point]
             The trajectory to follow.
         """
-        self.logger.info(f"executeMovement = {trajectory}")
+        self.logger.info(f"executeMovement = [{', '.join(str(p) for p in trajectory)}]")
         self.logger.info(f"isMatchStarted = {self.is_match_started}")
         self.goto_queue.clear()
         if len(trajectory) > 2:
@@ -62,7 +62,7 @@ class MovementManager:
             self.goto_queue.append(last_point)
             if self.is_match_started:
                 self.asserv.go_to(Position(last_point.x, last_point.y))
-        self.logger.info(f"executeMovement goto_queue = {self.goto_queue}")
+        self.logger.info(f"executeMovement goto_queue = [{', '.join(str(p) for p in self.goto_queue)}]")
 
     def execute_step_deplacement(self, step: Step) -> None:
         """
@@ -116,7 +116,7 @@ class MovementManager:
             if len(self.goto_queue) > 0 and len(self.goto_queue) - self.asserv.queue_size > 0 and self.asserv.queue_size > 0:
                 self.goto_queue = self.goto_queue[len(self.goto_queue) - self.asserv.queue_size:]
             self.logger.info(f"new goto_queue size = {len(self.goto_queue)}")
-            self.logger.info(str(self.goto_queue))
+            self.logger.info(f"[{', '.join(str(p) for p in self.goto_queue)}]")
         self.asserv.emergency_stop()
 
     def resume_asserv(self) -> bool:
