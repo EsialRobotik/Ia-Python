@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "1",
+    "description": "Positionne l'arbre de séparation des pinces pour exposer la rangé 1 de vis vers le haut",
+    "payload": {
+        "type": "position",
+        "id": 5,
+        "angleDegree":  182
+    }
+}
