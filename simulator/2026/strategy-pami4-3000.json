@@ -70,5 +70,14 @@
             "y": 2900,
             "theta": 0.0
         }
+    },
+    {
+        "task": "On entre dans le garde manger",
+        "command": "face#2000;2900",
+        "position": {
+            "x": 1070,
+            "y": 2900,
+            "theta": 0.0
+        }
     }
 ]

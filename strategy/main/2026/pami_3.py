@@ -6,6 +6,7 @@ from strategy.enum.mirror import Mirror
 from strategy.main.abstract_main import AbstractMain
 from strategy.task.add_zone import AddZone
 from strategy.task.delete_zone import DeleteZone
+from strategy.task.face import Face
 from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.manipulation import Manipulation
@@ -120,7 +121,12 @@ class Pami3(AbstractMain):
         ))
         tasks_list.add(GoTo(
             desc='On entre dans le garde manger',
-            position_x=1770,
+            position_x=1800,
+            position_y=700,
+        ))
+        tasks_list.add(Face(
+            desc='On entre dans le garde manger',
+            position_x=2000,
             position_y=700,
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
