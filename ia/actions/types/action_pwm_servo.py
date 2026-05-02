@@ -37,10 +37,6 @@ class ActionPwmServo(ThreadedAction):
             # une action en boucle est consideree comme terminee immediatement
             self._finished = True
 
-    def stop(self) -> None:
-        super().stop()
-        self.servo.stop()
-
     def reset(self) -> None:
         super().reset()
         self.servo.angle = 0
