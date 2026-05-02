@@ -48,7 +48,7 @@ class MovementManager:
         self.goto_queue.clear()
         if len(trajectory) > 2:
             # Remove the first point which is the starting point and the last to finish on a precise goto
-            for point in trajectory[1:len(trajectory) - 2]:
+            for point in trajectory[1:-1]:
                 self.goto_queue.append(point)
                 if self.is_match_started:
                     self.asserv.go_to_chain(Position(point.x, point.y))
