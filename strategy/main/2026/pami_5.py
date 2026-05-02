@@ -33,7 +33,7 @@ class Pami5(AbstractMain):
         ))
         tasks_list.add(GoTo(
             desc="On trace au centre",
-            position_x=90,
+            position_x=80,
             position_y=1500
         ))
         tasks_list.add(Face(
@@ -54,7 +54,7 @@ class Pami5(AbstractMain):
         tasks_list.add(GoTo(
             desc="On pousse tout",
             position_x=220,
-            position_y=1100
+            position_y=1090
         ))
         tasks_list.add(GoToBack(
             desc="On recule",

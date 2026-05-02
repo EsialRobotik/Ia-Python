@@ -19,18 +19,18 @@
     },
     {
         "task": "On trace au centre",
-        "command": "goto#90;1500",
+        "command": "goto#80;1500",
         "position": {
-            "x": 90,
+            "x": 80,
             "y": 1500,
-            "theta": -1.5707963267948966
+            "theta": -1.5831719325820979
         }
     },
     {
         "task": "On pivote",
         "command": "face#2000;1500",
         "position": {
-            "x": 90,
+            "x": 80,
             "y": 1500,
             "theta": 0.0
         }
@@ -55,10 +55,10 @@
     },
     {
         "task": "On pousse tout",
-        "command": "goto#220;1900",
+        "command": "goto#220;1910",
         "position": {
             "x": 220,
-            "y": 1900,
+            "y": 1910,
             "theta": 1.5707963267948966
         }
     },
