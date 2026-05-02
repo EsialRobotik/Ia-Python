@@ -9,60 +9,6 @@
         }
     },
     {
-        "task": "On lib\u00e8re la zone caisses 1",
-        "command": "delete-zone#caisse_jaune_1",
-        "position": {
-            "x": 60,
-            "y": 80,
-            "theta": 1.57079632679
-        }
-    },
-    {
-        "task": "On lib\u00e8re la zone caisses 3",
-        "command": "delete-zone#caisse_jaune_3",
-        "position": {
-            "x": 60,
-            "y": 80,
-            "theta": 1.57079632679
-        }
-    },
-    {
-        "task": "On lib\u00e8re la zone caisses 4",
-        "command": "delete-zone#caisse_jaune_4",
-        "position": {
-            "x": 60,
-            "y": 80,
-            "theta": 1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_centre_1",
-        "position": {
-            "x": 60,
-            "y": 80,
-            "theta": 1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_jaune_3",
-        "position": {
-            "x": 60,
-            "y": 80,
-            "theta": 1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_jaune_4",
-        "position": {
-            "x": 60,
-            "y": 80,
-            "theta": 1.57079632679
-        }
-    },
-    {
         "task": "On commence \u00e0 remuer les oreilles",
         "command": "action#oreilles",
         "position": {
@@ -73,7 +19,7 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#87000",
+        "command": "wait#7000",
         "position": {
             "x": 60,
             "y": 80,

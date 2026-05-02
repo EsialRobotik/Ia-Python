@@ -85,3 +85,6 @@ python ia/main.py {annee} {robot} {log_level}
 En cas de problème pour installer les dépendances :
 sudo apt-get update
 sudo apt install build-essential python3-dev libcap-dev python3-gpiozero python3-picamera2
+
+Si l'IA ne démarre pas :
+pip install --upgrade --ignore-installed picamera2 simplejpeg

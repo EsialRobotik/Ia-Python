@@ -18,62 +18,8 @@
         }
     },
     {
-        "task": "On lib\u00e8re la zone caisses 1",
-        "command": "delete-zone#caisse_bleu_1",
-        "position": {
-            "x": 170,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On lib\u00e8re la zone caisses 3",
-        "command": "delete-zone#caisse_bleu_3",
-        "position": {
-            "x": 170,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On lib\u00e8re la zone caisses 4",
-        "command": "delete-zone#caisse_bleu_4",
-        "position": {
-            "x": 170,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_centre_1",
-        "position": {
-            "x": 170,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_bleu_3",
-        "position": {
-            "x": 170,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_bleu_4",
-        "position": {
-            "x": 170,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
         "task": "On attends son tour",
-        "command": "wait#86000",
+        "command": "wait#6000",
         "position": {
             "x": 170,
             "y": 2920,
@@ -100,20 +46,11 @@
     },
     {
         "task": "On file dans le garde manger",
-        "command": "goto-astar#530;2480",
+        "command": "goto-astar#1355;2030",
         "position": {
-            "x": 530,
-            "y": 2480,
-            "theta": -0.6435011087932844
-        }
-    },
-    {
-        "task": "On file dans le garde manger",
-        "command": "goto-astar#1020;2020",
-        "position": {
-            "x": 1020,
-            "y": 2020,
-            "theta": -0.7538297069096702
+            "x": 1355,
+            "y": 2030,
+            "theta": -0.5459853055057383
         }
     },
     {
@@ -122,7 +59,7 @@
         "position": {
             "x": 1700,
             "y": 1600,
-            "theta": -0.5532943253222926
+            "theta": -0.894638954923692
         }
     },
     {

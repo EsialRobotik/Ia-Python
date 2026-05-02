@@ -25,15 +25,10 @@ class Pami3(AbstractMain):
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
+        #self.wait_time = 85000
+        self.wait_time = 5000
 
-    def generate(self):
-        score = 5
-        tasks_list = TaskList(mirror_size=3000)
-        tasks_list.add(Manipulation(
-            desc='On commence à remuer les oreilles',
-            action_id='oreilles'
-        ))
-
+    def clear_zone(self, tasks_list: TaskList) -> None:
         tasks_list.add(
             DeleteZone(
                 desc="On libère la zone caisses 1",
@@ -99,9 +94,19 @@ class Pami3(AbstractMain):
             )
         )
 
+    def generate(self):
+        score = 5
+        tasks_list = TaskList(mirror_size=3000)
+        tasks_list.add(Manipulation(
+            desc='On commence à remuer les oreilles',
+            action_id='oreilles'
+        ))
+
+        #self.clear_zone(tasks_list)
+
         tasks_list.add(Wait(
             desc='On attends son tour',
-            ms_count=85000
+            ms_count=self.wait_time
         ))
         tasks_list.add(GoTo(
             desc='On avance pour pouvoir se lancer',

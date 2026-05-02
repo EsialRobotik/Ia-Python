@@ -18,62 +18,8 @@
         }
     },
     {
-        "task": "On lib\u00e8re la zone caisses 1",
-        "command": "delete-zone#caisse_bleu_1",
-        "position": {
-            "x": 390,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On lib\u00e8re la zone caisses 3",
-        "command": "delete-zone#caisse_bleu_3",
-        "position": {
-            "x": 390,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On lib\u00e8re la zone caisses 4",
-        "command": "delete-zone#caisse_bleu_4",
-        "position": {
-            "x": 390,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_centre_1",
-        "position": {
-            "x": 390,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_bleu_3",
-        "position": {
-            "x": 390,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
-        "task": "On verrouille la zone",
-        "command": "add-zone#garde_manger_bleu_4",
-        "position": {
-            "x": 390,
-            "y": 2920,
-            "theta": -1.57079632679
-        }
-    },
-    {
         "task": "On attends son tour",
-        "command": "wait#87000",
+        "command": "wait#7000",
         "position": {
             "x": 390,
             "y": 2920,
@@ -91,11 +37,29 @@
     },
     {
         "task": "On file dans le garde manger",
+        "command": "goto-astar#620;2670",
+        "position": {
+            "x": 620,
+            "y": 2670,
+            "theta": -0.8270407424960368
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#980;2670",
+        "position": {
+            "x": 980,
+            "y": 2670,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
         "command": "goto-astar#1000;2900",
         "position": {
             "x": 1000,
             "y": 2900,
-            "theta": -0.03277514440407577
+            "theta": 1.4840579881189115
         }
     },
     {

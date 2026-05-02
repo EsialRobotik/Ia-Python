@@ -14,10 +14,10 @@ class Pami5(AbstractMain):
     def __init__(self):
         super().__init__()
         self.year: int = 2026
-        self.start_x_0: int = 90
+        self.start_x_0: int = 80
         self.start_y_0: int = 692
         self.start_theta_0: float = 1.57079632679
-        self.start_x_3000: int = 90
+        self.start_x_3000: int = 80
         self.start_y_3000: int = 2308
         self.start_theta_3000: float = -1.57079632679
         self.pivot_offset: float = 43.70
