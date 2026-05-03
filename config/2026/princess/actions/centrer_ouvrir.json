@@ -1,0 +1,11 @@
+{
+    "type": "list_join",
+    "alias": "co",
+    "description": "Ouvre le centreur de caisses",
+    "payload": {
+        "list": [
+            "centreur_droit_ouvrir",
+            "centreur_gauche_ouvrir"
+        ]
+    }
+}

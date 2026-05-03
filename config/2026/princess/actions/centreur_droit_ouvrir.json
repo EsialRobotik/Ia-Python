@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "cdo",
+    "description": "Ouvre le centeur droit",
+    "payload": {
+        "type": "position",
+        "id": 14,
+        "angleDegree": 180
+    }
+}

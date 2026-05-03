@@ -1,0 +1,11 @@
+{
+    "type": "list_join",
+    "alias": "cf",
+    "description": "Ferme le centreur de caisses",
+    "payload": {
+        "list": [
+            "centreur_droit_fermer",
+            "centreur_gauche_fermer"
+        ]
+    }
+}

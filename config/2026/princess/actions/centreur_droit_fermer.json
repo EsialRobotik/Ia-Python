@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "cdf",
+    "description": "Ferme le centeur droit",
+    "payload": {
+        "type": "position",
+        "id": 14,
+        "angleDegree": 121
+    }
+}

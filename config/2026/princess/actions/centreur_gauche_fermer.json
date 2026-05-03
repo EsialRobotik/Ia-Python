@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "cgf",
+    "description": "Ferme le centeur gauche",
+    "payload": {
+        "type": "position",
+        "id": 17,
+        "angleDegree": 180
+    }
+}

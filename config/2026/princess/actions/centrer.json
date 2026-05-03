@@ -1,0 +1,11 @@
+{
+    "type": "list",
+    "alias": "e",
+    "description": "Centre les caisse dans le robot",
+    "payload": {
+        "list": [
+            "centrer_ouvrir",
+            "centrer_fermer"            
+        ]
+    }
+}

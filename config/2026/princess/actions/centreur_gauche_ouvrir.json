@@ -1,0 +1,10 @@
+{
+    "type": "AX12",
+    "alias": "cgo",
+    "description": "Ouvre le centeur gauche",
+    "payload": {
+        "type": "position",
+        "id": 17,
+        "angleDegree": 120
+    }
+}
