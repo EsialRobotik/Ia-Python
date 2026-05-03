@@ -78,16 +78,12 @@ class HipposPrincess(AbstractMain):
         tasks_list.add(GoToAstar(
             desc="Position caisse 1",
             position_x=800,
-            position_y=145 + self.distance_photo,
+            position_y=165 + self.distance_photo,
         ))
         tasks_list.add(Face(
             desc="On s'aligne",
             position_x=800,
             position_y=0,
-        ))
-        tasks_list.add(Manipulation(
-            desc="Petite pause",
-            action_id="wait_250ms"
         ))
         tasks_list.add(
             Manipulation(
@@ -101,10 +97,6 @@ class HipposPrincess(AbstractMain):
                 mirror=Mirror.SPECIFIC
             )
         )
-        tasks_list.add(Manipulation(
-            desc="Petite pause",
-            action_id="wait_250ms"
-        ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
             DeleteZone(
@@ -144,10 +136,6 @@ class HipposPrincess(AbstractMain):
             position_x=1600,
             position_y=0,
         ))
-        tasks_list.add(Manipulation(
-            desc="Petite pause",
-            action_id="wait_250ms"
-        ))
         tasks_list.add(
             Manipulation(
                 desc="Photo caisse 3",
@@ -160,10 +148,6 @@ class HipposPrincess(AbstractMain):
                 mirror=Mirror.SPECIFIC
             )
         )
-        tasks_list.add(Manipulation(
-            desc="Petite pause",
-            action_id="wait_250ms"
-        ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
             DeleteZone(
@@ -203,10 +187,6 @@ class HipposPrincess(AbstractMain):
             position_x=2000,
             position_y=1150,
         ))
-        tasks_list.add(Manipulation(
-            desc="Petite pause",
-            action_id="wait_250ms"
-        ))
         tasks_list.add(
             Manipulation(
                 desc="Photo caisse 3",
@@ -219,10 +199,6 @@ class HipposPrincess(AbstractMain):
                 mirror=Mirror.SPECIFIC
             )
         )
-        tasks_list.add(Manipulation(
-            desc="Petite pause",
-            action_id="wait_250ms"
-        ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
             DeleteZone(
@@ -262,10 +238,6 @@ class HipposPrincess(AbstractMain):
             position_x=2000,
             position_y=1100,
         ))
-        tasks_list.add(Manipulation(
-            desc="Petite pause",
-            action_id="wait_250ms"
-        ))
         tasks_list.add(
             Manipulation(
                 desc="Photo caisse 4",
@@ -278,10 +250,6 @@ class HipposPrincess(AbstractMain):
                 mirror=Mirror.SPECIFIC
             )
         )
-        tasks_list.add(Manipulation(
-            desc="Petite pause",
-            action_id="wait_250ms"
-        ))
         self.ramasser_caisses(tasks_list)
         tasks_list.add(
             DeleteZone(
@@ -478,7 +446,7 @@ class HipposPrincess(AbstractMain):
         ))
         tasks_list.add(GoTo(
             desc="Position de largage",
-            position_x = 1000,
+            position_x = 1100,
             position_y = 800,
         ))
         tasks_list.add(Face(
@@ -522,7 +490,7 @@ class HipposPrincess(AbstractMain):
         ))
         tasks_list.add(GoTo(
             desc="Position de largage",
-            position_x = 750,
+            position_x = 770,
             position_y = 1250,
         ))
         tasks_list.add(Face(
@@ -561,8 +529,12 @@ class HipposPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoToAstar(
             desc="Position temperature garde-manger centre 2",
-            position_x=1500,
+            position_x=1600,
             position_y=1500,
+        ))
+        tasks_list.add(SetSpeed(
+            desc="Piano piano",
+            speed=50
         ))
         tasks_list.add(GoToBack(
             desc="On se met proche du bord",
@@ -573,10 +545,6 @@ class HipposPrincess(AbstractMain):
             desc="Alignement",
             position_x=0,
             position_y=1500,
-        ))
-        tasks_list.add(SetSpeed(
-            desc="Piano piano",
-            speed=50
         ))
         tasks_list.add(
             OrbitalTurn(
@@ -669,7 +637,7 @@ class HipposPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(WaitChrono(
             desc="On attends",
-            chrono=87
+            chrono=95
         ))
         tasks_list.add(GoTo(
             desc="Direction le nid",
@@ -721,24 +689,24 @@ class HipposPrincess(AbstractMain):
         ))
         task_list.add(Manipulation(
             desc="SIT AND ROTATE 1",
-            action_id="tourner_pince_1_180"
+            action_id="tourner_pince_1_180",
+            instant_return=True
         ).set_needed_flag("rotateNut1"))
         task_list.add(Manipulation(
             desc="SIT AND ROTATE 2",
-            action_id="tourner_pince_2_180"
+            action_id="tourner_pince_2_180",
+            instant_return=True
         ).set_needed_flag("rotateNut2"))
         task_list.add(Manipulation(
             desc="SIT AND ROTATE 3",
-            action_id="tourner_pince_3_180"
+            action_id="tourner_pince_3_180",
+            instant_return=True
         ).set_needed_flag("rotateNut3"))
         task_list.add(Manipulation(
             desc="SIT AND ROTATE 4",
-            action_id="tourner_pince_4_180"
+            action_id="tourner_pince_4_180",
+            instant_return=True
         ).set_needed_flag("rotateNut4"))
-        task_list.add(Manipulation(
-            desc="Les caisses qui collent",
-            action_id="coller"
-        ))
         task_list.add(SetSpeed(
             desc="Distorsion maximum",
             speed=100

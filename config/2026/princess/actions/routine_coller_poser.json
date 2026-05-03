@@ -5,13 +5,10 @@
     "payload": {
         "list": [
             "coller",
-            "wait_250ms",
             "poser",
-            "wait_250ms",
             "ouvrir",
             "wait_250ms",
             "lever",
-            "wait_250ms",
             "fermer"
         ]
     }

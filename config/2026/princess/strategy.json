@@ -86,23 +86,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "Photo caisse 3",
                     "position_x": 0,
                     "position_y": 0,
@@ -111,23 +94,6 @@
                     "subtype": "NONE",
                     "action_id": "detect_noisettes_bleues",
                     "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
                     "timeout": -1,
                     "item_id": null,
                     "reset_flags": null,
@@ -252,7 +218,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut1"
                 },
                 {
@@ -269,7 +235,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut2"
                 },
                 {
@@ -286,7 +252,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut3"
                 },
                 {
@@ -303,25 +269,8 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut4"
-                },
-                {
-                    "desc": "Les caisses qui collent",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "coller",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
                 },
                 {
                     "desc": "Distorsion maximum",
@@ -555,23 +504,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "Photo caisse 4",
                     "position_x": 0,
                     "position_y": 0,
@@ -580,23 +512,6 @@
                     "subtype": "NONE",
                     "action_id": "detect_noisettes_bleues",
                     "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
                     "timeout": -1,
                     "item_id": null,
                     "reset_flags": null,
@@ -721,7 +636,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut1"
                 },
                 {
@@ -738,7 +653,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut2"
                 },
                 {
@@ -755,7 +670,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut3"
                 },
                 {
@@ -772,25 +687,8 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut4"
-                },
-                {
-                    "desc": "Les caisses qui collent",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "coller",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
                 },
                 {
                     "desc": "Distorsion maximum",
@@ -839,11 +737,28 @@
             "tasks": [
                 {
                     "desc": "Position temperature garde-manger centre 2",
-                    "position_x": 1500,
+                    "position_x": 1600,
                     "position_y": 1500,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "forward": null,
+                    "on_right_wheel": null,
+                    "instant_return": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "Piano piano",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 50,
+                    "type": "MOVEMENT",
+                    "subtype": "SET_SPEED",
                     "action_id": null,
                     "mirror": "mirrory",
                     "timeout": -1,
@@ -878,23 +793,6 @@
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "FACE",
-                    "action_id": null,
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Piano piano",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 50,
-                    "type": "MOVEMENT",
-                    "subtype": "SET_SPEED",
                     "action_id": null,
                     "mirror": "mirrory",
                     "timeout": -1,
@@ -1054,7 +952,7 @@
                 },
                 {
                     "desc": "Position de largage",
-                    "position_x": 1000,
+                    "position_x": 1100,
                     "position_y": 800,
                     "dist": 0,
                     "type": "MOVEMENT",
@@ -1190,7 +1088,7 @@
                 {
                     "desc": "Position caisse 1",
                     "position_x": 800,
-                    "position_y": 525,
+                    "position_y": 545,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
@@ -1222,23 +1120,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "Photo caisse",
                     "position_x": 0,
                     "position_y": 0,
@@ -1247,23 +1128,6 @@
                     "subtype": "NONE",
                     "action_id": "detect_noisettes_bleues",
                     "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
                     "timeout": -1,
                     "item_id": null,
                     "reset_flags": null,
@@ -1388,7 +1252,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut1"
                 },
                 {
@@ -1405,7 +1269,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut2"
                 },
                 {
@@ -1422,7 +1286,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut3"
                 },
                 {
@@ -1439,25 +1303,8 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut4"
-                },
-                {
-                    "desc": "Les caisses qui collent",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "coller",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
                 },
                 {
                     "desc": "Distorsion maximum",
@@ -1523,7 +1370,7 @@
                 },
                 {
                     "desc": "Position de largage",
-                    "position_x": 750,
+                    "position_x": 770,
                     "position_y": 1250,
                     "dist": 0,
                     "type": "MOVEMENT",
@@ -1665,7 +1512,7 @@
                     "subtype": "WAIT_CHRONO",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 87,
+                    "timeout": 95,
                     "item_id": null,
                     "reset_flags": null,
                     "forward": null,
@@ -1800,23 +1647,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "Photo caisse 3",
                     "position_x": 0,
                     "position_y": 0,
@@ -1825,23 +1655,6 @@
                     "subtype": "NONE",
                     "action_id": "detect_noisettes_jaunes",
                     "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
                     "timeout": -1,
                     "item_id": null,
                     "reset_flags": null,
@@ -1966,7 +1779,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut1"
                 },
                 {
@@ -1983,7 +1796,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut2"
                 },
                 {
@@ -2000,7 +1813,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut3"
                 },
                 {
@@ -2017,25 +1830,8 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut4"
-                },
-                {
-                    "desc": "Les caisses qui collent",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "coller",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
                 },
                 {
                     "desc": "Distorsion maximum",
@@ -2269,23 +2065,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "Photo caisse 3",
                     "position_x": 0,
                     "position_y": 0,
@@ -2294,23 +2073,6 @@
                     "subtype": "NONE",
                     "action_id": "detect_noisettes_jaunes",
                     "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
                     "timeout": -1,
                     "item_id": null,
                     "reset_flags": null,
@@ -2435,7 +2197,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut1"
                 },
                 {
@@ -2452,7 +2214,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut2"
                 },
                 {
@@ -2469,7 +2231,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut3"
                 },
                 {
@@ -2486,25 +2248,8 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut4"
-                },
-                {
-                    "desc": "Les caisses qui collent",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "coller",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
                 },
                 {
                     "desc": "Distorsion maximum",
@@ -2553,11 +2298,28 @@
             "tasks": [
                 {
                     "desc": "Position temperature garde-manger centre 2",
-                    "position_x": 1500,
+                    "position_x": 1600,
                     "position_y": 1500,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "forward": null,
+                    "on_right_wheel": null,
+                    "instant_return": null,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "Piano piano",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 50,
+                    "type": "MOVEMENT",
+                    "subtype": "SET_SPEED",
                     "action_id": null,
                     "mirror": "mirrory",
                     "timeout": -1,
@@ -2592,23 +2354,6 @@
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "FACE",
-                    "action_id": null,
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Piano piano",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 50,
-                    "type": "MOVEMENT",
-                    "subtype": "SET_SPEED",
                     "action_id": null,
                     "mirror": "mirrory",
                     "timeout": -1,
@@ -2768,7 +2513,7 @@
                 },
                 {
                     "desc": "Position de largage",
-                    "position_x": 1000,
+                    "position_x": 1100,
                     "position_y": 2200,
                     "dist": 0,
                     "type": "MOVEMENT",
@@ -2904,7 +2649,7 @@
                 {
                     "desc": "Position caisse 1",
                     "position_x": 800,
-                    "position_y": 2475,
+                    "position_y": 2455,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
@@ -2936,23 +2681,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "Photo caisse",
                     "position_x": 0,
                     "position_y": 0,
@@ -2961,23 +2689,6 @@
                     "subtype": "NONE",
                     "action_id": "detect_noisettes_jaunes",
                     "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
-                    "desc": "Petite pause",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "wait_250ms",
-                    "mirror": "mirrory",
                     "timeout": -1,
                     "item_id": null,
                     "reset_flags": null,
@@ -3102,7 +2813,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut1"
                 },
                 {
@@ -3119,7 +2830,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut2"
                 },
                 {
@@ -3136,7 +2847,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut3"
                 },
                 {
@@ -3153,25 +2864,8 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": "rotateNut4"
-                },
-                {
-                    "desc": "Les caisses qui collent",
-                    "position_x": 0,
-                    "position_y": 3000,
-                    "dist": 0,
-                    "type": "MANIPULATION",
-                    "subtype": "NONE",
-                    "action_id": "coller",
-                    "mirror": "mirrory",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": null,
-                    "on_right_wheel": null,
-                    "instant_return": null,
-                    "needed_flag": null
                 },
                 {
                     "desc": "Distorsion maximum",
@@ -3237,7 +2931,7 @@
                 },
                 {
                     "desc": "Position de largage",
-                    "position_x": 750,
+                    "position_x": 770,
                     "position_y": 1750,
                     "dist": 0,
                     "type": "MOVEMENT",
@@ -3379,7 +3073,7 @@
                     "subtype": "WAIT_CHRONO",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 87,
+                    "timeout": 95,
                     "item_id": null,
                     "reset_flags": null,
                     "forward": null,

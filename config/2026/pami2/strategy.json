@@ -32,7 +32,7 @@
                     "subtype": "WAIT",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 6000,
+                    "timeout": 86000,
                     "item_id": null,
                     "reset_flags": null,
                     "forward": null,
@@ -60,7 +60,7 @@
                 {
                     "desc": "On file dans le garde manger",
                     "position_x": 1700,
-                    "position_y": 1400,
+                    "position_y": 1450,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
@@ -77,7 +77,7 @@
                 {
                     "desc": "On entre dans le garde manger",
                     "position_x": 1800,
-                    "position_y": 1400,
+                    "position_y": 1450,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO",
@@ -94,7 +94,7 @@
                 {
                     "desc": "On entre dans le garde manger",
                     "position_x": 2000,
-                    "position_y": 1400,
+                    "position_y": 1450,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "FACE",
@@ -147,7 +147,7 @@
                     "subtype": "WAIT",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 6000,
+                    "timeout": 86000,
                     "item_id": null,
                     "reset_flags": null,
                     "forward": null,
@@ -175,7 +175,7 @@
                 {
                     "desc": "On file dans le garde manger",
                     "position_x": 1700,
-                    "position_y": 1600,
+                    "position_y": 1550,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO_ASTAR",
@@ -192,7 +192,7 @@
                 {
                     "desc": "On entre dans le garde manger",
                     "position_x": 1800,
-                    "position_y": 1600,
+                    "position_y": 1550,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO",
@@ -209,7 +209,7 @@
                 {
                     "desc": "On entre dans le garde manger",
                     "position_x": 2000,
-                    "position_y": 1600,
+                    "position_y": 1550,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "FACE",

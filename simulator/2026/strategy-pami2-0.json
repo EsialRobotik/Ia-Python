@@ -19,7 +19,7 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#6000",
+        "command": "wait#86000",
         "position": {
             "x": 170,
             "y": 80,
@@ -55,28 +55,28 @@
     },
     {
         "task": "On file dans le garde manger",
-        "command": "goto-astar#1700;1400",
+        "command": "goto-astar#1700;1450",
         "position": {
             "x": 1700,
-            "y": 1400,
-            "theta": 0.894638954923692
+            "y": 1450,
+            "theta": 0.9475969968608307
         }
     },
     {
         "task": "On entre dans le garde manger",
-        "command": "goto#1800;1400",
+        "command": "goto#1800;1450",
         "position": {
             "x": 1800,
-            "y": 1400,
+            "y": 1450,
             "theta": 0.0
         }
     },
     {
         "task": "On entre dans le garde manger",
-        "command": "face#2000;1400",
+        "command": "face#2000;1450",
         "position": {
             "x": 1800,
-            "y": 1400,
+            "y": 1450,
             "theta": 0.0
         }
     }
