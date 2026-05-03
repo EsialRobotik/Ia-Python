@@ -334,11 +334,15 @@ class TableWidget(QWidget):
     _DETECTION_DEDUP_RADIUS_SQ = 150 * 150  # mm² — seuil de déduplication spatiale
     _DETECTION_LIFETIME = 1.0         # secondes
 
-    def add_detection(self, x: float, y: float, color: QColor):
+    def add_detection(self, x: float, y: float, color: QColor,
+                      source_x: float | None = None, source_y: float | None = None):
         """
         Ajoute une détection d'obstacle à afficher pendant 1 s.
         Si une détection de même couleur existe déjà à moins de 150 mm,
         son timer est simplement rafraîchi (évite de surcharger l'affichage).
+        Si source_x/source_y sont fournis, le cercle est dessiné tangent au
+        point détecté (l'obstacle s'étendant à l'opposé de la source) plutôt
+        que centré sur lui.
         """
         now = time.monotonic()
         expire = now + self._DETECTION_LIFETIME
@@ -348,8 +352,14 @@ class TableWidget(QWidget):
                 dy = det["y"] - y
                 if dx * dx + dy * dy <= self._DETECTION_DEDUP_RADIUS_SQ:
                     det["expire"] = expire
+                    det["source_x"] = source_x
+                    det["source_y"] = source_y
                     return
-        self._detections.append({"x": x, "y": y, "color": QColor(color), "expire": expire})
+        self._detections.append({
+            "x": x, "y": y,
+            "source_x": source_x, "source_y": source_y,
+            "color": QColor(color), "expire": expire,
+        })
         if not self._detection_cleanup_timer.isActive():
             self._detection_cleanup_timer.start()
         self.update()
@@ -376,7 +386,19 @@ class TableWidget(QWidget):
             color = QColor(det["color"])
             color.setAlpha(160)
             painter.setBrush(QBrush(color))
-            center = self._to_screen(det["x"], det["y"], scale, offset_x, offset_y)
+            cx, cy = det["x"], det["y"]
+            sx, sy = det.get("source_x"), det.get("source_y")
+            if sx is not None and sy is not None:
+                # Décalage du centre pour que le point détecté soit tangent
+                # au cercle, l'obstacle s'étendant à l'opposé de la source.
+                dx = cx - sx
+                dy = cy - sy
+                dist = math.hypot(dx, dy)
+                if dist > 1e-6:
+                    r_mm = self._DETECTION_DISPLAY_RADIUS
+                    cx = cx + (dx / dist) * r_mm
+                    cy = cy + (dy / dist) * r_mm
+            center = self._to_screen(cx, cy, scale, offset_x, offset_y)
             r = self._DETECTION_DISPLAY_RADIUS * scale
             painter.drawEllipse(center, r, r)
         painter.restore()
@@ -1311,12 +1333,23 @@ class RealtimeLogWindow(QWidget):
         # Format 1 (detection_manager) : "Sensor X detected an obstacle at position (x,y)"
         m = re.search(r'at position \((-?\d+),(-?\d+)\)', message)
         if m:
-            self._table_widget.add_detection(float(m.group(1)), float(m.group(2)), color)
+            sx, sy = self._robot_position(robot_id)
+            self._table_widget.add_detection(
+                float(m.group(1)), float(m.group(2)), color,
+                source_x=sx, source_y=sy,
+            )
             return
         # Format 2 (lidar) : "Lidar detection: Position(x=X, y=Y, theta=...)"
         m = re.search(r'Lidar detection: Position\(x=(-?\d+), y=(-?\d+)', message)
         if m:
             self._table_widget.add_detection(float(m.group(1)), float(m.group(2)), color)
+
+    def _robot_position(self, robot_id: str) -> tuple[float | None, float | None]:
+        """Retourne la position (x, y) actuelle du robot, ou (None, None) si inconnu."""
+        for r in self._table_widget._robots:
+            if r["id"] == robot_id:
+                return r["x"], r["y"]
+        return None, None
 
     def _on_status(self, message: str, is_error: bool):
         color = QColor(220, 80, 80) if is_error else QColor(100, 210, 100)
@@ -1603,11 +1636,21 @@ class LogReplayWindow(QWidget):
         color = self._color_for_robot(robot_id)
         m = re.search(r'at position \((-?\d+),(-?\d+)\)', message)
         if m:
-            self._table_widget.add_detection(float(m.group(1)), float(m.group(2)), color)
+            sx, sy = self._robot_position(robot_id)
+            self._table_widget.add_detection(
+                float(m.group(1)), float(m.group(2)), color,
+                source_x=sx, source_y=sy,
+            )
             return
         m = re.search(r'Lidar detection: Position\(x=(-?\d+), y=(-?\d+)', message)
         if m:
             self._table_widget.add_detection(float(m.group(1)), float(m.group(2)), color)
+
+    def _robot_position(self, robot_id: str) -> tuple[float | None, float | None]:
+        for r in self._table_widget._robots:
+            if r["id"] == robot_id:
+                return r["x"], r["y"]
+        return None, None
 
     def _log_text(self, message: str, color: QColor):
         escaped = html_module.escape(message)
