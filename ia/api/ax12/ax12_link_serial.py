@@ -58,12 +58,16 @@ class AX12LinkSerial:
             else:
                 raise AX12Exception("Error initializing serial port: " + str(e))
         
-    def send_command(self, cmd: bytes) -> bytearray:
+    def send_command(self, cmd: bytes, expected_response_size: int = 0) -> bytearray:
         """
         Sends a command to the servomotor and returns the response.
 
         Args:
             cmd (bytes): The command to send to the servomotor.
+            expected_response_size (int): Taille exacte du status packet attendu.
+                Si > 0, la lecture s'arrête dès que ce nombre d'octets est reçu
+                (évite d'attendre le timeout). Si 0, aucune lecture n'est faite
+                (utile pour le mode broadcast où l'AX-12 ne répond pas).
 
         Returns:
             bytearray: The response from the servomotor.
@@ -74,12 +78,8 @@ class AX12LinkSerial:
         response = bytearray()
         try:
             self.serial.write(cmd)
-            while True:
-                # Read data from the serial port
-                data = self.serial.read()
-                if not data:
-                    break
-                response.extend(data)
+            if expected_response_size > 0:
+                response.extend(self.serial.read(expected_response_size))
         except serial.SerialException as e:
             raise AX12Exception("Error sending command: " + str(e))
         return response

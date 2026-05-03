@@ -38,7 +38,10 @@ class TestActions(AbstractTest):
             if action_repo.has_action(command):
                 action_repo.get_action(command).reset()
                 action_repo.get_action(command).execute()
+                start = int(time.monotonic() * 1000)
                 while not action_repo.get_action(command).finished():
                     time.sleep(0.01)
+                end = int(time.monotonic() * 1000)
+                print(f"{command} : [{end - start} ms]")
             else:
                 print(f"L'action '{command}' n'existe pas")

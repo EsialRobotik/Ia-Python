@@ -143,7 +143,7 @@ class AX12Servo:
         checksum = (~checksum) & 0xFF
         buffer[pos] = self.int_to_unsigned_byte(checksum)[0]
 
-        response = self.serial_link.send_command(buffer)
+        response = self.serial_link.send_command(buffer, self._expected_response_size(instruction, params))
         if len(response) > 0:
             validation = self.validate_packet(response, self.address)
             if validation is not None:
@@ -153,6 +153,21 @@ class AX12Servo:
                 raise AX12Exception("Erreur de l'AX12", errors)
 
         return response
+
+    def _expected_response_size(self, instruction: AX12Instr, params: bytearray) -> int:
+        """
+        Taille exacte du status packet attendu : 0xFF 0xFF id length error [params...] checksum.
+        - WRITE_DATA : pas de payload → 6 octets.
+        - READ_DATA : params[1] octets de payload → 6 + params[1] octets.
+        - Mode broadcast : aucune réponse.
+        """
+        if self.address == AX12Address.AX12_ADDRESS_BROADCAST.value:
+            return 0
+        if instruction == AX12Instr.AX12_INSTR_WRITE_DATA:
+            return 6
+        if instruction == AX12Instr.AX12_INSTR_READ_DATA:
+            return 6 + (params[1] if len(params) >= 2 else 0)
+        return 0
     
     def read_servo_position(self) -> int:
         """
