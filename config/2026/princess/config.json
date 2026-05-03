@@ -27,17 +27,17 @@
           "desc": "Avant gauche",
           "trigger": 5,
           "echo": 6,
-          "x": 100,
-          "y": 120,
+          "x": 150,
+          "y": 130,
           "angle": 30,
-          "threshold": 400
+          "threshold": 300
         },
         {
           "type": "srf04",
           "desc": "Milieu",
           "trigger": 10,
           "echo": 9,
-          "x": 100,
+          "x": 150,
           "y": 0,
           "angle": 0,
           "threshold": 400
@@ -47,20 +47,20 @@
           "desc": "Avant droit",
           "trigger": 17,
           "echo": 27,
-          "x": 100,
-          "y": -120,
+          "x": 150,
+          "y": -130,
           "angle": -30,
-          "threshold": 400
+          "threshold": 300
         },
         {
           "type": "srf04",
           "desc": "Arrière",
           "trigger": 19,
           "echo": 26,
-          "x": -100,
+          "x": -900,
           "y": 0,
           "angle": 180,
-          "threshold": 300
+          "threshold": 250
         }
       ]
     },

@@ -40,6 +40,7 @@ class TestSrf04(AbstractTest):
         logger = logging.getLogger(__name__)
         gpioList = self.config_data["detection"]["ultrasound"]["gpioList"];
         frontLeft = Srf04(
+            desc="Avant gauche",
             trigger=gpioList[0]['trigger'],
             echo=gpioList[0]['echo'],
             x=gpioList[0]['x'],
@@ -49,6 +50,7 @@ class TestSrf04(AbstractTest):
             window_size= self.config_data["detection"]["ultrasound"]["windowSize"]
         )
         frontMiddle = Srf04(
+            desc="Avant milieu",
             trigger=gpioList[1]['trigger'],
             echo=gpioList[1]['echo'],
             x=gpioList[1]['x'],
@@ -58,6 +60,7 @@ class TestSrf04(AbstractTest):
             window_size = self.config_data["detection"]["ultrasound"]["windowSize"]
         )
         frontRight = Srf04(
+            desc="Avant droit",
             trigger=gpioList[2]['trigger'],
             echo=gpioList[2]['echo'],
             x=gpioList[2]['x'],
@@ -67,6 +70,7 @@ class TestSrf04(AbstractTest):
             window_size = self.config_data["detection"]["ultrasound"]["windowSize"]
         )
         back = Srf04(
+            desc="Avant arrière",
             trigger=gpioList[3]['trigger'],
             echo=gpioList[3]['echo'],
             x=gpioList[3]['x'],
