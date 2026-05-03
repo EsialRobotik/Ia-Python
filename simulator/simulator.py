@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QHBoxLayout,
     QWidget, QComboBox, QLabel, QPushButton,
     QGridLayout, QDoubleSpinBox, QCheckBox, QTextEdit,
-    QFileDialog, QSlider,
+    QFileDialog, QSlider, QSplitter,
 )
 
 # Chemin du dossier simulation, relatif à ce fichier
@@ -1244,6 +1244,7 @@ class RealtimeLogWindow(QWidget):
         self._table_widget = table_widget
         self._worker: LogSocketWorker | None = None
         self._thread: QThread | None = None
+        self._log_file = self._open_log_file()
 
         layout = QVBoxLayout(self)
 
@@ -1256,13 +1257,40 @@ class RealtimeLogWindow(QWidget):
         header.addStretch()
         layout.addLayout(header)
 
-        # --- Zone de log ---
+        # --- Zones de log : non-debug à gauche, debug à droite ---
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+
+        log_panel = QWidget()
+        log_panel_layout = QVBoxLayout(log_panel)
+        log_panel_layout.setContentsMargins(0, 0, 0, 0)
+        log_panel_layout.addWidget(QLabel("Logs"))
         self._log = QTextEdit()
         self._log.setReadOnly(True)
         self._log.setFont(QFont("Courier New", 9))
-        layout.addWidget(self._log, stretch=1)
+        log_panel_layout.addWidget(self._log, stretch=1)
+        splitter.addWidget(log_panel)
+
+        debug_panel = QWidget()
+        debug_panel_layout = QVBoxLayout(debug_panel)
+        debug_panel_layout.setContentsMargins(0, 0, 0, 0)
+        debug_panel_layout.addWidget(QLabel("Debug"))
+        self._debug_log = QTextEdit()
+        self._debug_log.setReadOnly(True)
+        self._debug_log.setFont(QFont("Courier New", 9))
+        debug_panel_layout.addWidget(self._debug_log, stretch=1)
+        splitter.addWidget(debug_panel)
+
+        splitter.setSizes([1, 1])
+        layout.addWidget(splitter, stretch=1)
 
         self._start_connection(host, port)
+
+    def _open_log_file(self):
+        """Ouvre le fichier de log dans simulator/logs/{ymd_his}.log."""
+        logs_dir = os.path.join(SIMULATION_DIR, "logs")
+        os.makedirs(logs_dir, exist_ok=True)
+        filename = datetime.now().strftime("%Y%m%d_%H%M%S") + ".log"
+        return open(os.path.join(logs_dir, filename), "a", encoding="utf-8")
 
     def _start_connection(self, host: str, port: int):
         self._thread = QThread()
@@ -1292,6 +1320,8 @@ class RealtimeLogWindow(QWidget):
         return QColor(200, 200, 200)
 
     def _on_message(self, line: str):
+        self._write_to_file(line)
+
         parsed = self._parse_line(line)
         if parsed is None:
             self._log_text(line, QColor(200, 200, 200))
@@ -1299,12 +1329,14 @@ class RealtimeLogWindow(QWidget):
 
         _timestamp, who, level, message = parsed
 
-        # Filtrer les DEBUG (mais traiter quand même les positions et détections)
+        # Les DEBUG sont aiguillés vers la zone debug, mais positions et
+        # détections sont traitées dans tous les cas pour animer la table.
         if level == "DEBUG":
             if message.startswith("Position :"):
                 self._handle_position(who, message)
             elif "detected an obstacle at position" in message or message.startswith("Lidar detection:"):
                 self._handle_detection(who, message)
+            self._log_text(line, self._color_for_robot(who), debug=True)
             return
 
         # Déplacement du robot si c'est une ligne de position
@@ -1355,11 +1387,21 @@ class RealtimeLogWindow(QWidget):
         color = QColor(220, 80, 80) if is_error else QColor(100, 210, 100)
         self._log_text(f"[{message}]", color)
 
-    def _log_text(self, message: str, color: QColor):
+    def _log_text(self, message: str, color: QColor, debug: bool = False):
         escaped = html_module.escape(message)
-        self._log.append(f'<span style="color:{color.name()};">{escaped}</span>')
-        sb = self._log.verticalScrollBar()
+        target = self._debug_log if debug else self._log
+        target.append(f'<span style="color:{color.name()};">{escaped}</span>')
+        sb = target.verticalScrollBar()
         sb.setValue(sb.maximum())
+
+    def _write_to_file(self, line: str):
+        if self._log_file is None:
+            return
+        try:
+            self._log_file.write(line + "\n")
+            self._log_file.flush()
+        except (OSError, ValueError):
+            pass
 
     def closeEvent(self, event):
         if self._worker:
@@ -1367,6 +1409,12 @@ class RealtimeLogWindow(QWidget):
         if self._thread:
             self._thread.quit()
             self._thread.wait(2000)
+        if self._log_file is not None:
+            try:
+                self._log_file.close()
+            except OSError:
+                pass
+            self._log_file = None
         super().closeEvent(event)
 
 
