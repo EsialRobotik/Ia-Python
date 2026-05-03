@@ -18,6 +18,7 @@ class ActionAX12(AbstractAction):
         self.flags = flags
         self._executed = False
         self._command_sent = False
+        self._target_angle = None
         self.logger = logging.getLogger(__name__)
 
     @classmethod
@@ -37,8 +38,8 @@ class ActionAX12(AbstractAction):
             case "position":
                 if not self._command_sent:
                     self._command_sent = True
-                    angle = self._parse_angle()
-                    self.servo.set_servo_position(angle.getRawAngle())
+                    self._target_angle = self._parse_angle()
+                    self.servo.set_servo_position(self._target_angle.getRawAngle())
             case "disableTorque":
                 self.servo.disable_torque()
                 self._executed = True
@@ -60,7 +61,9 @@ class ActionAX12(AbstractAction):
             return True
         if self.command == "position" and self._command_sent:
             try:
-                self._executed = not self.servo.is_moving()
+                current_angle = self.servo.read_servo_position()
+                self.logger.debug(f"Target angle : {self._target_angle.getRawAngle()} - Current angle: {current_angle}")
+                self._executed = abs(current_angle - self._target_angle.getRawAngle()) <= 3
             except Exception as e:
                 self.logger.warning(f"Error asking AX12 moving status : {e}")
                 self._executed = True
@@ -75,6 +78,7 @@ class ActionAX12(AbstractAction):
     def reset(self) -> None:
         self._executed = False
         self._command_sent = False
+        self._target_angle = None
 
     def get_flags(self) -> Optional[list[str]]:
         return self.flags
