@@ -547,6 +547,20 @@ class HipposPrincess(AbstractMain):
             position_y=1500,
         ))
         tasks_list.add(
+            Manipulation(
+                desc="On sort le bras gauche",
+                action_id="ouvrir_bras_gauche",
+                mirror=Mirror.SPECIFIC,
+                instant_return=True
+            ),
+            Manipulation(
+                desc="On sort le bras droit",
+                action_id="ouvrir_bras_droit",
+                mirror=Mirror.SPECIFIC,
+                instant_return=True
+            ),
+        )
+        tasks_list.add(
             OrbitalTurn(
                 desc="Rotation orbitale droite",
                 degrees=90,
@@ -564,18 +578,6 @@ class HipposPrincess(AbstractMain):
                 mirror=Mirror.SPECIFIC
             )
         )
-        tasks_list.add(
-            Manipulation(
-                desc="On sort le bras gauche",
-                action_id="ouvrir_bras_gauche",
-                mirror=Mirror.SPECIFIC
-            ),
-            Manipulation(
-                desc="On sort le bras droit",
-                action_id="ouvrir_bras_droit",
-                mirror=Mirror.SPECIFIC
-            ),
-        )
         tasks_list.add(GoTo(
             desc="On règle la température",
             position_x=1822,
@@ -589,12 +591,14 @@ class HipposPrincess(AbstractMain):
             Manipulation(
                 desc="On rentre le bras gauche",
                 action_id="fermer_bras_gauche",
-                mirror=Mirror.SPECIFIC
+                mirror=Mirror.SPECIFIC,
+                instant_return=True
             ),
             Manipulation(
                 desc="On rentre le bras droit",
                 action_id="fermer_bras_droit",
-                mirror=Mirror.SPECIFIC
+                mirror=Mirror.SPECIFIC,
+                instant_return=True
             ),
         )
         tasks_list.add(
@@ -717,6 +721,16 @@ class HipposPrincess(AbstractMain):
             desc="On pose les caisses",
             action_id="routine_coller_poser"
         ))
+        task_list.add(Manipulation(
+            desc="On ferme les doigts",
+            action_id="fermer",
+            instant_return=True
+        ))
+        task_list.add(Manipulation(
+            desc="On remet les pinces à 0",
+            action_id="tourner_pinces_0",
+            instant_return=True
+        ))
         task_list.add(Go(
             desc="On recule",
             dist=-200
@@ -724,11 +738,6 @@ class HipposPrincess(AbstractMain):
         task_list.add(ResetFlag(
             desc="On reset les flags de rotations",
             flags=["rotateNut1", "rotateNut2", "rotateNut3", "rotateNut4"],
-        ))
-        task_list.add(Manipulation(
-            desc="On remet les pinces à 0",
-            action_id="tourner_pinces_0",
-            instant_return=True
         ))
 
 if __name__ == "__main__":

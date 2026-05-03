@@ -804,23 +804,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Rotation orbitale droite",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 90,
-                    "type": "MOVEMENT",
-                    "subtype": "ORBITAL_TURN",
-                    "action_id": null,
-                    "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": false,
-                    "on_right_wheel": true,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "On sort le bras gauche",
                     "position_x": 0,
                     "position_y": 0,
@@ -834,6 +817,23 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
+                    "instant_return": true,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "Rotation orbitale droite",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 90,
+                    "type": "MOVEMENT",
+                    "subtype": "ORBITAL_TURN",
+                    "action_id": null,
+                    "mirror": "specific",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "forward": false,
+                    "on_right_wheel": true,
                     "instant_return": null,
                     "needed_flag": null
                 },
@@ -885,7 +885,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": null
                 },
                 {
@@ -2365,23 +2365,6 @@
                     "needed_flag": null
                 },
                 {
-                    "desc": "Rotation orbitale gauche",
-                    "position_x": 0,
-                    "position_y": 0,
-                    "dist": 90,
-                    "type": "MOVEMENT",
-                    "subtype": "ORBITAL_TURN",
-                    "action_id": null,
-                    "mirror": "specific",
-                    "timeout": -1,
-                    "item_id": null,
-                    "reset_flags": null,
-                    "forward": false,
-                    "on_right_wheel": false,
-                    "instant_return": null,
-                    "needed_flag": null
-                },
-                {
                     "desc": "On sort le bras droit",
                     "position_x": 0,
                     "position_y": 0,
@@ -2395,6 +2378,23 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
+                    "instant_return": true,
+                    "needed_flag": null
+                },
+                {
+                    "desc": "Rotation orbitale gauche",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 90,
+                    "type": "MOVEMENT",
+                    "subtype": "ORBITAL_TURN",
+                    "action_id": null,
+                    "mirror": "specific",
+                    "timeout": -1,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "forward": false,
+                    "on_right_wheel": false,
                     "instant_return": null,
                     "needed_flag": null
                 },
@@ -2446,7 +2446,7 @@
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
-                    "instant_return": null,
+                    "instant_return": true,
                     "needed_flag": null
                 },
                 {

@@ -7,9 +7,8 @@
             "coller",
             "poser",
             "ouvrir",
-            "wait_250ms",
-            "lever",
-            "fermer"
+            "wait_50ms",
+            "lever"
         ]
     }
 }
