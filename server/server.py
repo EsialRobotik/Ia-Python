@@ -9,19 +9,44 @@ import sys
 import threading
 import time
 
+# Délai d'inactivité (en secondes) avant de déclencher une rotation des logs
+INACTIVITY_ROTATION_SECONDS = 600
+
 log_listener = None
 _log_formatter = logging.Formatter('%(asctime)s - %(who)s - %(levelname)s - %(message)s')
+_file_handler = None
+_last_log_time = None
+_log_activity_lock = threading.Lock()
 
 
 def setup_logging():
+    global _file_handler
     os.makedirs('logs', exist_ok=True)
-    file_handler = logging.handlers.RotatingFileHandler(filename='logs/server-log.log', backupCount=50)
-    file_handler.setFormatter(_log_formatter)
+    _file_handler = logging.handlers.RotatingFileHandler(filename='logs/server-log.log', backupCount=50)
+    _file_handler.doRollover()
+    _file_handler.setFormatter(_log_formatter)
     stdout_handler = logging.StreamHandler(sys.stdout)
     stdout_handler.setFormatter(_log_formatter)
     root = logging.getLogger()
-    root.addHandler(file_handler)
+    root.addHandler(_file_handler)
     root.addHandler(stdout_handler)
+
+
+def inactivity_rotation_watcher():
+    """
+    Surveille l'activité de log et déclenche un rollover du fichier
+    courant après INACTIVITY_ROTATION_SECONDS sans message reçu.
+    """
+    global _last_log_time
+    check_interval = max(1, INACTIVITY_ROTATION_SECONDS // 20)
+    while True:
+        time.sleep(check_interval)
+        with _log_activity_lock:
+            if _last_log_time is None:
+                continue
+            if time.monotonic() - _last_log_time >= INACTIVITY_ROTATION_SECONDS:
+                _file_handler.doRollover()
+                _last_log_time = None
 
 class Server:
     """
@@ -111,7 +136,7 @@ class LogRecordStreamHandler(socketserver.StreamRequestHandler):
         according to whatever policy is configured locally.
         """
 
-        global log_listener
+        global log_listener, _last_log_time
         while True:
             chunk = self.connection.recv(4)
             if len(chunk) < 4:
@@ -124,6 +149,8 @@ class LogRecordStreamHandler(socketserver.StreamRequestHandler):
 
             record = logging.makeLogRecord(obj)
             logging.getLogger('').handle(record)
+            with _log_activity_lock:
+                _last_log_time = time.monotonic()
             if log_listener is not None:
                 log_listener.send((_log_formatter.format(record) + '\n').encode())
 
@@ -179,6 +206,8 @@ class LogRecordSocketReceiver(socketserver.ThreadingTCPServer):
 
 if __name__ == '__main__':
     setup_logging()
+    watcher_thread = threading.Thread(target=inactivity_rotation_watcher, daemon=True)
+    watcher_thread.start()
     server = Server()
     while True:
         time.sleep(1)
