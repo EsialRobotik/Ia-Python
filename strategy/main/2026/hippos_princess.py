@@ -88,12 +88,12 @@ class HipposPrincess(AbstractMain):
         tasks_list.add(
             Manipulation(
                 desc="Photo caisse",
-                action_id="detect_noisettes_bleues",
+                action_id="detect_noisettes_jaunes",
                 mirror=Mirror.SPECIFIC
             ),
             Manipulation(
                 desc="Photo caisse",
-                action_id="detect_noisettes_jaunes",
+                action_id="detect_noisettes_bleues",
                 mirror=Mirror.SPECIFIC
             )
         )
@@ -136,15 +136,19 @@ class HipposPrincess(AbstractMain):
             position_x=1600,
             position_y=0,
         ))
+        tasks_list.add(Manipulation(
+            desc="Petite pause pour des photos nettes",
+            action_id="wait_250ms"
+        ))
         tasks_list.add(
             Manipulation(
                 desc="Photo caisse 3",
-                action_id="detect_noisettes_bleues",
+                action_id="detect_noisettes_jaunes",
                 mirror=Mirror.SPECIFIC
             ),
             Manipulation(
                 desc="Photo caisse 3",
-                action_id="detect_noisettes_jaunes",
+                action_id="detect_noisettes_bleues",
                 mirror=Mirror.SPECIFIC
             )
         )
@@ -190,12 +194,12 @@ class HipposPrincess(AbstractMain):
         tasks_list.add(
             Manipulation(
                 desc="Photo caisse 3",
-                action_id="detect_noisettes_bleues",
+                action_id="detect_noisettes_jaunes",
                 mirror=Mirror.SPECIFIC
             ),
             Manipulation(
                 desc="Photo caisse 3",
-                action_id="detect_noisettes_jaunes",
+                action_id="detect_noisettes_bleues",
                 mirror=Mirror.SPECIFIC
             )
         )
@@ -241,12 +245,12 @@ class HipposPrincess(AbstractMain):
         tasks_list.add(
             Manipulation(
                 desc="Photo caisse 4",
-                action_id="detect_noisettes_bleues",
+                action_id="detect_noisettes_jaunes",
                 mirror=Mirror.SPECIFIC
             ),
             Manipulation(
                 desc="Photo caisse 3",
-                action_id="detect_noisettes_jaunes",
+                action_id="detect_noisettes_bleues",
                 mirror=Mirror.SPECIFIC
             )
         )
@@ -653,6 +657,11 @@ class HipposPrincess(AbstractMain):
             position_x=350,
             position_y=430
         ))
+        tasks_list.add(Face(
+            desc="On se gare bien",
+            position_x=0,
+            position_y=430
+        ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Réglage de la température',
             id=5,
@@ -689,7 +698,7 @@ class HipposPrincess(AbstractMain):
         ))
         task_list.add(Go(
             desc="On se décolle des caisse",
-            dist=-35
+            dist=-30
         ))
         task_list.add(Manipulation(
             desc="On ramasse",

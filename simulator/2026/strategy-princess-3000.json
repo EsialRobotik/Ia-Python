@@ -55,7 +55,7 @@
     },
     {
         "task": "Photo caisse 3",
-        "command": "action#detect_noisettes_jaunes",
+        "command": "action#detect_noisettes_bleues",
         "position": {
             "x": 850,
             "y": 1850,
@@ -99,10 +99,19 @@
         }
     },
     {
-        "task": "On se d\u00e9colle des caisse",
-        "command": "go#-35",
+        "task": "On centre le bordel",
+        "command": "action#centrer",
         "position": {
-            "x": 1075,
+            "x": 1110,
+            "y": 1850,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se d\u00e9colle des caisse",
+        "command": "go#-30",
+        "position": {
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
@@ -111,7 +120,7 @@
         "task": "On ramasse",
         "command": "action#routine_ramasser_ecarter",
         "position": {
-            "x": 1075,
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
@@ -120,7 +129,7 @@
         "task": "SIT AND ROTATE 1",
         "command": "action#tourner_pince_1_180",
         "position": {
-            "x": 1075,
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
@@ -129,7 +138,7 @@
         "task": "SIT AND ROTATE 2",
         "command": "action#tourner_pince_2_180",
         "position": {
-            "x": 1075,
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
@@ -138,7 +147,7 @@
         "task": "SIT AND ROTATE 3",
         "command": "action#tourner_pince_3_180",
         "position": {
-            "x": 1075,
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
@@ -147,7 +156,7 @@
         "task": "SIT AND ROTATE 4",
         "command": "action#tourner_pince_4_180",
         "position": {
-            "x": 1075,
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
@@ -156,7 +165,7 @@
         "task": "Distorsion maximum",
         "command": "speed#100",
         "position": {
-            "x": 1075,
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
@@ -165,16 +174,16 @@
         "task": "On lib\u00e8re la zone caisses 3",
         "command": "delete-zone#caisse_bleu_3",
         "position": {
-            "x": 1075,
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
     },
     {
         "task": "Position garde manger centre 1",
-        "command": "goto-astar#1075;1850",
+        "command": "goto-astar#1080;1850",
         "position": {
-            "x": 1075,
+            "x": 1080,
             "y": 1850,
             "theta": 0.0
         }
@@ -185,7 +194,7 @@
         "position": {
             "x": 1200,
             "y": 1800,
-            "theta": -0.3805063771123649
+            "theta": -0.3947911196997615
         }
     },
     {
@@ -216,6 +225,24 @@
         }
     },
     {
+        "task": "On ferme les doigts",
+        "command": "action#fermer",
+        "position": {
+            "x": 1200,
+            "y": 1700,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On remet les pinces \u00e0 0",
+        "command": "action#tourner_pinces_0",
+        "position": {
+            "x": 1200,
+            "y": 1700,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
         "task": "On recule",
         "command": "go#-200",
         "position": {
@@ -227,15 +254,6 @@
     {
         "task": "On reset les flags de rotations",
         "command": "reset-flag#rotateNut1,rotateNut2,rotateNut3,rotateNut4",
-        "position": {
-            "x": 1200,
-            "y": 1900,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "On remet les pinces \u00e0 0",
-        "command": "action#tourner_pinces_0",
         "position": {
             "x": 1200,
             "y": 1900,
@@ -280,7 +298,7 @@
     },
     {
         "task": "Photo caisse 3",
-        "command": "action#detect_noisettes_jaunes",
+        "command": "action#detect_noisettes_bleues",
         "position": {
             "x": 1475,
             "y": 1900,
@@ -324,10 +342,19 @@
         }
     },
     {
-        "task": "On se d\u00e9colle des caisse",
-        "command": "go#-35",
+        "task": "On centre le bordel",
+        "command": "action#centrer",
         "position": {
-            "x": 1700,
+            "x": 1735,
+            "y": 1900,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se d\u00e9colle des caisse",
+        "command": "go#-30",
+        "position": {
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
@@ -336,7 +363,7 @@
         "task": "On ramasse",
         "command": "action#routine_ramasser_ecarter",
         "position": {
-            "x": 1700,
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
@@ -345,7 +372,7 @@
         "task": "SIT AND ROTATE 1",
         "command": "action#tourner_pince_1_180",
         "position": {
-            "x": 1700,
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
@@ -354,7 +381,7 @@
         "task": "SIT AND ROTATE 2",
         "command": "action#tourner_pince_2_180",
         "position": {
-            "x": 1700,
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
@@ -363,7 +390,7 @@
         "task": "SIT AND ROTATE 3",
         "command": "action#tourner_pince_3_180",
         "position": {
-            "x": 1700,
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
@@ -372,7 +399,7 @@
         "task": "SIT AND ROTATE 4",
         "command": "action#tourner_pince_4_180",
         "position": {
-            "x": 1700,
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
@@ -381,7 +408,7 @@
         "task": "Distorsion maximum",
         "command": "speed#100",
         "position": {
-            "x": 1700,
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
@@ -390,16 +417,16 @@
         "task": "On lib\u00e8re la zone caisses 4",
         "command": "delete-zone#caisse_bleu_4",
         "position": {
-            "x": 1700,
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
     },
     {
         "task": "Position temperature garde-manger centre 2",
-        "command": "goto-astar#1700;1900",
+        "command": "goto-astar#1705;1900",
         "position": {
-            "x": 1700,
+            "x": 1705,
             "y": 1900,
             "theta": 0.0
         }
@@ -410,7 +437,7 @@
         "position": {
             "x": 1600,
             "y": 1500,
-            "theta": -1.8157749899217608
+            "theta": -1.8275046572282823
         }
     },
     {
@@ -419,7 +446,7 @@
         "position": {
             "x": 1600,
             "y": 1500,
-            "theta": -1.8157749899217608
+            "theta": -1.8275046572282823
         }
     },
     {
@@ -549,6 +576,24 @@
         }
     },
     {
+        "task": "On ferme les doigts",
+        "command": "action#fermer",
+        "position": {
+            "x": 1100,
+            "y": 2200,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On remet les pinces \u00e0 0",
+        "command": "action#tourner_pinces_0",
+        "position": {
+            "x": 1100,
+            "y": 2200,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "On recule",
         "command": "go#-200",
         "position": {
@@ -560,15 +605,6 @@
     {
         "task": "On reset les flags de rotations",
         "command": "reset-flag#rotateNut1,rotateNut2,rotateNut3,rotateNut4",
-        "position": {
-            "x": 900,
-            "y": 2200,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On remet les pinces \u00e0 0",
-        "command": "action#tourner_pinces_0",
         "position": {
             "x": 900,
             "y": 2200,
@@ -613,7 +649,7 @@
     },
     {
         "task": "Photo caisse",
-        "command": "action#detect_noisettes_jaunes",
+        "command": "action#detect_noisettes_bleues",
         "position": {
             "x": 800,
             "y": 2455,
@@ -657,11 +693,20 @@
         }
     },
     {
-        "task": "On se d\u00e9colle des caisse",
-        "command": "go#-35",
+        "task": "On centre le bordel",
+        "command": "action#centrer",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2715,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On se d\u00e9colle des caisse",
+        "command": "go#-30",
+        "position": {
+            "x": 800,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
@@ -670,7 +715,7 @@
         "command": "action#routine_ramasser_ecarter",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
@@ -679,7 +724,7 @@
         "command": "action#tourner_pince_1_180",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
@@ -688,7 +733,7 @@
         "command": "action#tourner_pince_2_180",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
@@ -697,7 +742,7 @@
         "command": "action#tourner_pince_3_180",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
@@ -706,7 +751,7 @@
         "command": "action#tourner_pince_4_180",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
@@ -715,7 +760,7 @@
         "command": "speed#100",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
@@ -724,16 +769,16 @@
         "command": "delete-zone#caisse_bleu_1",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
     {
         "task": "Position garde manger couleur 4",
-        "command": "goto-astar#800;2680",
+        "command": "goto-astar#800;2685",
         "position": {
             "x": 800,
-            "y": 2680,
+            "y": 2685,
             "theta": 1.5707963267948966
         }
     },
@@ -743,7 +788,7 @@
         "position": {
             "x": 850,
             "y": 1750,
-            "theta": -1.517084597491664
+            "theta": -1.517371278293397
         }
     },
     {
@@ -774,6 +819,24 @@
         }
     },
     {
+        "task": "On ferme les doigts",
+        "command": "action#fermer",
+        "position": {
+            "x": 770,
+            "y": 1750,
+            "theta": 3.141592653589793
+        }
+    },
+    {
+        "task": "On remet les pinces \u00e0 0",
+        "command": "action#tourner_pinces_0",
+        "position": {
+            "x": 770,
+            "y": 1750,
+            "theta": 3.141592653589793
+        }
+    },
+    {
         "task": "On recule",
         "command": "go#-200",
         "position": {
@@ -785,15 +848,6 @@
     {
         "task": "On reset les flags de rotations",
         "command": "reset-flag#rotateNut1,rotateNut2,rotateNut3,rotateNut4",
-        "position": {
-            "x": 970,
-            "y": 1750,
-            "theta": 3.141592653589793
-        }
-    },
-    {
-        "task": "On remet les pinces \u00e0 0",
-        "command": "action#tourner_pinces_0",
         "position": {
             "x": 970,
             "y": 1750,
@@ -830,6 +884,15 @@
     {
         "task": "Direction le nid",
         "command": "goto#350;2570",
+        "position": {
+            "x": 350,
+            "y": 2570,
+            "theta": 3.141592653589793
+        }
+    },
+    {
+        "task": "On se gare bien",
+        "command": "face#0;2570",
         "position": {
             "x": 350,
             "y": 2570,

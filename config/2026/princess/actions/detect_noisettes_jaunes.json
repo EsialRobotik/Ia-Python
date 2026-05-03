@@ -8,7 +8,7 @@
             "47": "yellow",
             "36": "blue"
         },
-        "sort": "left_to_right",
+        "sort": "right_to_left",
         "expected_count": 4,
         "rules": [
             {
