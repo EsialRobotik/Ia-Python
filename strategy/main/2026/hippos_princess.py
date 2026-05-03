@@ -683,6 +683,10 @@ class HipposPrincess(AbstractMain):
             desc="On se colle aux caisse",
             dist=260
         ))
+        task_list.add(Manipulation(
+            desc="On centre le bordel",
+            action_id="centrer"
+        ))
         task_list.add(Go(
             desc="On se décolle des caisse",
             dist=-35
