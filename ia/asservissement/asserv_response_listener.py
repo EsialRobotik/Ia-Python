@@ -24,7 +24,6 @@ class AsservResponseListener:
     def pop_payload(self) -> dict:
         payload = self.payloads.pop(0)
         cbor_msg = cbor2.loads(bytes(payload))
-        logger.debug(f'Payload: {cbor_msg}')
         res = {
             "x": cbor_msg[0],
             "y": cbor_msg[1],

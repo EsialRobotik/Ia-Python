@@ -1,5 +1,5 @@
 {
-    "type": "list_join",
+    "type": "list",
     "alias": "ta0",
     "description": "Remet toutes les pinces à 0",
     "payload": {

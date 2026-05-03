@@ -46,7 +46,7 @@ class AX12LinkSerial:
                 bytesize=serial.EIGHTBITS,
                 stopbits=serial.STOPBITS_ONE,
                 parity=serial.PARITY_NONE,
-                timeout=0.05
+                timeout=0.1
             )
             self.serial.dtr = False
             self.serial.rts = False
@@ -77,6 +77,10 @@ class AX12LinkSerial:
         """
         response = bytearray()
         try:
+            # On vide le buffer d'entrée pour ne pas relire d'éventuelles
+            # données restées d'un échange précédent (réponse arrivée après
+            # son timeout, retry…)
+            self.serial.reset_input_buffer()
             self.serial.write(cmd)
             if expected_response_size > 0:
                 response.extend(self.serial.read(expected_response_size))

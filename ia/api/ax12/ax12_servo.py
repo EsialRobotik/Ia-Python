@@ -1,4 +1,5 @@
 import logging
+import time
 
 from ia.api.ax12 import ax12_link_serial
 from ia.api.ax12.ax12_exception import AX12Exception
@@ -143,15 +144,35 @@ class AX12Servo:
         checksum = (~checksum) & 0xFF
         buffer[pos] = self.int_to_unsigned_byte(checksum)[0]
 
-        response = self.serial_link.send_command(buffer, self._expected_response_size(instruction, params))
-        if len(response) > 0:
-            validation = self.validate_packet(response, self.address)
-            if validation is not None:
-                raise AX12Exception(validation)
-            errors = self.extract_errors(response[4])
-            if len(errors) > 0:
-                raise AX12Exception("Erreur de l'AX12", errors)
+        expected_size = self._expected_response_size(instruction, params)
 
+        # 1 essai + 1 retry en cas d'absence de réponse ou de paquet invalide
+        response = bytearray()
+        last_validation = None
+        for attempt in range(3):
+            response = self.serial_link.send_command(buffer, expected_size)
+            if expected_size == 0:
+                return response  # broadcast : pas de réponse attendue
+            if len(response) == 0:
+                last_validation = None
+                if attempt < 2:
+                    self.logger.warning(f"AX12 {self.address}: pas de réponse, retry")
+                    time.sleep(0.005)
+                continue
+            last_validation = self.validate_packet(response, self.address)
+            if last_validation is None:
+                break
+            if attempt < 2:
+                self.logger.warning(f"AX12 {self.address}: paquet invalide ({last_validation}), retry")
+                time.sleep(0.005)
+
+        if len(response) == 0:
+            return response  # le caller (read/write) lèvera AX12_ERR_NO_RESPONSE
+        if last_validation is not None:
+            raise AX12Exception(last_validation)
+        errors = self.extract_errors(response[4])
+        if len(errors) > 0:
+            raise AX12Exception("Erreur de l'AX12", errors)
         return response
 
     def _expected_response_size(self, instruction: AX12Instr, params: bytearray) -> int:
@@ -313,6 +334,10 @@ class AX12Servo:
             - "Le checksum n'est pas valide": The checksum is invalid.
         """
 
+        logging.getLogger(__name__).debug(
+            f"AX12 {ax12_addr} validate_packet: [{' '.join(f'{b:02X}' for b in packet)}] ({len(packet)} octets)"
+        )
+
         if len(packet) < 6:
             return f"La taille minimale du packet n'est pas valide ({len(packet)})"
 
@@ -320,11 +345,11 @@ class AX12Servo:
             return "Le header du paquet n'est pas valide"
 
         if packet[2] != ax12_addr:
-            return "Le paquet ne contient pas le bon id de l'action"
+            return "Le paquet ne corresponds pas à l'ax12 prévu"
 
         l = packet[3]
         if l < 2 or l > len(packet) - 2:
-            return "La taille de la charge utile mentionnée par le paquet ne correspond pas à la taille reelle"
+            return f"La taille de la charge utile mentionnée par le paquet ne correspond pas à la taille reelle ({len(packet)})"
 
         l -= 3
         cc = packet[2]
