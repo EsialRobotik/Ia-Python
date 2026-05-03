@@ -308,7 +308,7 @@ class VisibilityGraph:
         self,
         start: Position,
         goal: Position,
-        adversaries: Optional[List[Dict]] = None,
+        adversaries: Optional[List[Position]] = None,
     ) -> None:
         """
         Calcule le chemin via le graphe de visibilité.
@@ -316,7 +316,7 @@ class VisibilityGraph:
         Parameters
         ----------
         start, goal : Position (coordonnées en mm)
-        adversaries : list of {"x": int, "y": int}, optionnel
+        adversaries : list of Position, optionnel
             Obstacles circulaires temporaires de rayon ADVERSARY_RADIUS + marge.
             N'affectent pas le cache.
         """
@@ -338,7 +338,7 @@ class VisibilityGraph:
                 # Les sommets de l'octogone ne sont PAS ajoutés au graphe (évite O(N_adv²)
                 # checks Shapely) ; l'adversaire se contente de filtrer les edges bloqués.
                 adv_polys = [
-                    Point(a["x"], a["y"]).buffer(
+                    Point(a.x, a.y).buffer(
                         self.ADVERSARY_RADIUS + self.marge, resolution=2
                     )
                     for a in adversaries
