@@ -75,6 +75,14 @@
   "asserv": {
     "baudRate": 115200,
     "serialPort": "/dev/ttyAMA0",
+    "unblockGoto": {
+      "active": true,
+      "durationMs": 1000,
+      "movementThresholdMm": 5,
+      "recoveryDistanceMm": 50,
+      "maxAttempts": 3,
+      "recoveryTimeoutMs": 3000
+    },
     "goStart": {
       "jaune": [
         {

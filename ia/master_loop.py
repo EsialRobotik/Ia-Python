@@ -356,6 +356,9 @@ class MasterLoop:
                         self.movement_manager.halt_asserv(False)
                         self.movement_manager.resume_asserv()
                         self.execute_current_step()
+                    else:
+                        # Détection des goto qui n'arrivent pas à se finaliser (offset latéral, glissement).
+                        self.movement_manager.check_stuck_goto()
 
             # Si obstacle détecté par les SRF
             else:

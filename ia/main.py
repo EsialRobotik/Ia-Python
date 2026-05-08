@@ -146,7 +146,10 @@ if __name__ == "__main__":
 
     # Init movement manager
     logger.info("Init movement manager")
-    movement_manager = MovementManager(asserv=asserv)
+    movement_manager = MovementManager(
+        asserv=asserv,
+        unblock_goto_config=config_data["asserv"].get("unblockGoto"),
+    )
     logger.info("Init movement manager OK")
 
     # Init strategy manager
