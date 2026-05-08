@@ -149,20 +149,21 @@ class AX12Servo:
         # 1 essai + 1 retry en cas d'absence de réponse ou de paquet invalide
         response = bytearray()
         last_validation = None
-        for attempt in range(3):
+        max_retry = 5
+        for attempt in range(max_retry):
             response = self.serial_link.send_command(buffer, expected_size)
             if expected_size == 0:
                 return response  # broadcast : pas de réponse attendue
             if len(response) == 0:
                 last_validation = None
-                if attempt < 2:
+                if attempt < max_retry:
                     self.logger.warning(f"AX12 {self.address}: pas de réponse, retry")
                     time.sleep(0.005)
                 continue
             last_validation = self.validate_packet(response, self.address)
             if last_validation is None:
                 break
-            if attempt < 2:
+            if attempt < max_retry:
                 self.logger.warning(f"AX12 {self.address}: paquet invalide ({last_validation}), retry")
                 time.sleep(0.005)
 

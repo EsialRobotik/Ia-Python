@@ -5,8 +5,11 @@
     "payload": {
         "list": [
             "tourner_pince_1_0",
+            "wait_50ms",
             "tourner_pince_2_0",
+            "wait_50ms",
             "tourner_pince_3_0",
+            "wait_50ms",
             "tourner_pince_4_0"
         ]
     }
