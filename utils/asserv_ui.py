@@ -161,6 +161,14 @@ class AsservUi(App):
                     ),
                     classes="margin-top",
                 ),
+                Horizontal(
+                    Static("SetOdo"),
+                    Input(placeholder="X", id="setodo_x"),
+                    Input(placeholder="Y", id="setodo_y"),
+                    Input(placeholder="Theta (rad)", id="setodo_theta"),
+                    Button("Set Odométrie", id="setodo", variant="warning", classes="button"),
+                    classes="margin-top",
+                ),
                 Rule(),
                 Horizontal(
                     Static("Orbital Turn"),
@@ -245,6 +253,14 @@ class AsservUi(App):
                 self.asserv.face(Position(int(x), int(y)))
             else:
                 self.notify("Face de con !", severity="error", timeout=5)
+        elif event.button.id == 'setodo':
+            x = self.query_one("#setodo_x").value
+            y = self.query_one("#setodo_y").value
+            theta = self.query_one("#setodo_theta").value
+            if (is_float(x) and is_float(y) and is_float(theta)):
+                self.asserv.set_odometrie(int(x), int(y), float(theta))
+            else:
+                self.notify("X, Y et Theta sont requis pour le SetOdo !", severity="error", timeout=5)
         elif event.button.id == 'orbital':
             angle = self.query_one("#orbital_angle").value
             fw = self.query_one("#orbital_fw").value
