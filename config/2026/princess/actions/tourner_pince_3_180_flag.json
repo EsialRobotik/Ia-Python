@@ -1,0 +1,11 @@
+{
+    "type": "AX12",
+    "alias": "t3180f",
+    "description": "Tourne la pince 3 à 180° si rotateNut3",
+    "needed_flag": "rotateNut3",
+    "payload": {
+        "type": "position",
+        "id": 22,
+        "angleDegree": 300
+    }
+}

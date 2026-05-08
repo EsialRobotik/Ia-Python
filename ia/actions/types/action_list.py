@@ -44,6 +44,10 @@ class ActionList(ThreadedAction):
                 logger.error(f"no action with id {action_id} found in action list")
                 continue
             action = self.action_repository.get_action(action_id)
+            if action.needed_flag is not None \
+                    and action.needed_flag not in self.action_repository.active_flags:
+                logger.info(f"Skip action {action_id} in list (missing flag {action.needed_flag})")
+                continue
 
             try:
                 action.reset()

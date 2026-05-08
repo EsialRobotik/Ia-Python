@@ -126,35 +126,8 @@
         }
     },
     {
-        "task": "SIT AND ROTATE 1",
-        "command": "action#tourner_pince_1_180",
-        "position": {
-            "x": 1080,
-            "y": 1850,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 2",
-        "command": "action#tourner_pince_2_180",
-        "position": {
-            "x": 1080,
-            "y": 1850,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 3",
-        "command": "action#tourner_pince_3_180",
-        "position": {
-            "x": 1080,
-            "y": 1850,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 4",
-        "command": "action#tourner_pince_4_180",
+        "task": "SIT AND ROTATE",
+        "command": "action#tourner_pinces_180",
         "position": {
             "x": 1080,
             "y": 1850,
@@ -369,35 +342,8 @@
         }
     },
     {
-        "task": "SIT AND ROTATE 1",
-        "command": "action#tourner_pince_1_180",
-        "position": {
-            "x": 1705,
-            "y": 1900,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 2",
-        "command": "action#tourner_pince_2_180",
-        "position": {
-            "x": 1705,
-            "y": 1900,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 3",
-        "command": "action#tourner_pince_3_180",
-        "position": {
-            "x": 1705,
-            "y": 1900,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 4",
-        "command": "action#tourner_pince_4_180",
+        "task": "SIT AND ROTATE",
+        "command": "action#tourner_pinces_180",
         "position": {
             "x": 1705,
             "y": 1900,
@@ -729,35 +675,8 @@
         }
     },
     {
-        "task": "SIT AND ROTATE 1",
-        "command": "action#tourner_pince_1_180",
-        "position": {
-            "x": 1600,
-            "y": 2685,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 2",
-        "command": "action#tourner_pince_2_180",
-        "position": {
-            "x": 1600,
-            "y": 2685,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 3",
-        "command": "action#tourner_pince_3_180",
-        "position": {
-            "x": 1600,
-            "y": 2685,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 4",
-        "command": "action#tourner_pince_4_180",
+        "task": "SIT AND ROTATE",
+        "command": "action#tourner_pinces_180",
         "position": {
             "x": 1600,
             "y": 2685,
@@ -972,35 +891,8 @@
         }
     },
     {
-        "task": "SIT AND ROTATE 1",
-        "command": "action#tourner_pince_1_180",
-        "position": {
-            "x": 800,
-            "y": 2685,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 2",
-        "command": "action#tourner_pince_2_180",
-        "position": {
-            "x": 800,
-            "y": 2685,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 3",
-        "command": "action#tourner_pince_3_180",
-        "position": {
-            "x": 800,
-            "y": 2685,
-            "theta": 1.5707963267948966
-        }
-    },
-    {
-        "task": "SIT AND ROTATE 4",
-        "command": "action#tourner_pince_4_180",
+        "task": "SIT AND ROTATE",
+        "command": "action#tourner_pinces_180",
         "position": {
             "x": 800,
             "y": 2685,

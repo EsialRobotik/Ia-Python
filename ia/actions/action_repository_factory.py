@@ -59,6 +59,9 @@ class ActionRepositoryFactory:
                         raise ValueError(f"Unhandled action type: {action_type_name}")
 
                     action = cls.from_json(action_config.get("payload", {}), **deps)
+                    needed_flag = action_config.get("needed_flag")
+                    if needed_flag is not None:
+                        action.needed_flag = needed_flag
                     action_repository.register_action(action_id, action)
 
                     if "alias" in action_config:

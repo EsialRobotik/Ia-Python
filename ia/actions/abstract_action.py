@@ -6,6 +6,10 @@ class AbstractAction(ABC):
     Abstract class for executing and controlling robot actions.
     """
 
+    # Optional flag that must be present in the active strategy flags for the action to run.
+    # Set by ActionRepositoryFactory from the JSON `needed_flag` key. None means "no precondition".
+    needed_flag: Optional[str] = None
+
     @abstractmethod
     def execute(self) -> None:
         """

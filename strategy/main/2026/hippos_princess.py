@@ -709,25 +709,10 @@ class HipposPrincess(AbstractMain):
             action_id="routine_ramasser_ecarter"
         ))
         task_list.add(Manipulation(
-            desc="SIT AND ROTATE 1",
-            action_id="tourner_pince_1_180",
+            desc="SIT AND ROTATE",
+            action_id="tourner_pinces_180",
             instant_return=True
-        ).set_needed_flag("rotateNut1"))
-        task_list.add(Manipulation(
-            desc="SIT AND ROTATE 2",
-            action_id="tourner_pince_2_180",
-            instant_return=True
-        ).set_needed_flag("rotateNut2"))
-        task_list.add(Manipulation(
-            desc="SIT AND ROTATE 3",
-            action_id="tourner_pince_3_180",
-            instant_return=True
-        ).set_needed_flag("rotateNut3"))
-        task_list.add(Manipulation(
-            desc="SIT AND ROTATE 4",
-            action_id="tourner_pince_4_180",
-            instant_return=True
-        ).set_needed_flag("rotateNut4"))
+        ))
         task_list.add(SetSpeed(
             desc="Distorsion maximum",
             speed=100

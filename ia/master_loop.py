@@ -185,7 +185,10 @@ class MasterLoop:
             return
         elif self.current_step.action_type == StepType.MANIPULATION:
             self.logger.info(f"Manipulation id : {self.current_step.id_action}")
-            self.action_manager.execute_command(self.current_step.id_action)
+            self.action_manager.execute_command(
+                self.current_step.id_action,
+                active_flags=self.strategy_manager.action_flags,
+            )
         elif self.current_step.action_type == StepType.MOVEMENT:
             self.logger.info(f"Déplacement {self.current_step.sub_type}")
             if self.current_step.sub_type == StepSubType.GOTO_ASTAR:
