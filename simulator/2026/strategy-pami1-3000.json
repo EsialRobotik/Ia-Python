@@ -19,7 +19,7 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#7000",
+        "command": "wait#87000",
         "position": {
             "x": 60,
             "y": 2920,
@@ -82,9 +82,9 @@
     },
     {
         "task": "On entre dans le garde manger",
-        "command": "goto#1070;2250",
+        "command": "goto#1120;2250",
         "position": {
-            "x": 1070,
+            "x": 1120,
             "y": 2250,
             "theta": 0.0
         }
@@ -93,7 +93,7 @@
         "task": "On entre dans le garde manger",
         "command": "face#2000;2250",
         "position": {
-            "x": 1070,
+            "x": 1120,
             "y": 2250,
             "theta": 0.0
         }

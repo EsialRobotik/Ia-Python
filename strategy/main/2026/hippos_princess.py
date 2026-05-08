@@ -40,6 +40,10 @@ class HipposPrincess(AbstractMain):
         self.depose_garde_manger_centre_1()
         self.get_caisse_4()
         self.regler_temperature()
+
+        self.depose_garde_manger_couleur_1()
+        self.get_caisse_2()
+
         self.depose_garde_manger_couleur_3()
         self.get_caisse_1()
         self.depose_garde_manger_couleur_4()
@@ -129,7 +133,7 @@ class HipposPrincess(AbstractMain):
         tasks_list.add(GoToAstar(
             desc="Position caisse 2",
             position_x=1600,
-            position_y=250 + self.distance_photo,
+            position_y=165 + self.distance_photo,
         ))
         tasks_list.add(Face(
             desc="On s'aligne",
@@ -363,7 +367,7 @@ class HipposPrincess(AbstractMain):
         tasks_list.add(GoTo(
             desc="Position de largage",
             position_x = 1200,
-            position_y = 300,
+            position_y = 350,
         ))
         tasks_list.add(Face(
             desc="Position de largage",

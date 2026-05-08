@@ -26,8 +26,8 @@ class Pami4(AbstractMain):
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
-        #self.wait_time = 87000
-        self.wait_time = 7000
+        self.wait_time = 87000
+        #self.wait_time = 7000
 
     def clear_zone(self, tasks_list: TaskList) -> None:
         tasks_list.add(
@@ -116,7 +116,7 @@ class Pami4(AbstractMain):
         ))
         tasks_list.add(GoTo(
             desc='On entre dans le garde manger',
-            position_x=1070,
+            position_x=1120,
             position_y=100,
         ))
         tasks_list.add(Face(
