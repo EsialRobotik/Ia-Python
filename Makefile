@@ -4,6 +4,10 @@ help: ## Affiche l'aide (commande par défaut)
 coffee: ## Fait du café
 	@echo "Eh oh tu m'as pris pour une cafetière ?"
 
+.PHONY: simulator
+simulator: ## Lance le simulateur 2D
+	PYTHONPATH=$${PYTHONPATH}:. env/bin/python simulator/simulator.py
+
 deploy-princess: ## Déploie le code sur le robot
 	bash .build/check_load_env.sh princess
 	bash .build/deploy-princess.sh
