@@ -70,5 +70,14 @@
             "y": 2300,
             "theta": 0.0
         }
+    },
+    {
+        "task": "Freeze !!!",
+        "command": "halt-asserv",
+        "position": {
+            "x": 1800,
+            "y": 2300,
+            "theta": 0.0
+        }
     }
 ]
