@@ -178,7 +178,7 @@
         },
         {
           "type": "turn",
-          "dist": -90
+          "dist": 90
         },
         {
           "type": "speed",
