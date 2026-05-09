@@ -167,8 +167,8 @@ class DetectionManager:
         Returns:
             bool: True if the robot must stop, False otherwise.
         """
-        must_stop = (50 < position.x < (self.table_config.get("sizeX") - 50) and
-                50 < position.y < (self.table_config.get("sizeY") - 50) and
+        must_stop = (100 < position.x < (self.table_config.get("sizeX") - 100) and
+                100 < position.y < (self.table_config.get("sizeY") - 100) and
                 not self.ignore_detection_grid[position.x][position.y])
         if must_stop:
             self.logger.info(f"Emergency stop, enemy detected at {position}")
