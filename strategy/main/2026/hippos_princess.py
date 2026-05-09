@@ -710,7 +710,7 @@ class HipposPrincess(AbstractMain):
         ))
         task_list.add(Manipulation(
             desc="SIT AND ROTATE",
-            action_id="tourner_pinces_180",
+            action_id="tourner_pinces_180_flag",
             instant_return=True
         ))
         task_list.add(SetSpeed(

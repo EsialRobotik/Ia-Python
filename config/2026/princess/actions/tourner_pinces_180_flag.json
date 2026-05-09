@@ -4,13 +4,13 @@
     "description": "Tourne à 180° toutes les pinces dont le flag rotateNutN est levé",
     "payload": {
         "list": [
-            "tourner_pince_1_180",
+            "tourner_pince_1_180_flag",
             "wait_50ms",
-            "tourner_pince_2_180",
+            "tourner_pince_2_180_flag",
             "wait_50ms",
-            "tourner_pince_3_180",
+            "tourner_pince_3_180_flag",
             "wait_50ms",
-            "tourner_pince_4_180"
+            "tourner_pince_4_180_flag"
         ]
     }
 }
