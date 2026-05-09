@@ -62,7 +62,6 @@ class ActionAX12(AbstractAction):
         if self.command == "position" and self._command_sent:
             try:
                 current_angle = self.servo.read_servo_position()
-                self.logger.debug(f"Servo {self.servo.address} - Target angle : {self._target_angle.getRawAngle()} - Current angle: {current_angle}")
                 self._executed = abs(current_angle - self._target_angle.getRawAngle()) <= 5
             except Exception as e:
                 self.logger.warning(f"Error asking AX12 moving status : {e}")

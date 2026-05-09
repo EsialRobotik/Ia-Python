@@ -334,11 +334,6 @@ class AX12Servo:
             - "La taille de la charge utile mentionnée par le paquet ne correspond pas à la taille reelle": The payload size mentioned in the packet does not match the actual size.
             - "Le checksum n'est pas valide": The checksum is invalid.
         """
-
-        logging.getLogger(__name__).debug(
-            f"AX12 {ax12_addr} validate_packet: [{' '.join(f'{b:02X}' for b in packet)}] ({len(packet)} octets)"
-        )
-
         if len(packet) < 6:
             return f"La taille minimale du packet n'est pas valide ({len(packet)})"
 
