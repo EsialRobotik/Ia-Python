@@ -13,7 +13,7 @@ class SetPosition(AbstractTask):
             position_y=position_y,
             dist=angle_theta,
             task_type=StepType.MOVEMENT,
-            subtype=StepSubType.SET_SPEED,
+            subtype=StepSubType.SET_POSITION,
             mirror=mirror,
         )
 

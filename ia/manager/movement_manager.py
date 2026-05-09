@@ -131,6 +131,7 @@ class MovementManager:
             self.asserv.set_speed(step.distance)
         elif step.sub_type == StepSubType.SET_POSITION:
             self.asserv.set_odometrie(step.position.x, step.position.y, step.distance)
+            time.sleep(0.05)
         elif step.sub_type == StepSubType.ORBITAL_TURN:
             self.asserv.orbital_turn(step.distance, step.forward, step.on_right_wheel)
         elif step.sub_type == StepSubType.HALT_ASSERV:
