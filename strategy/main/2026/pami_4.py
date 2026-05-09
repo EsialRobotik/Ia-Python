@@ -28,7 +28,7 @@ class Pami4(AbstractMain):
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
         self.wait_time = 89000
-        #self.wait_time = 9000
+        #self.wait_time = 900
 
     def clear_zone(self, tasks_list: TaskList) -> None:
         tasks_list.add(

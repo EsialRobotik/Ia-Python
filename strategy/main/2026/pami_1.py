@@ -7,10 +7,10 @@ from strategy.main.abstract_main import AbstractMain
 from strategy.task.add_zone import AddZone
 from strategy.task.delete_zone import DeleteZone
 from strategy.task.face import Face
+from strategy.task.go import Go
 from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.manipulation import Manipulation
-from strategy.task.orbital_turn import OrbitalTurn
 from strategy.task.wait import Wait
 
 
@@ -27,8 +27,8 @@ class Pami1(AbstractMain):
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
-        #self.wait_time = 89000
-        self.wait_time = 9000
+        self.wait_time = 87000
+        #self.wait_time = 7000
 
     def clear_zone(self, tasks_list: TaskList) -> None:
         tasks_list.add(
@@ -110,33 +110,29 @@ class Pami1(AbstractMain):
             desc='On attends son tour',
             ms_count=self.wait_time
         ))
-        tasks_list.add(GoTo(
+        tasks_list.add(Go(
             desc='On avance pour pouvoir se lancer',
-            position_x=60,
-            position_y=250,
+            dist=50
         ))
-        tasks_list.add(
-            OrbitalTurn(
-                desc="On pivote",
-                degrees=90,
-                pivot_offset=self.pivot_offset,
-                forward=True,
-                on_right_wheel=True,
-                mirror=Mirror.SPECIFIC
-            ),
-            OrbitalTurn(
-                desc="On pivote",
-                degrees=90,
-                pivot_offset=self.pivot_offset,
-                forward=True,
-                on_right_wheel=False,
-                mirror=Mirror.SPECIFIC
-            )
-        )
         tasks_list.add(GoTo(
             desc='On avance pour pouvoir se lancer',
-            position_x=200,
-            position_y=400,
+            position_x=65,
+            position_y=180,
+        ))
+        tasks_list.add(GoTo(
+            desc='On avance pour pouvoir se lancer',
+            position_x=75,
+            position_y=230,
+        ))
+        tasks_list.add(GoTo(
+            desc='On avance pour pouvoir se lancer',
+            position_x=85,
+            position_y=280,
+        ))
+        tasks_list.add(GoTo(
+            desc='On avance pour pouvoir se lancer',
+            position_x=100,
+            position_y=350,
         ))
         tasks_list.add(GoToAstar(
             desc='On file dans le garde manger',
@@ -145,7 +141,7 @@ class Pami1(AbstractMain):
         ))
         tasks_list.add(GoTo(
             desc='On entre dans le garde manger',
-            position_x=1120,
+            position_x=1150,
             position_y=750,
         ))
         tasks_list.add(Face(

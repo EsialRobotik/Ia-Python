@@ -19,7 +19,7 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#9000",
+        "command": "wait#87000",
         "position": {
             "x": 60,
             "y": 2920,
@@ -28,38 +28,56 @@
     },
     {
         "task": "On avance pour pouvoir se lancer",
-        "command": "goto#60;2750",
+        "command": "go#50",
         "position": {
             "x": 60,
-            "y": 2750,
-            "theta": -1.5707963267948966
-        }
-    },
-    {
-        "task": "On pivote",
-        "command": "orbital-turn#90;1;0",
-        "position": {
-            "x": 103,
-            "y": 2706,
-            "theta": 0.0
+            "y": 2870,
+            "theta": -1.57079632679
         }
     },
     {
         "task": "On avance pour pouvoir se lancer",
-        "command": "goto#200;2600",
+        "command": "goto#65;2820",
         "position": {
-            "x": 200,
-            "y": 2600,
-            "theta": -0.8297041248482244
+            "x": 65,
+            "y": 2820,
+            "theta": -1.4711276743037347
+        }
+    },
+    {
+        "task": "On avance pour pouvoir se lancer",
+        "command": "goto#75;2770",
+        "position": {
+            "x": 75,
+            "y": 2770,
+            "theta": -1.373400766945016
+        }
+    },
+    {
+        "task": "On avance pour pouvoir se lancer",
+        "command": "goto#85;2720",
+        "position": {
+            "x": 85,
+            "y": 2720,
+            "theta": -1.373400766945016
+        }
+    },
+    {
+        "task": "On avance pour pouvoir se lancer",
+        "command": "goto#100;2650",
+        "position": {
+            "x": 100,
+            "y": 2650,
+            "theta": -1.35970299357215
         }
     },
     {
         "task": "On file dans le garde manger",
-        "command": "goto-astar#200;2600",
+        "command": "goto-astar#100;2650",
         "position": {
-            "x": 200,
-            "y": 2600,
-            "theta": -0.8297041248482244
+            "x": 100,
+            "y": 2650,
+            "theta": -1.35970299357215
         }
     },
     {
@@ -68,7 +86,7 @@
         "position": {
             "x": 530,
             "y": 2480,
-            "theta": -0.348771003583907
+            "theta": -0.3764903344465229
         }
     },
     {
@@ -82,9 +100,9 @@
     },
     {
         "task": "On entre dans le garde manger",
-        "command": "goto#1120;2250",
+        "command": "goto#1150;2250",
         "position": {
-            "x": 1120,
+            "x": 1150,
             "y": 2250,
             "theta": 0.0
         }
@@ -93,7 +111,7 @@
         "task": "On entre dans le garde manger",
         "command": "face#2000;2250",
         "position": {
-            "x": 1120,
+            "x": 1150,
             "y": 2250,
             "theta": 0.0
         }

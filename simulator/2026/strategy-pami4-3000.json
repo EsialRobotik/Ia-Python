@@ -19,7 +19,7 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#900",
+        "command": "wait#89000",
         "position": {
             "x": 390,
             "y": 2920,
