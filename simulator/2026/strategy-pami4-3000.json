@@ -19,7 +19,7 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#87000",
+        "command": "wait#900",
         "position": {
             "x": 390,
             "y": 2920,
@@ -27,11 +27,20 @@
         }
     },
     {
-        "task": "On file dans le garde manger",
-        "command": "goto-astar#390;2920",
+        "task": "On avance un peu pour manoeuvrer",
+        "command": "go#100",
         "position": {
             "x": 390,
-            "y": 2920,
+            "y": 2820,
+            "theta": -1.57079632679
+        }
+    },
+    {
+        "task": "On file dans le garde manger",
+        "command": "goto-astar#390;2820",
+        "position": {
+            "x": 390,
+            "y": 2820,
             "theta": -1.57079632679
         }
     },
@@ -41,43 +50,34 @@
         "position": {
             "x": 620,
             "y": 2670,
-            "theta": -0.8270407424960368
+            "theta": -0.5779019369622457
         }
     },
     {
         "task": "On file dans le garde manger",
-        "command": "goto-astar#980;2670",
+        "command": "goto-astar#1200;2600",
         "position": {
-            "x": 980,
-            "y": 2670,
-            "theta": 0.0
-        }
-    },
-    {
-        "task": "On file dans le garde manger",
-        "command": "goto-astar#1000;2900",
-        "position": {
-            "x": 1000,
-            "y": 2900,
-            "theta": 1.4840579881189115
+            "x": 1200,
+            "y": 2600,
+            "theta": -0.12010873556691289
         }
     },
     {
         "task": "On entre dans le garde manger",
-        "command": "goto#1120;2900",
+        "command": "goto#1200;2820",
         "position": {
-            "x": 1120,
-            "y": 2900,
-            "theta": 0.0
+            "x": 1200,
+            "y": 2820,
+            "theta": 1.5707963267948966
         }
     },
     {
         "task": "On entre dans le garde manger",
-        "command": "face#2000;2900",
+        "command": "face#1200;3000",
         "position": {
-            "x": 1120,
-            "y": 2900,
-            "theta": 0.0
+            "x": 1200,
+            "y": 2820,
+            "theta": 1.5707963267948966
         }
     }
 ]

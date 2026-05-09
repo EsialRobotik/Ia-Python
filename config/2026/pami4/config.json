@@ -22,7 +22,7 @@
         {
           "type": "srf08",
           "desc": "Avant",
-          "address": 226,
+          "address": 232,
           "x": 60,
           "y": 0,
           "angle": 0,
@@ -38,7 +38,7 @@
       "jaune": [
         {
           "type": "set_pos",
-          "x": 60,
+          "x": 390,
           "y": 80,
           "theta": 1.570796327
         }
@@ -46,7 +46,7 @@
       "bleu": [
         {
           "type": "set_pos",
-          "x": 60,
+          "x": 390,
           "y": 2920,
           "theta": -1.570796327
         }

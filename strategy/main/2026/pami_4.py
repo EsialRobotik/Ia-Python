@@ -7,6 +7,7 @@ from strategy.main.abstract_main import AbstractMain
 from strategy.task.add_zone import AddZone
 from strategy.task.delete_zone import DeleteZone
 from strategy.task.face import Face
+from strategy.task.go import Go
 from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.manipulation import Manipulation
@@ -26,8 +27,8 @@ class Pami4(AbstractMain):
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
-        self.wait_time = 87000
-        #self.wait_time = 7000
+        self.wait_time = 89000
+        #self.wait_time = 9000
 
     def clear_zone(self, tasks_list: TaskList) -> None:
         tasks_list.add(
@@ -109,20 +110,24 @@ class Pami4(AbstractMain):
             desc='On attends son tour',
             ms_count=self.wait_time
         ))
+        tasks_list.add(Go(
+            desc='On avance un peu pour manoeuvrer',
+            dist=100
+        ))
         tasks_list.add(GoToAstar(
             desc='On file dans le garde manger',
-            position_x=1000,
-            position_y=100,
+            position_x=1200,
+            position_y=400,
         ))
         tasks_list.add(GoTo(
             desc='On entre dans le garde manger',
-            position_x=1120,
-            position_y=100,
+            position_x=1200,
+            position_y=180,
         ))
         tasks_list.add(Face(
             desc='On entre dans le garde manger',
-            position_x=2000,
-            position_y=100,
+            position_x=1200,
+            position_y=000,
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Pami 4',
