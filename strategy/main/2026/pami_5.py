@@ -6,6 +6,7 @@ from strategy.main.abstract_main import AbstractMain
 from strategy.task.face import Face
 from strategy.task.goto import GoTo
 from strategy.task.goto_back import GoToBack
+from strategy.task.halt_asserv import HaltAsserv
 from strategy.task.manipulation import Manipulation
 from strategy.task.wait_chrono import WaitChrono
 
@@ -81,6 +82,9 @@ class Pami5(AbstractMain):
             desc="On se presque jette dans le vide",
             position_x=2000,
             position_y=1250
+        ))
+        tasks_list.add(HaltAsserv(
+            desc='Freeze !!!'
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Pami 5',

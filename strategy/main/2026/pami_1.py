@@ -10,6 +10,7 @@ from strategy.task.face import Face
 from strategy.task.go import Go
 from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
+from strategy.task.halt_asserv import HaltAsserv
 from strategy.task.manipulation import Manipulation
 from strategy.task.wait import Wait
 
@@ -148,6 +149,9 @@ class Pami1(AbstractMain):
             desc='On entre dans le garde manger',
             position_x=2000,
             position_y=750,
+        ))
+        tasks_list.add(HaltAsserv(
+            desc='Freeze !!!'
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Pami 1',

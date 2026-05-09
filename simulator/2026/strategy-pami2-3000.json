@@ -19,7 +19,7 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#85000",
+        "command": "wait#500",
         "position": {
             "x": 170,
             "y": 2920,
@@ -74,6 +74,15 @@
     {
         "task": "On entre dans le garde manger",
         "command": "face#2000;1550",
+        "position": {
+            "x": 1800,
+            "y": 1550,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "Freeze !!!",
+        "command": "halt-asserv",
         "position": {
             "x": 1800,
             "y": 1550,

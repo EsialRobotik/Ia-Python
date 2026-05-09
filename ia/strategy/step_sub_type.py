@@ -33,6 +33,8 @@ class StepSubType(Enum):
         Represents a wait chrono strategy.
     WAIT : str
         Represents a wait strategy.
+    HALT_ASSERV : str
+        Represents an emergency stop of the asserv.
     """
     NONE = 'NONE'
     GO = 'GO'
@@ -49,3 +51,4 @@ class StepSubType(Enum):
     WAIT = 'WAIT'
     RESET_FLAG = 'RESET_FLAG'
     ORBITAL_TURN = 'ORBITAL_TURN'
+    HALT_ASSERV = 'HALT_ASSERV'

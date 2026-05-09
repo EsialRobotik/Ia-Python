@@ -256,6 +256,8 @@ class MasterLoop:
             except InterruptedError as e:
                 self.logger.error(e)
             return True
+        elif step_type == StepType.MOVEMENT and self.current_step.sub_type == StepSubType.HALT_ASSERV:
+            return True
         elif step_type == StepType.MOVEMENT and self.movement_manager.is_last_ordered_movement_ended():
             return True
         elif step_type == StepType.MANIPULATION:

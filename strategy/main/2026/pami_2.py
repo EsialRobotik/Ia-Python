@@ -9,6 +9,7 @@ from strategy.task.delete_zone import DeleteZone
 from strategy.task.face import Face
 from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
+from strategy.task.halt_asserv import HaltAsserv
 from strategy.task.manipulation import Manipulation
 from strategy.task.wait import Wait
 
@@ -27,7 +28,7 @@ class Pami2(AbstractMain):
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
         self.wait_time = 85000
-        #self.wait_time = 5000
+        #self.wait_time = 500
 
     def clear_zone(self, tasks_list: TaskList) -> None:
         tasks_list.add(
@@ -128,6 +129,9 @@ class Pami2(AbstractMain):
             desc='On entre dans le garde manger',
             position_x=2000,
             position_y=1450,
+        ))
+        tasks_list.add(HaltAsserv(
+            desc='Freeze !!!'
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
             name='Pami 2',
