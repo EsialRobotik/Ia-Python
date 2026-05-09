@@ -55,10 +55,10 @@
     },
     {
         "task": "On pousse tout",
-        "command": "goto#220;1910",
+        "command": "goto#220;1930",
         "position": {
             "x": 220,
-            "y": 1910,
+            "y": 1930,
             "theta": 1.5707963267948966
         }
     },
@@ -82,7 +82,7 @@
     },
     {
         "task": "On attends le bon moment",
-        "command": "wait-chrono#90",
+        "command": "wait-chrono#9",
         "position": {
             "x": 220,
             "y": 1750,
@@ -92,6 +92,15 @@
     {
         "task": "On se presque jette dans le vide",
         "command": "goto#420;1750",
+        "position": {
+            "x": 420,
+            "y": 1750,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se presque jette dans le vide",
+        "command": "face#2000;1750",
         "position": {
             "x": 420,
             "y": 1750,

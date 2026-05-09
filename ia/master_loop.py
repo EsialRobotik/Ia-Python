@@ -5,6 +5,8 @@ from typing import Optional, Dict
 
 from ia.api.chrono import Chrono
 from ia.api.color_selector import ColorSelector
+from ia.api.detection.lidar.lidar_rpa2 import LidarRpA2
+from ia.api.detection.ultrasound.srf import Srf
 from ia.api.nextion_nx32224t024 import NextionNX32224T024
 from ia.api.pull_cord import PullCord
 from ia.asservissement.asserv_status import AsservStatus
@@ -30,7 +32,8 @@ class MasterLoop:
         self,
         action_manager: ActionManager,
         comm_config: Dict,
-        detection_manager: DetectionManager,
+        sensors: list[Srf],
+        lidar: Optional[LidarRpA2],
         movement_manager: MovementManager,
         strategy_manager: StrategyManager,
         table_config: Dict,
@@ -46,7 +49,11 @@ class MasterLoop:
         self.pathfinding = None
 
         self.action_manager = action_manager
-        self.detection_manager = detection_manager
+        self.sensors = sensors
+        self.lidar = lidar
+        # DetectionManager needs the active color, which is only known during init() once
+        # the color_selector / nextion calibration has resolved it. Built lazily there.
+        self.detection_manager: Optional[DetectionManager] = None
         self.movement_manager = movement_manager
         self.strategy_manager = strategy_manager
         self.chrono = chrono
@@ -97,6 +104,13 @@ class MasterLoop:
             self.movement_manager.go_start(color)
             self.pull_cord.wait_for_state(True)
 
+        self.detection_manager = DetectionManager(
+            sensors=self.sensors,
+            lidar=self.lidar,
+            asserv=self.movement_manager.asserv,
+            table_config=self.table_config,
+            active_color=color,
+        )
         self.pathfinding = VisibilityGraph(
             table_config=self.table_config,
             active_color=color

@@ -16,7 +16,6 @@ from ia.api.nextion_nx32224t024 import NextionNX32224T024
 from ia.api.pull_cord import PullCord
 from ia.asservissement.asserv import Asserv
 from ia.manager.action_manager import ActionManager
-from ia.manager.detection_manager import DetectionManager
 from ia.manager.movement_manager import MovementManager
 from ia.manager.strategy_manager import StrategyManager
 from ia.master_loop import MasterLoop
@@ -117,8 +116,9 @@ if __name__ == "__main__":
     )
     logger.info("Init action manager OK")
 
-    # Init detection manager
-    logger.info("Init detection manager")
+    # Init detection sensors (DetectionManager itself is built later in MasterLoop.init(),
+    # once the active color is known — same pattern as VisibilityGraph).
+    logger.info("Init detection sensors")
     lidar = None
     if config_data["detection"].get("lidar") is not None and config_data["detection"]["lidar"]["active"]:
         lidar = LidarRpA2(
@@ -136,13 +136,7 @@ if __name__ == "__main__":
             srf_config=srfConfig,
             window_size=ultrasound_config["windowSize"]
         ))
-    detection_manager = DetectionManager(
-        sensors=srf,
-        lidar=lidar,
-        asserv=asserv,
-        table_config=table_config,
-    )
-    logger.info("Init detection manager OK")
+    logger.info("Init detection sensors OK")
 
     # Init movement manager
     logger.info("Init movement manager")
@@ -183,7 +177,8 @@ if __name__ == "__main__":
     master_loop = MasterLoop(
         action_manager=action_manager,
         comm_config=comm_config,
-        detection_manager=detection_manager,
+        sensors=srf,
+        lidar=lidar,
         movement_manager=movement_manager,
         strategy_manager=strategy_manager,
         table_config=table_config,

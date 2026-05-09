@@ -13,7 +13,8 @@ from ia.utils.position import Position
 
 
 class DetectionManager:
-    def __init__(self, sensors: list[Srf], lidar: Optional[LidarRpA2], asserv: Asserv, table_config: Dict) -> None:
+    def __init__(self, sensors: list[Srf], lidar: Optional[LidarRpA2], asserv: Asserv, table_config: Dict,
+                 active_color: str) -> None:
         """
         Initializes the DetectionManager with a list of SRF sensors, a Lidar, an Asserv and a Pathfinding.
 
@@ -23,6 +24,8 @@ class DetectionManager:
             lidar (lidar_rpa2): An instance of the Lidar class.
             asserv (asserv): An instance of the Asserv class.
             table_config (Dict): The configuration of the table.
+            active_color (str): The active color key (e.g. 'color0' / 'color3000') or the resolved name
+                (e.g. 'jaune'). Resolved against table_config like in VisibilityGraph.
         """
 
         self.logger = logging.getLogger(__name__)
@@ -30,6 +33,7 @@ class DetectionManager:
         self.lidar = lidar
         self.asserv = asserv
         self.table_config = table_config
+        self.active_color = table_config.get(active_color, active_color)
         self.ignore_detection_grid = np.zeros(
             shape=(self.table_config.get("sizeX"), self.table_config.get("sizeY")),
             dtype=np.uint8
@@ -50,10 +54,11 @@ class DetectionManager:
         """
 
         for zone in self.table_config["detectionIgnoreZone"]:
-            if zone["forme"] == "polygone":
-                self.mark_zone(zone["points"])
-            elif zone["forme"] == "cercle":
-                self.mark_circle(zone["centre"], zone["rayon"])
+            if zone["type"] != self.active_color or zone["type"] == "all":
+                if zone["forme"] == "polygone":
+                    self.mark_zone(zone["points"])
+                elif zone["forme"] == "cercle":
+                    self.mark_circle(zone["centre"], zone["rayon"])
 
     def mark_zone(self, points: List[Dict[str, int]]) -> None:
         poly = Polygon([(p["x"], p["y"]) for p in points])

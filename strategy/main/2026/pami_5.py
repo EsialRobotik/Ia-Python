@@ -23,6 +23,8 @@ class Pami5(AbstractMain):
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
+        #self.wait_chrono=90
+        self.wait_chrono=9
 
     def generate(self):
         score = 5
@@ -54,7 +56,7 @@ class Pami5(AbstractMain):
         tasks_list.add(GoTo(
             desc="On pousse tout",
             position_x=220,
-            position_y=1090
+            position_y=1070
         ))
         tasks_list.add(GoToBack(
             desc="On recule",
@@ -68,11 +70,16 @@ class Pami5(AbstractMain):
         ))
         tasks_list.add(WaitChrono(
             desc="On attends le bon moment",
-            chrono=90
+            chrono=self.wait_chrono
         ))
         tasks_list.add(GoTo(
             desc="On se presque jette dans le vide",
             position_x=420,
+            position_y=1250
+        ))
+        tasks_list.add(Face(
+            desc="On se presque jette dans le vide",
+            position_x=2000,
             position_y=1250
         ))
         self.objectifs_couleur_0.append(tasks_list.generate_objective(
