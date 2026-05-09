@@ -4,10 +4,12 @@ import sys
 from strategy.core.task_list import TaskList
 from strategy.main.abstract_main import AbstractMain
 from strategy.task.face import Face
+from strategy.task.go import Go
 from strategy.task.goto import GoTo
 from strategy.task.goto_back import GoToBack
 from strategy.task.halt_asserv import HaltAsserv
 from strategy.task.manipulation import Manipulation
+from strategy.task.set_position import SetPosition
 from strategy.task.wait_chrono import WaitChrono
 
 
@@ -24,8 +26,54 @@ class Pami5(AbstractMain):
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
-        #self.wait_chrono=90
-        self.wait_chrono=9
+        self.wait_chrono=90
+        #self.wait_chrono=9
+        self.use_solo_ninja=False # todo rendre ça pilotable par le pupitre ?
+
+    def calage(self, tasks_list):
+        tasks_list.add(Face(
+            desc="On s'aligne",
+            position_x=2000,
+            position_y=1250
+        ))
+        tasks_list.add(Go(
+            desc="On se recale",
+            dist=-400,
+            timeout=2000
+        ))
+        tasks_list.add(SetPosition(
+            desc="On se recale",
+            position_x=80,
+            position_y=1250,
+            angle_theta=0
+        ))
+        tasks_list.add(Go(
+            desc="On se dégage du bord",
+            dist=100
+        ))
+        tasks_list.add(GoTo(
+            desc="On reviens en place pour le finish",
+            position_x=220,
+            position_y=1250
+        ))
+
+    def solo_ninja(self, tasks_list):
+        tasks_list.add(GoTo(
+            desc="On pousse tout de l'autre côté",
+            position_x=220,
+            position_y=3000 - 1070
+        ))
+        tasks_list.add(GoToBack(
+            desc="On recule",
+            position_x=220,
+            position_y=3000 - 1250
+        ))
+        tasks_list.add(GoTo(
+            desc="On reviens en place pour le finish",
+            position_x=220,
+            position_y=1250
+        ))
+        self.calage(tasks_list)
 
     def generate(self):
         score = 5
@@ -64,11 +112,12 @@ class Pami5(AbstractMain):
             position_x=220,
             position_y=1250
         ))
-        tasks_list.add(Face(
-            desc="On s'aligne",
-            position_x=2000,
-            position_y=1250
-        ))
+
+        self.calage(tasks_list)
+
+        if self.use_solo_ninja:
+            self.solo_ninja(tasks_list)
+
         tasks_list.add(WaitChrono(
             desc="On attends le bon moment",
             chrono=self.wait_chrono
