@@ -70,7 +70,7 @@
       "baudRate": 115200,
       "quality": 10,
       "distance": 2000,
-      "period": 500
+      "period": 50
     }
   },
   "asserv": {

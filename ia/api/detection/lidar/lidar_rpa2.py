@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 import serial
 import math
 import threading
+import time
 from typing import List, Tuple
 
 class LidarRpA2:
@@ -95,7 +96,7 @@ class LidarRpA2:
 
         logger.info(f"Init Lidar on port {serial_port} with baud rate {baud_rate}")
         self.lidar_serial = serial.Serial(
-            port=serial_port, 
+            port=serial_port,
             baudrate=baud_rate,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE
@@ -105,6 +106,7 @@ class LidarRpA2:
         self.read_thread = threading.Thread(target=self.parse_lidar_measures)
         self.read_thread.daemon = True
         self.read_thread.start()
+        self.position_thread = None
         self.init(quality=quality, distance=distance, period=period)
 
     def init(self, quality: int, distance: int, period: int) -> None:
@@ -118,12 +120,13 @@ class LidarRpA2:
         """
 
         self.reset()
-        self.set_coordinate_mode(LidarCoordinate.POLAR_RADIANS)
-        self.set_mode(LidarMode.CLUSTERING_ONE_LINE)
         self.set_quality(quality)
         self.set_distance(distance)
+        self.set_mode(LidarMode.CLUSTERING)
         self.set_period(period)
         self.start_scan()
+        self.position_thread = threading.Thread(target=self._send_position_loop, daemon=True)
+        self.position_thread.start()
 
     def parse_lidar_measures(self) -> None:
         """
@@ -180,6 +183,21 @@ class LidarRpA2:
                 else:
                     logger.error(f"Parsing error: {point}")
 
+    def _send_position_loop(self) -> None:
+        """
+        Pousse la position courante de l'asserv sur la liaison série du lidar à ~120Hz,
+        au format `o<x>;<y>;<theta>\\n`. Permet au firmware lidar de filtrer les obstacles
+        en se basant sur l'odométrie courante du robot.
+        """
+        period = 1.0 / 120.0
+        while True:
+            try:
+                pos = self.asserv.position
+                self.lidar_serial.write(f"o{pos.x};{pos.y};{pos.theta:.4f}\n".encode())
+            except Exception as e:
+                logger.error(f"Lidar position emitter error: {e}")
+            time.sleep(period)
+
     def start_scan(self) -> None:
         """
         Starts the Lidar scan.
@@ -200,7 +218,7 @@ class LidarRpA2:
         """
         Sets the operating mode of the Lidar.
 
-        Args:
+        Args:k
             mode (lidar_mode): The mode to set for the Lidar.
         """
 
