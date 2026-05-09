@@ -127,7 +127,7 @@
     },
     {
         "task": "SIT AND ROTATE",
-        "command": "action#tourner_pinces_180",
+        "command": "action#tourner_pinces_180_flag",
         "position": {
             "x": 1080,
             "y": 1150,
@@ -343,7 +343,7 @@
     },
     {
         "task": "SIT AND ROTATE",
-        "command": "action#tourner_pinces_180",
+        "command": "action#tourner_pinces_180_flag",
         "position": {
             "x": 1705,
             "y": 1100,
@@ -676,7 +676,7 @@
     },
     {
         "task": "SIT AND ROTATE",
-        "command": "action#tourner_pinces_180",
+        "command": "action#tourner_pinces_180_flag",
         "position": {
             "x": 1600,
             "y": 315,
@@ -892,7 +892,7 @@
     },
     {
         "task": "SIT AND ROTATE",
-        "command": "action#tourner_pinces_180",
+        "command": "action#tourner_pinces_180_flag",
         "position": {
             "x": 800,
             "y": 315,
