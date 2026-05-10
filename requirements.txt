@@ -10,3 +10,4 @@ cbor2
 crc
 picamera2
 opencv-python
+pygame

@@ -39,6 +39,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from rabbit_control_center.music_player import MusicPlayer
 from rabbit_control_center.state import (
     ControlCenterState,
     SWITCH_COUNT,
@@ -619,14 +620,27 @@ class ControlCenterWindow(QMainWindow):
         self.stack.addWidget(self.waiting_view)
         self.stack.addWidget(self.match_view)
 
+        # Lecteur audio : bp3 = piste précédente, bp4 = suivante,
+        # sw2 toggle on/off ; le passage en match force un démarrage aléatoire.
+        music_dir = self._config.get("musicDir") or "music"
+        if not os.path.isabs(music_dir):
+            music_dir = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), music_dir
+            )
+        self.music_player = MusicPlayer(music_dir=music_dir, parent=self)
+
         self.idle_view.year_combo.currentTextChanged.connect(self._on_year_changed)
         self.idle_view.btn_bp1.clicked.connect(self._toggle_waiting_screen)
         self.idle_view.btn_quit.clicked.connect(self.close)
         self.match_view.btn_back.clicked.connect(self._show_idle)
 
-        # État local pour suivre les transitions de bp1 (rising / falling edge)
+        # État local pour suivre les transitions des boutons / switches
         self._last_bp1: bool = False
+        self._last_bp3: bool = False
+        self._last_bp4: bool = False
+        self._last_sw2: bool = False
         self._waiting_active: bool = False
+        self._switches_initialized: bool = False
 
         # Connecter les signaux d'état
         self.state.robot_state_changed.connect(self._on_robot_state_changed)
@@ -665,6 +679,9 @@ class ControlCenterWindow(QMainWindow):
         if self._waiting_active:
             self._stop_waiting_screen()
         self.stack.setCurrentWidget(self.match_view)
+        # Démarrage automatique de la musique sur une piste aléatoire,
+        # peu importe l'état de sw2 : un flip ultérieur de sw2 coupera.
+        self.music_player.play(random_start=True)
 
     def _show_idle(self) -> None:
         self.state.reset_match()
@@ -708,12 +725,44 @@ class ControlCenterWindow(QMainWindow):
         self.idle_view.switch_panel.update_states(values)
         if not values:
             return
+
+        # Indices : bp1=0, bp2=1, bp3=2, bp4=3, sw1=4, sw2=5, ..., sw8=11
         bp1 = bool(values[0])
+        bp3 = bool(values[2])
+        bp4 = bool(values[3])
+        sw2 = bool(values[5])
+
+        # On ignore les transitions au tout premier appel pour ne pas
+        # déclencher d'actions sur l'état initial du switch.
+        if not self._switches_initialized:
+            self._last_bp1 = bp1
+            self._last_bp3 = bp3
+            self._last_bp4 = bp4
+            self._last_sw2 = sw2
+            self._switches_initialized = True
+            return
+
+        # bp1 (Ready) : front montant = afficher l'écran d'attente,
+        # front descendant = revenir à idle.
         if bp1 and not self._last_bp1:
             self._start_waiting_screen()
         elif not bp1 and self._last_bp1:
             self._stop_waiting_screen()
+
+        # bp3 / bp4 : impulsions sur front montant pour piste précédente / suivante
+        if bp3 and not self._last_bp3:
+            self.music_player.prev()
+        if bp4 and not self._last_bp4:
+            self.music_player.next()
+
+        # sw2 : tout flip toggle la musique on/off
+        if sw2 != self._last_sw2:
+            self.music_player.toggle()
+
         self._last_bp1 = bp1
+        self._last_bp3 = bp3
+        self._last_bp4 = bp4
+        self._last_sw2 = sw2
 
     def _on_log_record(self, _ts: str, who: str, _level: str, message: str) -> None:
         if self.stack.currentWidget() is not self.match_view:
@@ -722,3 +771,11 @@ class ControlCenterWindow(QMainWindow):
             self.match_view.handle_position(who, message)
         elif "detected an obstacle at position" in message or message.startswith("Lidar detection:"):
             self.match_view.handle_detection(who, message)
+
+    def closeEvent(self, event):
+        """Coupe la musique avant de laisser la fenêtre se fermer."""
+        try:
+            self.music_player.stop()
+        except Exception:
+            pass
+        super().closeEvent(event)

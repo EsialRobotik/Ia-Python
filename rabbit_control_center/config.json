@@ -2,17 +2,17 @@
   "comPort": 4269,
   "logPort": 9020,
   "serial": {
-    "port": "/dev/serial/by-id/usb-rabbit-switches",
+    "port": "/dev/serial/by-id/usb-1a86_USB2.0-Serial-if00-port0",
     "baudRate": 115200
   },
   "year": null,
   "switchLabels": [
     "Ready",
     "bp2",
-    "bp3",
-    "bp4",
+    "Previous",
+    "Next",
     "sw1",
-    "sw2",
+    "Music",
     "sw3",
     "sw4",
     "sw5",
@@ -22,5 +22,6 @@
   ],
   "waitingScreensDir": "waiting-screens",
   "waitingScreenIntervalSeconds": 5,
-  "waitingScreenBackground": "#FA3296"
+  "waitingScreenBackground": "#FA3296",
+  "musicDir": "/home/pi/musique"
 }
