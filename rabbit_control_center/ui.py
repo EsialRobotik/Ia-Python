@@ -630,7 +630,7 @@ class ControlCenterWindow(QMainWindow):
         self.music_player = MusicPlayer(music_dir=music_dir, parent=self)
 
         self.idle_view.year_combo.currentTextChanged.connect(self._on_year_changed)
-        self.idle_view.btn_bp1.clicked.connect(self._toggle_waiting_screen)
+        self.idle_view.btn_bp1.clicked.connect(self._cycle_mode)
         self.idle_view.btn_quit.clicked.connect(self.close)
         self.match_view.btn_back.clicked.connect(self._show_idle)
 
@@ -638,7 +638,7 @@ class ControlCenterWindow(QMainWindow):
         self._last_bp1: bool = False
         self._last_bp3: bool = False
         self._last_bp4: bool = False
-        self._last_sw2: bool = False
+        self._last_sw_music: bool = False
         self._waiting_active: bool = False
         self._switches_initialized: bool = False
 
@@ -679,15 +679,18 @@ class ControlCenterWindow(QMainWindow):
         if self._waiting_active:
             self._stop_waiting_screen()
         self.stack.setCurrentWidget(self.match_view)
-        # Démarrage automatique de la musique sur une piste aléatoire,
-        # peu importe l'état de sw2 : un flip ultérieur de sw2 coupera.
-        self.music_player.play(random_start=True)
+        # En mode match, musique démarrée automatiquement quoi qu'il arrive.
+        # Un flip ON→OFF du switch musique coupera ensuite normalement.
+        if not self.music_player.is_playing():
+            self.music_player.play(random_start=True)
 
     def _show_idle(self) -> None:
         self.state.reset_match()
         if self._waiting_active:
             self._stop_waiting_screen()
         self.stack.setCurrentWidget(self.idle_view)
+        # En tableau de bord, musique uniquement si le switch est ON.
+        self._sync_music_to_switch()
 
     def _start_waiting_screen(self) -> None:
         if self._waiting_active:
@@ -695,6 +698,17 @@ class ControlCenterWindow(QMainWindow):
         self._waiting_active = True
         self.waiting_view.start()
         self.stack.setCurrentWidget(self.waiting_view)
+        # En écran d'attente, même règle qu'idle : musique = état du switch.
+        self._sync_music_to_switch()
+
+    def _sync_music_to_switch(self) -> None:
+        """Aligne la musique sur l'état actuel du switch musique (index 5)."""
+        switches = self.state.model.switches
+        sw_music = bool(switches[5]) if len(switches) > 5 else False
+        if sw_music and not self.music_player.is_playing():
+            self.music_player.play(random_start=True)
+        elif not sw_music and self.music_player.is_playing():
+            self.music_player.stop()
 
     def _stop_waiting_screen(self) -> None:
         if not self._waiting_active:
@@ -708,6 +722,20 @@ class ControlCenterWindow(QMainWindow):
     def _toggle_waiting_screen(self) -> None:
         if self._waiting_active:
             self._stop_waiting_screen()
+        else:
+            self._start_waiting_screen()
+
+    def _cycle_mode(self) -> None:
+        """
+        Bouton bp1 / bouton "Ready" : avance dans le cycle de vues
+        idle → waiting → match → idle → … à chaque pression (front montant).
+        """
+        current = self.stack.currentWidget()
+        if current is self.match_view:
+            self._show_idle()
+        elif current is self.waiting_view:
+            # Passe en mode match (déclenche aussi le démarrage musique)
+            self.state.declare_match_started()
         else:
             self._start_waiting_screen()
 
@@ -726,28 +754,26 @@ class ControlCenterWindow(QMainWindow):
         if not values:
             return
 
-        # Indices : bp1=0, bp2=1, bp3=2, bp4=3, sw1=4, sw2=5, ..., sw8=11
+        # Indices : bp1=0, bp2=1, bp3=2, bp4=3, sw1=4, sw_music=5, ..., sw8=11
         bp1 = bool(values[0])
         bp3 = bool(values[2])
         bp4 = bool(values[3])
-        sw2 = bool(values[5])
+        sw_music = bool(values[5])
 
         # On ignore les transitions au tout premier appel pour ne pas
-        # déclencher d'actions sur l'état initial du switch.
+        # déclencher d'actions sur l'état initial des switches.
         if not self._switches_initialized:
             self._last_bp1 = bp1
             self._last_bp3 = bp3
             self._last_bp4 = bp4
-            self._last_sw2 = sw2
+            self._last_sw_music = sw_music
             self._switches_initialized = True
             return
 
-        # bp1 (Ready) : front montant = afficher l'écran d'attente,
-        # front descendant = revenir à idle.
+        # bp1 (bouton poussoir) : impulsion sur front montant.
+        # Chaque pression cycle dans les vues : idle → waiting → match → idle.
         if bp1 and not self._last_bp1:
-            self._start_waiting_screen()
-        elif not bp1 and self._last_bp1:
-            self._stop_waiting_screen()
+            self._cycle_mode()
 
         # bp3 / bp4 : impulsions sur front montant pour piste précédente / suivante
         if bp3 and not self._last_bp3:
@@ -755,14 +781,22 @@ class ControlCenterWindow(QMainWindow):
         if bp4 and not self._last_bp4:
             self.music_player.next()
 
-        # sw2 : tout flip toggle la musique on/off
-        if sw2 != self._last_sw2:
-            self.music_player.toggle()
+        # Switch musique : synchronisation directe.
+        # ON → s'assurer que la musique joue ; OFF → couper.
+        # Cette règle s'applique aussi en mode match (où la musique a été
+        # auto-démarrée à l'entrée) : un flip ON→OFF coupe, OFF→ON→OFF coupe,
+        # OFF→ON ne fait rien si la musique tourne déjà.
+        if sw_music != self._last_sw_music:
+            if sw_music:
+                if not self.music_player.is_playing():
+                    self.music_player.play(random_start=True)
+            else:
+                self.music_player.stop()
 
         self._last_bp1 = bp1
         self._last_bp3 = bp3
         self._last_bp4 = bp4
-        self._last_sw2 = sw2
+        self._last_sw_music = sw_music
 
     def _on_log_record(self, _ts: str, who: str, _level: str, message: str) -> None:
         if self.stack.currentWidget() is not self.match_view:
