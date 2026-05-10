@@ -21,7 +21,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On trace au centre",
@@ -38,7 +39,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On pivote",
@@ -55,7 +57,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se positionne",
@@ -72,7 +75,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On s'aligne",
@@ -89,7 +93,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On pousse tout",
@@ -106,7 +111,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On recule",
@@ -123,7 +129,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On s'aligne",
@@ -140,7 +147,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se recale",
@@ -157,7 +165,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se recale",
@@ -174,7 +183,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se d\u00e9gage du bord",
@@ -191,7 +201,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On reviens en place pour le finish",
@@ -208,7 +219,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On pousse tout de l'autre c\u00f4t\u00e9",
@@ -225,7 +237,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On recule",
@@ -242,7 +255,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On reviens en place pour le finish",
@@ -259,7 +273,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On s'aligne",
@@ -276,7 +291,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se recale",
@@ -293,7 +309,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se recale",
@@ -310,7 +327,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se d\u00e9gage du bord",
@@ -327,7 +345,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On reviens en place pour le finish",
@@ -344,7 +363,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On attends le bon moment",
@@ -361,7 +381,26 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": "homologation"
+                },
+                {
+                    "desc": "On attends le bon moment (homologation)",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT_CHRONO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 5,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "forward": null,
+                    "on_right_wheel": null,
+                    "instant_return": null,
+                    "needed_flag": "homologation",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se presque jette dans le vide",
@@ -378,7 +417,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se presque jette dans le vide",
@@ -395,7 +435,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "Freeze !!!",
@@ -412,7 +453,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 }
             ],
             "needed_flag": null,
@@ -442,7 +484,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On trace au centre",
@@ -459,7 +502,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On pivote",
@@ -476,7 +520,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se positionne",
@@ -493,7 +538,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On s'aligne",
@@ -510,7 +556,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On pousse tout",
@@ -527,7 +574,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On recule",
@@ -544,7 +592,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On s'aligne",
@@ -561,7 +610,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se recale",
@@ -578,7 +628,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se recale",
@@ -595,7 +646,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se d\u00e9gage du bord",
@@ -612,7 +664,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On reviens en place pour le finish",
@@ -629,7 +682,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On pousse tout de l'autre c\u00f4t\u00e9",
@@ -646,7 +700,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On recule",
@@ -663,7 +718,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On reviens en place pour le finish",
@@ -680,7 +736,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On s'aligne",
@@ -697,7 +754,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se recale",
@@ -714,7 +772,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se recale",
@@ -731,7 +790,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se d\u00e9gage du bord",
@@ -748,7 +808,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On reviens en place pour le finish",
@@ -765,7 +826,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": "solo-pami"
+                    "needed_flag": "solo-pami",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On attends le bon moment",
@@ -782,7 +844,26 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": "homologation"
+                },
+                {
+                    "desc": "On attends le bon moment (homologation)",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT_CHRONO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 5,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "forward": null,
+                    "on_right_wheel": null,
+                    "instant_return": null,
+                    "needed_flag": "homologation",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se presque jette dans le vide",
@@ -799,7 +880,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On se presque jette dans le vide",
@@ -816,7 +898,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "Freeze !!!",
@@ -833,7 +916,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 }
             ],
             "needed_flag": null,

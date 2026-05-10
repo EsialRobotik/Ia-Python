@@ -20,6 +20,7 @@ class AbstractTask:
         self.on_right_wheel = on_right_wheel
         self.instant_return = instant_return
         self.needed_flag = None
+        self.forbidden_flag = None
         self.path_finding = None
         self.end_point = None
 
@@ -46,6 +47,7 @@ class AbstractTask:
                 "on_right_wheel": self.on_right_wheel,
                 "instant_return": self.instant_return,
                 "needed_flag": self.needed_flag,
+                "forbidden_flag": self.forbidden_flag,
             }
 
     def __str__(self):
@@ -65,4 +67,9 @@ class AbstractTask:
 
     def set_needed_flag(self, needed_flag):
         self.needed_flag = needed_flag
+        return self
+
+    def set_forbidden_flag(self, forbidden_flag):
+        """Inverse de needed_flag : la tâche est skippée si CE flag EST présent."""
+        self.forbidden_flag = forbidden_flag
         return self

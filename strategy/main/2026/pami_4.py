@@ -13,6 +13,7 @@ from strategy.task.goto_astar import GoToAstar
 from strategy.task.halt_asserv import HaltAsserv
 from strategy.task.manipulation import Manipulation
 from strategy.task.wait import Wait
+from strategy.task.wait_chrono import WaitChrono
 
 
 class Pami4(AbstractMain):
@@ -28,8 +29,7 @@ class Pami4(AbstractMain):
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
-        self.wait_time = 89000
-        #self.wait_time = 900
+        self.wait_chrono = 89
 
     def clear_zone(self, tasks_list: TaskList) -> None:
         tasks_list.add(
@@ -107,10 +107,16 @@ class Pami4(AbstractMain):
 
         #self.clear_zone(tasks_list)
 
-        tasks_list.add(Wait(
+        # Mode normal : attente complète (skippée en mode homologation)
+        tasks_list.add(WaitChrono(
             desc='On attends son tour',
-            ms_count=self.wait_time
-        ))
+            chrono=self.wait_chrono
+        ).set_forbidden_flag('homologation'))
+        # Mode homologation : on raccourcit l'attente de 85 s
+        tasks_list.add(WaitChrono(
+            desc='On attends son tour (homologation)',
+            chrono=max(0, self.wait_chrono - 85)
+        ).set_needed_flag('homologation'))
         tasks_list.add(Go(
             desc='On avance un peu pour manoeuvrer',
             dist=100

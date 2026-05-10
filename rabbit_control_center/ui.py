@@ -685,12 +685,22 @@ class ControlCenterWindow(QMainWindow):
         # Un flip ON→OFF du switch musique coupera ensuite normalement.
         if not self.music_player.is_playing():
             self.music_player.play(random_start=True)
-        # sw8 (SoloPami, index 11) : si activé au lancement du match, on
-        # diffuse `add-flag#solo-pami` à tous les robots connectés.
+        # Diffusion de flags activés par les switches au démarrage du match :
+        #   sw1 (Homologation, idx 4) → add-flag#homologation
+        #   sw8 (SoloPami,    idx 11) → add-flag#solo-pami
+        # On espace les broadcasts avec QTimer pour que TCP ne coalesce pas
+        # plusieurs messages dans un même recv() côté robot (pas de
+        # délimiteur dans le protocole actuel).
         switches = self.state.model.switches
-        sw_solo_pami = bool(switches[11]) if len(switches) > 11 else False
-        if sw_solo_pami and self._server_ctx is not None:
-            self._server_ctx.broadcast_to_robots("add-flag#solo-pami")
+        if self._server_ctx is not None:
+            broadcasts: list[str] = []
+            if len(switches) > 4 and switches[4]:
+                broadcasts.append("add-flag#homologation")
+            if len(switches) > 11 and switches[11]:
+                broadcasts.append("add-flag#solo-pami")
+            for delay_ms, msg in enumerate(broadcasts):
+                QTimer.singleShot(delay_ms * 100,
+                                  lambda m=msg: self._server_ctx.broadcast_to_robots(m))
 
     def _show_idle(self) -> None:
         self.state.reset_match()

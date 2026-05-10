@@ -70,7 +70,8 @@ class Objective:
 
     def get_next_step(self, flags: List[str]) -> Optional[Step]:
         """
-        Get the next step in the step list, skipping those whose needed_flag is missing from the active flags.
+        Get the next step in the step list, skipping those whose needed_flag is missing
+        from the active flags or whose forbidden_flag is present in the active flags.
 
         Returns:
             step: The next step if available, otherwise None.
@@ -78,14 +79,23 @@ class Objective:
         self.step_index += 1
         step = self.step_list[self.step_index]
 
-        while step.needed_flag is not None and step.needed_flag not in flags:
-            self.logger.info(f'Skip step {step.description} (missing flag {step.needed_flag})')
+        while self._must_skip(step, flags):
+            self.logger.info(f'Skip step {step.description} '
+                             f'(needed={step.needed_flag}, forbidden={step.forbidden_flag}, flags={flags})')
             if not self.has_next_step():
                 return None
             self.step_index += 1
             step = self.step_list[self.step_index]
 
         return step
+
+    @staticmethod
+    def _must_skip(step: Step, flags: List[str]) -> bool:
+        if step.needed_flag is not None and step.needed_flag not in flags:
+            return True
+        if step.forbidden_flag is not None and step.forbidden_flag in flags:
+            return True
+        return False
 
     def get_next_step_real(self) -> Optional[Step]:
         """

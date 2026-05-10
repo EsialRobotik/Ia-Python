@@ -67,6 +67,7 @@ class Step:
         self.instant_return = config_node.get("instant_return", False)
 
         self.needed_flag = config_node.get("needed_flag", None)
+        self.forbidden_flag = config_node.get("forbidden_flag", None)
 
     def __str__(self):
         return (f"Step{{desc='{self.description}', id_action={self.id_action}, "

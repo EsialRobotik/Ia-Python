@@ -27,7 +27,6 @@ class Pami5(AbstractMain):
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
         self.wait_chrono=90
-        #self.wait_chrono=9
 
     def tag(self, task, needed_flag: str = None):
         """Stampe une tâche avec un `needed_flag` si fourni, sinon la renvoie telle quelle."""
@@ -129,10 +128,16 @@ class Pami5(AbstractMain):
         # n'est pas présent, et exécutées dès qu'un `add-flag#solo-pami` arrive.
         self.solo_ninja(tasks_list)
 
+        # Mode normal : attente complète (skippée en mode homologation)
         tasks_list.add(WaitChrono(
             desc="On attends le bon moment",
             chrono=self.wait_chrono
-        ))
+        ).set_forbidden_flag('homologation'))
+        # Mode homologation : on raccourcit l'attente de 85 s
+        tasks_list.add(WaitChrono(
+            desc="On attends le bon moment (homologation)",
+            chrono=max(0, self.wait_chrono - 85)
+        ).set_needed_flag('homologation'))
         tasks_list.add(GoTo(
             desc="On se presque jette dans le vide",
             position_x=420,

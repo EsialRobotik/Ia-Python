@@ -198,6 +198,15 @@
         }
     },
     {
+        "task": "On attends le bon moment (homologation)",
+        "command": "wait-chrono#5",
+        "position": {
+            "x": 220,
+            "y": 1250,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "On se presque jette dans le vide",
         "command": "goto#420;1250",
         "position": {

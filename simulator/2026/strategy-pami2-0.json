@@ -19,7 +19,16 @@
     },
     {
         "task": "On attends son tour",
-        "command": "wait#85000",
+        "command": "wait-chrono#85",
+        "position": {
+            "x": 170,
+            "y": 80,
+            "theta": 1.57079632679
+        }
+    },
+    {
+        "task": "On attends son tour (homologation)",
+        "command": "wait-chrono#0",
         "position": {
             "x": 170,
             "y": 80,

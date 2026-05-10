@@ -21,7 +21,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On attends son tour",
@@ -29,16 +30,35 @@
                     "position_y": 0,
                     "dist": 0,
                     "type": "MOVEMENT",
-                    "subtype": "WAIT",
+                    "subtype": "WAIT_CHRONO",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 89000,
+                    "timeout": 89,
                     "item_id": null,
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": "homologation"
+                },
+                {
+                    "desc": "On attends son tour (homologation)",
+                    "position_x": 0,
+                    "position_y": 0,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT_CHRONO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 4,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "forward": null,
+                    "on_right_wheel": null,
+                    "instant_return": null,
+                    "needed_flag": "homologation",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On avance un peu pour manoeuvrer",
@@ -55,7 +75,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On file dans le garde manger",
@@ -72,7 +93,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On entre dans le garde manger",
@@ -89,7 +111,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On entre dans le garde manger",
@@ -106,7 +129,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "Freeze !!!",
@@ -123,7 +147,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 }
             ],
             "needed_flag": null,
@@ -153,7 +178,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On attends son tour",
@@ -161,16 +187,35 @@
                     "position_y": 3000,
                     "dist": 0,
                     "type": "MOVEMENT",
-                    "subtype": "WAIT",
+                    "subtype": "WAIT_CHRONO",
                     "action_id": null,
                     "mirror": "mirrory",
-                    "timeout": 89000,
+                    "timeout": 89,
                     "item_id": null,
                     "reset_flags": null,
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": "homologation"
+                },
+                {
+                    "desc": "On attends son tour (homologation)",
+                    "position_x": 0,
+                    "position_y": 3000,
+                    "dist": 0,
+                    "type": "MOVEMENT",
+                    "subtype": "WAIT_CHRONO",
+                    "action_id": null,
+                    "mirror": "mirrory",
+                    "timeout": 4,
+                    "item_id": null,
+                    "reset_flags": null,
+                    "forward": null,
+                    "on_right_wheel": null,
+                    "instant_return": null,
+                    "needed_flag": "homologation",
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On avance un peu pour manoeuvrer",
@@ -187,7 +232,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On file dans le garde manger",
@@ -204,7 +250,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On entre dans le garde manger",
@@ -221,7 +268,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "On entre dans le garde manger",
@@ -238,7 +286,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 },
                 {
                     "desc": "Freeze !!!",
@@ -255,7 +304,8 @@
                     "forward": null,
                     "on_right_wheel": null,
                     "instant_return": null,
-                    "needed_flag": null
+                    "needed_flag": null,
+                    "forbidden_flag": null
                 }
             ],
             "needed_flag": null,
