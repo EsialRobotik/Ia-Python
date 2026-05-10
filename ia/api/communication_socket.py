@@ -33,30 +33,27 @@ class CommunicationSocket:
         Sends a message to the server.
     """
 
-    def __init__(self, host: str, port: int) -> None:
+    def __init__(self, host: str, port: int, who: str | None = None) -> None:
         """
         Initializes the CommunicationSocket instance.
         Args:
             host (str): The hostname or IP address of the server to connect to.
             port (int): The port number of the server to connect to.
-        Attributes:
-            host (str): The hostname or IP address of the server.
-            port (int): The port number of the server.
-            last_message (str or None): The last message received from the server.
-            sock (socket.socket): The socket object used for communication.
-            read_thread (threading.Thread): The thread responsible for reading messages from the server.
-        Raises:
-            socket.error: If the connection to the server fails.
+            who (str | None): Robot identifier sent during the handshake.
+                If provided, the socket announces itself as ``robot#<who>`` so the
+                RabbitControlCenter can track which robot is connected.
         """
 
         self.host = host
         self.port = port
+        self.who = who
         self.last_message = None
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.sock.connect((self.host, self.port))
             logger.info(f"Connected to {self.host} on port {self.port}")
-            self.send_message("robot")
+            handshake = f"robot#{who}" if who else "robot"
+            self.send_message(handshake)
         except socket.error as e:
             logger.error(f"Failed to connect to {self.host} on port {self.port}: {e}")
         self.read_thread = threading.Thread(target=self.receive_message)

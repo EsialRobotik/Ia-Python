@@ -35,6 +35,16 @@ class ColorSelector:
         """
 
         return not self.button.is_pressed
+
+    def on_change(self, callback) -> None:
+        """
+        Register a callback invoked whenever the switch state changes
+        (rising edge AND falling edge). gpiozero calls the callback from a
+        background thread, so the callback should be lightweight and
+        thread-safe.
+        """
+        self.button.when_pressed = lambda *_: callback()
+        self.button.when_released = lambda *_: callback()
     
 # Example usage:
 # color_button = ColorSelector(pin=17)

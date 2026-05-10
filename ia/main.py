@@ -68,6 +68,7 @@ if __name__ == "__main__":
 
     # Init divers
     comm_config=config_data["comSocket"]
+    comm_config["who"] = config_data.get("loggerSocket", {}).get("who", robot.value)
     table_config=config_data["table"]
     logger.info("Init asservissement")
     asserv = Asserv(

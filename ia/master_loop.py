@@ -74,6 +74,8 @@ class MasterLoop:
         Initialize the Nextion display and perform the necessary setup steps.
         """
         self.logger.info("Init mainLoop")
+        self.communication_manager = None
+
         if self.nextion_display is not None:
             self.nextion_display.goto_page("init")
             self.logger.info("Attente lancement calibration")
@@ -97,12 +99,40 @@ class MasterLoop:
             color = self.nextion_display.color
         else:
             self.action_manager.init()
+
+            # On crée la socket très tôt pour pouvoir relayer au serveur tout
+            # changement du color selector (les pamis le manipulent à la main
+            # entre l'allumage et l'insertion de la tirette).
+            if self.comm_config['active']:
+                self.logger.info("Initialisation du communication manager (early)")
+                self.communication_manager = CommunicationManager(
+                    action_manager=self.action_manager,
+                    comm_config=self.comm_config,
+                )
+
+            if self.color_selector is not None:
+                def _send_current_color() -> None:
+                    if self.communication_manager is None:
+                        return
+                    cur = (self.table_config['color0']
+                           if self.color_selector.is_color_0()
+                           else self.table_config['color3000'])
+                    self.communication_manager.send_color(cur)
+
+                self.color_selector.on_change(_send_current_color)
+                _send_current_color()
+
             if self.color_selector.is_color_0():
                 color = self.table_config['color0']
             else:
                 color = self.table_config['color3000']
             self.movement_manager.go_start(color)
             self.pull_cord.wait_for_state(True)
+
+            # Au cas où le switch a été basculé pendant l'attente
+            color = (self.table_config['color0']
+                     if self.color_selector.is_color_0()
+                     else self.table_config['color3000'])
 
         self.detection_manager = DetectionManager(
             sensors=self.sensors,
@@ -118,14 +148,18 @@ class MasterLoop:
         self.logger.info("Initialisation du pathfinding OK")
 
         if self.comm_config['active']:
-            self.logger.info("Initialisation du communication manager")
             if self.nextion_display is not None:
                 self.nextion_display.display_calibration_status("Initialisation du communication manager")
-            self.communication_manager = CommunicationManager(
-                action_manager=self.action_manager,
-                pathfinding=self.pathfinding,
-                comm_config=self.comm_config
-            )
+            if self.communication_manager is None:
+                self.logger.info("Initialisation du communication manager")
+                self.communication_manager = CommunicationManager(
+                    action_manager=self.action_manager,
+                    pathfinding=self.pathfinding,
+                    comm_config=self.comm_config,
+                )
+            else:
+                self.communication_manager.set_pathfinding(self.pathfinding)
+            self.communication_manager.send_color(color)
             self.logger.info("Initialisation du communication manager OK")
 
         self.logger.info("Pré-chargement de la stratégie")

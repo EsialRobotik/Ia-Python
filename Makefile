@@ -8,6 +8,10 @@ coffee: ## Fait du café
 simulator: ## Lance le simulateur 2D
 	PYTHONPATH=$${PYTHONPATH}:. env/bin/python simulator/simulator.py
 
+.PHONY: rabbit
+rabbit: ## Lance le RabbitControlCenter (UI + serveur logs/comm + lecture interrupteurs)
+	PYTHONPATH=$${PYTHONPATH}:. env/bin/python -m rabbit_control_center.main
+
 deploy-princess: ## Déploie le code sur le robot
 	bash .build/check_load_env.sh princess
 	bash .build/deploy-princess.sh

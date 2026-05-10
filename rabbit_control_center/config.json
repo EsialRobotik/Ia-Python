@@ -1,0 +1,26 @@
+{
+  "comPort": 4269,
+  "logPort": 9020,
+  "serial": {
+    "port": "/dev/serial/by-id/usb-rabbit-switches",
+    "baudRate": 115200
+  },
+  "year": null,
+  "switchLabels": [
+    "Ready",
+    "bp2",
+    "bp3",
+    "bp4",
+    "sw1",
+    "sw2",
+    "sw3",
+    "sw4",
+    "sw5",
+    "sw6",
+    "sw7",
+    "sw8"
+  ],
+  "waitingScreensDir": "waiting-screens",
+  "waitingScreenIntervalSeconds": 5,
+  "waitingScreenBackground": "#FA3296"
+}

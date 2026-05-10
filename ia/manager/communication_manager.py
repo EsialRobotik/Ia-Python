@@ -1,5 +1,5 @@
 import logging
-from typing import Dict
+from typing import Dict, Optional
 
 from ia.api.communication_socket import CommunicationSocket
 from ia.manager.action_manager import ActionManager
@@ -14,23 +14,36 @@ class CommunicationManager:
     managing pathfinding operations, and executing actions based on the received data.
     """
 
-    def __init__(self, pathfinding: VisibilityGraph, action_manager: ActionManager, comm_config: Dict) -> None:
+    def __init__(self, action_manager: ActionManager, comm_config: Dict,
+                 pathfinding: Optional[VisibilityGraph] = None) -> None:
         """
-        Initializes the CommunicationManager with pathfinding, action manager, and communication configuration.
+        Initializes the CommunicationManager with action manager, communication
+        configuration and an optional pathfinding instance.
 
-        Parameters
-        ----------
-        pathfinding : VisibilityGraph
-            An instance of the VisibilityGraph class used for pathfinding operations.
-        action_manager : action_manager
-            An instance of the ActionManager class used for managing actions.
-        comm_config : Dict
-            A dictionary containing the communication configuration with keys "host" and "port".
+        ``pathfinding`` peut être ``None`` au moment de la construction (utile
+        pour ouvrir la socket et envoyer la couleur très tôt, avant même que
+        le pathfinding ne soit construit) ; il sera défini ensuite via
+        ``set_pathfinding``.
         """
         self.pathfinding = pathfinding
         self.action_manager = action_manager
-        self.communication_socket = CommunicationSocket(host=comm_config["host"], port=comm_config["port"])
+        self.who = comm_config.get("who")
+        self.communication_socket = CommunicationSocket(
+            host=comm_config["host"],
+            port=comm_config["port"],
+            who=self.who,
+        )
         self.logger = logging.getLogger(__name__)
+
+    def set_pathfinding(self, pathfinding: VisibilityGraph) -> None:
+        """Renseigne le pathfinding une fois construit (init différée)."""
+        self.pathfinding = pathfinding
+
+    def send_color(self, color: str) -> None:
+        """Annonce au serveur la couleur sélectionnée par le robot."""
+        if not color:
+            return
+        self.send_hotspot_socket_data(f"color#{color}")
 
     def send_delete_zone(self, zone_id: str) -> None:
         """
@@ -90,9 +103,9 @@ class CommunicationManager:
         data = self.communication_socket.last_message
         if data:
             data_split = data.split("#")
-            if data_split[0] == "delete-zone":
+            if data_split[0] == "delete-zone" and self.pathfinding is not None:
                 self.pathfinding.update_dynamic_zone(data_split[1], False)
-            elif data_split[0] == "add-zone":
+            elif data_split[0] == "add-zone" and self.pathfinding is not None:
                 self.pathfinding.update_dynamic_zone(data_split[1], True)
             elif data_split[0] == "action-data":
                 self.action_manager.execute_command(data_split[1])
