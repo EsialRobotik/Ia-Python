@@ -117,6 +117,78 @@
         }
     },
     {
+        "task": "On pousse tout de l'autre c\u00f4t\u00e9",
+        "command": "goto#220;1070",
+        "position": {
+            "x": 220,
+            "y": 1070,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On recule",
+        "command": "goto-back#220;1250",
+        "position": {
+            "x": 220,
+            "y": 1250,
+            "theta": -1.5707963267948966
+        }
+    },
+    {
+        "task": "On reviens en place pour le finish",
+        "command": "goto#220;1750",
+        "position": {
+            "x": 220,
+            "y": 1750,
+            "theta": 1.5707963267948966
+        }
+    },
+    {
+        "task": "On s'aligne",
+        "command": "face#2000;1750",
+        "position": {
+            "x": 220,
+            "y": 1750,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se recale",
+        "command": "go#-400",
+        "position": {
+            "x": -180,
+            "y": 1750,
+            "theta": 0.0
+        }
+    },
+    {
+        "task": "On se recale",
+        "command": "position#80;1750;0",
+        "position": {
+            "x": 80,
+            "y": 1750,
+            "theta": 0
+        }
+    },
+    {
+        "task": "On se d\u00e9gage du bord",
+        "command": "go#100",
+        "position": {
+            "x": 180,
+            "y": 1750,
+            "theta": 0
+        }
+    },
+    {
+        "task": "On reviens en place pour le finish",
+        "command": "goto#220;1750",
+        "position": {
+            "x": 220,
+            "y": 1750,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "On attends le bon moment",
         "command": "wait-chrono#90",
         "position": {

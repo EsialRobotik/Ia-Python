@@ -155,10 +155,12 @@ class MasterLoop:
                 self.communication_manager = CommunicationManager(
                     action_manager=self.action_manager,
                     pathfinding=self.pathfinding,
+                    strategy_manager=self.strategy_manager,
                     comm_config=self.comm_config,
                 )
             else:
                 self.communication_manager.set_pathfinding(self.pathfinding)
+                self.communication_manager.set_strategy_manager(self.strategy_manager)
             self.communication_manager.send_color(color)
             self.logger.info("Initialisation du communication manager OK")
 

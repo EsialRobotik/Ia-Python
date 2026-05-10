@@ -83,7 +83,8 @@ def main() -> int:
     wakeup_timer = _install_signal_handlers(app)
 
     state = ControlCenterState()
-    start_servers(state=state, log_dir=LOG_DIR, com_port=com_port, log_port=log_port)
+    server_ctx = start_servers(state=state, log_dir=LOG_DIR,
+                               com_port=com_port, log_port=log_port)
 
     serial_reader: SerialSwitchReader | None = None
     if serial_port:
@@ -94,7 +95,7 @@ def main() -> int:
             "Aucun port série configuré pour les interrupteurs (clé serial.port)."
         )
 
-    window = ControlCenterWindow(state=state, config=config)
+    window = ControlCenterWindow(state=state, config=config, server_ctx=server_ctx)
     window.showFullScreen()
 
     try:

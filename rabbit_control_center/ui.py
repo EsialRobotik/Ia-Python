@@ -588,11 +588,13 @@ class MatchView(QWidget):
 # --- Fenêtre principale ------------------------------------------------------
 
 class ControlCenterWindow(QMainWindow):
-    def __init__(self, state: ControlCenterState, config: Optional[dict] = None) -> None:
+    def __init__(self, state: ControlCenterState, config: Optional[dict] = None,
+                 server_ctx=None) -> None:
         super().__init__()
         self.setWindowTitle("Rabbit Control Center")
         self.state = state
         self._config = config or {}
+        self._server_ctx = server_ctx
 
         switch_labels = self._config.get("switchLabels")
         if not isinstance(switch_labels, list) or len(switch_labels) != SWITCH_COUNT:
@@ -683,6 +685,12 @@ class ControlCenterWindow(QMainWindow):
         # Un flip ON→OFF du switch musique coupera ensuite normalement.
         if not self.music_player.is_playing():
             self.music_player.play(random_start=True)
+        # sw8 (SoloPami, index 11) : si activé au lancement du match, on
+        # diffuse `add-flag#solo-pami` à tous les robots connectés.
+        switches = self.state.model.switches
+        sw_solo_pami = bool(switches[11]) if len(switches) > 11 else False
+        if sw_solo_pami and self._server_ctx is not None:
+            self._server_ctx.broadcast_to_robots("add-flag#solo-pami")
 
     def _show_idle(self) -> None:
         self.state.reset_match()

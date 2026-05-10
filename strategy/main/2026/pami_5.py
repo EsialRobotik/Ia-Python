@@ -28,52 +28,61 @@ class Pami5(AbstractMain):
         self.color3000 = 'bleu'
         self.wait_chrono=90
         #self.wait_chrono=9
-        self.use_solo_ninja=False # todo rendre ça pilotable par le pupitre ?
 
-    def calage(self, tasks_list):
-        tasks_list.add(Face(
+    def tag(self, task, needed_flag: str = None):
+        """Stampe une tâche avec un `needed_flag` si fourni, sinon la renvoie telle quelle."""
+        if needed_flag:
+            task.set_needed_flag(needed_flag)
+        return task
+
+    def calage(self, tasks_list, needed_flag: str = None):
+        tasks_list.add(self.tag(Face(
             desc="On s'aligne",
             position_x=2000,
             position_y=1250
-        ))
-        tasks_list.add(Go(
+        ), needed_flag))
+        tasks_list.add(self.tag(Go(
             desc="On se recale",
             dist=-400,
             timeout=2000
-        ))
-        tasks_list.add(SetPosition(
+        ), needed_flag))
+        tasks_list.add(self.tag(SetPosition(
             desc="On se recale",
             position_x=80,
             position_y=1250,
             angle_theta=0
-        ))
-        tasks_list.add(Go(
+        ), needed_flag))
+        tasks_list.add(self.tag(Go(
             desc="On se dégage du bord",
             dist=100
-        ))
-        tasks_list.add(GoTo(
+        ), needed_flag))
+        tasks_list.add(self.tag(GoTo(
             desc="On reviens en place pour le finish",
             position_x=220,
             position_y=1250
-        ))
+        ), needed_flag))
 
     def solo_ninja(self, tasks_list):
-        tasks_list.add(GoTo(
+        # Toutes les actions du solo ninja (et le calage qui suit) sont
+        # conditionnées au flag "solo-pami", déclenchable à distance via
+        # `add-flag#solo-pami` côté serveur.
+        flag = "solo-pami"
+        tasks_list.add(self.tag(GoTo(
             desc="On pousse tout de l'autre côté",
             position_x=220,
             position_y=3000 - 1070
-        ))
-        tasks_list.add(GoToBack(
+        ), flag))
+        tasks_list.add(self.tag(GoToBack(
             desc="On recule",
             position_x=220,
             position_y=3000 - 1250
-        ))
-        tasks_list.add(GoTo(
+        ), flag))
+        tasks_list.add(self.tag(GoTo(
             desc="On reviens en place pour le finish",
             position_x=220,
             position_y=1250
-        ))
-        self.calage(tasks_list)
+        ), flag))
+        self.calage(tasks_list, needed_flag=flag)
 
     def generate(self):
         score = 5
@@ -115,8 +124,10 @@ class Pami5(AbstractMain):
 
         self.calage(tasks_list)
 
-        if self.use_solo_ninja:
-            self.solo_ninja(tasks_list)
+        # Les tâches de solo_ninja sont gardées en permanence dans la stratégie
+        # et conditionnées au flag "solo-pami" : elles sont skippées si le flag
+        # n'est pas présent, et exécutées dès qu'un `add-flag#solo-pami` arrive.
+        self.solo_ninja(tasks_list)
 
         tasks_list.add(WaitChrono(
             desc="On attends le bon moment",

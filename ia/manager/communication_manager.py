@@ -3,6 +3,7 @@ from typing import Dict, Optional
 
 from ia.api.communication_socket import CommunicationSocket
 from ia.manager.action_manager import ActionManager
+from ia.manager.strategy_manager import StrategyManager
 from ia.pathfinding.visibility_graph import VisibilityGraph
 
 
@@ -15,17 +16,19 @@ class CommunicationManager:
     """
 
     def __init__(self, action_manager: ActionManager, comm_config: Dict,
-                 pathfinding: Optional[VisibilityGraph] = None) -> None:
+                 pathfinding: Optional[VisibilityGraph] = None,
+                 strategy_manager: Optional[StrategyManager] = None) -> None:
         """
         Initializes the CommunicationManager with action manager, communication
-        configuration and an optional pathfinding instance.
+        configuration and optionally pathfinding / strategy_manager instances.
 
-        ``pathfinding`` peut être ``None`` au moment de la construction (utile
-        pour ouvrir la socket et envoyer la couleur très tôt, avant même que
-        le pathfinding ne soit construit) ; il sera défini ensuite via
-        ``set_pathfinding``.
+        ``pathfinding`` et ``strategy_manager`` peuvent être ``None`` à la
+        construction (pour ouvrir la socket très tôt, avant qu'ils n'existent)
+        et seront renseignés ensuite via ``set_pathfinding`` /
+        ``set_strategy_manager``.
         """
         self.pathfinding = pathfinding
+        self.strategy_manager = strategy_manager
         self.action_manager = action_manager
         self.who = comm_config.get("who")
         self.communication_socket = CommunicationSocket(
@@ -38,6 +41,10 @@ class CommunicationManager:
     def set_pathfinding(self, pathfinding: VisibilityGraph) -> None:
         """Renseigne le pathfinding une fois construit (init différée)."""
         self.pathfinding = pathfinding
+
+    def set_strategy_manager(self, strategy_manager: StrategyManager) -> None:
+        """Renseigne le strategy_manager (init différée si besoin)."""
+        self.strategy_manager = strategy_manager
 
     def send_color(self, color: str) -> None:
         """Annonce au serveur la couleur sélectionnée par le robot."""
@@ -80,6 +87,18 @@ class CommunicationManager:
         """
         self.send_hotspot_socket_data(f"action-data#{action_id}#{data}")
 
+    def send_add_flag(self, flag: str) -> None:
+        """Demande aux autres robots d'ajouter un action_flag à leur stratégie."""
+        if not flag:
+            return
+        self.send_hotspot_socket_data(f"add-flag#{flag}")
+
+    def send_delete_flag(self, flag: str) -> None:
+        """Demande aux autres robots de retirer un action_flag de leur stratégie."""
+        if not flag:
+            return
+        self.send_hotspot_socket_data(f"delete-flag#{flag}")
+
     def send_hotspot_socket_data(self, data: str) -> None:
         """
         Sends data to the hotspot socket.
@@ -109,3 +128,7 @@ class CommunicationManager:
                 self.pathfinding.update_dynamic_zone(data_split[1], True)
             elif data_split[0] == "action-data":
                 self.action_manager.execute_command(data_split[1])
+            elif data_split[0] == "add-flag" and self.strategy_manager is not None:
+                self.strategy_manager.add_action_flag(data_split[1])
+            elif data_split[0] == "delete-flag" and self.strategy_manager is not None:
+                self.strategy_manager.remove_action_flag(data_split[1])

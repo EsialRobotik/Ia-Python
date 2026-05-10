@@ -48,6 +48,16 @@ class _ServerContext:
         self._log_listeners_lock = threading.Lock()
         self._log_listeners: list[socket.socket] = []
 
+        # Renseigné après démarrage des serveurs : permet d'émettre des
+        # messages à l'initiative du serveur (broadcast à tous les robots).
+        self.comm_server: Optional['CommServer'] = None
+
+    def broadcast_to_robots(self, message: str) -> None:
+        """Diffuse un message vers tous les robots connectés."""
+        if self.comm_server is None:
+            return
+        self.comm_server.broadcast_to_robots(message)
+
     # --- Logs : écriture fichier + relai aux listeners ------------------------
 
     def write_log_record(self, record: logging.LogRecord) -> None:
@@ -306,9 +316,13 @@ class CommServer:
             return
 
         # Tout le reste : broadcast aux autres robots (comportement historique)
+        self._broadcast(message, exclude=conn)
+
+    def _broadcast(self, message: str, exclude: Optional[socket.socket] = None) -> None:
+        """Envoie un message à tous les robots connectés (sauf `exclude`)."""
         encoded = message.encode()
         with self._robots_lock:
-            peers = [c for c in self._robots if c is not conn]
+            peers = [c for c in self._robots if c is not exclude]
         dead = []
         for peer in peers:
             try:
@@ -317,6 +331,12 @@ class CommServer:
                 dead.append(peer)
         for peer in dead:
             self._on_disconnect(peer)
+
+    def broadcast_to_robots(self, message: str) -> None:
+        """Envoie un message à tous les robots connectés (initiative serveur)."""
+        if not message:
+            return
+        self._broadcast(message, exclude=None)
 
 
 def start_comm_server(host: str, port: int, context: _ServerContext) -> CommServer:
@@ -335,5 +355,5 @@ def start_servers(state: ControlCenterState, log_dir: str,
     threading.Thread(target=context.inactivity_watcher, daemon=True,
                      name='inactivity-watcher').start()
     start_log_server('', log_port, context)
-    start_comm_server('', com_port, context)
+    context.comm_server = start_comm_server('', com_port, context)
     return context
