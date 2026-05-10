@@ -24,7 +24,7 @@ class ActionManager:
         # the action is not started and is_last_execution_finished returns True immediately.
         self._skipped: bool = False
 
-    def get_action(self, action_id: str) -> AbstractAction:
+    def get_action(self, action_id: str) -> AbstractAction | None:
         return self.action_repository.get_action(action_id)
 
     def execute_command(self, action_id: str, active_flags: Optional[List[str]] = None) -> None:

@@ -1,3 +1,5 @@
+import logging
+
 from ia.actions.abstract_action import AbstractAction
 
 
@@ -9,14 +11,16 @@ class ActionRepository:
         # Updated by ActionManager.execute_command; consulted by ActionList/ActionListJoin
         # to skip sub-actions whose needed_flag is missing.
         self.active_flags: list[str] = []
+        self.logger = logging.getLogger(__name__)
 
     def has_action(self, action_id: str) -> bool:
         return action_id.upper() in self._actions
 
-    def get_action(self, action_id: str) -> AbstractAction:
+    def get_action(self, action_id: str) -> AbstractAction | None:
         key = action_id.upper()
         if key not in self._actions:
-            raise KeyError(f"Action id '{action_id}' not found in action collection")
+            self.logger.warning(f"Action id '{action_id}' not found in action collection")
+            return None
         return self._actions[key]
 
     def register_action(self, action_id: str, action: AbstractAction) -> None:
