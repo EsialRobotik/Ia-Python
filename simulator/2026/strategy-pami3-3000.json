@@ -37,19 +37,19 @@
     },
     {
         "task": "On avance pour pouvoir se lancer",
-        "command": "goto#280;2750",
+        "command": "goto#280;2700",
         "position": {
             "x": 280,
-            "y": 2750,
+            "y": 2700,
             "theta": -1.5707963267948966
         }
     },
     {
         "task": "On file dans le garde manger",
-        "command": "goto-astar#280;2750",
+        "command": "goto-astar#280;2700",
         "position": {
             "x": 280,
-            "y": 2750,
+            "y": 2700,
             "theta": -1.5707963267948966
         }
     },
@@ -59,7 +59,7 @@
         "position": {
             "x": 1700,
             "y": 2300,
-            "theta": -0.3068896527317797
+            "theta": -0.2745752814396254
         }
     },
     {

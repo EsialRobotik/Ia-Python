@@ -10,6 +10,7 @@ from strategy.task.goto_back import GoToBack
 from strategy.task.halt_asserv import HaltAsserv
 from strategy.task.manipulation import Manipulation
 from strategy.task.set_position import SetPosition
+from strategy.task.set_speed import SetSpeed
 from strategy.task.wait_chrono import WaitChrono
 
 
@@ -40,6 +41,10 @@ class Pami5(AbstractMain):
             position_x=2000,
             position_y=1250
         ), needed_flag))
+        tasks_list.add(SetSpeed(
+            desc="Conservons nos organes internes",
+            speed=50
+        ))
         tasks_list.add(self.tag(Go(
             desc="On se recale",
             dist=-400,
@@ -55,6 +60,10 @@ class Pami5(AbstractMain):
             desc="On se dégage du bord",
             dist=100
         ), needed_flag))
+        tasks_list.add(SetSpeed(
+            desc="FUll patate !!",
+            speed=100
+        ))
         tasks_list.add(self.tag(GoTo(
             desc="On reviens en place pour le finish",
             position_x=220,

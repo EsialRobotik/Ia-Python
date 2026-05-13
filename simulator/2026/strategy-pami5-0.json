@@ -81,6 +81,15 @@
         }
     },
     {
+        "task": "Conservons nos organes internes",
+        "command": "speed#50",
+        "position": {
+            "x": 220,
+            "y": 1250,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "On se recale",
         "command": "go#-400",
         "position": {
@@ -101,6 +110,15 @@
     {
         "task": "On se d\u00e9gage du bord",
         "command": "go#100",
+        "position": {
+            "x": 180,
+            "y": 1250,
+            "theta": 0
+        }
+    },
+    {
+        "task": "FUll patate !!",
+        "command": "speed#100",
         "position": {
             "x": 180,
             "y": 1250,
@@ -153,6 +171,15 @@
         }
     },
     {
+        "task": "Conservons nos organes internes",
+        "command": "speed#50",
+        "position": {
+            "x": 220,
+            "y": 1250,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "On se recale",
         "command": "go#-400",
         "position": {
@@ -173,6 +200,15 @@
     {
         "task": "On se d\u00e9gage du bord",
         "command": "go#100",
+        "position": {
+            "x": 180,
+            "y": 1250,
+            "theta": 0
+        }
+    },
+    {
+        "task": "FUll patate !!",
+        "command": "speed#100",
         "position": {
             "x": 180,
             "y": 1250,

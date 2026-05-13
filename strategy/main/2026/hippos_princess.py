@@ -238,7 +238,7 @@ class HipposPrincess(AbstractMain):
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoToAstar(
             desc="Position caisse 4",
-            position_x=1855 - self.distance_photo,
+            position_x=1835 - self.distance_photo,
             position_y=1100,
         ))
         tasks_list.add(Face(

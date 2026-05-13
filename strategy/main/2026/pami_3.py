@@ -118,7 +118,7 @@ class Pami3(AbstractMain):
         tasks_list.add(GoTo(
             desc='On avance pour pouvoir se lancer',
             position_x=280,
-            position_y=250,
+            position_y=250 + 50,
         ))
         tasks_list.add(GoToAstar(
             desc='On file dans le garde manger',

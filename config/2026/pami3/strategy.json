@@ -63,7 +63,7 @@
                 {
                     "desc": "On avance pour pouvoir se lancer",
                     "position_x": 280,
-                    "position_y": 250,
+                    "position_y": 300,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO",
@@ -220,7 +220,7 @@
                 {
                     "desc": "On avance pour pouvoir se lancer",
                     "position_x": 280,
-                    "position_y": 2750,
+                    "position_y": 2700,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO",
