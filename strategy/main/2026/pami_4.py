@@ -28,7 +28,7 @@ class Pami4(AbstractMain):
         self.pivot_offset: float = 43.70
         self.color0 = 'jaune'
         self.color3000 = 'bleu'
-        self.wait_chrono = 89
+        self.wait_chrono = 91
 
     def clear_zone(self, tasks_list: TaskList) -> None:
         tasks_list.add(
