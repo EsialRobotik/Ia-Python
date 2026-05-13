@@ -195,6 +195,7 @@ class MovementManager:
         """
         is_finished: bool = self.asserv.is_last_command_finished()
         if is_finished:
+            self.logger.info("Last movement finished, cleaning")
             self.goto_queue.clear()
             self.current_step = None
             self._clear_unblock_tracking()
