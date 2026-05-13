@@ -11,7 +11,6 @@ from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.halt_asserv import HaltAsserv
 from strategy.task.manipulation import Manipulation
-from strategy.task.wait import Wait
 from strategy.task.wait_chrono import WaitChrono
 
 
@@ -114,7 +113,7 @@ class Pami3(AbstractMain):
         # Mode homologation : on raccourcit l'attente de 85 s
         tasks_list.add(WaitChrono(
             desc='On attends son tour (homologation)',
-            chrono=max(0, self.wait_chrono - 85)
+            chrono=max(0, self.wait_chrono - 83)
         ).set_needed_flag('homologation'))
         tasks_list.add(GoTo(
             desc='On avance pour pouvoir se lancer',

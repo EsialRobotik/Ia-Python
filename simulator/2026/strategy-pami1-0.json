@@ -28,7 +28,7 @@
     },
     {
         "task": "On attends son tour (homologation)",
-        "command": "wait-chrono#2",
+        "command": "wait-chrono#4",
         "position": {
             "x": 60,
             "y": 80,
