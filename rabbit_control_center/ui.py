@@ -145,14 +145,21 @@ class ColorSwatch(QFrame):
 
 class SwitchPanel(QWidget):
     """
-    Grille 4×3 (12 interrupteurs) où chaque case occupe 2 colonnes du
+    Grille 6×2 (12 interrupteurs) où chaque case occupe 2 colonnes du
     QGridLayout : pastille puis label. Les pastilles sont donc alignées
-    verticalement entre les rangées (col 0, 2, 4) et les labels également
-    (col 1, 3, 5).
+    verticalement entre les rangées (col 0 et 2) et les labels également
+    (col 1 et 3).
+
+    L'ordre d'affichage ne suit pas l'ordre des indices physiques :
+    `_DISPLAY_ORDER[position] = switch_index` regroupe d'abord les boutons
+    pour homologation/musique, puis les fonctions de match, puis le reste.
     """
 
-    COLS = 3
-    ROWS = SWITCH_COUNT // 3  # 4
+    COLS = 2
+    ROWS = SWITCH_COUNT // 2  # 6
+
+    # Position dans la grille → index du switch physique (bp1=0..sw8=11)
+    _DISPLAY_ORDER: list[int] = [4, 5, 0, 1, 2, 3, 6, 7, 8, 9, 10, 11]
 
     def __init__(self, labels: Optional[list[str]] = None, parent=None) -> None:
         super().__init__(parent)
@@ -176,13 +183,15 @@ class SwitchPanel(QWidget):
         grid.setHorizontalSpacing(10)
         grid.setVerticalSpacing(10)
 
-        self._lights: list[StateLight] = []
-        for idx in range(SWITCH_COUNT):
-            row = idx // self.COLS
-            col = idx % self.COLS
+        # `_lights` est indexé par index physique pour que `update_states`
+        # reste un simple zip(values, _lights).
+        self._lights: list[Optional[StateLight]] = [None] * SWITCH_COUNT
+        for position, idx in enumerate(self._DISPLAY_ORDER):
+            row = position // self.COLS
+            col = position % self.COLS
 
             light = StateLight(size=52)
-            self._lights.append(light)
+            self._lights[idx] = light
             grid.addWidget(light, row, col * 2,
                            alignment=Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
@@ -201,17 +210,18 @@ class SwitchPanel(QWidget):
 
     def update_states(self, values: list[bool]) -> None:
         for light, on in zip(self._lights, values):
-            light.set_on(on)
+            if light is not None:
+                light.set_on(on)
 
 
 # --- Tableau des robots ------------------------------------------------------
 
 class RobotsTable(QTableWidget):
-    """Tableau : Robot | Connecté | Couleur."""
+    """Tableau : Robot | Connecté | Prêt | Couleur."""
 
     def __init__(self, parent=None) -> None:
-        super().__init__(0, 3, parent)
-        self.setHorizontalHeaderLabels(["Robot", "Connecté", "Couleur"])
+        super().__init__(0, 4, parent)
+        self.setHorizontalHeaderLabels(["Robot", "Connecté", "Prêt", "Couleur"])
         self.verticalHeader().setVisible(False)
         self.verticalHeader().setDefaultSectionSize(91)
         self.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
@@ -222,10 +232,12 @@ class RobotsTable(QTableWidget):
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
         header.setDefaultAlignment(Qt.AlignmentFlag.AlignCenter)
         header.setStyleSheet("QHeaderView::section { font-size: 18pt; padding: 8px; }")
         self._row_index: dict[str, int] = {}
         self._lights: dict[str, StateLight] = {}
+        self._ready_lights: dict[str, StateLight] = {}
         self._swatches: dict[str, ColorSwatch] = {}
 
     @staticmethod
@@ -244,6 +256,7 @@ class RobotsTable(QTableWidget):
         self.setRowCount(len(robot_ids))
         self._row_index.clear()
         self._lights.clear()
+        self._ready_lights.clear()
         self._swatches.clear()
 
         for row, robot_id in enumerate(robot_ids):
@@ -261,15 +274,24 @@ class RobotsTable(QTableWidget):
             self._lights[robot_id] = light
             self.setCellWidget(row, 1, self._centered(light))
 
+            # Voyant "prêt" : allumé quand le robot a logué "Attente lancement match"
+            ready_light = StateLight(on_color=QColor(80, 220, 100), off_color=QColor(180, 60, 60), size=61)
+            self._ready_lights[robot_id] = ready_light
+            self.setCellWidget(row, 2, self._centered(ready_light))
+
             # Carré de couleur centré
             swatch = ColorSwatch()
             self._swatches[robot_id] = swatch
-            self.setCellWidget(row, 2, self._centered(swatch))
+            self.setCellWidget(row, 3, self._centered(swatch))
 
-    def update_robot(self, robot_id: str, connected: bool, color_name: Optional[str]) -> None:
+    def update_robot(self, robot_id: str, connected: bool, color_name: Optional[str],
+                     ready: bool = False) -> None:
         light = self._lights.get(robot_id)
         if light is not None:
             light.set_on(connected)
+        ready_light = self._ready_lights.get(robot_id)
+        if ready_light is not None:
+            ready_light.set_on(ready)
         swatch = self._swatches.get(robot_id)
         if swatch is not None:
             swatch.set_color(color_for_name(color_name))
@@ -659,6 +681,7 @@ class ControlCenterWindow(QMainWindow):
 
         # État local pour suivre les transitions des boutons / switches
         self._last_bp1: bool = False
+        self._last_bp2: bool = False
         self._last_bp3: bool = False
         self._last_bp4: bool = False
         self._last_sw_music: bool = False
@@ -692,7 +715,8 @@ class ControlCenterWindow(QMainWindow):
             rstate = self.state.model.robots.get(rid)
             connected = rstate.connected if rstate else False
             color = rstate.color if rstate else None
-            self.idle_view.robots_table.update_robot(rid, connected, color)
+            ready = rstate.ready if rstate else False
+            self.idle_view.robots_table.update_robot(rid, connected, color, ready)
         # Charger la table dans la vue match
         self.match_view.load_year(year)
 
@@ -813,16 +837,35 @@ class ControlCenterWindow(QMainWindow):
         else:
             self._start_waiting_screen()
 
+    def _reset_all(self) -> None:
+        """Bouton bp2 / "Reset" : remet l'application à un état neutre.
+
+        Effets : retour à idle (avec rotation des logs et resync musique),
+        match déclaré non démarré, états robots remis à zéro. Les sockets
+        encore actives provoqueront naturellement la ré-émission de
+        l'identité et de la couleur.
+        """
+        self.state.reset_all_robots()
+        if self.stack.currentWidget() is not self.idle_view:
+            self._show_idle()
+        else:
+            # Déjà sur idle : on garde la rotation des logs explicitement.
+            if self._server_ctx is not None:
+                self._server_ctx.rotate_logs()
+            self.state.reset_match()
+
     # --- Évènements d'état ---------------------------------------------------
 
     def _on_robot_state_changed(self, robot_id: str) -> None:
         rstate = self.state.model.robots.get(robot_id)
         if rstate is None:
             return
-        logger.info("Robot %s : connected=%s color=%s",
-                    robot_id, rstate.connected, rstate.color)
+        logger.info("Robot %s : connected=%s color=%s ready=%s",
+                    robot_id, rstate.connected, rstate.color, rstate.ready)
         # Si le robot n'est pas dans la liste actuelle (année différente), on ignore.
-        self.idle_view.robots_table.update_robot(robot_id, rstate.connected, rstate.color)
+        self.idle_view.robots_table.update_robot(
+            robot_id, rstate.connected, rstate.color, rstate.ready,
+        )
 
     def _on_switches_changed(self, values: list) -> None:
         # Mise à jour visuelle des voyants
@@ -832,6 +875,7 @@ class ControlCenterWindow(QMainWindow):
 
         # Indices : bp1=0, bp2=1, bp3=2, bp4=3, sw1=4, sw_music=5, ..., sw8=11
         bp1 = bool(values[0])
+        bp2 = bool(values[1])
         bp3 = bool(values[2])
         bp4 = bool(values[3])
         sw_music = bool(values[5])
@@ -840,6 +884,7 @@ class ControlCenterWindow(QMainWindow):
         # déclencher d'actions sur l'état initial des switches.
         if not self._switches_initialized:
             self._last_bp1 = bp1
+            self._last_bp2 = bp2
             self._last_bp3 = bp3
             self._last_bp4 = bp4
             self._last_sw_music = sw_music
@@ -851,6 +896,11 @@ class ControlCenterWindow(QMainWindow):
         if bp1 and not self._last_bp1:
             logger.info("Front montant bp1 : cycle de mode")
             self._cycle_mode()
+
+        # bp2 (Reset) : impulsion sur front montant → reset global.
+        if bp2 and not self._last_bp2:
+            logger.info("Front montant bp2 : reset global")
+            self._reset_all()
 
         # bp3 / bp4 : impulsions sur front montant pour piste précédente / suivante
         if bp3 and not self._last_bp3:
@@ -874,6 +924,7 @@ class ControlCenterWindow(QMainWindow):
                 self.music_player.stop()
 
         self._last_bp1 = bp1
+        self._last_bp2 = bp2
         self._last_bp3 = bp3
         self._last_bp4 = bp4
         self._last_sw_music = sw_music

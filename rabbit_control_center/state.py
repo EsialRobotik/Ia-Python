@@ -13,7 +13,6 @@ from typing import Optional
 
 from PySide6.QtCore import QObject, Signal
 
-
 # Nombre d'interrupteurs et étiquettes (bp1..bp4 puis sw1..sw8)
 SWITCH_LABELS: list[str] = [f"bp{i + 1}" for i in range(4)] + [f"sw{i + 1}" for i in range(8)]
 SWITCH_COUNT = len(SWITCH_LABELS)
@@ -24,6 +23,7 @@ class RobotState:
     robot_id: str
     connected: bool = False
     color: Optional[str] = None  # nom de couleur (ex. "jaune", "bleu")
+    ready: bool = False  # robot a logué "Attente lancement match"
 
 
 @dataclass
@@ -62,6 +62,7 @@ class ControlCenterState(QObject):
         robot.connected = connected
         if not connected:
             robot.color = None
+            robot.ready = False
         self.robot_state_changed.emit(robot_id)
 
     def set_robot_color(self, robot_id: str, color: str) -> None:
@@ -69,6 +70,13 @@ class ControlCenterState(QObject):
         if robot.color == color:
             return
         robot.color = color
+        self.robot_state_changed.emit(robot_id)
+
+    def set_robot_ready(self, robot_id: str, ready: bool) -> None:
+        robot = self._ensure_robot(robot_id)
+        if robot.ready == ready:
+            return
+        robot.ready = ready
         self.robot_state_changed.emit(robot_id)
 
     # --- Switches -------------------------------------------------------------
@@ -91,3 +99,17 @@ class ControlCenterState(QObject):
 
     def reset_match(self) -> None:
         self.model.match_started = False
+
+    def reset_all_robots(self) -> None:
+        """Remet tous les robots à un état neutre (déconnectés, sans couleur).
+
+        Utilisé par le bouton Reset : on ne fait pas confiance à l'état socket
+        après un reset utilisateur ; les robots encore branchés réémettront
+        leur identité / couleur dès leur prochain message.
+        """
+        for robot_id in list(self.model.robots.keys()):
+            robot = self.model.robots[robot_id]
+            robot.connected = False
+            robot.color = None
+            robot.ready = False
+            self.robot_state_changed.emit(robot_id)

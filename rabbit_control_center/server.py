@@ -131,8 +131,13 @@ class _ServerContext:
             record.levelname,
             message,
         )
-        if message.strip() == 'Match lancé':
+        stripped = message.strip()
+        if stripped == 'Match lancé':
             self.state.declare_match_started()
+            if who:
+                self.state.set_robot_ready(str(who), False)
+        elif stripped == 'Attente lancement match' and who:
+            self.state.set_robot_ready(str(who), True)
 
     def add_log_listener(self, sock: socket.socket) -> None:
         with self._log_listeners_lock:

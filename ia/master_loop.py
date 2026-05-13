@@ -375,6 +375,9 @@ class MasterLoop:
     def main_loop(self) -> None:
         self.logger.info("Début de la boucle principale")
 
+        while not self.pull_cord.is_plugged():
+            time.sleep(0.01)
+
         # Attente lancement du match en retirant la tirette
         self.logger.info("Attente lancement match")
         while self.pull_cord.is_plugged():
