@@ -1,6 +1,6 @@
 import logging
 import threading
-from datetime import datetime
+import time
 
 
 class Chrono:
@@ -50,8 +50,7 @@ class Chrono:
             str: A string in the format "remaining_time / match_duration".
         """
 
-        current_time = int(datetime.now().timestamp())
-        chrono = self.match_duration - (current_time - self.timestamp_start)
+        chrono = self.match_duration - int(time.perf_counter() - self.timestamp_start)
         return f"{chrono} / {self.match_duration}"
 
     def start_match(self, match_end: callable) -> None:
@@ -75,7 +74,7 @@ class Chrono:
         """
 
         self.logger.info("Starting match timer...")
-        self.timestamp_start = int(datetime.now().timestamp())
+        self.timestamp_start = time.perf_counter()
 
     def get_time_since_beginning(self) -> int:
         """
@@ -84,8 +83,7 @@ class Chrono:
             int: The time elapsed since the start timestamp in seconds.
         """
 
-        current_time = int(datetime.now().timestamp())
-        return current_time - self.timestamp_start
+        return int(time.perf_counter() - self.timestamp_start)
     
 # Example usage:
 # chrono = Chrono(match_duration=60)
