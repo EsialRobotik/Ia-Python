@@ -1,6 +1,7 @@
 import logging
 logger = logging.getLogger(__name__)
 
+import queue
 import socket
 import threading
 
@@ -14,23 +15,15 @@ class CommunicationSocket:
         The hostname or IP address of the server to connect to.
     port : int
         The port number of the server to connect to.
-    last_message : str or None
-        The last message received from the server.
+    messages : queue.Queue[str]
+        FIFO thread-safe des messages reçus, alimentée par `receive_message`
+        et consommée par `CommunicationManager.read_from_server`. Chaque entrée
+        correspond à un chunk `recv()` (donc potentiellement plusieurs messages
+        concaténés si l'expéditeur n'a pas espacé ses envois).
     sock : socket.socket
         The socket object used for communication.
     read_thread : threading.Thread
         The thread responsible for reading messages from the server.
-
-    Methods:
-    --------
-    __init__(self, host, port):
-        Initializes the CommunicationSocket with the given host and port, 
-        and starts the connection and read thread.
-    receive_message(self):
-        Continuously receives messages from the server and updates the 
-        last_message attribute.
-    send_message(self, message):
-        Sends a message to the server.
     """
 
     def __init__(self, host: str, port: int, who: str | None = None) -> None:
@@ -47,7 +40,7 @@ class CommunicationSocket:
         self.host = host
         self.port = port
         self.who = who
-        self.last_message = None
+        self.messages: "queue.Queue[str]" = queue.Queue()
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.sock.connect((self.host, self.port))
@@ -59,16 +52,16 @@ class CommunicationSocket:
         self.read_thread = threading.Thread(target=self.receive_message)
         self.read_thread.daemon = True
         self.read_thread.start()
-        
+
     def receive_message(self) -> None:
         """
-        Continuously receives messages from the socket.
-        This method runs an infinite loop that attempts to receive messages from the socket.
-        If a message is successfully received, it is decoded from UTF-8 and logged.
-        If the message has a length greater than 0, it is stored as the last received message.
-        If a socket error occurs during message reception, an error is logged.
-        Raises:
-            socket.error: If there is an error receiving the message from the socket.
+        Boucle de lecture du socket : empile chaque message non vide dans
+        `self.messages` pour consommation par le thread principal via
+        `CommunicationManager.read_from_server`.
+
+        Le précédent attribut `last_message` était écrasé à chaque trame sans
+        être consommé, ce qui provoquait un re-traitement en boucle côté
+        master_loop tant que le robot recevait des messages.
         """
 
         while True:
@@ -76,7 +69,7 @@ class CommunicationSocket:
                 message = self.sock.recv(1024).decode('utf-8')
                 logger.info(f"Received message: {message}")
                 if len(message) > 0:
-                    self.last_message = message
+                    self.messages.put(message)
             except socket.error as e:
                 logger.error(f"Failed to receive message: {e}")
 

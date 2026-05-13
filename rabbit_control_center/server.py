@@ -21,48 +21,88 @@ from typing import Optional
 
 from rabbit_control_center.state import ControlCenterState
 
-
 INACTIVITY_ROTATION_SECONDS = 600
-LOG_FORMAT = '%(asctime)s - %(who)s - %(levelname)s - %(message)s'
+# Logs reçus des robots (port 9020) : champ `who` injecté par chaque robot.
+ROBOT_LOG_FORMAT = '%(asctime)s - %(who)s - %(levelname)s - %(message)s'
+# Logs internes du RCC : pas de champ `who`, on garde le name du logger.
+RCC_LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+logger = logging.getLogger(__name__)
+
+
+def build_rcc_file_handler(log_dir: str) -> logging.handlers.RotatingFileHandler:
+    """Crée le RotatingFileHandler pour les logs internes du RCC.
+
+    Fichier distinct des logs robots (`server-log.log`) — l'utilisateur veut
+    pouvoir trier rapidement "ce qui s'est passé côté serveur" vs "ce qui s'est
+    passé côté robot" après un match.
+    """
+    os.makedirs(log_dir, exist_ok=True)
+    handler = logging.handlers.RotatingFileHandler(
+        filename=os.path.join(log_dir, 'rcc.log'),
+        backupCount=50,
+    )
+    handler.doRollover()
+    handler.setFormatter(logging.Formatter(RCC_LOG_FORMAT))
+    return handler
 
 
 class _ServerContext:
-    """Contexte partagé entre handlers (file handler, listeners, état)."""
+    """Contexte partagé entre handlers (file handler robots, listeners, état).
 
-    def __init__(self, state: ControlCenterState, log_dir: str) -> None:
+    Gère uniquement le flux de logs **robots** : le file handler RCC vit
+    indépendamment, attaché au root logger côté `main.py`.
+    """
+
+    def __init__(self, state: ControlCenterState, log_dir: str,
+                 rcc_file_handler: Optional[logging.Handler] = None) -> None:
         self.state = state
         self.log_dir = log_dir
         os.makedirs(self.log_dir, exist_ok=True)
-        self._formatter = logging.Formatter(LOG_FORMAT)
-        self._file_handler = logging.handlers.RotatingFileHandler(
+        self._formatter = logging.Formatter(ROBOT_LOG_FORMAT)
+        self.robot_file_handler = logging.handlers.RotatingFileHandler(
             filename=os.path.join(log_dir, 'server-log.log'),
             backupCount=50,
         )
-        self._file_handler.doRollover()
-        self._file_handler.setFormatter(self._formatter)
+        self.robot_file_handler.doRollover()
+        self.robot_file_handler.setFormatter(self._formatter)
+
+        # Le handler RCC est créé par main.py et passé ici uniquement pour
+        # que `rotate_logs()` puisse aussi le faire tourner — le RCC n'écrit
+        # PAS dans ce fichier via _ServerContext.
+        self._rcc_file_handler = rcc_file_handler
 
         self._activity_lock = threading.Lock()
         self._last_log_time: Optional[float] = None
+        self._rotation_lock = threading.Lock()
 
         # Socket abonnés au flux de logs (anciens "logListener")
         self._log_listeners_lock = threading.Lock()
         self._log_listeners: list[socket.socket] = []
 
-        # Renseigné après démarrage des serveurs : permet d'émettre des
-        # messages à l'initiative du serveur (broadcast à tous les robots).
+        # Renseigné après démarrage des serveurs (CommServer instancié).
+        # L'UI y accède directement pour broadcaster (cf. main.py).
         self.comm_server: Optional['CommServer'] = None
 
-    def broadcast_to_robots(self, message: str) -> None:
-        """Diffuse un message vers tous les robots connectés."""
-        if self.comm_server is None:
-            return
-        self.comm_server.broadcast_to_robots(message)
+    def rotate_logs(self) -> None:
+        """Force un rollover des deux fichiers de logs (robots + RCC).
+
+        Appelé à chaque retour sur le tableau de bord pour qu'un match
+        terminé occupe son propre couple de fichiers, plus simple à archiver.
+        """
+        with self._rotation_lock:
+            self.robot_file_handler.doRollover()
+            if self._rcc_file_handler is not None:
+                self._rcc_file_handler.doRollover()
+            with self._activity_lock:
+                self._last_log_time = None
+        logger.info("Rotation des logs effectuée (robots + RCC)")
 
     # --- Logs : écriture fichier + relai aux listeners ------------------------
 
     def write_log_record(self, record: logging.LogRecord) -> None:
         line = self._formatter.format(record)
-        self._file_handler.handle(record)
+        self.robot_file_handler.handle(record)
         with self._activity_lock:
             self._last_log_time = time.monotonic()
 
@@ -113,12 +153,18 @@ class _ServerContext:
         check_interval = max(1, INACTIVITY_ROTATION_SECONDS // 20)
         while True:
             time.sleep(check_interval)
+            should_rotate = False
             with self._activity_lock:
                 if self._last_log_time is None:
                     continue
                 if time.monotonic() - self._last_log_time >= INACTIVITY_ROTATION_SECONDS:
-                    self._file_handler.doRollover()
+                    should_rotate = True
                     self._last_log_time = None
+            if should_rotate:
+                with self._rotation_lock:
+                    self.robot_file_handler.doRollover()
+                logger.info("Rotation du log robots après %ds d'inactivité",
+                            INACTIVITY_ROTATION_SECONDS)
 
 
 # --- Serveur de logs (pickled LogRecord) -------------------------------------
@@ -243,6 +289,8 @@ class CommServer:
     def _enqueue_robot(self, conn: socket.socket, robot_id: Optional[str]) -> None:
         with self._robots_lock:
             self._robots[conn] = robot_id
+        logger.info("Robot connecté : id=%s (peer=%s)", robot_id or '?',
+                    conn.getpeername() if conn else '?')
         if robot_id:
             self.context.state.set_robot_connected(robot_id, True)
 
@@ -291,6 +339,7 @@ class CommServer:
     def _on_disconnect(self, conn: socket.socket) -> None:
         with self._robots_lock:
             robot_id = self._robots.pop(conn, None)
+        logger.info("Robot déconnecté : id=%s", robot_id or '?')
         if robot_id:
             self.context.state.set_robot_connected(robot_id, False)
         try:
@@ -305,6 +354,7 @@ class CommServer:
             with self._robots_lock:
                 robot_id = self._robots.get(conn)
             if robot_id and color:
+                logger.info("Couleur reçue pour %s : %s", robot_id, color)
                 self.context.state.set_robot_color(robot_id, color)
             return
         if message.startswith('hello#'):
@@ -312,6 +362,7 @@ class CommServer:
             if robot_id:
                 with self._robots_lock:
                     self._robots[conn] = robot_id
+                logger.info("Identification tardive du robot : %s", robot_id)
                 self.context.state.set_robot_connected(robot_id, True)
             return
 
@@ -333,9 +384,17 @@ class CommServer:
             self._on_disconnect(peer)
 
     def broadcast_to_robots(self, message: str) -> None:
-        """Envoie un message à tous les robots connectés (initiative serveur)."""
+        """Envoie un message à tous les robots connectés (initiative serveur).
+
+        Distinct du broadcast déclenché par la réception d'un message robot
+        (cf. `_dispatch_message` / `_broadcast`) : ici on n'exclut personne car
+        l'émetteur est le RCC, pas un robot.
+        """
         if not message:
             return
+        with self._robots_lock:
+            count = len(self._robots)
+        logger.info("Broadcast aux %d robot(s) : %s", count, message)
         self._broadcast(message, exclude=None)
 
 
@@ -349,9 +408,16 @@ def start_comm_server(host: str, port: int, context: _ServerContext) -> CommServ
 # --- Façade ------------------------------------------------------------------
 
 def start_servers(state: ControlCenterState, log_dir: str,
-                  com_port: int, log_port: int) -> _ServerContext:
-    """Démarre les deux serveurs et le watcher d'inactivité, retourne le contexte."""
-    context = _ServerContext(state=state, log_dir=log_dir)
+                  com_port: int, log_port: int,
+                  rcc_file_handler: Optional[logging.Handler] = None) -> _ServerContext:
+    """Démarre les deux serveurs et le watcher d'inactivité, retourne le contexte.
+
+    `rcc_file_handler` (optionnel) : handler RCC créé en amont par main.py et
+    attaché au root logger. Passé ici uniquement pour que `rotate_logs()` puisse
+    aussi le faire tourner — son cycle de vie reste piloté par main.py.
+    """
+    context = _ServerContext(state=state, log_dir=log_dir,
+                             rcc_file_handler=rcc_file_handler)
     threading.Thread(target=context.inactivity_watcher, daemon=True,
                      name='inactivity-watcher').start()
     start_log_server('', log_port, context)

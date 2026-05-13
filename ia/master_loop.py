@@ -377,7 +377,11 @@ class MasterLoop:
 
         # Attente lancement du match en retirant la tirette
         self.logger.info("Attente lancement match")
-        self.pull_cord.wait_for_state(False)
+        while self.pull_cord.is_plugged():
+            if self.communication_manager is not None:
+                # On check les communications serveurs
+                self.communication_manager.read_from_server()
+            time.sleep(0.01)
 
         # Lancement du match
         self.logger.info("Match lancé")

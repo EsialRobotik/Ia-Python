@@ -1,4 +1,5 @@
 import logging
+import queue
 from typing import Dict, Optional
 
 from ia.api.communication_socket import CommunicationSocket
@@ -117,18 +118,34 @@ class CommunicationManager:
 
     def read_from_server(self) -> None:
         """
-        Reads data from the server and processes it.
+        Vide la file de messages reçus depuis le serveur et traite chaque
+        message exactement une fois.
+
+        Appelée à haute fréquence par `master_loop.main_loop` ; consommer la
+        file (au lieu de lire un `last_message` jamais effacé) évite que la
+        même commande soit ré-exécutée en boucle.
         """
-        data = self.communication_socket.last_message
-        if data:
+        while True:
+            try:
+                data = self.communication_socket.messages.get_nowait()
+            except queue.Empty:
+                return
+            if not data:
+                continue
+            self.logger.info(f"Message from server: {data}")
             data_split = data.split("#")
             if data_split[0] == "delete-zone" and self.pathfinding is not None:
+                self.logger.info(f"delete-zone: {data_split[1]}")
                 self.pathfinding.update_dynamic_zone(data_split[1], False)
             elif data_split[0] == "add-zone" and self.pathfinding is not None:
+                self.logger.info(f"add-zone: {data_split[1]}")
                 self.pathfinding.update_dynamic_zone(data_split[1], True)
             elif data_split[0] == "action-data":
+                self.logger.info(f"action-data: {data_split[1]}")
                 self.action_manager.execute_command(data_split[1])
             elif data_split[0] == "add-flag" and self.strategy_manager is not None:
+                self.logger.info(f"add-flag: {data_split[1]}")
                 self.strategy_manager.add_action_flag(data_split[1])
             elif data_split[0] == "delete-flag" and self.strategy_manager is not None:
+                self.logger.info(f"delete-flag: {data_split[1]}")
                 self.strategy_manager.remove_action_flag(data_split[1])

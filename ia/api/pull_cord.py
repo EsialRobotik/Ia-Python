@@ -55,6 +55,9 @@ class PullCord:
         while self.get_state() != expected_state:
             sleep(0.1)
 
+    def is_plugged(self):
+        return self.get_state()
+
 # Example usage:
 # detector = PullCordDetector(pin=17)
 # print(detector.getState())

@@ -21,7 +21,7 @@ from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QApplication
 
 from rabbit_control_center.serial_reader import SerialSwitchReader
-from rabbit_control_center.server import start_servers
+from rabbit_control_center.server import build_rcc_file_handler, start_servers
 from rabbit_control_center.state import ControlCenterState
 from rabbit_control_center.ui import ControlCenterWindow
 
@@ -44,6 +44,17 @@ def setup_console_logging() -> None:
     root = logging.getLogger()
     root.addHandler(handler)
     root.setLevel(logging.INFO)
+
+
+def setup_rcc_file_logging(log_dir: str) -> logging.Handler:
+    """Branche un fichier dédié aux logs internes du RCC sur le root logger.
+
+    Volontairement distinct du fichier `server-log.log` (logs robots). L'UI,
+    le lecteur série, la musique, etc. logguent ici via `logging.getLogger(__name__)`.
+    """
+    handler = build_rcc_file_handler(log_dir)
+    logging.getLogger().addHandler(handler)
+    return handler
 
 
 def _install_signal_handlers(app: QApplication) -> QTimer:
@@ -82,9 +93,12 @@ def main() -> int:
     app.setQuitOnLastWindowClosed(True)
     wakeup_timer = _install_signal_handlers(app)
 
+    rcc_file_handler = setup_rcc_file_logging(LOG_DIR)
+
     state = ControlCenterState()
     server_ctx = start_servers(state=state, log_dir=LOG_DIR,
-                               com_port=com_port, log_port=log_port)
+                               com_port=com_port, log_port=log_port,
+                               rcc_file_handler=rcc_file_handler)
 
     serial_reader: SerialSwitchReader | None = None
     if serial_port:
@@ -95,7 +109,9 @@ def main() -> int:
             "Aucun port série configuré pour les interrupteurs (clé serial.port)."
         )
 
-    window = ControlCenterWindow(state=state, config=config, server_ctx=server_ctx)
+    window = ControlCenterWindow(state=state, config=config,
+                                 server_ctx=server_ctx,
+                                 comm_server=server_ctx.comm_server)
     window.showFullScreen()
 
     try:

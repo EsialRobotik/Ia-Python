@@ -9,10 +9,13 @@ Deux vues empilées dans un QStackedWidget :
 """
 
 import ast
+import logging
 import os
 import random
 import re
 from typing import Optional
+
+logger = logging.getLogger(__name__)
 
 from PySide6.QtCore import Qt, QSize, QTimer
 from PySide6.QtGui import QColor, QFont, QPainter, QBrush, QPen, QPixmap, QImageReader
@@ -22,7 +25,6 @@ from PySide6.QtGui import QColor, QFont, QPainter, QBrush, QPen, QPixmap, QImage
 # waiting-screens. On désactive la limite pour ce processus.
 QImageReader.setAllocationLimit(0)
 from PySide6.QtWidgets import (
-    QApplication,
     QComboBox,
     QFrame,
     QGridLayout,
@@ -588,13 +590,32 @@ class MatchView(QWidget):
 # --- Fenêtre principale ------------------------------------------------------
 
 class ControlCenterWindow(QMainWindow):
+    """
+    Fenêtre principale du RabbitControlCenter.
+
+    Trois écrans empilés (QStackedWidget), pilotés par bp1 ou la souris :
+
+    - `idle_view` (tableau de bord) : table des robots + grille des 12
+      interrupteurs. C'est l'écran de configuration avant match et celui
+      sur lequel on revient une fois le match terminé.
+    - `waiting_view` (slideshow) : écran d'attente plein écran qui défile
+      des images PNG sur fond rose. Affiché entre idle et match — c'est
+      ici qu'on broadcast aux robots les flags activés par les switches.
+    - `match_view` (table de jeu) : table SVG temps réel, alimentée par
+      les logs `Position :` / détections envoyés par les robots pendant
+      le match.
+
+    Cycle bp1 : idle → waiting → match → idle → …
+    """
+
     def __init__(self, state: ControlCenterState, config: Optional[dict] = None,
-                 server_ctx=None) -> None:
+                 server_ctx=None, comm_server=None) -> None:
         super().__init__()
         self.setWindowTitle("Rabbit Control Center")
         self.state = state
         self._config = config or {}
         self._server_ctx = server_ctx
+        self._comm_server = comm_server
 
         switch_labels = self._config.get("switchLabels")
         if not isinstance(switch_labels, list) or len(switch_labels) != SWITCH_COUNT:
@@ -678,57 +699,91 @@ class ControlCenterWindow(QMainWindow):
     # --- Bascules de vues ----------------------------------------------------
 
     def _show_match(self) -> None:
+        """Bascule vers `match_view` (table de jeu temps réel).
+
+        Déclenché par le signal `match_started` (log "Match lancé" ou
+        passage manuel waiting→match via bp1). Force le démarrage de la
+        musique : un flip ON→OFF du switch musique coupera ensuite.
+        """
+        logger.info("État → match_view")
         if self._waiting_active:
             self._stop_waiting_screen()
         self.stack.setCurrentWidget(self.match_view)
-        # En mode match, musique démarrée automatiquement quoi qu'il arrive.
-        # Un flip ON→OFF du switch musique coupera ensuite normalement.
         if not self.music_player.is_playing():
+            logger.info("Démarrage musique (auto, entrée match)")
             self.music_player.play(random_start=True)
-        # Diffusion de flags activés par les switches au démarrage du match :
-        #   sw1 (Homologation, idx 4) → add-flag#homologation
-        #   sw8 (SoloPami,    idx 11) → add-flag#solo-pami
-        # On espace les broadcasts avec QTimer pour que TCP ne coalesce pas
-        # plusieurs messages dans un même recv() côté robot (pas de
-        # délimiteur dans le protocole actuel).
-        switches = self.state.model.switches
-        if self._server_ctx is not None:
-            broadcasts: list[str] = []
-            if len(switches) > 4 and switches[4]:
-                broadcasts.append("add-flag#homologation")
-            if len(switches) > 11 and switches[11]:
-                broadcasts.append("add-flag#solo-pami")
-            for delay_ms, msg in enumerate(broadcasts):
-                QTimer.singleShot(delay_ms * 100,
-                                  lambda m=msg: self._server_ctx.broadcast_to_robots(m))
 
     def _show_idle(self) -> None:
+        """Bascule vers `idle_view` (tableau de bord robots + switches).
+
+        Appelé sur match→idle (bp1 depuis match, ou bouton "← Retour").
+        Déclenche aussi une rotation des fichiers de logs (robots + RCC)
+        pour qu'un match terminé occupe son propre couple de fichiers.
+        """
+        logger.info("État → idle_view (retour tableau de bord)")
         self.state.reset_match()
         if self._waiting_active:
             self._stop_waiting_screen()
         self.stack.setCurrentWidget(self.idle_view)
         # En tableau de bord, musique uniquement si le switch est ON.
         self._sync_music_to_switch()
+        # Rotation des logs : un match = un fichier, archivage simple.
+        if self._server_ctx is not None:
+            self._server_ctx.rotate_logs()
 
     def _start_waiting_screen(self) -> None:
+        """Bascule vers `waiting_view` (slideshow d'images plein écran).
+
+        Étape intermédiaire entre tableau de bord et match : c'est ici qu'on
+        diffuse aux robots les flags activés par les switches au moment où
+        l'opérateur valide la config (sw1 → homologation, sw8 → solo-pami).
+        On espace les broadcasts avec QTimer pour que TCP ne coalesce pas
+        plusieurs messages dans un même recv() côté robot (pas de délimiteur
+        dans le protocole actuel).
+        """
         if self._waiting_active:
             return
+        logger.info("État → waiting_view (slideshow d'attente)")
         self._waiting_active = True
         self.waiting_view.start()
         self.stack.setCurrentWidget(self.waiting_view)
         # En écran d'attente, même règle qu'idle : musique = état du switch.
         self._sync_music_to_switch()
 
+        # Diffusion des flags activés par les switches.
+        #   sw1 (Homologation, idx 4) → add-flag#homologation
+        #   sw8 (SoloPami,    idx 11) → add-flag#solo-pami
+        switches = self.state.model.switches
+        if self._comm_server is None:
+            logger.warning("Pas de comm_server : flags non diffusés")
+            return
+        broadcasts: list[str] = []
+        if len(switches) > 4 and switches[4]:
+            broadcasts.append("add-flag#homologation")
+        if len(switches) > 11 and switches[11]:
+            broadcasts.append("add-flag#solo-pami")
+        if not broadcasts:
+            logger.info("Aucun flag à diffuser (sw1/sw8 OFF)")
+            return
+        logger.info("Diffusion des flags d'entrée match : %s", broadcasts)
+        for idx, msg in enumerate(broadcasts):
+            QTimer.singleShot(idx * 100,
+                              lambda m=msg: self._comm_server.broadcast_to_robots(m))
+
     def _sync_music_to_switch(self) -> None:
         """Aligne la musique sur l'état actuel du switch musique (index 5)."""
         switches = self.state.model.switches
         sw_music = bool(switches[5]) if len(switches) > 5 else False
         if sw_music and not self.music_player.is_playing():
+            logger.info("Démarrage musique (sync switch ON)")
             self.music_player.play(random_start=True)
         elif not sw_music and self.music_player.is_playing():
+            logger.info("Arrêt musique (sync switch OFF)")
             self.music_player.stop()
 
     def _stop_waiting_screen(self) -> None:
+        """Quitte `waiting_view`. Reste sur la vue courante si on est déjà
+        passé en match (cas du cycle waiting → match)."""
         if not self._waiting_active:
             return
         self._waiting_active = False
@@ -738,6 +793,7 @@ class ControlCenterWindow(QMainWindow):
             self.stack.setCurrentWidget(self.idle_view)
 
     def _toggle_waiting_screen(self) -> None:
+        """Démarre/arrête le slideshow (non câblé par défaut, utilitaire)."""
         if self._waiting_active:
             self._stop_waiting_screen()
         else:
@@ -763,6 +819,8 @@ class ControlCenterWindow(QMainWindow):
         rstate = self.state.model.robots.get(robot_id)
         if rstate is None:
             return
+        logger.info("Robot %s : connected=%s color=%s",
+                    robot_id, rstate.connected, rstate.color)
         # Si le robot n'est pas dans la liste actuelle (année différente), on ignore.
         self.idle_view.robots_table.update_robot(robot_id, rstate.connected, rstate.color)
 
@@ -791,12 +849,15 @@ class ControlCenterWindow(QMainWindow):
         # bp1 (bouton poussoir) : impulsion sur front montant.
         # Chaque pression cycle dans les vues : idle → waiting → match → idle.
         if bp1 and not self._last_bp1:
+            logger.info("Front montant bp1 : cycle de mode")
             self._cycle_mode()
 
         # bp3 / bp4 : impulsions sur front montant pour piste précédente / suivante
         if bp3 and not self._last_bp3:
+            logger.info("Front montant bp3 : piste précédente")
             self.music_player.prev()
         if bp4 and not self._last_bp4:
+            logger.info("Front montant bp4 : piste suivante")
             self.music_player.next()
 
         # Switch musique : synchronisation directe.
@@ -805,6 +866,7 @@ class ControlCenterWindow(QMainWindow):
         # auto-démarrée à l'entrée) : un flip ON→OFF coupe, OFF→ON→OFF coupe,
         # OFF→ON ne fait rien si la musique tourne déjà.
         if sw_music != self._last_sw_music:
+            logger.info("Switch musique : %s", "ON" if sw_music else "OFF")
             if sw_music:
                 if not self.music_player.is_playing():
                     self.music_player.play(random_start=True)
