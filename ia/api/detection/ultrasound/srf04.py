@@ -1,4 +1,6 @@
 import logging
+import threading
+import time
 
 from gpiozero import DistanceSensor
 
@@ -35,6 +37,9 @@ class Srf04(Srf):
         Returns the measured distance from the sensor in milimeters.
     """
 
+    POLL_INTERVAL_S = 0.02
+    STALE_THRESHOLD_S = 0.5
+
 
     def __init__(self, desc: str, trigger: int, echo: int, x: int, y: int, angle: int, threshold: int, window_size: int) -> None:
         """
@@ -55,13 +60,28 @@ class Srf04(Srf):
             trigger=trigger,
             queue_len= self.window_size
         )
+        self._last_distance: int = 10000
+        self._last_read_ts: float = 0.0
+        self._measure_thread = threading.Thread(target=self._measurement_loop, daemon=True)
+        self._measure_thread.start()
+
+    def _measurement_loop(self) -> None:
+        while True:
+            try:
+                value = self.sensor.value
+                self._last_distance = 10000 if value == 0 else int(value * 1000)
+                self._last_read_ts = time.monotonic()
+            except Exception:
+                logger.exception(f"SRF04 {self.desc} read failed")
+            time.sleep(self.POLL_INTERVAL_S)
 
     def get_distance(self) -> int:
         """
-        Return the average measured distance from the sensor in the window of size windows_size in millimeters.
-        Returns:
-            float: The average distance measured by the sensor in millimeters.
+        Return the last cached distance in millimeters. Reads are produced by a background
+        thread so a stuck gpiozero call cannot block the main loop. If no fresh measurement
+        has arrived for STALE_THRESHOLD_S, return 10000 (treat as "no obstacle") so the
+        match keeps running even if the sensor stops responding.
         """
-        if self.sensor.value == 0:
+        if time.monotonic() - self._last_read_ts > self.STALE_THRESHOLD_S:
             return 10000
-        return int(self.sensor.value * 1000)
+        return self._last_distance
