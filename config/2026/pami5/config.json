@@ -22,11 +22,11 @@
         {
           "type": "srf08",
           "desc": "Avant",
-          "address": 226,
+          "address": 252,
           "x": 60,
           "y": 0,
           "angle": 0,
-          "threshold": 180
+          "threshold": 150
         }
       ]
     }
