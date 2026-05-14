@@ -331,34 +331,49 @@ class TableWidget(QWidget):
     # --- Détections temps réel ------------------------------------------------
 
     _DETECTION_DISPLAY_RADIUS = 200   # mm — rayon du cercle affiché
-    _DETECTION_DEDUP_RADIUS_SQ = 150 * 150  # mm² — seuil de déduplication spatiale
-    _DETECTION_LIFETIME = 1.0         # secondes
+    _DETECTION_LIFETIME = 1.5         # secondes — durée d'affichage après la dernière détection
+    _DETECTION_REPOSITION_MIN_S = 0.5  # secondes — intervalle min entre deux repositionnements du cercle
 
     def add_detection(self, x: float, y: float, color: QColor,
                       source_x: float | None = None, source_y: float | None = None):
         """
-        Ajoute une détection d'obstacle à afficher pendant 1 s.
-        Si une détection de même couleur existe déjà à moins de 150 mm,
-        son timer est simplement rafraîchi (évite de surcharger l'affichage).
+        Ajoute une détection d'obstacle à afficher.
+
+        Un seul cercle est conservé par couleur de robot : quand le robot
+        crache des détections en rafale (rejeu de logs, capteur très bavard),
+        on se contente de prolonger la durée d'affichage du cercle existant.
+        Le cercle ne se repositionne qu'au plus tous les `_DETECTION_REPOSITION_MIN_S`,
+        ce qui suffit comme approximation visuelle de la position adverse
+        sans saturer le thread GUI de repaints.
+
         Si source_x/source_y sont fournis, le cercle est dessiné tangent au
         point détecté (l'obstacle s'étendant à l'opposé de la source) plutôt
         que centré sur lui.
         """
         now = time.monotonic()
         expire = now + self._DETECTION_LIFETIME
+        color_name = color.name()
         for det in self._detections:
-            if det["color"].name() == color.name():
-                dx = det["x"] - x
-                dy = det["y"] - y
-                if dx * dx + dy * dy <= self._DETECTION_DEDUP_RADIUS_SQ:
-                    det["expire"] = expire
-                    det["source_x"] = source_x
-                    det["source_y"] = source_y
-                    return
+            if det["color"].name() != color_name:
+                continue
+            det["expire"] = expire
+            if now - det.get("_last_move", 0.0) < self._DETECTION_REPOSITION_MIN_S:
+                # En cooldown : on prolonge la durée de vie sans toucher à
+                # la position. Pas de repaint, pas d'écriture supplémentaire.
+                return
+            det["x"] = x
+            det["y"] = y
+            det["source_x"] = source_x
+            det["source_y"] = source_y
+            det["_last_move"] = now
+            self.update()
+            return
+
         self._detections.append({
             "x": x, "y": y,
             "source_x": source_x, "source_y": source_y,
             "color": QColor(color), "expire": expire,
+            "_last_move": now,
         })
         if not self._detection_cleanup_timer.isActive():
             self._detection_cleanup_timer.start()
@@ -637,6 +652,7 @@ class TableWidget(QWidget):
         self._anim_currents.clear()
         self._active_trails.clear()
         self._trails.clear()
+        self._detections.clear()
         self._speed_factor = 1.0
         for robot in self._robots:
             robot["x"] = robot.get("init_x", robot["x"])
