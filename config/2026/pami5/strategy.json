@@ -99,7 +99,7 @@
                 {
                     "desc": "On pousse tout",
                     "position_x": 220,
-                    "position_y": 1070,
+                    "position_y": 1050,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO",
@@ -261,7 +261,7 @@
                 {
                     "desc": "On pousse tout de l'autre c\u00f4t\u00e9",
                     "position_x": 220,
-                    "position_y": 1930,
+                    "position_y": 1950,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO",
@@ -634,7 +634,7 @@
                 {
                     "desc": "On pousse tout",
                     "position_x": 220,
-                    "position_y": 1930,
+                    "position_y": 1950,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO",
@@ -796,7 +796,7 @@
                 {
                     "desc": "On pousse tout de l'autre c\u00f4t\u00e9",
                     "position_x": 220,
-                    "position_y": 1070,
+                    "position_y": 1050,
                     "dist": 0,
                     "type": "MOVEMENT",
                     "subtype": "GOTO",

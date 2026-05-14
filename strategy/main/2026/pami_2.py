@@ -7,6 +7,7 @@ from strategy.main.abstract_main import AbstractMain
 from strategy.task.add_zone import AddZone
 from strategy.task.delete_zone import DeleteZone
 from strategy.task.face import Face
+from strategy.task.go import Go
 from strategy.task.goto import GoTo
 from strategy.task.goto_astar import GoToAstar
 from strategy.task.halt_asserv import HaltAsserv
@@ -134,6 +135,10 @@ class Pami2(AbstractMain):
             desc='On entre dans le garde manger',
             position_x=2000,
             position_y=1450,
+        ))
+        tasks_list.add(Go(
+            desc="Dans le doute, on force un peu",
+            dist=150
         ))
         tasks_list.add(HaltAsserv(
             desc='Freeze !!!'

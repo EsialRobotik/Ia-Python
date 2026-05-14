@@ -41,6 +41,9 @@ class ActionPwmServo(ThreadedAction):
         super().reset()
         self.servo.angle = 0
 
+    def stop(self) -> None:
+        self._stop_requested = not self.loop
+
     def _run(self) -> None:
         while True:
             for angle in self.angles:

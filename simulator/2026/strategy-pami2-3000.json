@@ -90,10 +90,19 @@
         }
     },
     {
+        "task": "Dans le doute, on force un peu",
+        "command": "go#150",
+        "position": {
+            "x": 1950,
+            "y": 1550,
+            "theta": 0.0
+        }
+    },
+    {
         "task": "Freeze !!!",
         "command": "halt-asserv",
         "position": {
-            "x": 1800,
+            "x": 1950,
             "y": 1550,
             "theta": 0.0
         }

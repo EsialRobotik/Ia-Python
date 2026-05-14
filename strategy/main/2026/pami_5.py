@@ -78,7 +78,7 @@ class Pami5(AbstractMain):
         tasks_list.add(self.tag(GoTo(
             desc="On pousse tout de l'autre côté",
             position_x=220,
-            position_y=3000 - 1070
+            position_y=3000 - 1050
         ), flag))
         tasks_list.add(self.tag(GoToBack(
             desc="On recule",
@@ -122,7 +122,7 @@ class Pami5(AbstractMain):
         tasks_list.add(GoTo(
             desc="On pousse tout",
             position_x=220,
-            position_y=1070
+            position_y=1050
         ))
         tasks_list.add(GoToBack(
             desc="On recule",

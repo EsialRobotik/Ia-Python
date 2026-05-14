@@ -1110,7 +1110,7 @@
             "tasks": [
                 {
                     "desc": "Position caisse 2",
-                    "position_x": 1600,
+                    "position_x": 1590,
                     "position_y": 545,
                     "dist": 0,
                     "type": "MOVEMENT",
@@ -1128,7 +1128,7 @@
                 },
                 {
                     "desc": "On s'aligne",
-                    "position_x": 1600,
+                    "position_x": 1590,
                     "position_y": 0,
                     "dist": 0,
                     "type": "MOVEMENT",
@@ -3161,7 +3161,7 @@
             "tasks": [
                 {
                     "desc": "Position caisse 2",
-                    "position_x": 1600,
+                    "position_x": 1590,
                     "position_y": 2455,
                     "dist": 0,
                     "type": "MOVEMENT",
@@ -3179,7 +3179,7 @@
                 },
                 {
                     "desc": "On s'aligne",
-                    "position_x": 1600,
+                    "position_x": 1590,
                     "position_y": 3000,
                     "dist": 0,
                     "type": "MOVEMENT",

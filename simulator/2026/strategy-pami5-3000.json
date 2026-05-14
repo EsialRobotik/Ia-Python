@@ -55,10 +55,10 @@
     },
     {
         "task": "On pousse tout",
-        "command": "goto#220;1930",
+        "command": "goto#220;1950",
         "position": {
             "x": 220,
-            "y": 1930,
+            "y": 1950,
             "theta": 1.5707963267948966
         }
     },
@@ -136,10 +136,10 @@
     },
     {
         "task": "On pousse tout de l'autre c\u00f4t\u00e9",
-        "command": "goto#220;1070",
+        "command": "goto#220;1050",
         "position": {
             "x": 220,
-            "y": 1070,
+            "y": 1050,
             "theta": -1.5707963267948966
         }
     },

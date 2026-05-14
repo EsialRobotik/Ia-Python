@@ -129,15 +129,16 @@ class HipposPrincess(AbstractMain):
 
     def get_caisse_2(self):
         score = 0
+        adjustment = 10
         tasks_list = TaskList(mirror_size=3000)
         tasks_list.add(GoToAstar(
             desc="Position caisse 2",
-            position_x=1600,
+            position_x=1600 - adjustment,
             position_y=165 + self.distance_photo,
         ))
         tasks_list.add(Face(
             desc="On s'aligne",
-            position_x=1600,
+            position_x=1600 - adjustment,
             position_y=0,
         ))
         tasks_list.add(Manipulation(

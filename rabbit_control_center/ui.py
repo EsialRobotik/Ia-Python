@@ -841,11 +841,13 @@ class ControlCenterWindow(QMainWindow):
         """Bouton bp2 / "Reset" : remet l'application à un état neutre.
 
         Effets : retour à idle (avec rotation des logs et resync musique),
-        match déclaré non démarré, états robots remis à zéro. Les sockets
-        encore actives provoqueront naturellement la ré-émission de
-        l'identité et de la couleur.
+        match déclaré non démarré, états robots remis à zéro, simulateur
+        ramené à sa position initiale (positions, traces, détections).
+        Les sockets encore actives provoqueront naturellement la ré-émission
+        de l'identité et de la couleur.
         """
         self.state.reset_all_robots()
+        self.match_view.table_widget.reset()
         if self.stack.currentWidget() is not self.idle_view:
             self._show_idle()
         else:

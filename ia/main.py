@@ -203,5 +203,6 @@ if __name__ == "__main__":
             break
 
     # wait a little more, just in case
-    time.sleep(5)
-    logger.info("End of the MasterLoop")
+    logger.info("End of the MasterLoop, idle for eternity")
+    while True:
+        time.sleep(5)

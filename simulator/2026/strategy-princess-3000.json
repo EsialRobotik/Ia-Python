@@ -577,18 +577,18 @@
     },
     {
         "task": "Position caisse 2",
-        "command": "goto-astar#1600;2455",
+        "command": "goto-astar#1590;2455",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2455,
-            "theta": 0.012499349019361679
+            "theta": 0.012819810472900582
         }
     },
     {
         "task": "On s'aligne",
-        "command": "face#1600;3000",
+        "command": "face#1590;3000",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2455,
             "theta": 1.5707963267948966
         }
@@ -597,7 +597,7 @@
         "task": "Petite pause pour des photos nettes",
         "command": "action#wait_250ms",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2455,
             "theta": 1.5707963267948966
         }
@@ -606,7 +606,7 @@
         "task": "Photo caisse 3",
         "command": "action#detect_noisettes_bleues",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2455,
             "theta": 1.5707963267948966
         }
@@ -615,7 +615,7 @@
         "task": "On l\u00e8ve l'ascenseur",
         "command": "action#lever",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2455,
             "theta": 1.5707963267948966
         }
@@ -624,7 +624,7 @@
         "task": "On ouvre les doigts",
         "command": "action#ouvrir",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2455,
             "theta": 1.5707963267948966
         }
@@ -633,7 +633,7 @@
         "task": "Piano piano",
         "command": "speed#50",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2455,
             "theta": 1.5707963267948966
         }
@@ -642,7 +642,7 @@
         "task": "On se colle aux caisse",
         "command": "go#260",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2715,
             "theta": 1.5707963267948966
         }
@@ -651,7 +651,7 @@
         "task": "On centre le bordel",
         "command": "action#centrer",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2715,
             "theta": 1.5707963267948966
         }
@@ -660,7 +660,7 @@
         "task": "On se d\u00e9colle des caisse",
         "command": "go#-30",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2685,
             "theta": 1.5707963267948966
         }
@@ -669,7 +669,7 @@
         "task": "On ramasse",
         "command": "action#routine_ramasser_ecarter",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2685,
             "theta": 1.5707963267948966
         }
@@ -678,7 +678,7 @@
         "task": "SIT AND ROTATE",
         "command": "action#tourner_pinces_180_flag",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2685,
             "theta": 1.5707963267948966
         }
@@ -687,7 +687,7 @@
         "task": "Distorsion maximum",
         "command": "speed#100",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2685,
             "theta": 1.5707963267948966
         }
@@ -696,16 +696,16 @@
         "task": "On lib\u00e8re la zone caisses 2",
         "command": "delete-zone#caisse_bleu_2",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2685,
             "theta": 1.5707963267948966
         }
     },
     {
         "task": "Position garde manger couleur 3",
-        "command": "goto-astar#1600;2685",
+        "command": "goto-astar#1590;2685",
         "position": {
-            "x": 1600,
+            "x": 1590,
             "y": 2685,
             "theta": 1.5707963267948966
         }
@@ -716,7 +716,7 @@
         "position": {
             "x": 900,
             "y": 2200,
-            "theta": -2.5356766569161127
+            "theta": -2.5289240010179963
         }
     },
     {

@@ -1,6 +1,6 @@
 {
   "desc": "Pami 1 - 2026",
-  "matchDuration": 3600,
+  "matchDuration": 100,
   "marge": 80,
   "gpioColorSelector": 27,
   "gpioPullCord": 22,
